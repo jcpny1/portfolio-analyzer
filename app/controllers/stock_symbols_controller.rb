@@ -1,0 +1,2 @@
+class StockSymbolsController < ApplicationController
+end

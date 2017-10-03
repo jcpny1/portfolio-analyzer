@@ -1,0 +1,2 @@
+class DailyTradesController < ApplicationController
+end

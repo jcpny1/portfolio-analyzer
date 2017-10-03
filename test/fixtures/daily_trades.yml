@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock_symbol: one
+  trade_date: 1
+  open_price: 9.99
+  close_price: 9.99
+  high_price: 9.99
+  low_price: 9.99
+  trade_volume: 9.99
+
+two:
+  stock_symbol: two
+  trade_date: 1
+  open_price: 9.99
+  close_price: 9.99
+  high_price: 9.99
+  low_price: 9.99
+  trade_volume: 9.99

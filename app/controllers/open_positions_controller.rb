@@ -1,0 +1,2 @@
+class OpenPositionsController < ApplicationController
+end
