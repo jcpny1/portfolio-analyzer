@@ -11,7 +11,6 @@ class PositionsPage extends Component {
       const pathParts = this.props.location.pathname.split('/');
       const portfolio_id = pathParts[pathParts.length-1];
       this.props.actions.fetchPositions(portfolio_id)
-      this.props.actions.fetchLastClosePrices()
     }
   }
 
