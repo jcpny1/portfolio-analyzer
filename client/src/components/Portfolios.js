@@ -4,9 +4,10 @@ import {formatCurrency} from '../utils/formatters'
 const Portfolios = (props) => {
   function listPortfolios() {
     return props.portfolios.map((portfolio,index) => {
+      let href = `/portfolios/${portfolio.id}`;
       return (
-        <tr key={index} onClick={() => props.onFoodClick(index)}>
-          <td><a href="#">{portfolio.name}</a></td>
+        <tr key={index}>
+          <td><a href={href}>{portfolio.name}</a></td>
           <td className='center aligned'>{formatCurrency(portfolio.marketValue)}</td>
           <td className='center aligned'>{formatCurrency(portfolio.totalCost)}</td>
           <td className='center aligned'>{formatCurrency(portfolio.marketValue - portfolio.totalCost)}</td>

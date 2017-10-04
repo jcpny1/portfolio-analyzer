@@ -2,10 +2,10 @@ import React from 'react'
 
 const Positions = (props) => {
   function listPositions() {
-    return props.portfolios.map((food,index) => {
+    return props.positions.map((food,index) => {
       return (
         <tr key={index} onClick={() => props.onFoodClick(index)}>
-          <td><a href="#">{food.name}</a></td>
+          <td><a href="#">{food.quantity}</a></td>
           <td className='right aligned'>{food.kcal}</td>
           <td className='right aligned'>{food.protein_g}</td>
           <td className='right aligned'>{food.fat_g}</td>
@@ -37,16 +37,16 @@ const Positions = (props) => {
           <tr>
             <th>Total</th>
             <th className='right aligned' id='total-kcal'>
-              {sum(props.portfolios, 'kcal')}
+              {sum(props.positions, 'kcal')}
             </th>
             <th className='right aligned' id='total-protein_g'>
-              {sum(props.portfolios, 'protein_g')}
+              {sum(props.positions, 'protein_g')}
             </th>
             <th className='right aligned' id='total-fat_g'>
-              {sum(props.portfolios, 'fat_g')}
+              {sum(props.positions, 'fat_g')}
             </th>
             <th className='right aligned' id='total-carbohydrate_g'>
-              {sum(props.portfolios, 'carbohydrate_g')}
+              {sum(props.positions, 'carbohydrate_g')}
             </th>
           </tr>
         </tfoot>

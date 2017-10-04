@@ -2,25 +2,23 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
 import Positions from '../components/Positions'
-import * as actions from '../actions/portfolioActions.js';
+import * as actions from '../actions/positionActions.js';
 
 class PositionsPage extends Component {
 
   componentDidMount() {
-    if (this.props.portfolios.length === 0) {
-      this.props.actions.fetchPortfolios()
+    if (this.props.positions.length === 0) {
+      this.props.actions.fetchPositions()
     }
   }
 
   render() {
-    return (
-      <Positions portfolios={this.props.portfolios} />
-    );
+    return (<Positions positions={this.props.positions}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.users.portfolios};
+  return {positions: state.positions.positions};
 }
 
 function mapDispatchToProps(dispatch) {

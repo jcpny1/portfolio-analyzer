@@ -20,7 +20,7 @@ class PortfoliosPage extends Component {
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.users.portfolios};
+  return {portfolios: state.portfolios.portfolios};
 }
 
 function mapDispatchToProps(dispatch) {
