@@ -45,7 +45,7 @@ const Positions = (props) => {
             <th colSpan='4'><h3>Positions</h3></th>
           </tr>
           <tr>
-            <th>Stock</th>
+            <th>Symbol</th>
             <th className='center aligned'>Quantity</th>
             <th className='center aligned'>Cost Basis</th>
             <th className='center aligned'>Acquired</th>
