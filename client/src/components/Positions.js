@@ -44,7 +44,7 @@ const Positions = (props) => {
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='4'><h3>Positions</h3></th>
+            <th colSpan='5'><h3>Positions</h3></th>
           </tr>
           <tr>
             <th>Symbol</th>
