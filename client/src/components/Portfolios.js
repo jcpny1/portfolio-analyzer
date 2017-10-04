@@ -21,7 +21,7 @@ const Portfolios = (props) => {
     let sumTotalCost = 0.0;
     props.portfolios.forEach(function(portfolio) {
       sumMarketValue += parseFloat(portfolio.marketValue);
-      sumTotalCost += parseFloat(portfolio.totalCost);
+      sumTotalCost   += parseFloat(portfolio.totalCost);
     });
     return (
       <tr>
@@ -30,7 +30,7 @@ const Portfolios = (props) => {
         <th className='center aligned'>{formatCurrency(sumTotalCost)}</th>
         <th className='center aligned'>{formatCurrency(sumMarketValue - sumTotalCost)}</th>
       </tr>
-    )
+    );
   }
 
   return (

@@ -7,7 +7,7 @@ import * as actions from '../actions/positionActions.js';
 class PositionsPage extends Component {
 
   componentDidMount() {
-    if (this.props.positions.length === 0) {
+    if (!("open_positions" in this.props.positions)) {
       this.props.actions.fetchPositions()
     }
   }

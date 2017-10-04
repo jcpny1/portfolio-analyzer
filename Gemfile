@@ -27,6 +27,7 @@ gem 'puma', '~> 3.7'
 
 # JCP added:
 gem 'foreman', '~> 0.84.0'
+gem 'active_model_serializers', '~> 0.10.0'
 # end JCP added
 
 group :development, :test do

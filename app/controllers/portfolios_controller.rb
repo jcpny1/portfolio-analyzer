@@ -1,5 +1,5 @@
 class PortfoliosController < ApplicationController
-  # Retrieve all portfolios.
+  # Retrieve all portfolios. Augment with Portfolio valuations.
   def index
     portfolios = Portfolio.all.map { |portfolio|
       p = portfolio.attributes;
@@ -12,7 +12,7 @@ class PortfoliosController < ApplicationController
 
   # Retrieve a portfolio.
   def show
-    positions = Portfolio.first.open_positions
-    render( status: 200, json: positions)
+    portfolio = Portfolio.first
+    render( status: 200, json: portfolio)
   end
 end

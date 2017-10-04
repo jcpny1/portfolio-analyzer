@@ -1,4 +1,4 @@
-export default function positionsReducer(state= {loadingPositions: false, positions: []}, action) {
+export default function positionsReducer(state= { loadingPositions: false, positions: {} }, action) {
   switch ( action.type ) {
     case 'LOADING_POSITIONS':
       return Object.assign({}, state, {loadingPositions: true})
