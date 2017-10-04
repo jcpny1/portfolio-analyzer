@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
-import Positions from '../components/Positions'
 import * as actions from '../actions/positionActions.js';
+import Positions from '../components/Positions'
 
 class PositionsPage extends Component {
 
   componentDidMount() {
     if (!("open_positions" in this.props.positions)) {
-      this.props.actions.fetchPositions()
+      const pathParts = this.props.location.pathname.split('/');
+      const portfolio_id = pathParts[pathParts.length-1];
+      this.props.actions.fetchPositions(portfolio_id)
+      this.props.actions.fetchLastClosePrices()
     }
   }
 
   render() {
-    return (<Positions positions={this.props.positions}/>);
+    return (<Positions positions={this.props.positions} prices={this.props.prices}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {positions: state.positions.positions};
+  return {positions: state.positions.positions, prices: state.prices.prices};
 }
 
 function mapDispatchToProps(dispatch) {

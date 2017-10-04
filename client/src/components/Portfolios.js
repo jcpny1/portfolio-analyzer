@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {formatCurrency} from '../utils/formatters'
 
 const Portfolios = (props) => {
@@ -7,7 +8,7 @@ const Portfolios = (props) => {
       let href = `/portfolios/${portfolio.id}`;
       return (
         <tr key={index}>
-          <td><a href={href}>{portfolio.name}</a></td>
+          <td><Link to={href}>{portfolio.name}</Link></td>
           <td className='center aligned'>{formatCurrency(portfolio.marketValue)}</td>
           <td className='center aligned'>{formatCurrency(portfolio.totalCost)}</td>
           <td className='center aligned'>{formatCurrency(portfolio.marketValue - portfolio.totalCost)}</td>

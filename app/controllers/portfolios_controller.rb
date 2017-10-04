@@ -10,7 +10,7 @@ class PortfoliosController < ApplicationController
     render( status: 200, json: portfolios)
   end
 
-  # Retrieve a portfolio (with open_positions). Augment open_positions with last_close price.
+  # Retrieve a portfolio (with open_positions).
   def show
     portfolio_id = params[:id]
     portfolio = Portfolio.find_by(id: portfolio_id)

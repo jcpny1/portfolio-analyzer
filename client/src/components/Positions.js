@@ -8,7 +8,7 @@ const Positions = (props) => {
         return (
           <tr key={index}>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
-            <th className='center aligned'>0.0</th>
+            <td className='center aligned'>{props.prices[open_position.stock_symbol.name]}</td>
             <td className='center aligned'>{open_position.quantity}</td>
             <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
             <td className='center aligned'>{open_position.date_acquired}</td>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
-import Portfolios from '../components/Portfolios'
 import * as actions from '../actions/portfolioActions.js';
+import Portfolios from '../components/Portfolios'
 
 class PortfoliosPage extends Component {
 
