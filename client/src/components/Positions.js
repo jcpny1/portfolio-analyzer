@@ -8,6 +8,7 @@ const Positions = (props) => {
         return (
           <tr key={index}>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
+            <th className='center aligned'>0.0</th>
             <td className='center aligned'>{open_position.quantity}</td>
             <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
             <td className='center aligned'>{open_position.date_acquired}</td>
@@ -30,6 +31,7 @@ const Positions = (props) => {
     return (
       <tr>
         <th>Total</th>
+        <th className='center aligned'></th>
         <th className='center aligned'>{sumQuantity}</th>
         <th className='center aligned'>{formatCurrency(sumCost)}</th>
         <th className='center aligned'></th>
@@ -46,6 +48,7 @@ const Positions = (props) => {
           </tr>
           <tr>
             <th>Symbol</th>
+            <th className='center aligned'>Last Close</th>
             <th className='center aligned'>Quantity</th>
             <th className='center aligned'>Cost Basis</th>
             <th className='center aligned'>Acquired</th>
