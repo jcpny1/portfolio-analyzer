@@ -16,7 +16,8 @@ class App extends Component {
             <Dropdown item text='Portfolios'>
               <Dropdown.Menu>
                 <Dropdown.Item>New</Dropdown.Item>
-                <Dropdown.Item as={Link} to='/positions'>Portfolio X</Dropdown.Item>
+                <Dropdown.Divider/>
+                <Dropdown.Item as={Link} to='/portfolios/1'>Portfolio X</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <Dropdown item text='Help'>

@@ -12,7 +12,8 @@ class PortfoliosController < ApplicationController
 
   # Retrieve a portfolio.
   def show
-    portfolio = Portfolio.first
+    portfolio_id = params[:id]
+    portfolio = Portfolio.find_by(id: portfolio_id)
     render( status: 200, json: portfolio)
   end
 end
