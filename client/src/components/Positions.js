@@ -1,17 +1,20 @@
 import React from 'react'
-import {formatCurrency} from '../utils/formatters'
+import { formatCurrency } from '../utils/formatters'
+import { Icon } from 'semantic-ui-react';
 
 const Positions = (props) => {
+
   function listPositions() {
-    if ("open_positions" in props.positions) {
+    if ('open_positions' in props.positions) {
       return props.positions.open_positions.map((open_position,index) => {
         return (
-          <tr key={index}>
-            <td>{open_position.stock_symbol.name.toUpperCase()}</td>
-            <td className='center aligned'>{props.prices[open_position.stock_symbol.name]}</td>
-            <td className='center aligned'>{open_position.quantity}</td>
-            <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
-            <td className='center aligned'>{open_position.date_acquired}</td>
+          <tr key={ index }>
+            <td><Icon name='remove' link color='red' onClick={ () => props.onRemoveClick(index) }/></td>
+            <td>{ open_position.stock_symbol.name.toUpperCase() }</td>
+            <td className='center aligned'>{ props.prices[open_position.stock_symbol.name] }</td>
+            <td className='center aligned'>{ open_position.quantity }</td>
+            <td className='center aligned'>{ formatCurrency(open_position.cost) }</td>
+            <td className='center aligned'>{ open_position.date_acquired }</td>
           </tr>
         );
       })
@@ -32,6 +35,7 @@ const Positions = (props) => {
       <tr>
         <th>Total</th>
         <th className='center aligned'></th>
+        <th className='center aligned'></th>
         <th className='center aligned'>{sumQuantity}</th>
         <th className='center aligned'>{formatCurrency(sumCost)}</th>
         <th className='center aligned'></th>
@@ -44,9 +48,10 @@ const Positions = (props) => {
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='5'><h3>Positions</h3></th>
+            <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={ () => null }/></h3></th>
           </tr>
           <tr>
+            <th>Delete</th>
             <th>Symbol</th>
             <th className='center aligned'>Last Close</th>
             <th className='center aligned'>Quantity</th>
@@ -64,28 +69,5 @@ const Positions = (props) => {
     </div>
   )
 }
-// <tfoot>
-//   <tr>
-//     <th>Total</th>
-//     <th className='right aligned' id='total-kcal'>
-//       {sum(props.positions, 'kcal')}
-//     </th>
-//     <th className='right aligned' id='total-protein_g'>
-//       {sum(props.positions, 'protein_g')}
-//     </th>
-//     <th className='right aligned' id='total-fat_g'>
-//       {sum(props.positions, 'fat_g')}
-//     </th>
-//     <th className='right aligned' id='total-carbohydrate_g'>
-//       {sum(props.positions, 'carbohydrate_g')}
-//     </th>
-//   </tr>
-// </tfoot>
 
 export default Positions
-
-function sum(portfolios, prop) {
-  return portfolios.reduce((memo, open_position) => (
-    parseInt(open_position[prop], 10) + memo
-  ), 0.0).toFixed(2);
-}

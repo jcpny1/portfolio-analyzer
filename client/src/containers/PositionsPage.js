@@ -14,8 +14,12 @@ class PositionsPage extends Component {
     }
   }
 
+  removeSymbol = (itemIndex) => {
+    this.props.actions.deletePosition(itemIndex)
+  }
+
   render() {
-    return (<Positions positions={this.props.positions} prices={this.props.prices}/>);
+    return (<Positions positions={this.props.positions} prices={this.props.prices} onRemoveClick={this.removeSymbol}/>);
   }
 }
 
