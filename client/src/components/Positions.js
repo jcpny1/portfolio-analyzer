@@ -1,23 +1,22 @@
 import React from 'react'
-import { formatCurrency } from '../utils/formatters'
-import { Icon } from 'semantic-ui-react';
+import {formatCurrency} from '../utils/formatters'
+import {Icon} from 'semantic-ui-react';
 
 const Positions = (props) => {
-
   function listPositions() {
     if ('open_positions' in props.positions) {
       return props.positions.open_positions.map((open_position,index) => {
         return (
-          <tr key={ index }>
-            <td><Icon name='remove' link color='red' onClick={ () => props.onRemoveClick(index) }/></td>
-            <td>{ open_position.stock_symbol.name.toUpperCase() }</td>
-            <td className='center aligned'>{ props.prices[open_position.stock_symbol.name] }</td>
-            <td className='center aligned'>{ open_position.quantity }</td>
-            <td className='center aligned'>{ formatCurrency(open_position.cost) }</td>
-            <td className='center aligned'>{ open_position.date_acquired }</td>
+          <tr key={index}>
+            <td><Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/></td>
+            <td>{open_position.stock_symbol.name.toUpperCase()}</td>
+            <td className='center aligned'>{props.prices[open_position.stock_symbol.name]}</td>
+            <td className='center aligned'>{open_position.quantity}</td>
+            <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
+            <td className='center aligned'>{open_position.date_acquired}</td>
           </tr>
         );
-      })
+      });
     }
     return;
   }
@@ -48,7 +47,7 @@ const Positions = (props) => {
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={ () => null }/></h3></th>
+            <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={ () => props.onAddClick({stock_symbol_id:1})}/></h3></th>
           </tr>
           <tr>
             <th>Delete</th>
@@ -67,7 +66,7 @@ const Positions = (props) => {
         </tfoot>
       </table>
     </div>
-  )
+  );
 }
 
 export default Positions

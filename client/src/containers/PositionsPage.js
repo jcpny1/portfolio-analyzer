@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../actions/positionActions.js';
 import Positions from '../components/Positions'
@@ -14,14 +14,24 @@ class PositionsPage extends Component {
     }
   }
 
-  removeSymbol = (itemIndex) => {
+  addPosition = () => {
+    this.props.actions.addPosition({
+      portfolio_id: 1,
+      stock_symbol_id: 1,
+      quantity: 321,
+      cost: 123,
+      date_acquired: 20171005,
+    })
+  }
+
+  removePosition = (itemIndex) => {
     if (window.confirm('Are you sure?')) {
       this.props.actions.deletePosition(itemIndex)
     }
   }
 
   render() {
-    return (<Positions positions={this.props.positions} prices={this.props.prices} onRemoveClick={this.removeSymbol}/>);
+    return (<Positions positions={this.props.positions} prices={this.props.prices} onAddClick={this.addPosition} onRemoveClick={this.removePosition}/>);
   }
 }
 
