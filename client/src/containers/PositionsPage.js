@@ -15,7 +15,9 @@ class PositionsPage extends Component {
   }
 
   removeSymbol = (itemIndex) => {
-    this.props.actions.deletePosition(itemIndex)
+    if (window.confirm('Are you sure?')) {
+      this.props.actions.deletePosition(itemIndex)
+    }
   }
 
   render() {
