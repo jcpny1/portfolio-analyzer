@@ -5,9 +5,9 @@ class DailyTradesController < ApplicationController
     last_close_prices = {}
     symbols.each { |symbol|
       stock_symbol = StockSymbol.find_by(name: symbol)
-      last_close_price = stock_symbol.daily_trades.order(trade_date: :desc).first.close_price if stock_symbol.present?
-      last_close_prices[symbol] = last_close_price if last_close_price.present?
+      last_trade_record = stock_symbol.daily_trades.order(trade_date: :desc).first
+      last_close_prices[symbol] = last_trade_record.close_price if last_trade_record.present?
     }
-    render( status: 200, json: last_close_prices )
+    render json: last_close_prices
   end
 end

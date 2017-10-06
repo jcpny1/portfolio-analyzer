@@ -5,12 +5,9 @@ class CompaniesController < ApplicationController
     q = params[:q]
 
     if q.blank?
-      render status: 400, json: { error: 'Expected parameter `q` '}
+      render json: {error: 'Expected parameter `q` '}, status: :bad_request
     else
-      render(
-        status: 200,
-        json: Company.where(["name LIKE ?", "%#{q}%"]).limit(100)
-      )
+      render json: Company.where(["name LIKE ?", "%#{q}%"]).limit(100)
     end
   end
 end

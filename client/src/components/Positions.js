@@ -1,14 +1,22 @@
 import React from 'react'
 import {formatCurrency} from '../utils/formatters'
-import {Icon} from 'semantic-ui-react';
+import {Button, Form, Icon} from 'semantic-ui-react';
 
 const Positions = (props) => {
+
+  function editPosition(event) {
+debugger;
+  }
+
   function listPositions() {
     if ('open_positions' in props.positions) {
       return props.positions.open_positions.map((open_position,index) => {
         return (
           <tr key={index}>
-            <td><Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/></td>
+                  <td class="collapsing">
+                    <Icon name='edit' link color='green' onClick={editPosition}/>
+                    <Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/>
+                  </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
             <td className='center aligned'>{props.prices[open_position.stock_symbol.name]}</td>
             <td className='center aligned'>{open_position.quantity}</td>
@@ -50,7 +58,7 @@ const Positions = (props) => {
             <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={ () => props.onAddClick({stock_symbol_id:1})}/></h3></th>
           </tr>
           <tr>
-            <th>Delete</th>
+            <th></th>
             <th>Symbol</th>
             <th className='center aligned'>Last Close</th>
             <th className='center aligned'>Quantity</th>
