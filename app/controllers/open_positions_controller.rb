@@ -1,10 +1,11 @@
 class OpenPositionsController < ApplicationController
   before_action :get_portfolio
 
-  # Add a new open position to a portfolio.
-  def create
-    open_position = @portfolio.open_positions.new(open_position_params)
-    if open_position.save
+  # Update an existing open position in or add a new open position to a portfolio.
+  def update
+    stock_symbol = StockSymbol.find_by(name: params[:stock_symbol_name])
+    open_position = @portfolio.open_positions.find_or_initialize_by(stock_symbol_id: stock_symbol.id)
+    if open_position.update(open_position_params)
       render json: open_position
     else
       render json: open_position.errors, status: :unprocessable_entity

@@ -22,18 +22,18 @@ export function fetchLastClosePrices(dispatch, open_positions) {
   .then(responseJson => {dispatch( {type: 'FETCH_LAST_CLOSE_PRICES', payload: responseJson} )});
 }
 
-export function addPosition(open_position) {
+export function updatePosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'ADDING_POSITION'})
-    return fetch('/api/open_positions/', {
-      method: 'POST',
+    dispatch({type: 'UPDATING_POSITION'})
+    return fetch('/api/open_positions/'+open_position.portfolio_id, {
+      method: 'PATCH',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         portfolio_id: open_position.portfolio_id,
-        stock_symbol_id: open_position.stock_symbol_id,
+        stock_symbol_name: open_position.stock_symbol_name,
         quantity: open_position.quantity,
         cost: open_position.cost,
         date_acquired: open_position.date_acquired,
@@ -41,7 +41,7 @@ export function addPosition(open_position) {
     })
     .then(res => {return res.json()})
     .then(responseJson => {
-      dispatch({type: 'ADD_POSITION', payload: responseJson});
+      dispatch({type: 'UPDATE_POSITION', payload: responseJson});
     });
   }
 }

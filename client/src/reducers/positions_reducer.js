@@ -1,4 +1,4 @@
-export default function positionsReducer(state= {addingPosition: false, loadingPositions: false, removingPosition: false, positions: {}}, action) {
+export default function positionsReducer(state= {updatingPosition: false, loadingPositions: false, removingPosition: false, positions: {}}, action) {
   switch ( action.type ) {
     case 'LOADING_POSITIONS':
       return Object.assign({}, state, {loadingPositions: true})
@@ -9,11 +9,16 @@ export default function positionsReducer(state= {addingPosition: false, loadingP
       case 'DELETE_POSITION':
         state.positions.open_positions.splice(action.payload, 1);
         return {removingPosition: false, positions: state.positions}
-      case 'ADDING_POSITION':
-        return Object.assign({}, state, {addingPosition: true})
-      case 'ADD_POSITION':
-        state.positions.open_positions.unshift(action.payload);
-        return {addingPosition: false, positions: state.positions}
+      case 'UPDATING_POSITION':
+        return Object.assign({}, state, {updatingPosition: true})
+      case 'UPDATE_POSITION':
+        let index = state.positions.open_positions.findIndex(open_position => open_position.stock_symbol.id === action.payload.stock_symbol.id);
+        if (index === -1) {
+          state.positions.open_positions.unshift(action.payload);
+        } else {
+          state.positions.open_positions[index] = action.payload;          
+        }
+        return {updatingPosition: false, positions: state.positions}
     default:
       return state;
   }

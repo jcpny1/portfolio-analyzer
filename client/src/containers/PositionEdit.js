@@ -4,7 +4,7 @@ import {Form, Header, Icon, Modal} from 'semantic-ui-react';
 export default class PositionEdit extends Component {
   constructor(props) {
       super(props)
-      this.state = {modalOpen: false, symbol: props.position.stock_symbol.name, quantity: props.position.quantity, cost: props.position.cost, date_acquired: props.position.date_acquired};
+      this.state = {modalOpen: false, onUpdateClick: props.onUpdateClick, symbol: props.position.stock_symbol.name, quantity: props.position.quantity, cost: props.position.cost, date_acquired: props.position.date_acquired};
       this.initialState = this.state;
   }
 
@@ -17,7 +17,8 @@ export default class PositionEdit extends Component {
   handleOpen = () => this.setState({modalOpen: true});
 
   handleSubmit = () => {
-    const {symbol, quantity, cost, date_acquired} = this.state;
+    const {onUpdateClick, symbol, quantity, cost, date_acquired} = this.state;
+    onUpdateClick({symbol: symbol, quantity: quantity, cost: cost, date_acquired: date_acquired});
     this.setState({modalOpen: false});
   }
 

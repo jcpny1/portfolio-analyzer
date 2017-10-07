@@ -14,13 +14,13 @@ class PositionsPage extends Component {
     }
   }
 
-  addPosition = () => {
-    this.props.actions.addPosition({
+  updatePosition = (newValues) => {
+    this.props.actions.updatePosition({
       portfolio_id: 1,
-      stock_symbol_id: 1,
-      quantity: 321,
-      cost: 123,
-      date_acquired: 20171005,
+      stock_symbol_name: newValues.symbol,
+      quantity: newValues.quantity,
+      cost: newValues.cost,
+      date_acquired: newValues.date_acquired,
     });
   }
 
@@ -31,7 +31,7 @@ class PositionsPage extends Component {
   }
 
   render() {
-    return (<Positions positions={this.props.positions} prices={this.props.prices} onAddClick={this.addPosition} onRemoveClick={this.removePosition}/>);
+    return (<Positions positions={this.props.positions} prices={this.props.prices} onUpdateClick={this.updatePosition} onRemoveClick={this.removePosition}/>);
   }
 }
 
