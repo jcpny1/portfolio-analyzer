@@ -1,44 +1,43 @@
 import React, {Component} from 'react';
-import { Button, Form, Header, Icon, Modal } from 'semantic-ui-react';
-
-const INIT_STATE = { modalOpen: false, symbol: '', quantity: '', cost: '', date_acquired: '' };
+import {Form, Header, Icon, Modal} from 'semantic-ui-react';
 
 export default class PositionEdit extends Component {
   constructor(props) {
       super(props)
-      this.state = INIT_STATE;
+      this.state = {modalOpen: false, symbol: props.position.stock_symbol.name, quantity: props.position.quantity, cost: props.position.cost, date_acquired: props.position.date_acquired};
+      this.initialState = this.state;
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
+  handleCancel = () => {
+    this.setState(this.initialState);
+  }
+
+  handleChange = (e, {name, value}) => this.setState({[name]: value});
+
+  handleOpen = () => this.setState({modalOpen: true});
 
   handleSubmit = () => {
-    const { symbol, quantity, cost, date_acquired } = this.state;
-debugger;
-    this.handleClose();
+    const {symbol, quantity, cost, date_acquired} = this.state;
+    this.setState({modalOpen: false});
   }
 
-  handleOpen = () => this.setState({ modalOpen: true });
-  handleClose = () => this.setState(INIT_STATE);
-
   render() {
-    const { symbol, quantity, cost, date_acquired } = this.state;
+    const {symbol, quantity, cost, date_acquired} = this.state;
 
-    // <Button color='red' onClick={this.handleClose}><Icon name='cancel' /> Cancel</Button>
-    // <Button color='green' onClick={this.handleSubmit}><Icon name='save' /> Save</Button>
     return (
-      <Modal trigger={<Icon name='edit' link color='green' onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleClose}>
+      <Modal trigger={<Icon name='edit' link color='green' onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Position Editor'/>
         <Modal.Content>
           <Form onSubmit={this.handleSubmit}>
-            <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+            <p>Update position info. Press Cancel or Submit when done.</p>
             <Form.Group>
-              <Form.Input width={4} placeholder='Symbol' name='symbol' value={symbol} onChange={this.handleChange} required/>
-              <Form.Input width={4} placeholder='Quantity' name='quantity' value={quantity} onChange={this.handleChange}/>
-              <Form.Input width={4} placeholder='Cost' name='cost' value={cost} onChange={this.handleChange}/>
-              <Form.Input width={4} placeholder='Date Acquired' name='date_acquired' value={date_acquired} onChange={this.handleChange}/>
+              <Form.Input width={4} label='Symbol' placeholder='Symbol' name='symbol' value={symbol} onChange={this.handleChange} required/>
+              <Form.Input width={4} label='Quantity' placeholder='Quantity' name='quantity' value={quantity} onChange={this.handleChange}/>
+              <Form.Input width={4} label='Cost' placeholder='Cost' name='cost' value={cost} onChange={this.handleChange}/>
+              <Form.Input width={4} label='Date Acquired' placeholder='Date Acquired' name='date_acquired' value={date_acquired} onChange={this.handleChange}/>
             </Form.Group>
             <Form.Group>
-              <Button color='red' onClick={this.handleClose}>Cancel</Button>
+              <Form.Button color='red' content='Cancel' onClick={this.handleCancel}/>
               <Form.Button color='green' content='Submit'/>
             </Form.Group>
           </Form>

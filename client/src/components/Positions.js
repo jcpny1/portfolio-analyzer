@@ -12,7 +12,7 @@ const Positions = (props) => {
         return (
           <tr key={index}>
             <td className="collapsing">
-              {<PositionEdit/>}
+              {<PositionEdit position={open_position}/>}
               <Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/>
             </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
