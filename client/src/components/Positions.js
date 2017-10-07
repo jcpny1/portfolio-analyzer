@@ -1,11 +1,10 @@
 import React from 'react'
 import {formatCurrency} from '../utils/formatters'
-import {Button, Form, Icon} from 'semantic-ui-react';
+import {Icon} from 'semantic-ui-react';
 
 const Positions = (props) => {
 
   function editPosition(event) {
-debugger;
   }
 
   function listPositions() {
@@ -13,17 +12,17 @@ debugger;
       return props.positions.open_positions.map((open_position,index) => {
         return (
           <tr key={index}>
-                  <td class="collapsing">
-                    <Icon name='edit' link color='green' onClick={editPosition}/>
-                    <Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/>
-                  </td>
+            <td className="collapsing">
+              <Icon name='edit' link color='green' onClick={editPosition}/>
+              <Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/>
+            </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
             <td className='center aligned'>{props.prices[open_position.stock_symbol.name]}</td>
             <td className='center aligned'>{open_position.quantity}</td>
             <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
             <td className='center aligned'>{open_position.date_acquired}</td>
           </tr>
-        );
+      );
       });
     }
     return;
@@ -55,7 +54,7 @@ debugger;
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={ () => props.onAddClick({stock_symbol_id:1})}/></h3></th>
+            <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={() => props.onAddClick({stock_symbol_id:1})}/></h3></th>
           </tr>
           <tr>
             <th></th>

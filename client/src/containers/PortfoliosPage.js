@@ -14,7 +14,7 @@ class PortfoliosPage extends Component {
 
   render() {
     return (
-      <Portfolios portfolios={this.props.portfolios} />
+      <Portfolios portfolios={this.props.portfolios}/>
     );
   }
 }
