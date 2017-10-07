@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../actions/positionActions.js';
-import Positions from '../components/Positions'
+import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
 
@@ -10,7 +10,7 @@ class PositionsPage extends Component {
     if (!("open_positions" in this.props.positions)) {
       const pathParts = this.props.location.pathname.split('/');
       const portfolio_id = pathParts[pathParts.length-1];
-      this.props.actions.fetchPositions(portfolio_id)
+      this.props.actions.fetchPositions(portfolio_id);
     }
   }
 
@@ -21,12 +21,12 @@ class PositionsPage extends Component {
       quantity: 321,
       cost: 123,
       date_acquired: 20171005,
-    })
+    });
   }
 
   removePosition = (itemIndex) => {
     if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePosition(itemIndex)
+      this.props.actions.deletePosition(itemIndex);
     }
   }
 
@@ -40,7 +40,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return {actions: bindActionCreators(actions, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);

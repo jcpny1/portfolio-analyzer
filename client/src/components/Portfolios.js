@@ -1,6 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import {formatCurrency} from '../utils/formatters'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {formatCurrency} from '../utils/formatters';
 
 const Portfolios = (props) => {
   function listPortfolios() {
@@ -13,8 +13,14 @@ const Portfolios = (props) => {
           <td className='center aligned'>{formatCurrency(portfolio.totalCost)}</td>
           <td className='center aligned'>{formatCurrency(portfolio.marketValue - portfolio.totalCost)}</td>
         </tr>
-      )
-    })
+      );
+    });
+  }
+
+  function sum(portfolios, prop) {
+    return portfolios.reduce((memo, portfolio) => (
+      parseInt(portfolio[prop], 10) + memo
+    ), 0.0).toFixed(2);
   }
 
   function sumPortfolios() {
@@ -24,6 +30,7 @@ const Portfolios = (props) => {
       sumMarketValue += parseFloat(portfolio.marketValue);
       sumTotalCost   += parseFloat(portfolio.totalCost);
     });
+
     return (
       <tr>
         <th>Total</th>
@@ -56,13 +63,7 @@ const Portfolios = (props) => {
         </tfoot>
       </table>
     </div>
-  )
+  );
 }
 
-export default Portfolios
-
-function sum(portfolios, prop) {
-  return portfolios.reduce((memo, portfolio) => (
-    parseInt(portfolio[prop], 10) + memo
-  ), 0.0).toFixed(2);
-}
+export default Portfolios;

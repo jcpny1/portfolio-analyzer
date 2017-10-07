@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../actions/portfolioActions.js';
-import Portfolios from '../components/Portfolios'
+import Portfolios from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
 
@@ -13,9 +13,7 @@ class PortfoliosPage extends Component {
   }
 
   render() {
-    return (
-      <Portfolios portfolios={this.props.portfolios}/>
-    );
+    return (<Portfolios portfolios={this.props.portfolios}/>);
   }
 }
 
@@ -24,7 +22,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return {actions: bindActionCreators(actions, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PortfoliosPage);

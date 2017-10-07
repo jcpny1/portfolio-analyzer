@@ -1,23 +1,22 @@
-import React from 'react'
-import {formatCurrency} from '../utils/formatters'
+import React from 'react';
+import {formatCurrency} from '../utils/formatters';
 import {Icon} from 'semantic-ui-react';
+import PositionEdit from '../containers/PositionEdit';
 
 const Positions = (props) => {
-
-  function editPosition(event) {
-  }
+  const { positions, prices } = props;
 
   function listPositions() {
-    if ('open_positions' in props.positions) {
-      return props.positions.open_positions.map((open_position,index) => {
+    if ('open_positions' in positions) {
+      return positions.open_positions.map((open_position,index) => {
         return (
           <tr key={index}>
             <td className="collapsing">
-              <Icon name='edit' link color='green' onClick={editPosition}/>
+              {<PositionEdit/>}
               <Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/>
             </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
-            <td className='center aligned'>{props.prices[open_position.stock_symbol.name]}</td>
+            <td className='center aligned'>{prices[open_position.stock_symbol.name]}</td>
             <td className='center aligned'>{open_position.quantity}</td>
             <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
             <td className='center aligned'>{open_position.date_acquired}</td>
@@ -31,8 +30,8 @@ const Positions = (props) => {
   function sumPositions() {
     let sumQuantity = 0.0;
     let sumCost = 0.0;
-    if ("open_positions" in props.positions) {
-      props.positions.open_positions.forEach(function(open_position) {
+    if ("open_positions" in positions) {
+      positions.open_positions.forEach(function(open_position) {
         sumQuantity += parseFloat(open_position.quantity);
         sumCost     += parseFloat(open_position.cost);
       });
@@ -76,4 +75,4 @@ const Positions = (props) => {
   );
 }
 
-export default Positions
+export default Positions;
