@@ -4,7 +4,7 @@ class OpenPositionsController < ApplicationController
   # Update an existing open position in or add a new open position to a portfolio.
   def update
     if !params[:id].blank?
-      open_position = @portfolio.open_positions.find(params[:open_position][:id])
+      open_position = @portfolio.open_positions.find(params[:open_position_id])
     else
       open_position = @portfolio.open_positions.new
     end

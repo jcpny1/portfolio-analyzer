@@ -33,7 +33,7 @@ export function updatePosition(open_position) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: open_position.id,
+        open_position_id: open_position.id,
         portfolio_id: open_position.portfolio_id,
         stock_symbol: open_position.stock_symbol,
         quantity: open_position.quantity,
