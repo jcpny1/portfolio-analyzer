@@ -12,11 +12,12 @@ export default function positionsReducer(state= {updatingPosition: false, loadin
       case 'UPDATING_POSITION':
         return Object.assign({}, state, {updatingPosition: true})
       case 'UPDATE_POSITION':
+// debugger;
         let index = state.positions.open_positions.findIndex(open_position => open_position.stock_symbol.id === action.payload.stock_symbol.id);
         if (index === -1) {
           state.positions.open_positions.unshift(action.payload);
         } else {
-          state.positions.open_positions[index] = action.payload;          
+          state.positions.open_positions[index] = action.payload;
         }
         return {updatingPosition: false, positions: state.positions}
     default:

@@ -16,8 +16,9 @@ class PositionsPage extends Component {
 
   updatePosition = (newValues) => {
     this.props.actions.updatePosition({
-      portfolio_id: 1,
-      stock_symbol_name: newValues.symbol,
+      id: newValues.id,
+      portfolio_id: newValues.portfolio_id,
+      stock_symbol: newValues.stock_symbol,
       quantity: newValues.quantity,
       cost: newValues.cost,
       date_acquired: newValues.date_acquired,

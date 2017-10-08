@@ -24,6 +24,7 @@ export function fetchLastClosePrices(dispatch, open_positions) {
 
 export function updatePosition(open_position) {
   return function(dispatch) {
+// debugger;
     dispatch({type: 'UPDATING_POSITION'})
     return fetch('/api/open_positions/'+open_position.portfolio_id, {
       method: 'PATCH',
@@ -32,8 +33,9 @@ export function updatePosition(open_position) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        id: open_position.id,
         portfolio_id: open_position.portfolio_id,
-        stock_symbol_name: open_position.stock_symbol_name,
+        stock_symbol: open_position.stock_symbol,
         quantity: open_position.quantity,
         cost: open_position.cost,
         date_acquired: open_position.date_acquired,
