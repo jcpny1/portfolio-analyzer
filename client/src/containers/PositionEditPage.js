@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Header, Icon, Modal} from 'semantic-ui-react';
 
-export default class PositionEdit extends Component {
+export default class PositionEditPage extends Component {
   constructor(props) {
       super(props)
       this.initialState = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {formatCurrency} from '../utils/formatters';
 import {Icon} from 'semantic-ui-react';
-import PositionEdit from '../containers/PositionEdit';
+import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
   const { portfolio_id, positions, prices } = props;
@@ -22,7 +22,7 @@ const Positions = (props) => {
         return (
           <tr key={index}>
             <td className="collapsing">
-              {<PositionEdit position={open_position} index={index} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+              {<PositionEditPage position={open_position} index={index} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
               <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position, index)}/>
             </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
@@ -63,7 +63,7 @@ const Positions = (props) => {
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='6'><h3>Positions {<PositionEdit position={new_position} index='-1' iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}</h3></th>
+            <th colSpan='6'><h3>Positions {<PositionEditPage position={new_position} index='-1' iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}</h3></th>
           </tr>
           <tr>
             <th></th>
