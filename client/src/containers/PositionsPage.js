@@ -16,18 +16,19 @@ class PositionsPage extends Component {
 
   updatePosition = (newValues) => {
     this.props.actions.updatePosition({
+      index: newValues.index,
       id: newValues.id,
       portfolio_id: newValues.portfolio_id,
-      stock_symbol: newValues.stock_symbol,
+      stock_symbol_id: newValues.stock_symbol_id,
       quantity: newValues.quantity,
       cost: newValues.cost,
       date_acquired: newValues.date_acquired,
     });
   }
 
-  removePosition = (itemIndex) => {
+  removePosition = (open_position, itemIndex) => {
     if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePosition(itemIndex);
+      this.props.actions.deletePosition(open_position, itemIndex);
     }
   }
 

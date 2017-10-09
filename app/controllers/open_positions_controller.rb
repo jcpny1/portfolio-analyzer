@@ -16,11 +16,20 @@ class OpenPositionsController < ApplicationController
     end
   end
 
+  # Delete an open position.
+  def destroy
+    if @portfolio.open_positions.find(params[:open_position_id]).destroy
+      render json: JSON.parse('{"msg":"position deleted"}'), status: :ok
+    else
+      render json: @portfolio.errors, status: :unprocessable_entity
+    end
+  end
+
   private
 
   # Load the portfolio identified in the route.
   def get_portfolio
-    @portfolio = Portfolio.find_by(id: params[:portfolio_id])
+    @portfolio = Portfolio.find_by(id: params[:id])
   end
 
   # Filter params for allowed elements only.

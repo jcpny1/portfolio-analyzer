@@ -1,5 +1,6 @@
 export default function positionsReducer(state= {updatingPosition: false, loadingPositions: false, removingPosition: false, portfolio_id: -1, positions: {}}, action) {
 // console.log("ACTION type: " + action.type + " pl: " + action.payload + " STATE: " + JSON.stringify(state));
+  let index, positions;
   switch ( action.type ) {
     // Load Positions
     case 'LOADING_POSITIONS':
@@ -10,19 +11,22 @@ export default function positionsReducer(state= {updatingPosition: false, loadin
     case 'DELETING_POSITION':
       return Object.assign({}, state, {removingPosition: true})
     case 'DELETE_POSITION':
-      state.positions.open_positions.splice(action.payload, 1);
-      return Object.assign({}, state, {removingPosition: false, positions: state.positions})
+      index = action.payload;
+      positions = Object.assign({}, state.positions);
+      positions.open_positions = [...state.positions.open_positions.slice(0,index), ...state.positions.open_positions.slice(index+1)]
+      return Object.assign({}, state, {removingPosition: false, positions: positions})
     // Add or Update a Position
     case 'UPDATING_POSITION':
       return Object.assign({}, state, {updatingPosition: true})
     case 'UPDATE_POSITION':
-      let index = state.positions.open_positions.findIndex(open_position => open_position.stock_symbol.id === action.payload.stock_symbol.id);
-      if (index === -1) {
-        state.positions.open_positions.unshift(action.payload);
+      index = action.payload.index;
+      positions = Object.assign({}, state.positions);
+      if (index === '-1') {
+        positions.open_positions = [action.payload.open_position, ...state.positions.open_positions];
       } else {
-        state.positions.open_positions[index] = action.payload;
+        positions.open_positions = [...state.positions.open_positions.slice(0,index), action.payload.open_position, ...state.positions.open_positions.slice(index+1)]
       }
-      return Object.assign({}, state, {updatingPosition: false, positions: state.positions})
+      return Object.assign({}, state, {updatingPosition: false, positions: positions})
     // default action
     default:
       return state;
