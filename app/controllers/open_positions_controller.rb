@@ -3,7 +3,7 @@ class OpenPositionsController < ApplicationController
 
   # Update an existing open position in or add a new open position to a portfolio.
   def update
-    if !params[:id].blank?
+    if !params[:open_position_id].blank?
       open_position = @portfolio.open_positions.find(params[:open_position_id])
     else
       open_position = @portfolio.open_positions.new
@@ -25,6 +25,6 @@ class OpenPositionsController < ApplicationController
 
   # Filter params for allowed elements only.
   def open_position_params
-    params.require(:open_position).permit(:portfolio_id, :stock_symbol, :quantity, :cost, :date_acquired)
+    params.require(:open_position).permit(:portfolio_id, :stock_symbol_id, :quantity, :cost, :date_acquired)
   end
 end

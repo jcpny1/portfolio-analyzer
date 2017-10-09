@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import portfoliosReducer from './portfolios_reducer';
 import positionsReducer  from './positions_reducer';
 import pricesReducer     from './prices_reducer';

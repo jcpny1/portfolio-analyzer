@@ -4,7 +4,17 @@ import {Icon} from 'semantic-ui-react';
 import PositionEdit from '../containers/PositionEdit';
 
 const Positions = (props) => {
-  const { positions, prices } = props;
+  const { portfolio_id, positions, prices } = props;
+
+  const new_position = {
+      id: '',
+      portfolio_id: portfolio_id,
+      stock_symbol: {},
+      stock_symbol_name: '',
+      quantity: '',
+      cost: '',
+      date_acquired: '',
+    };
 
   function listPositions() {
     if ('open_positions' in positions) {
@@ -12,8 +22,8 @@ const Positions = (props) => {
         return (
           <tr key={index}>
             <td className="collapsing">
-              {<PositionEdit position={open_position} onUpdateClick={props.onUpdateClick}/>}
-              <Icon name='remove' link color='red' onClick={() => props.onRemoveClick(index)}/>
+              {<PositionEdit position={open_position} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+              <Icon name='remove' link color='red' onClick={() => props.onClickRemove(index)}/>
             </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
             <td className='center aligned'>{prices[open_position.stock_symbol.name]}</td>
@@ -53,7 +63,7 @@ const Positions = (props) => {
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='6'><h3>Positions <Icon name='add' link color='blue' onClick={() => props.onAddClick({stock_symbol_id:1})}/></h3></th>
+            <th colSpan='6'><h3>Positions {<PositionEdit position={new_position} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}</h3></th>
           </tr>
           <tr>
             <th></th>
