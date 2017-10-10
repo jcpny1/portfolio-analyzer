@@ -33,12 +33,12 @@ class PositionsPage extends Component {
   }
 
   render() {
-    return (<Positions portfolio_id={this.props.portfolio_id} positions={this.props.positions} prices={this.props.prices} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
+    return (<Positions portfolio_id={this.props.portfolio_id} positions={this.props.positions} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolio_id: state.positions.portfolio_id, positions: state.positions.positions, prices: state.prices.prices};
+  return {portfolio_id: state.positions.portfolio_id, positions: state.positions.positions, prices: state.prices.prices, stock_symbols: state.stock_symbols.stock_symbols};
 }
 
 function mapDispatchToProps(dispatch) {

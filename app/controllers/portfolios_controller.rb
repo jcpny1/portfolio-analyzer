@@ -1,9 +1,9 @@
 class PortfoliosController < ApplicationController
-  # Retrieve all portfolios. Augment with Portfolio valuations.
+  # Retrieve all portfolios.
   def index
     render json: Portfolio.all
   end
-  # Retrieve a portfolio (with open_positions).
+  # Retrieve a portfolio.
   def show
     portfolio_id = params[:id]
     portfolio = Portfolio.find_by(id: portfolio_id)

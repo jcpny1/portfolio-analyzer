@@ -17,12 +17,6 @@ const Portfolios = (props) => {
     });
   }
 
-  function sum(portfolios, prop) {
-    return portfolios.reduce((memo, portfolio) => (
-      parseInt(portfolio[prop], 10) + memo
-    ), 0.0).toFixed(2);
-  }
-
   function sumPortfolios() {
     let sumMarketValue = 0.0;
     let sumTotalCost = 0.0;

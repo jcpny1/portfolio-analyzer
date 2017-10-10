@@ -13,6 +13,7 @@ export default class PositionEditPage extends Component {
         cost: '',
         date_acquired: '',
       };
+      this.symbolOptions = [];
       this.state = this.initialState;
   }
 
@@ -30,6 +31,11 @@ export default class PositionEditPage extends Component {
       this.initialState = {id: this.props.position.id, portfolio_id: this.props.position.portfolio_id, stock_symbol_id: this.props.position.stock_symbol.id, quantity: this.props.position.quantity, cost: this.props.position.cost, date_acquired: this.props.position.date_acquired};
       this.setState(this.initialState);
     }
+
+    if (this.symbolOptions.length === 0) {
+      this.symbolOptions = this.props.stock_symbols.map( symbol => {return {key: symbol.name, text: symbol.name, value: symbol.id};});
+    }
+
     this.setState({modalOpen: true});
   }
 
@@ -43,11 +49,6 @@ export default class PositionEditPage extends Component {
   render() {
     let {stock_symbol_id, quantity, cost, date_acquired} = this.state;
 
-    const symbolOptions = [
-      { key: 'aab',  text: 'AAB',  value:  2 },
-      { key: 'aapl', text: 'AAPL', value: 50 },
-    ]
-
     return (
       <Modal trigger={<Icon name={this.props.iconName} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Position Editor'/>
@@ -55,7 +56,7 @@ export default class PositionEditPage extends Component {
           <Form onSubmit={this.handleSubmit}>
             <p>Update position info. Press Cancel or Submit when done.</p>
             <Form.Group>
-              <Form.Select options={symbolOptions} width={4} label='Symbol' placeholder='Symbol' name='stock_symbol_id' value={stock_symbol_id} onChange={this.handleChange} required/>
+              <Form.Select search options={this.symbolOptions} width={4} label='Symbol' placeholder='Symbol' name='stock_symbol_id' value={stock_symbol_id} onChange={this.handleChange} required/>
               <Form.Input width={4} label='Quantity' placeholder='Quantity' name='quantity' value={quantity} onChange={this.handleChange}/>
               <Form.Input width={4} label='Cost' placeholder='Cost' name='cost' value={cost} onChange={this.handleChange}/>
               <Form.Input width={4} label='Date Acquired' placeholder='Date Acquired' name='date_acquired' value={date_acquired} onChange={this.handleChange}/>

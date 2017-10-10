@@ -53,8 +53,16 @@ export function fetchPositions(portfolio_id) {
     .then(responseJson => {
       dispatch({type: 'LOAD_POSITIONS', payload: responseJson});
       fetchLastClosePrices(dispatch, responseJson.open_positions);
+      fetchSymbols(dispatch);
     });
   }
+}
+
+export function fetchSymbols(dispatch) {
+  fetch('/api/stock_symbols')
+  .then(checkStatus)
+  .then(parseJSON)
+  .then(responseJson => {dispatch( {type: 'LOAD_STOCK_SYMBOLS', payload: responseJson} )});
 }
 
 export function updatePosition(open_position) {

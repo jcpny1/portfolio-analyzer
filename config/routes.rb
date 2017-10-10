@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   scope '/api' do
     resources :open_positions
     resources :portfolios
+    resources :stock_symbols, only: [:index]
     get '/daily_trades/last_close', to: "daily_trades#last_close"
   end
 end

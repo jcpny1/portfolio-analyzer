@@ -22,7 +22,7 @@ const Positions = (props) => {
         return (
           <tr key={index}>
             <td className="collapsing">
-              {<PositionEditPage position={open_position} index={index} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+              {<PositionEditPage position={open_position} index={index} stock_symbols={props.stock_symbols} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
               <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position, index)}/>
             </td>
             <td>{open_position.stock_symbol.name.toUpperCase()}</td>
@@ -63,7 +63,7 @@ const Positions = (props) => {
       <table className='ui celled padded table'>
         <thead>
           <tr>
-            <th colSpan='6'><h3>Positions {<PositionEditPage position={new_position} index='-1' iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}</h3></th>
+            <th colSpan='6'><h3>Positions {<PositionEditPage position={new_position} index='-1' stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}</h3></th>
           </tr>
           <tr>
             <th></th>
