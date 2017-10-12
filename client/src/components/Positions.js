@@ -1,6 +1,6 @@
 import React from 'react';
-import {formatCurrency} from '../utils/formatters';
-import {Icon} from 'semantic-ui-react';
+import {formatCurrency, formatQuantity} from '../utils/formatters';
+import {Header, Icon, Table} from 'semantic-ui-react';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
@@ -20,67 +20,74 @@ const Positions = (props) => {
     if ('open_positions' in positions) {
       return positions.open_positions.map((open_position,index) => {
         return (
-          <tr key={index}>
-            <td className="collapsing">
+          <Table.Row key={index}>
+            <Table.Cell>
               {<PositionEditPage position={open_position} index={index} stock_symbols={props.stock_symbols} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
               <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position, index)}/>
-            </td>
-            <td>{open_position.stock_symbol.name.toUpperCase()}</td>
-            <td className='center aligned'>{prices[open_position.stock_symbol.name]}</td>
-            <td className='center aligned'>{open_position.quantity}</td>
-            <td className='center aligned'>{formatCurrency(open_position.cost)}</td>
-            <td className='center aligned'>{open_position.date_acquired}</td>
-          </tr>
-      );
+            </Table.Cell>
+            <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
+            <Table.Cell textAlign='right'>{prices[open_position.stock_symbol.name]}</Table.Cell>
+            <Table.Cell textAlign='right'>{formatQuantity(open_position.quantity)}</Table.Cell>
+            <Table.Cell textAlign='right'>{formatCurrency(open_position.cost)}</Table.Cell>
+            <Table.Cell textAlign='right'>{formatCurrency((open_position.quantity * prices[open_position.stock_symbol.name])-open_position.cost)}</Table.Cell>
+            <Table.Cell>{open_position.date_acquired}</Table.Cell>
+          </Table.Row>
+        );
       });
     }
     return;
   }
 
   function sumPositions() {
-    let sumQuantity = 0.0;
     let sumCost = 0.0;
+    let sumGL = 0.0;
+    let sumQuantity = 0.0;
+
     if ("open_positions" in positions) {
       positions.open_positions.forEach(function(open_position) {
         sumQuantity += parseFloat(open_position.quantity);
         sumCost     += parseFloat(open_position.cost);
+        sumGL       += (parseFloat(open_position.quantity) * parseFloat(prices[open_position.stock_symbol.name]))-parseFloat(open_position.cost)
       });
     }
     return (
-      <tr>
-        <th>Total</th>
-        <th className='center aligned'></th>
-        <th className='center aligned'></th>
-        <th className='center aligned'>{sumQuantity}</th>
-        <th className='center aligned'>{formatCurrency(sumCost)}</th>
-        <th className='center aligned'></th>
-      </tr>
+      <Table.Row>
+      <Table.HeaderCell>Total</Table.HeaderCell>
+      <Table.HeaderCell></Table.HeaderCell>
+      <Table.HeaderCell></Table.HeaderCell>
+      <Table.HeaderCell textAlign='right'>{formatQuantity(sumQuantity)}</Table.HeaderCell>
+      <Table.HeaderCell textAlign='right'>{formatCurrency(sumCost)}</Table.HeaderCell>
+      <Table.HeaderCell textAlign='right'>{formatCurrency(sumGL)}</Table.HeaderCell>
+      <Table.HeaderCell></Table.HeaderCell>
+      </Table.Row>
     );
   }
 
   return (
     <div>
-      <table className='ui celled padded table'>
-        <thead>
-          <tr>
-            <th colSpan='6'><h3>Positions {<PositionEditPage position={new_position} index='-1' stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}</h3></th>
-          </tr>
-          <tr>
-            <th></th>
-            <th>Symbol</th>
-            <th className='center aligned'>Last Close</th>
-            <th className='center aligned'>Quantity</th>
-            <th className='center aligned'>Cost Basis</th>
-            <th className='center aligned'>Acquired</th>
-          </tr>
-        </thead>
-        <tbody>
+    <Header size='large' content='Positions'></Header>
+      <Table celled collapsing padded sortable striped>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>
+              {<PositionEditPage position={new_position} index='-1' stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+              Add
+            </Table.HeaderCell>
+            <Table.HeaderCell>Symbol</Table.HeaderCell>
+            <Table.HeaderCell>Last Close</Table.HeaderCell>
+            <Table.HeaderCell>Quantity</Table.HeaderCell>
+            <Table.HeaderCell>Cost Basis</Table.HeaderCell>
+            <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
+            <Table.HeaderCell>Acquired</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {listPositions()}
-        </tbody>
-        <tfoot>
+        </Table.Body>
+        <Table.Footer>
           {sumPositions()}
-        </tfoot>
-      </table>
+        </Table.Footer>
+      </Table>
     </div>
   );
 }

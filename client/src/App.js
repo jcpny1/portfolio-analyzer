@@ -11,8 +11,8 @@ class App extends Component {
       <Router>
         <div>
 
-          <Menu>
-            <Menu.Item as={Link} to='/'>StockAnalyzer</Menu.Item>
+          <Menu borderless>
+            <Menu.Item header as={Link} to='/'>StockAnalyzer</Menu.Item>
             <Dropdown item text='Portfolios'>
               <Dropdown.Menu>
                 <Dropdown.Item>New</Dropdown.Item>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Header, Icon, Modal} from 'semantic-ui-react';
+import {Form, Header, Icon, Modal, Select} from 'semantic-ui-react';
 
 export default class PositionEditPage extends Component {
   constructor(props) {
@@ -50,7 +50,7 @@ export default class PositionEditPage extends Component {
     let {stock_symbol_id, quantity, cost, date_acquired} = this.state;
 
     return (
-      <Modal trigger={<Icon name={this.props.iconName} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
+      <Modal trigger={<Icon name={this.props.iconName} title={this.props.iconName + ' a position'} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Position Editor'/>
         <Modal.Content>
           <Form onSubmit={this.handleSubmit}>
