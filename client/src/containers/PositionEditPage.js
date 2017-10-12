@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Header, Icon, Modal, Select} from 'semantic-ui-react';
+import {Form, Header, Icon, Modal} from 'semantic-ui-react';
 
 export default class PositionEditPage extends Component {
   constructor(props) {

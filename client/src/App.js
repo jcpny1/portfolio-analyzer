@@ -10,7 +10,6 @@ class App extends Component {
     return (
       <Router>
         <div>
-
           <Menu borderless>
             <Menu.Item header as={Link} to='/'>StockAnalyzer</Menu.Item>
             <Dropdown item text='Portfolios'>
@@ -33,7 +32,6 @@ class App extends Component {
           <Route path="/home"             component={PortfoliosPage}/>
           <Route path="/portfolios/:id"   component={PositionsPage}/>
           <Route exact path="/portfolios" component={PortfoliosPage}/>
-
         </div>
       </Router>
     );

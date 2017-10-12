@@ -1,6 +1,6 @@
 import React from 'react';
 import {formatCurrency, formatQuantity} from '../utils/formatters';
-import {Header, Icon, Table} from 'semantic-ui-react';
+import {Grid, Header, Icon, Table} from 'semantic-ui-react';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
@@ -64,31 +64,39 @@ const Positions = (props) => {
   }
 
   return (
-    <div>
-    <Header size='large' content='Positions'></Header>
-      <Table celled collapsing padded sortable striped>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>
-              {<PositionEditPage position={new_position} index='-1' stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
-              Add
-            </Table.HeaderCell>
-            <Table.HeaderCell>Symbol</Table.HeaderCell>
-            <Table.HeaderCell>Last Close</Table.HeaderCell>
-            <Table.HeaderCell>Quantity</Table.HeaderCell>
-            <Table.HeaderCell>Cost Basis</Table.HeaderCell>
-            <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
-            <Table.HeaderCell>Acquired</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {listPositions()}
-        </Table.Body>
-        <Table.Footer>
-          {sumPositions()}
-        </Table.Footer>
-      </Table>
-    </div>
+    <Grid columns={1} style={{margin: '1rem'}}>
+      <Grid.Row>
+        <Grid.Column>
+          <Header size='large' content='Positions'></Header>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column>
+          <Table celled collapsing padded sortable striped>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>
+                  {<PositionEditPage position={new_position} index='-1' stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+                  Add
+                </Table.HeaderCell>
+                <Table.HeaderCell>Symbol</Table.HeaderCell>
+                <Table.HeaderCell>Last Close</Table.HeaderCell>
+                <Table.HeaderCell>Quantity</Table.HeaderCell>
+                <Table.HeaderCell>Cost Basis</Table.HeaderCell>
+                <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
+                <Table.HeaderCell>Acquired</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {listPositions()}
+            </Table.Body>
+            <Table.Footer>
+              {sumPositions()}
+            </Table.Footer>
+          </Table>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 }
 

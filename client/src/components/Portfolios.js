@@ -1,6 +1,6 @@
 import React from 'react';
-import {formatCurrency, formatQuantity} from '../utils/formatters';
-import {Header, Icon, Table} from 'semantic-ui-react';
+import {formatCurrency} from '../utils/formatters';
+import {Grid, Header, Icon, Table} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 const Portfolios = (props) => {
@@ -39,29 +39,38 @@ const Portfolios = (props) => {
     );
   }
 
+  // <Container style={{ marginLeft: '7em' }}>
   return (
-    <div>
-    <Header size='large' content='Portfolios'></Header>
-      <Table celled collapsing padded sortable striped>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>
-              Add
-            </Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Market Value</Table.HeaderCell>
-            <Table.HeaderCell>Cost Basis</Table.HeaderCell>
-            <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {listPortfolios()}
-        </Table.Body>
-        <Table.Footer>
-          {sumPortfolios()}
-        </Table.Footer>
-      </Table>
-    </div>
+    <Grid columns={1} style={{margin: '1rem'}}>
+      <Grid.Row>
+        <Grid.Column>
+          <Header size='large' content='Portfolios'></Header>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column>
+          <Table celled collapsing padded sortable striped>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>
+                  Add
+                </Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Market Value</Table.HeaderCell>
+                <Table.HeaderCell>Cost Basis</Table.HeaderCell>
+                <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {listPortfolios()}
+            </Table.Body>
+            <Table.Footer>
+              {sumPortfolios()}
+            </Table.Footer>
+          </Table>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 }
 
