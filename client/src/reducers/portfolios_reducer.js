@@ -32,7 +32,6 @@ export default function portfoliosReducer(state= {creatingPortfolio: false, load
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios})
 
     default:
-      console.log("UNKNOWN PORTFOLIO ACTION");
       return state;
   }
 }

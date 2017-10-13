@@ -1,7 +1,7 @@
 class DailyTradesController < ApplicationController
   # Retrieve the latest closing price for the supplied symbols.
   def last_close
-    symbols = params['symbols'].split(',')
+    symbols = params['symbols'].split(',').uniq
     last_close_prices = {}
     symbols.each { |symbol|
       stock_symbol = StockSymbol.find_by(name: symbol)

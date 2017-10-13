@@ -7,10 +7,11 @@ import Positions from '../components/Positions';
 class PositionsPage extends Component {
 
   componentDidMount() {
-    if (!("open_positions" in this.props.positions)) {
-      const pathParts = this.props.location.pathname.split('/');
-      const portfolio_id = pathParts[pathParts.length-1];
-      this.props.actions.fetchPositions(portfolio_id);
+    const pathParts = this.props.location.pathname.split('/');
+    const portfolio_id = pathParts[pathParts.length-1];
+    this.props.actions.fetchPositions(portfolio_id);
+    if (this.props.stock_symbols.length === 0) {
+      this.props.actions.fetchSymbols();
     }
   }
 

@@ -38,10 +38,12 @@ export function deletePosition(open_position, index) {
 
 export function fetchLastClosePrices(dispatch, open_positions) {
   let symbols = open_positions.map( function(open_position) {return open_position.stock_symbol.name});
-  fetch('/api/daily_trades/last_close?symbols=' + symbols.toString())
-  .then(checkStatus)
-  .then(parseJSON)
-  .then(responseJson => {dispatch( {type: 'LOAD_LAST_CLOSE_PRICES', payload: responseJson} )});
+  if (symbols.length > 0) {
+    fetch('/api/daily_trades/last_close?symbols=' + symbols.toString())
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(responseJson => {dispatch( {type: 'LOAD_LAST_CLOSE_PRICES', payload: responseJson} )});
+  }
 }
 
 export function fetchPositions(portfolio_id) {
@@ -53,16 +55,18 @@ export function fetchPositions(portfolio_id) {
     .then(responseJson => {
       dispatch({type: 'LOAD_POSITIONS', payload: responseJson});
       fetchLastClosePrices(dispatch, responseJson.open_positions);
-      fetchSymbols(dispatch);
     });
   }
 }
 
-export function fetchSymbols(dispatch) {
-  fetch('/api/stock_symbols')
-  .then(checkStatus)
-  .then(parseJSON)
-  .then(responseJson => {dispatch( {type: 'LOAD_STOCK_SYMBOLS', payload: responseJson} )});
+export function fetchSymbols() {
+  return function(dispatch) {
+    dispatch({type: 'LOADING_STOCK_SYMBOLS', payload: ''})
+    return fetch('/api/stock_symbols')
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(responseJson => {dispatch( {type: 'LOAD_STOCK_SYMBOLS', payload: responseJson} )});
+  }
 }
 
 export function updatePosition(open_position) {
