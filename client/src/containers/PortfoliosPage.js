@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../actions/portfolioActions.js';
 import Portfolios from '../components/Portfolios';
@@ -12,8 +12,22 @@ class PortfoliosPage extends Component {
     }
   }
 
+  updatePortfolio = (newValues) => {
+    this.props.actions.updatePortfolio({
+      index: newValues.index,
+      id: newValues.id,
+      name: newValues.name,
+    });
+  }
+
+  removePortfolio = (portfolio, itemIndex) => {
+    if (window.confirm('Are you sure?')) {
+      this.props.actions.deletePortfolio(portfolio, itemIndex);
+    }
+  }
+
   render() {
-    return (<Portfolios portfolios={this.props.portfolios}/>);
+    return (<Portfolios portfolios={this.props.portfolios} onClickUpdate={this.updatePortfolio} onClickRemove={this.removePortfolio}/>);
   }
 }
 

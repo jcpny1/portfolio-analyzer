@@ -1,5 +1,4 @@
-export default function positionsReducer(state= {updatingPosition: false, loadingPositions: false, removingPosition: false, portfolio_id: -1, positions: {}}, action) {
-// console.log("ACTION type: " + action.type + " pl: " + action.payload + " STATE: " + JSON.stringify(state));
+export default function positionsReducer(state= {loadingPositions: false, removingPosition: false, updatingPosition: false, portfolio_id: -1, positions: {}}, action) {
   let index, positions;
   switch ( action.type ) {
     // Load Positions
@@ -7,6 +6,7 @@ export default function positionsReducer(state= {updatingPosition: false, loadin
       return Object.assign({}, state, {loadingPositions: true, portfolio_id: action.payload})
     case 'LOAD_POSITIONS':
       return Object.assign({}, state, {loadingPositions: false, positions: action.payload})
+
     // Delete a Position
     case 'DELETING_POSITION':
       return Object.assign({}, state, {removingPosition: true})
@@ -15,6 +15,7 @@ export default function positionsReducer(state= {updatingPosition: false, loadin
       positions = Object.assign({}, state.positions);
       positions.open_positions = [...state.positions.open_positions.slice(0,index), ...state.positions.open_positions.slice(index+1)]
       return Object.assign({}, state, {removingPosition: false, positions: positions})
+
     // Add or Update a Position
     case 'UPDATING_POSITION':
       return Object.assign({}, state, {updatingPosition: true})
@@ -27,6 +28,7 @@ export default function positionsReducer(state= {updatingPosition: false, loadin
         positions.open_positions = [...state.positions.open_positions.slice(0,index), action.payload.open_position, ...state.positions.open_positions.slice(index+1)]
       }
       return Object.assign({}, state, {updatingPosition: false, positions: positions})
+
     // default action
     default:
       return state;

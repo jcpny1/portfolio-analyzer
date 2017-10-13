@@ -4,7 +4,7 @@ import {Grid, Header, Icon, Table} from 'semantic-ui-react';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
-  const { portfolio_id, positions, prices } = props;
+  const {portfolio_id, positions, prices} = props;
 
   const new_position = {
       id: '',
@@ -14,7 +14,7 @@ const Positions = (props) => {
       quantity: '',
       cost: '',
       date_acquired: '',
-    };
+  };
 
   function listPositions() {
     if ('open_positions' in positions) {

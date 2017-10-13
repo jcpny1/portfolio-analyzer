@@ -40,7 +40,6 @@ export default class PositionEditPage extends Component {
   }
 
   handleSubmit = () => {
-    // TODO get new state stock_symbol record if stock symbol name changes.
     const {onClickUpdate, id, portfolio_id, stock_symbol_id, quantity, cost, date_acquired} = this.state;
     onClickUpdate({index: this.props.index, id: id, portfolio_id: portfolio_id, stock_symbol_id: stock_symbol_id, quantity: quantity, cost: cost, date_acquired: date_acquired});
     this.setState({modalOpen: false});

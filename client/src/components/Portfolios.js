@@ -1,16 +1,23 @@
 import React from 'react';
 import {formatCurrency} from '../utils/formatters';
 import {Grid, Header, Icon, Table} from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 const Portfolios = (props) => {
+  const new_portfolio = {
+      id: '',
+      name: '',
+  };
+
   function listPortfolios() {
     return props.portfolios.map((portfolio,index) => {
       let href = `/portfolios/${portfolio.id}`;
       return (
         <Table.Row key={index}>
           <Table.Cell>
-            <Icon name='remove' link color='red'/>
+            {<PortfolioEditPage portfolio={portfolio} index={index} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio, index)}/>
           </Table.Cell>
           <Table.Cell><Link to={href}>{portfolio.name}</Link></Table.Cell>
           <Table.Cell textAlign='right'>{formatCurrency(portfolio.marketValue)}</Table.Cell>
@@ -53,6 +60,7 @@ const Portfolios = (props) => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>
+                  {<PortfolioEditPage portfolio={new_portfolio} index='-1' iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
                   Add
                 </Table.HeaderCell>
                 <Table.HeaderCell>Name</Table.HeaderCell>

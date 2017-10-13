@@ -6,14 +6,8 @@ class Portfolio < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: {scope: :user, message: "already exists"}
 
+  # in-memory-only values.
   attr_reader :marketValue, :totalCost
-
-  # Initialize the portfolio.
-  def initialize
-    # in-memory-only values.
-    @marketValue = 0.0
-    @totalCost   = 0.0
-  end
 
   # Set an initial valuation on the portfolio.
   after_initialize do |portfolio|
@@ -35,6 +29,7 @@ class Portfolio < ApplicationRecord
   end
 
   def updateValuation
+puts "UPDATING VALUATION"
     self.updateMarketValue
     self.updateTotalCost
   end
