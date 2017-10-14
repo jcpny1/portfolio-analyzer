@@ -7,7 +7,7 @@ export default class PositionEditPage extends Component {
       this.initialState = {
         onClickUpdate: this.props.onClickUpdate,
         id: '',
-        portfolio_id: '',
+        portfolio_id: this.props.position.portfolio_id,
         stock_symbol_id: '',
         quantity: '',
         cost: '',
@@ -41,7 +41,7 @@ export default class PositionEditPage extends Component {
 
   handleSubmit = () => {
     const {onClickUpdate, id, portfolio_id, stock_symbol_id, quantity, cost, date_acquired} = this.state;
-    onClickUpdate({index: this.props.index, id: id, portfolio_id: portfolio_id, stock_symbol_id: stock_symbol_id, quantity: quantity, cost: cost, date_acquired: date_acquired});
+    onClickUpdate({id: id, portfolio_id: portfolio_id, stock_symbol_id: stock_symbol_id, quantity: quantity, cost: cost, date_acquired: date_acquired});
     this.setState({modalOpen: false});
   }
 

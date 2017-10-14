@@ -7,9 +7,6 @@ import Positions from '../components/Positions';
 class PositionsPage extends Component {
 
   componentDidMount() {
-    const pathParts = this.props.location.pathname.split('/');
-    const portfolio_id = pathParts[pathParts.length-1];
-    this.props.actions.fetchPositions(portfolio_id);
     if (this.props.stock_symbols.length === 0) {
       this.props.actions.fetchSymbols();
     }
@@ -34,12 +31,16 @@ class PositionsPage extends Component {
   }
 
   render() {
-    return (<Positions portfolio_id={this.props.portfolio_id} positions={this.props.positions} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
+    const portfolio_id = parseInt(this.props.match.params.id, 10);
+    const portfolio = this.props.portfolios.find((portfolio) => {
+      return portfolio.id === portfolio_id;
+    });
+    return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolio_id: state.positions.portfolio_id, positions: state.positions.positions, prices: state.prices.prices, stock_symbols: state.stock_symbols.stock_symbols};
+  return {portfolios: state.portfolios.portfolios, prices: state.prices.prices, stock_symbols: state.stock_symbols.stock_symbols};
 }
 
 function mapDispatchToProps(dispatch) {

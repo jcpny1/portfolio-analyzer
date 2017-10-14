@@ -1,14 +1,19 @@
 class OpenPositionsController < ApplicationController
-  before_action :get_portfolio
+  before_action :get_portfolio, except: [:index]
 
-  # Update an existing open position in or add a new open position to a portfolio.
-  def update
-    if !params[:open_position_id].blank?
-      open_position = @portfolio.open_positions.find(params[:open_position_id])
+  # Add a new open position to a portfolio.
+  def create
+    open_position = @portfolio.open_position.new(open_position_params)
+    if open_position.save
+      render json: open_position
     else
-      open_position = @portfolio.open_positions.new
+      render json: open_position.errors, status: :unprocessable_entity
     end
+  end
 
+  # Commit open position edits to the database.
+  def update
+    open_position = @portfolio.open_positions.find(params[:id])
     if open_position.update(open_position_params)
       render json: open_position
     else
@@ -16,9 +21,10 @@ class OpenPositionsController < ApplicationController
     end
   end
 
-  # Delete an open position.
+  # Remove an open position from a portfolio and delete it.
   def destroy
-    if @portfolio.open_positions.find(params[:open_position_id]).destroy
+    open_position = @portfolio.open_positions.find(params[:id])
+    if open_position.destroy
       render json: JSON.parse('{"msg":"position deleted"}'), status: :ok
     else
       render json: @portfolio.errors, status: :unprocessable_entity
@@ -29,11 +35,11 @@ class OpenPositionsController < ApplicationController
 
   # Load the portfolio identified in the route.
   def get_portfolio
-    @portfolio = Portfolio.find_by(id: params[:id])
+    @portfolio = Portfolio.find_by(id: params[:portfolio_id])
   end
 
   # Filter params for allowed elements only.
   def open_position_params
-    params.require(:open_position).permit(:portfolio_id, :stock_symbol_id, :quantity, :cost, :date_acquired)
+    params.require(:open_position).permit(:stock_symbol_id, :quantity, :cost, :date_acquired)
   end
 end
