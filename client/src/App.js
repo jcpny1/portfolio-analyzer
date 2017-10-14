@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-import { Dropdown, Menu } from 'semantic-ui-react';
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import {Dropdown, Image, Menu} from 'semantic-ui-react';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
 
@@ -11,6 +11,7 @@ class App extends Component {
       <Router>
         <div>
           <Menu borderless>
+          <Image src='images/goldman-snacks.jpg' size='mini'/>
             <Menu.Item header as={Link} to='/'>StockAnalyzer</Menu.Item>
             <Dropdown item text='Portfolios'>
               <Dropdown.Menu>
