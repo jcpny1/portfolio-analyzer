@@ -15,24 +15,15 @@ function parseJSON(response) {
   return response.json();
 }
 
-export function deletePosition(open_position, index) {
+export function deletePosition(open_position) {
   return function(dispatch) {
     dispatch({type: 'DELETING_POSITION'})
-    return fetch('/api/open_positions/'+open_position.portfolio_id, {
+    return fetch('/api/portfolios/' + open_position.portfolio_id + '/open_positions/' + open_position.id, {
       method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        open_position_id: open_position.id,
-      })
     })
     .then(checkStatus)
     .then(parseJSON)
-    .then(responseJson => {
-      dispatch({type: 'DELETE_POSITION', payload: index});
-    });
+    .then(responseJson => { dispatch({type: 'DELETE_POSITION', payload: open_position}); });
   }
 }
 
@@ -77,7 +68,7 @@ export function updatePosition(open_position) {
     return fetch('/api/portfolios/' + open_position.portfolio_id + '/open_positions/' + open_position.id, {
       method: 'PATCH',
       headers: {
-        'Accept': 'application/json',
+        'Accept'      : 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -85,7 +76,7 @@ export function updatePosition(open_position) {
         quantity: open_position.quantity,
         cost: open_position.cost,
         date_acquired: open_position.date_acquired,
-      })
+      }),
     })
     .then(checkStatus)
     .then(parseJSON)

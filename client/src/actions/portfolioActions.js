@@ -23,15 +23,13 @@ export function deletePortfolio(portfolio, index) {
     return fetch('/api/portfolios/'+portfolio.id, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
+        'Accept'      : 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
     })
     .then(checkStatus)
     .then(parseJSON)
-    .then(responseJson => {
-      dispatch({type: 'DELETE_PORTFOLIO', payload: index});
-    });
+    .then(responseJson => { dispatch({type: 'DELETE_PORTFOLIO', payload: index}); });
   }
 }
 

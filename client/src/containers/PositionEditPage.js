@@ -7,7 +7,7 @@ export default class PositionEditPage extends Component {
       this.initialState = {
         onClickUpdate: this.props.onClickUpdate,
         id: '',
-        portfolio_id: this.props.position.portfolio_id,
+        portfolio_id: '',
         stock_symbol_id: '',
         quantity: '',
         cost: '',

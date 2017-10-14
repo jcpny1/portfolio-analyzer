@@ -10,7 +10,6 @@ const Positions = (props) => {
       id: '',
       portfolio_id: portfolio.id,
       stock_symbol: {},
-      stock_symbol_name: '',
       quantity: '',
       cost: '',
       date_acquired: '',
@@ -19,7 +18,8 @@ const Positions = (props) => {
   function listPositions() {
     if (portfolio !== undefined) {
       return portfolio.open_positions.map((open_position,index) => {
-        const gainLoss = (open_position.quantity * open_position.lastClosePrice)-open_position.cost;
+        const marketValue = open_position.quantity * open_position.lastClosePrice;
+        const gainLoss = marketValue - open_position.cost;
         return (
           <Table.Row key={index}>
             <Table.Cell>
@@ -29,6 +29,7 @@ const Positions = (props) => {
             <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
             <Table.Cell textAlign='right'>{open_position.lastClosePrice}</Table.Cell>
             <Table.Cell textAlign='right'>{formatQuantity(open_position.quantity)}</Table.Cell>
+            <Table.Cell textAlign='right'>{formatCurrency(marketValue)}</Table.Cell>
             <Table.Cell textAlign='right'>{formatCurrency(open_position.cost)}</Table.Cell>
             <Table.Cell textAlign='right'>{formatCurrency(gainLoss)}</Table.Cell>
             <Table.Cell>{open_position.date_acquired}</Table.Cell>
@@ -47,6 +48,7 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.marketValue)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.totalCost)}</Table.HeaderCell>
         <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.marketValue-props.portfolio.totalCost)}</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
@@ -72,6 +74,7 @@ const Positions = (props) => {
                 <Table.HeaderCell>Symbol</Table.HeaderCell>
                 <Table.HeaderCell>Last Close</Table.HeaderCell>
                 <Table.HeaderCell>Quantity</Table.HeaderCell>
+                <Table.HeaderCell>Market Value</Table.HeaderCell>
                 <Table.HeaderCell>Cost Basis</Table.HeaderCell>
                 <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
                 <Table.HeaderCell>Acquired</Table.HeaderCell>

@@ -13,11 +13,11 @@ class OpenPositionsController < ApplicationController
 
   # Commit open position edits to the database.
   def update
-    open_position = @portfolio.open_positions.find(params[:id])
-    if open_position.update(open_position_params)
-      render json: open_position
+    if @portfolio.open_positions.find(params[:id]).update(open_position_params)
+      @portfolio.updateValuation
+      render json: @portfolio
     else
-      render json: open_position.errors, status: :unprocessable_entity
+      render json: @portfolio.errors, status: :unprocessable_entity
     end
   end
 
@@ -25,6 +25,7 @@ class OpenPositionsController < ApplicationController
   def destroy
     open_position = @portfolio.open_positions.find(params[:id])
     if open_position.destroy
+      @portfolio.updateValuation
       render json: JSON.parse('{"msg":"position deleted"}'), status: :ok
     else
       render json: @portfolio.errors, status: :unprocessable_entity

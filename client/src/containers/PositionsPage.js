@@ -13,27 +13,19 @@ class PositionsPage extends Component {
   }
 
   updatePosition = (newValues) => {
-    this.props.actions.updatePosition({
-      index: newValues.index,
-      id: newValues.id,
-      portfolio_id: newValues.portfolio_id,
-      stock_symbol_id: newValues.stock_symbol_id,
-      quantity: newValues.quantity,
-      cost: newValues.cost,
-      date_acquired: newValues.date_acquired,
-    });
+    this.props.actions.updatePosition(newValues);
   }
 
-  removePosition = (open_position, itemIndex) => {
+  removePosition = (open_position) => {
     if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePosition(open_position, itemIndex);
+      this.props.actions.deletePosition(open_position);
     }
   }
 
   render() {
     const portfolio_id = parseInt(this.props.match.params.id, 10);
-    const portfolio = this.props.portfolios.find((portfolio) => {
-      return portfolio.id === portfolio_id;
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {
+      return thisPortfolio.id === portfolio_id;
     });
     return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
   }

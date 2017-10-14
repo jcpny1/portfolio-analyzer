@@ -1,6 +1,6 @@
 export default function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
 // console.log("ACTION type: " + action.type + " pl: " + action.payload + " STATE: " + JSON.stringify(state));
-  let index, portfolios, portfolio, position, portfolioIndex, portfolioPositionIndex, payloadPosition;
+  let index, portfolios, portfolio, position, portfolioIndex, portfolioPositionIndex, payloadPosition, payloadPortfolio;
 
   switch ( action.type ) {
     // Add a Portfolio
@@ -32,16 +32,24 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       portfolios = [...state.portfolios.slice(0,index), action.payload.portfolio, ...state.portfolios.slice(index+1)]
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios})
 
-    // Add or Update a Position
-    case 'UPDATING_POSITION':
+    // Delete a Position
+    case 'DELETING_POSITION':
       return Object.assign({}, state, {updatingPortfolios: true})
-    case 'UPDATE_POSITION':
+    case 'DELETE_POSITION':
       payloadPosition = action.payload;
       portfolioIndex = state.portfolios.findIndex((portfolio) => {return portfolio.id === payloadPosition.portfolio_id;});
       portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
-      portfolioPositionIndex = portfolio.open_positions.findIndex((open_position) => {return open_position.id === payloadPosition.id;});
-      portfolio.open_positions = [...portfolio.open_positions.slice(0,portfolioPositionIndex), payloadPosition, ...portfolio.open_positions.slice(portfolioPositionIndex+1)]
+      portfolio.open_positions = state.portfolios[portfolioIndex].open_positions.filter(open_position => open_position.id !== payloadPosition.id);
       portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
+      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+
+    // Update a Position
+    case 'UPDATING_POSITION':
+      return Object.assign({}, state, {updatingPortfolios: true})
+    case 'UPDATE_POSITION':
+      payloadPortfolio = action.payload;
+      portfolioIndex = state.portfolios.findIndex((portfolio) => {return portfolio.id === payloadPortfolio.id;});
+      portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
 
     default:
