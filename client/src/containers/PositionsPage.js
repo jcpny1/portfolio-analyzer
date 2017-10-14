@@ -27,7 +27,10 @@ class PositionsPage extends Component {
     const portfolio = this.props.portfolios.find((thisPortfolio) => {
       return thisPortfolio.id === portfolio_id;
     });
-    return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
+    if (portfolio) {
+      return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
+    }
+    return ('Refresh Error');
   }
 }
 
