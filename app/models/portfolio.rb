@@ -6,7 +6,7 @@ class Portfolio < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: {scope: :user, message: "already exists"}
 
-  # in-memory-only values.
+  # In-memory-only values.
   attr_reader :marketValue, :totalCost
 
   # Set an initial valuation on the portfolio.
@@ -14,24 +14,13 @@ class Portfolio < ApplicationRecord
     portfolio.updateValuation
   end
 
-  # Sets the sum of the cost values of all the portfolio's open positions.
-  def updateMarketValue
-    @marketValue = self.open_positions.reduce(0.0) { |sum, open_position|
-      sum + (open_position.lastClosePrice * open_position.quantity)
-    }
-  end
-
-  # Sets the sum of the cost values of all the portfolio's open positions.
-  def updateTotalCost
-    @totalCost = self.open_positions.reduce(0.0) { |sum, open_position|
-      sum + open_position.cost
-    }
-  end
-
+  # Sets the sum of the cost and market values of all the portfolio's open positions.
   def updateValuation
-puts "UPDATING VALUATION"
-    self.updateMarketValue
-    self.updateTotalCost
+    @marketValue = 0.0
+    @totalCost   = 0.0;
+    self.open_positions.each { |open_position|
+      @marketValue += (open_position.lastClosePrice * open_position.quantity)
+      @totalCost   += open_position.cost
+    }
   end
-
 end

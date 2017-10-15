@@ -1,7 +1,7 @@
 class OpenPositionsController < ApplicationController
   before_action :get_portfolio, except: [:index]
 
-  # Add a new open position to a portfolio.
+  # Add a new open position to a portfolio and save it to the database.
   def create
     @portfolio.open_positions.new(open_position_params)
     if @portfolio.save

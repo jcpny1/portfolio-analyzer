@@ -5,33 +5,35 @@ import {Link} from 'react-router-dom';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 const Portfolios = (props) => {
+  const {portfolios} = props;
+
   const new_portfolio = {
       id: '',
       name: '',
   };
 
   function listPortfolios() {
-    return props.portfolios.map((portfolio,index) => {
-      let href = `/portfolios/${portfolio.id}`;
+    return portfolios.map((portfolio,index) => {
+      const gainLoss = portfolio.marketValue - portfolio.totalCost;
+      const href = `/portfolios/${portfolio.id}`;
       return (
         <Table.Row key={index}>
           <Table.Cell>
-            {<PortfolioEditPage portfolio={portfolio} index={index} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
-            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio, index)}/>
+            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
+            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio)}/>
           </Table.Cell>
           <Table.Cell><Link to={href}>{portfolio.name}</Link></Table.Cell>
           <Table.Cell textAlign='right'>{formatCurrency(portfolio.marketValue)}</Table.Cell>
           <Table.Cell textAlign='right'>{formatCurrency(portfolio.totalCost)}</Table.Cell>
-          <Table.Cell textAlign='right'>{formatCurrency(portfolio.marketValue - portfolio.totalCost)}</Table.Cell>
+          <Table.Cell textAlign='right'>{formatCurrency(gainLoss)}</Table.Cell>
         </Table.Row>
       );
     });
   }
 
   function sumPortfolios() {
-    let sumMarketValue = 0.0;
-    let sumTotalCost = 0.0;
-    props.portfolios.forEach(function(portfolio) {
+    let sumMarketValue = 0.0, sumTotalCost = 0.0;
+    portfolios.forEach(function(portfolio) {
       sumMarketValue += parseFloat(portfolio.marketValue);
       sumTotalCost   += parseFloat(portfolio.totalCost);
     });
@@ -46,7 +48,6 @@ const Portfolios = (props) => {
     );
   }
 
-  // <Container style={{ marginLeft: '7em' }}>
   return (
     <Grid columns={1} style={{margin: '1rem'}}>
       <Grid.Row>
@@ -60,7 +61,7 @@ const Portfolios = (props) => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>
-                  {<PortfolioEditPage portfolio={new_portfolio} index='-1' iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+                  {<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
                   Add
                 </Table.HeaderCell>
                 <Table.HeaderCell>Name</Table.HeaderCell>

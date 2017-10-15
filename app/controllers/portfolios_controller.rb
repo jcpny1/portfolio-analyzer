@@ -1,4 +1,6 @@
 class PortfoliosController < ApplicationController
+  before_action :get_portfolio, except: [:index, :create]
+
   # Retrieve all portfolios.
   def index
     render json: Portfolio.all
@@ -6,9 +8,8 @@ class PortfoliosController < ApplicationController
 
   # Retrieve a portfolio.
   def show
-    portfolio = Portfolio.find(params[:id])
-    portfolio.updateValuation
-    render json: portfolio
+    @portfolio.updateValuation
+    render json: @portfolio
   end
 
   # Create a new portfolio and save it to the database.
@@ -21,27 +22,30 @@ class PortfoliosController < ApplicationController
     end
   end
 
-  # Update an existing portfolio.
+  # Commit portfolio edits to the database.
   def update
-    portfolio = Portfolio.find(params[:id])
-    if portfolio.update(portfolio_params)
-      render json: portfolio
+    if @portfolio.update(portfolio_params)
+      render json: @portfolio
     else
-      render json: portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors, status: :unprocessable_entity
     end
   end
 
   # Delete a portfolio.
   def destroy
-    portfolio = Portfolio.find(params[:id])
-    if portfolio.destroy
+    if @portfolio.destroy
       render json: JSON.parse('{"msg":"portfolio deleted"}'), status: :ok
     else
-      render json: portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors, status: :unprocessable_entity
     end
   end
 
   private
+
+  # Load the portfolio identified in the route.
+  def get_portfolio
+    @portfolio = Portfolio.find(params[:id])
+  end
 
   # Filter params for allowed elements only.
   def portfolio_params

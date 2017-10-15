@@ -2,6 +2,28 @@ import fetch from 'isomorphic-fetch';
 
 const GUEST_USER_ID = 1;
 
+export function addPortfolio(portfolio) {
+  return function(dispatch) {
+    dispatch({type: 'ADDING_PORTFOLIO'})
+    return fetch('/api/portfolios/', {
+        method: 'POST',
+        headers: {
+            'Accept'      : 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            user_id: GUEST_USER_ID,
+            name: portfolio.name,
+        }),
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(responseJson => {
+      dispatch({type: 'ADD_PORTFOLIO', payload: responseJson});
+    });
+  }
+}
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -13,72 +35,49 @@ function checkStatus(response) {
   throw error;
 }
 
-function parseJSON(response) {
-  return response.json();
-}
-
-export function deletePortfolio(portfolio, index) {
+export function deletePortfolio(portfolio) {
   return function(dispatch) {
     dispatch({type: 'DELETING_PORTFOLIO'})
-    return fetch('/api/portfolios/'+portfolio.id, {
-      method: 'DELETE',
-      headers: {
-        'Accept'      : 'application/json',
-        'Content-Type': 'application/json',
-      },
+    return fetch(`/api/portfolios/${portfolio.id}`, {
+        method: 'DELETE',
     })
     .then(checkStatus)
     .then(parseJSON)
-    .then(responseJson => { dispatch({type: 'DELETE_PORTFOLIO', payload: index}); });
+    .then(responseJson => { dispatch({type: 'DELETE_PORTFOLIO', payload: portfolio}); });
   }
 }
 
 export function fetchPortfolios() {
   return function(dispatch) {
-    dispatch( {type: 'LOADING_PORTFOLIOS'} )
+    dispatch({type: 'LOADING_PORTFOLIOS'})
     return fetch('/api/portfolios')
-      .then(res => {return res.json()})
-      .then(responseJson => {dispatch( {type: 'LOAD_PORTFOLIOS', payload: responseJson} )});
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(responseJson => {dispatch({type: 'LOAD_PORTFOLIOS', payload: responseJson}) });
   }
+}
+
+function parseJSON(response) {
+  return response.json();
 }
 
 export function updatePortfolio(portfolio) {
   return function(dispatch) {
-    if (portfolio.id === '') {
-      dispatch({type: 'CREATING_PORTFOLIO'})
-      return fetch('/api/portfolios/', {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              user_id: GUEST_USER_ID,
-              name: portfolio.name,
-          })
-      })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(responseJson => {
-        dispatch({type: 'CREATE_PORTFOLIO', payload: {portfolio: responseJson}});
-      });
-    } else {
-      dispatch({type: 'UPDATING_PORTFOLIO'})
-      return fetch('/api/portfolios/'+portfolio.id, {
-          method: 'PATCH',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              name: portfolio.name,
-          })
-      })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(responseJson => {
-        dispatch({type: 'UPDATE_PORTFOLIO', payload: {index: portfolio.index, portfolio: responseJson}});
-      });
-    }
+    dispatch({type: 'UPDATING_PORTFOLIO'})
+    return fetch(`/api/portfolios/${portfolio.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Accept'      : 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: portfolio.name,
+        }),
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(responseJson => {
+      dispatch({type: 'UPDATE_PORTFOLIO', payload: responseJson});
+    });
   }
 }

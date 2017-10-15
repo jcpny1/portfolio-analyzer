@@ -5,7 +5,7 @@ export default class PortfolioEditPage extends Component {
   constructor(props) {
       super(props)
       this.initialState = {
-        onClickUpdate: this.props.onClickUpdate,
+        onClickSubmit: this.props.onClickSubmit,
         id: '',
         name: '',
       };
@@ -31,8 +31,8 @@ export default class PortfolioEditPage extends Component {
   }
 
   handleSubmit = () => {
-    const {onClickUpdate, id, name} = this.state;
-    onClickUpdate({index: this.props.index, id: id, name: name});
+    const {onClickSubmit, id, name} = this.state;
+    onClickSubmit({id: id, name: name});
     this.setState({modalOpen: false});
   }
 
@@ -40,7 +40,7 @@ export default class PortfolioEditPage extends Component {
     let {name} = this.state;
 
     return (
-      <Modal trigger={<Icon name={this.props.iconName} title={this.props.iconName + ' a position'} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
+      <Modal trigger={<Icon name={this.props.iconName} title={this.props.iconName + ' a portfolio'} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Portfolio Editor'/>
         <Modal.Content>
           <Form onSubmit={this.handleSubmit}>

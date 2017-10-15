@@ -41,6 +41,7 @@ const Positions = (props) => {
   }
 
   function sumPositions() {
+    const gainLoss = props.portfolio.marketValue-props.portfolio.totalCost;
     return (
       <Table.Row>
         <Table.HeaderCell>Total</Table.HeaderCell>
@@ -49,7 +50,7 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.marketValue)}</Table.HeaderCell>
         <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.totalCost)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.marketValue-props.portfolio.totalCost)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{formatCurrency(gainLoss)}</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );

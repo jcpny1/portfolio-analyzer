@@ -18,11 +18,11 @@ class PositionsPage extends Component {
     }
   }
 
-  submitPosition = (newValues) => {
-    if (newValues.id === '') {
-      this.props.actions.addPosition(newValues);
+  submitPosition = (open_position) => {
+    if (open_position.id === '') {
+      this.props.actions.addPosition(open_position);
     } else {
-      this.props.actions.updatePosition(newValues);
+      this.props.actions.updatePosition(open_position);
     }
   }
 

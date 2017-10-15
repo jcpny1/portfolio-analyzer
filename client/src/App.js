@@ -11,7 +11,7 @@ class App extends Component {
       <Router>
         <div>
           <Menu borderless>
-          <Image src='images/goldman-snacks.jpg' size='mini'/>
+          <Image src='/images/goldman-snacks.jpg' size='mini'/>
             <Menu.Item header as={Link} to='/'>StockAnalyzer</Menu.Item>
             <Dropdown item text='Portfolios'>
               <Dropdown.Menu>

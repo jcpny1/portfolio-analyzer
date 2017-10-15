@@ -12,22 +12,22 @@ class PortfoliosPage extends Component {
     }
   }
 
-  updatePortfolio = (newValues) => {
-    this.props.actions.updatePortfolio({
-      index: newValues.index,
-      id: newValues.id,
-      name: newValues.name,
-    });
+  removePortfolio = (portfolio) => {
+    if (window.confirm('Are you sure?')) {
+      this.props.actions.deletePortfolio(portfolio);
+    }
   }
 
-  removePortfolio = (portfolio, itemIndex) => {
-    if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePortfolio(portfolio, itemIndex);
+  submitPortfolio = (portfolio) => {
+    if (portfolio.id === '') {
+      this.props.actions.addPortfolio(portfolio);
+    } else {
+      this.props.actions.updatePortfolio(portfolio);
     }
   }
 
   render() {
-    return (<Portfolios portfolios={this.props.portfolios} onClickUpdate={this.updatePortfolio} onClickRemove={this.removePortfolio}/>);
+    return (<Portfolios portfolios={this.props.portfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio}/>);
   }
 }
 
