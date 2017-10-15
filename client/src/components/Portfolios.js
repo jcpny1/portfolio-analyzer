@@ -1,7 +1,7 @@
 import React from 'react';
-import {formatCurrency} from '../utils/formatters';
 import {Grid, Header, Icon, Table} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import Fmt from '../utils/formatters';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 const Portfolios = (props) => {
@@ -23,9 +23,9 @@ const Portfolios = (props) => {
             <Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio)}/>
           </Table.Cell>
           <Table.Cell><Link to={href}>{portfolio.name}</Link></Table.Cell>
-          <Table.Cell textAlign='right'>{formatCurrency(portfolio.marketValue)}</Table.Cell>
-          <Table.Cell textAlign='right'>{formatCurrency(portfolio.totalCost)}</Table.Cell>
-          <Table.Cell textAlign='right'>{formatCurrency(gainLoss)}</Table.Cell>
+          <Table.Cell textAlign='right'>{Fmt.formatCurrency(portfolio.marketValue)}</Table.Cell>
+          <Table.Cell textAlign='right'>{Fmt.formatCurrency(portfolio.totalCost)}</Table.Cell>
+          <Table.Cell textAlign='right'>{Fmt.formatCurrency(gainLoss)}</Table.Cell>
         </Table.Row>
       );
     });
@@ -41,9 +41,9 @@ const Portfolios = (props) => {
       <Table.Row>
         <Table.HeaderCell>Total</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(sumMarketValue)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(sumTotalCost)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(sumMarketValue - sumTotalCost)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(sumMarketValue)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(sumTotalCost)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(sumMarketValue - sumTotalCost)}</Table.HeaderCell>
       </Table.Row>
     );
   }

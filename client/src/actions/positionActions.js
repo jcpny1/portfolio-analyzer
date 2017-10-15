@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-fetch';
+import Api from '../utils/apis';
 
 export function addPosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'ADDING_POSITION'})
+    dispatch({type: 'UPDATING_PORTFOLIO'})
     return fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions`, {
         method: 'POST',
         headers: {
@@ -16,33 +17,22 @@ export function addPosition(open_position) {
           date_acquired: open_position.date_acquired,
         }),
     })
-    .then(checkStatus)
-    .then(parseJSON)
+    .then(Api.checkStatus)
+    .then(response => response.json())
     .then(responseJson => {
       dispatch({type: 'ADD_POSITION', payload: responseJson});
     });
   }
 }
 
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const error = new Error(`HTTP Error ${response.statusText}`);
-  error.status = response.statusText;
-  error.response = response;
-  console.log(error);
-  throw error;
-}
-
 export function deletePosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'DELETING_POSITION'})
+    dispatch({type: 'UPDATING_PORTFOLIO'})
     return fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
         method: 'DELETE',
     })
-    .then(checkStatus)
-    .then(parseJSON)
+    .then(Api.checkStatus)
+    .then(response => response.json())
     .then(responseJson => { dispatch({type: 'DELETE_POSITION', payload: open_position}); });
   }
 }
@@ -52,8 +42,8 @@ export function fetchLastClosePrices(positions) {
   if (symbols.length > 0) {
     return function(dispatch) {
       fetch(`/api/daily_trades/last_close?symbols=${symbols.toString()}`)
-      .then(checkStatus)
-      .then(parseJSON)
+      .then(Api.checkStatus)
+      .then(response => response.json())
       .then(responseJson => {dispatch( {type: 'LOAD_LAST_CLOSE_PRICES', payload: responseJson} )});
     }
   }
@@ -61,10 +51,10 @@ export function fetchLastClosePrices(positions) {
 
 export function fetchPositions(portfolio_id) {
   return function(dispatch) {
-    dispatch({type: 'LOADING_POSITIONS', payload: portfolio_id})
+    dispatch({type: 'UPDATING_PORTFOLIO'})
     return fetch(`/api/portfolios/${portfolio_id}`)
-    .then(checkStatus)
-    .then(parseJSON)
+    .then(Api.checkStatus)
+    .then(response => response.json())
     .then(responseJson => {
       dispatch({type: 'LOAD_POSITIONS', payload: responseJson});
       fetchLastClosePrices(dispatch, responseJson.open_positions);
@@ -76,19 +66,15 @@ export function fetchSymbols() {
   return function(dispatch) {
     dispatch({type: 'LOADING_STOCK_SYMBOLS', payload: ''})
     return fetch('/api/stock_symbols')
-    .then(checkStatus)
-    .then(parseJSON)
+    .then(Api.checkStatus)
+    .then(response => response.json())
     .then(responseJson => {dispatch( {type: 'LOAD_STOCK_SYMBOLS', payload: responseJson} )});
   }
 }
 
-function parseJSON(response) {
-  return response.json();
-}
-
 export function updatePosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_POSITION'})
+    dispatch({type: 'UPDATING_PORTFOLIO'})
     return fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
         method: 'PATCH',
         headers: {
@@ -102,8 +88,8 @@ export function updatePosition(open_position) {
           date_acquired: open_position.date_acquired,
         }),
     })
-    .then(checkStatus)
-    .then(parseJSON)
+    .then(Api.checkStatus)
+    .then(response => response.json())
     .then(responseJson => {
       dispatch({type: 'UPDATE_POSITION', payload: responseJson});
     });

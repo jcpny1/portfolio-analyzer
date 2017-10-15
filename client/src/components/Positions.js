@@ -1,6 +1,6 @@
 import React from 'react';
-import {formatCurrency, formatQuantity} from '../utils/formatters';
 import {Grid, Header, Icon, Table} from 'semantic-ui-react';
+import Fmt from '../utils/formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
@@ -28,10 +28,10 @@ const Positions = (props) => {
             </Table.Cell>
             <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
             <Table.Cell textAlign='right'>{open_position.lastClosePrice}</Table.Cell>
-            <Table.Cell textAlign='right'>{formatQuantity(open_position.quantity)}</Table.Cell>
-            <Table.Cell textAlign='right'>{formatCurrency(marketValue)}</Table.Cell>
-            <Table.Cell textAlign='right'>{formatCurrency(open_position.cost)}</Table.Cell>
-            <Table.Cell textAlign='right'>{formatCurrency(gainLoss)}</Table.Cell>
+            <Table.Cell textAlign='right'>{Fmt.formatQuantity(open_position.quantity)}</Table.Cell>
+            <Table.Cell textAlign='right'>{Fmt.formatCurrency(marketValue)}</Table.Cell>
+            <Table.Cell textAlign='right'>{Fmt.formatCurrency(open_position.cost)}</Table.Cell>
+            <Table.Cell textAlign='right'>{Fmt.formatCurrency(gainLoss)}</Table.Cell>
             <Table.Cell>{open_position.date_acquired}</Table.Cell>
           </Table.Row>
         );
@@ -48,9 +48,9 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.marketValue)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(props.portfolio.totalCost)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{formatCurrency(gainLoss)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(props.portfolio.marketValue)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(props.portfolio.totalCost)}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(gainLoss)}</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );
