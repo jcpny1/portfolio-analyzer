@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Form, Header, Icon, Modal} from 'semantic-ui-react';
+import {Header, Icon, Modal} from 'semantic-ui-react';
+import PortfolioEdit from '../components/PortfolioEdit';
 
 export default class PortfolioEditPage extends Component {
   constructor(props) {
@@ -43,16 +44,7 @@ export default class PortfolioEditPage extends Component {
       <Modal trigger={<Icon name={this.props.iconName} title={this.props.iconName + ' a portfolio'} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Portfolio Editor'/>
         <Modal.Content>
-          <Form onSubmit={this.handleSubmit}>
-            <p>Update portfolio info. Press Cancel or Submit when done.</p>
-            <Form.Group>
-              <Form.Input width={4} label='Name' placeholder='Name' name='name' value={name} onChange={this.handleChange} required/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Button color='red' content='Cancel' onClick={this.handleCancel}/>
-              <Form.Button color='green' content='Submit'/>
-            </Form.Group>
-          </Form>
+          <PortfolioEdit name={name} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/>
         </Modal.Content>
         <Modal.Actions>
         </Modal.Actions>
