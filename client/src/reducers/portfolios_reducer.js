@@ -32,6 +32,15 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       portfolios = [...state.portfolios.slice(0,index), action.payload.portfolio, ...state.portfolios.slice(index+1)]
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios})
 
+      // Update a Position
+      case 'ADDING_POSITION':
+        return Object.assign({}, state, {updatingPortfolios: true})
+      case 'ADD_POSITION':
+        payloadPortfolio = action.payload;
+        portfolioIndex = state.portfolios.findIndex((portfolio) => {return portfolio.id === payloadPortfolio.id;});
+        portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
+        return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+
     // Delete a Position
     case 'DELETING_POSITION':
       return Object.assign({}, state, {updatingPortfolios: true})

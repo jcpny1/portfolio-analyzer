@@ -23,7 +23,7 @@ const Positions = (props) => {
         return (
           <Table.Row key={index}>
             <Table.Cell>
-              {<PositionEditPage position={open_position} stock_symbols={props.stock_symbols} iconName='edit' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+              {<PositionEditPage position={open_position} stock_symbols={props.stock_symbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
               <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/>
             </Table.Cell>
             <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
@@ -68,7 +68,7 @@ const Positions = (props) => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>
-                  {<PositionEditPage position={new_position} stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickUpdate={props.onClickUpdate}/>}
+                  {<PositionEditPage position={new_position} stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
                   Add
                 </Table.HeaderCell>
                 <Table.HeaderCell>Symbol</Table.HeaderCell>

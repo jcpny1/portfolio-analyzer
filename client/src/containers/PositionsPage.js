@@ -12,13 +12,17 @@ class PositionsPage extends Component {
     }
   }
 
-  updatePosition = (newValues) => {
-    this.props.actions.updatePosition(newValues);
-  }
-
   removePosition = (open_position) => {
     if (window.confirm('Are you sure?')) {
       this.props.actions.deletePosition(open_position);
+    }
+  }
+
+  submitPosition = (newValues) => {
+    if (newValues.id === '') {
+      this.props.actions.addPosition(newValues);
+    } else {
+      this.props.actions.updatePosition(newValues);
     }
   }
 
@@ -28,7 +32,7 @@ class PositionsPage extends Component {
       return thisPortfolio.id === portfolio_id;
     });
     if (portfolio) {
-      return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickUpdate={this.updatePosition} onClickRemove={this.removePosition}/>);
+      return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition}/>);
     }
     return ('Refresh Error');
   }

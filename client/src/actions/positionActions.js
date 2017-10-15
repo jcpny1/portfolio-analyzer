@@ -1,5 +1,29 @@
 import fetch from 'isomorphic-fetch';
 
+export function addPosition(open_position) {
+  return function(dispatch) {
+    dispatch({type: 'ADDING_POSITION'})
+    return fetch('/api/portfolios/' + open_position.portfolio_id + '/open_positions', {
+      method: 'POST',
+      headers: {
+        'Accept'      : 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        stock_symbol_id: open_position.stock_symbol_id,
+        quantity: open_position.quantity,
+        cost: open_position.cost,
+        date_acquired: open_position.date_acquired,
+      }),
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(responseJson => {
+      dispatch({type: 'ADD_POSITION', payload: responseJson});
+    });
+  }
+}
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -9,10 +33,6 @@ function checkStatus(response) {
   error.response = response;
   console.log(error);
   throw error;
-}
-
-function parseJSON(response) {
-  return response.json();
 }
 
 export function deletePosition(open_position) {
@@ -60,6 +80,10 @@ export function fetchSymbols() {
     .then(parseJSON)
     .then(responseJson => {dispatch( {type: 'LOAD_STOCK_SYMBOLS', payload: responseJson} )});
   }
+}
+
+function parseJSON(response) {
+  return response.json();
 }
 
 export function updatePosition(open_position) {
