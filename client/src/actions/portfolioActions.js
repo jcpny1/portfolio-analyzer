@@ -1,69 +1,109 @@
 import fetch from 'isomorphic-fetch';
-import Api from '../utils/apis';
+import Fetch from '../utils/Fetch';
+import {portfolioActions} from '../reducers/portfolios_reducer';
 
 const GUEST_USER_ID = 1;
 
+function addPortfolioAction(payload) {return {type: portfolioActions.ADD_PORTFOLIO, payload: payload};}
+function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO, payload: payload};}
+function errorPortfolioAction(payload) {return {type: portfolioActions.ERROR_PORTFOLIOS, payload: payload};}
+function loadPortfoliosAction(payload) {return {type: portfolioActions.LOAD_PORTFOLIOS, payload: payload};}
+function updatePortfolioAction(payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload};}
+function updatingPortfolioAction() {return {type: portfolioActions.UPDATING_PORTFOLIO};}
+
 export function addPortfolio(portfolio) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch('/api/portfolios/', {
+    dispatch(updatingPortfolioAction());
+    return (
+      fetch('/api/portfolios/', {
         method: 'POST',
         headers: {
-            'Accept'      : 'application/json',
-            'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            user_id: GUEST_USER_ID,
-            name: portfolio.name,
+          user_id: GUEST_USER_ID,
+          name: portfolio.name,
         }),
-    })
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({type: 'ADD_PORTFOLIO', payload: responseJson});
-    });
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.id) {
+          dispatch(addPortfolioAction(responseJson));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPortfolioAction({prefix: 'Add Portfolio Error: ', error: error})))
+    );
   }
 }
 
 export function deletePortfolio(portfolio) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch(`/api/portfolios/${portfolio.id}`, {
+    dispatch(updatingPortfolioAction());
+    return (
+      fetch(`/api/portfolios/${portfolio.id}`, {
         method: 'DELETE',
-    })
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => { dispatch({type: 'DELETE_PORTFOLIO', payload: portfolio}); });
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.id) {
+          dispatch(deletePortfolioAction(portfolio));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPortfolioAction({prefix: 'Delete Portfolio Error: ', error: error})))
+    );
   }
 }
 
-export function fetchPortfolios() {
+export function loadPortfolios() {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch('/api/portfolios')
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {dispatch({type: 'LOAD_PORTFOLIOS', payload: responseJson}) });
+    dispatch(updatingPortfolioAction());
+    return (
+      fetch('/api/portfolios')
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.length) {
+          dispatch(loadPortfoliosAction(responseJson));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
+    );
   }
 }
 
 export function updatePortfolio(portfolio) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch(`/api/portfolios/${portfolio.id}`, {
+    dispatch(updatingPortfolioAction());
+    return (
+      fetch(`/api/portfolios/${portfolio.id}`, {
         method: 'PATCH',
         headers: {
-            'Accept'      : 'application/json',
-            'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            name: portfolio.name,
+          name: portfolio.name,
         }),
-    })
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({type: 'UPDATE_PORTFOLIO', payload: responseJson});
-    });
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.id) {
+          dispatch(updatePortfolioAction(responseJson));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPortfolioAction({prefix: 'Update Portfolio Error: ', error: error})))
+    );
   }
 }

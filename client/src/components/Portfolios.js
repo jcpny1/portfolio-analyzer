@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Header, Icon, Table} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
-import Fmt from '../utils/formatters';
+import Fmt from '../utils/Formatters';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 const Portfolios = (props) => {

@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as actions from '../actions/positionActions.js';
+import * as positionActions from '../actions/positionActions.js';
+import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
 
   componentDidMount() {
-    if (this.props.stock_symbols.length === 0) {
-      this.props.actions.fetchSymbols();
+    if (this.props.stockSymbols.length === 0) {
+      this.props.actions.loadStockSymbols();
     }
   }
 
@@ -19,11 +20,7 @@ class PositionsPage extends Component {
   }
 
   submitPosition = (open_position) => {
-    if (open_position.id === '') {
-      this.props.actions.addPosition(open_position);
-    } else {
-      this.props.actions.updatePosition(open_position);
-    }
+    (open_position.id === '') ? this.props.actions.addPosition(open_position) : this.props.actions.updatePosition(open_position);
   }
 
   render() {
@@ -32,18 +29,18 @@ class PositionsPage extends Component {
       return thisPortfolio.id === portfolio_id;
     });
     if (portfolio) {
-      return (<Positions portfolio={portfolio} prices={this.props.prices} stock_symbols={this.props.stock_symbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition}/>);
+      return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition}/>);
     }
     return ('Refresh Error');
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, prices: state.prices.prices, stock_symbols: state.stock_symbols.stock_symbols};
+  return {portfolios: state.portfolios.portfolios, prices: state.prices.prices, stockSymbols: state.stock_symbols.stockSymbols};
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)};
+  return {actions: bindActionCreators({ ...positionActions, ...stockSymbolActions }, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, Header, Icon, Table} from 'semantic-ui-react';
-import Fmt from '../utils/formatters';
+import Fmt from '../utils/Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
@@ -23,7 +23,7 @@ const Positions = (props) => {
         return (
           <Table.Row key={index}>
             <Table.Cell>
-              {<PositionEditPage position={open_position} stock_symbols={props.stock_symbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
+              {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
               <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/>
             </Table.Cell>
             <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
@@ -69,7 +69,7 @@ const Positions = (props) => {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>
-                  {<PositionEditPage position={new_position} stock_symbols={props.stock_symbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
+                  {<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
                   Add
                 </Table.HeaderCell>
                 <Table.HeaderCell>Symbol</Table.HeaderCell>

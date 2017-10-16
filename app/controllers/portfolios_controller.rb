@@ -18,7 +18,8 @@ class PortfoliosController < ApplicationController
     if portfolio.save
       render json: portfolio
     else
-      render json: portfolio.errors, status: :unprocessable_entity
+      # binding.pry
+      render json: portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -27,16 +28,16 @@ class PortfoliosController < ApplicationController
     if @portfolio.update(portfolio_params)
       render json: @portfolio
     else
-      render json: @portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end
 
   # Delete a portfolio.
   def destroy
     if @portfolio.destroy
-      render json: JSON.parse('{"msg":"portfolio deleted"}'), status: :ok
+      render json: @portfolio
     else
-      render json: @portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end
 

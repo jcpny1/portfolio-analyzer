@@ -8,7 +8,7 @@ class PortfoliosPage extends Component {
 
   componentDidMount() {
     if (this.props.portfolios.length === 0) {
-      this.props.actions.fetchPortfolios()
+      this.props.actions.loadPortfolios()
     }
   }
 
@@ -19,11 +19,7 @@ class PortfoliosPage extends Component {
   }
 
   submitPortfolio = (portfolio) => {
-    if (portfolio.id === '') {
-      this.props.actions.addPortfolio(portfolio);
-    } else {
-      this.props.actions.updatePortfolio(portfolio);
-    }
+    portfolio.id === '' ? this.props.actions.addPortfolio(portfolio) : this.props.actions.updatePortfolio(portfolio);
   }
 
   render() {

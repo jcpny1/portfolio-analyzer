@@ -8,7 +8,7 @@ class OpenPositionsController < ApplicationController
       @portfolio.updateValuation
       render json: @portfolio
     else
-      render json: @portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -18,18 +18,18 @@ class OpenPositionsController < ApplicationController
       @portfolio.updateValuation
       render json: @portfolio
     else
-      render json: @portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end
 
-  # Remove an open position from a portfolio and delete it.
+  # Delete an open position.
   def destroy
     open_position = @portfolio.open_positions.find(params[:id])
     if open_position.destroy
       @portfolio.updateValuation
-      render json: JSON.parse('{"msg":"position deleted"}'), status: :ok
+      render json: @portfolio
     else
-      render json: @portfolio.errors, status: :unprocessable_entity
+      render json: @portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end
 

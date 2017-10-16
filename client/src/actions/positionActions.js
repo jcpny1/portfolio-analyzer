@@ -1,13 +1,22 @@
 import fetch from 'isomorphic-fetch';
-import Api from '../utils/apis';
+import Fetch from '../utils/Fetch';
+import {portfolioActions} from '../reducers/portfolios_reducer';
+
+function addPositionAction(payload) {return {type: portfolioActions.ADD_POSITION, payload: payload};}
+function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION, payload: payload};}
+function errorPositionAction(payload) {return {type: portfolioActions.ERROR_POSITIONS, payload: payload};}
+function loadPositionsAction(payload) {return {type: portfolioActions.LOAD_POSITIONS, payload: payload};}
+function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITIONS, payload: payload};}
+function updatingPositionAction() {return {type: portfolioActions.UPDATING_POSITION};}
 
 export function addPosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions`, {
+    dispatch(updatingPositionAction());
+    return (
+      fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions`, {
         method: 'POST',
         headers: {
-          'Accept'      : 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -16,69 +25,69 @@ export function addPosition(open_position) {
           cost: open_position.cost,
           date_acquired: open_position.date_acquired,
         }),
-    })
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({type: 'ADD_POSITION', payload: responseJson});
-    });
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.id) {
+          dispatch(addPositionAction(responseJson));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPositionAction({prefix: 'Add Position Error: ', error: error})))
+    );
   }
 }
 
 export function deletePosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
+    dispatch(updatingPositionAction());
+    return (
+      fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
         method: 'DELETE',
-    })
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => { dispatch({type: 'DELETE_POSITION', payload: open_position}); });
-  }
-}
-
-export function fetchLastClosePrices(positions) {
-  let symbols = positions.map( function(position) {return position.stock_symbol.name});
-  if (symbols.length > 0) {
-    return function(dispatch) {
-      fetch(`/api/daily_trades/last_close?symbols=${symbols.toString()}`)
-      .then(Api.checkStatus)
+      })
+      .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {dispatch( {type: 'LOAD_LAST_CLOSE_PRICES', payload: responseJson} )});
-    }
+      .then(responseJson => {
+        if (responseJson.id) {
+          dispatch(deletePositionAction(open_position));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPositionAction({prefix: 'Delete Position Error: ', error: error})))
+    );
   }
 }
 
-export function fetchPositions(portfolio_id) {
+export function loadPositions(portfolio_id) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch(`/api/portfolios/${portfolio_id}`)
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({type: 'LOAD_POSITIONS', payload: responseJson});
-      fetchLastClosePrices(dispatch, responseJson.open_positions);
-    });
-  }
-}
-
-export function fetchSymbols() {
-  return function(dispatch) {
-    dispatch({type: 'LOADING_STOCK_SYMBOLS', payload: ''})
-    return fetch('/api/stock_symbols')
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {dispatch( {type: 'LOAD_STOCK_SYMBOLS', payload: responseJson} )});
+    dispatch(updatingPositionAction());
+    return (
+      fetch(`/api/portfolios/${portfolio_id}`)
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.length) {
+          dispatch(loadPositionsAction(responseJson));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPositionAction({prefix: 'Load Positions Error: ', error: error})))
+    );
   }
 }
 
 export function updatePosition(open_position) {
   return function(dispatch) {
-    dispatch({type: 'UPDATING_PORTFOLIO'})
-    return fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
+    dispatch(updatingPositionAction());
+    return (
+      fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
         method: 'PATCH',
         headers: {
-          'Accept'      : 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -87,11 +96,17 @@ export function updatePosition(open_position) {
           cost: open_position.cost,
           date_acquired: open_position.date_acquired,
         }),
-    })
-    .then(Api.checkStatus)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({type: 'UPDATE_POSITION', payload: responseJson});
-    });
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.id) {
+          dispatch(updatePositionAction(responseJson));
+        } else {
+          throw responseJson;
+        }
+      })
+      .catch(error => dispatch(errorPositionAction({prefix: 'Update Position Error: ', error: error})))
+    );
   }
 }
