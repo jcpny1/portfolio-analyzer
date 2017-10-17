@@ -15,6 +15,21 @@ const Positions = (props) => {
       date_acquired: '',
   };
 
+  function columnTitles() {
+    return (
+      <Table.Row>
+        <Table.HeaderCell>{<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}Add</Table.HeaderCell>
+        <Table.HeaderCell>Symbol</Table.HeaderCell>
+        <Table.HeaderCell>Last Close</Table.HeaderCell>
+        <Table.HeaderCell>Quantity</Table.HeaderCell>
+        <Table.HeaderCell>Market Value</Table.HeaderCell>
+        <Table.HeaderCell>Cost Basis</Table.HeaderCell>
+        <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
+        <Table.HeaderCell>Acquired</Table.HeaderCell>
+      </Table.Row>
+    );
+  }
+
   function listPositions() {
     if (portfolio !== undefined) {
       return portfolio.open_positions.map((open_position,index) => {
@@ -22,10 +37,7 @@ const Positions = (props) => {
         const gainLoss = marketValue - open_position.cost;
         return (
           <Table.Row key={index}>
-            <Table.Cell>
-              {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
-              <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/>
-            </Table.Cell>
+            <Table.Cell>{<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}<Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/></Table.Cell>
             <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
             <Table.Cell textAlign='right'>{open_position.lastClosePrice}</Table.Cell>
             <Table.Cell textAlign='right'>{Fmt.formatQuantity(open_position.quantity)}</Table.Cell>
@@ -66,27 +78,9 @@ const Positions = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Table celled collapsing padded sortable striped>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>
-                  {<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
-                  Add
-                </Table.HeaderCell>
-                <Table.HeaderCell>Symbol</Table.HeaderCell>
-                <Table.HeaderCell>Last Close</Table.HeaderCell>
-                <Table.HeaderCell>Quantity</Table.HeaderCell>
-                <Table.HeaderCell>Market Value</Table.HeaderCell>
-                <Table.HeaderCell>Cost Basis</Table.HeaderCell>
-                <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
-                <Table.HeaderCell>Acquired</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {listPositions()}
-            </Table.Body>
-            <Table.Footer>
-              {sumPositions()}
-            </Table.Footer>
+            <Table.Header>{columnTitles()}</Table.Header>
+            <Table.Body>{listPositions()}</Table.Body>
+            <Table.Footer>{sumPositions()}</Table.Footer>
           </Table>
         </Grid.Column>
       </Grid.Row>

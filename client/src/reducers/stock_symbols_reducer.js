@@ -9,10 +9,11 @@ export const stockSymbolActions = {
 export default function stockSymbolsReducer(state= { updatingStockSymbols: false, stockSymbols: [] }, action) {
   switch ( action.type ) {
     // Error on Stock Symbol action.
-    case stockSymbolActions.ERROR_STOCK_SYMBOLS:
+    case stockSymbolActions.ERROR_STOCK_SYMBOLS: {
       const {prefix, error} = action.payload;
       alert(Fmt.formatServerError(prefix, error));
       return Object.assign({}, state, {updatingStockSymbols: false});
+    }
 
     // Load Stock Symbols.
     case stockSymbolActions.LOAD_STOCK_SYMBOLS:

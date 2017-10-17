@@ -2,12 +2,12 @@ import fetch from 'isomorphic-fetch';
 import Fetch from '../utils/Fetch';
 import {portfolioActions} from '../reducers/portfolios_reducer';
 
-function addPositionAction(payload) {return {type: portfolioActions.ADD_POSITION, payload: payload};}
-function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION, payload: payload};}
-function errorPositionAction(payload) {return {type: portfolioActions.ERROR_POSITIONS, payload: payload};}
-function loadPositionsAction(payload) {return {type: portfolioActions.LOAD_POSITIONS, payload: payload};}
+function addPositionAction(payload)    {return {type: portfolioActions.ADD_POSITION,     payload: payload};}
+function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION,  payload: payload};}
+function errorPositionAction(payload)  {return {type: portfolioActions.ERROR_POSITIONS,  payload: payload};}
+function loadPositionsAction(payload)  {return {type: portfolioActions.LOAD_POSITIONS,   payload: payload};}
 function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITIONS, payload: payload};}
-function updatingPositionAction() {return {type: portfolioActions.UPDATING_POSITION};}
+function updatingPositionAction()      {return {type: portfolioActions.UPDATING_POSITION};}
 
 export function addPosition(open_position) {
   return function(dispatch) {
@@ -29,11 +29,10 @@ export function addPosition(open_position) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.id) {
-          dispatch(addPositionAction(responseJson));
-        } else {
+        if (!responseJson.id) {
           throw responseJson;
         }
+        dispatch(addPositionAction(responseJson));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Add Position Error: ', error: error})))
     );
@@ -50,11 +49,10 @@ export function deletePosition(open_position) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.id) {
-          dispatch(deletePositionAction(open_position));
-        } else {
+        if (!responseJson.id) {
           throw responseJson;
         }
+        dispatch(deletePositionAction(open_position));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Delete Position Error: ', error: error})))
     );
@@ -69,11 +67,10 @@ export function loadPositions(portfolio_id) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.length) {
-          dispatch(loadPositionsAction(responseJson));
-        } else {
+        if (!responseJson.length) {
           throw responseJson;
         }
+        dispatch(loadPositionsAction(responseJson));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Load Positions Error: ', error: error})))
     );
@@ -100,11 +97,10 @@ export function updatePosition(open_position) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.id) {
-          dispatch(updatePositionAction(responseJson));
-        } else {
+        if (!responseJson.id) {
           throw responseJson;
         }
+        dispatch(updatePositionAction(responseJson));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Update Position Error: ', error: error})))
     );

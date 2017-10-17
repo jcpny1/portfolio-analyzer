@@ -32,11 +32,9 @@ export default class PositionEditPage extends Component {
       this.initialState = {id: this.props.position.id, portfolio_id: this.props.position.portfolio_id, stock_symbol_id: this.props.position.stock_symbol.id, quantity: this.props.position.quantity, cost: this.props.position.cost, date_acquired: this.props.position.date_acquired};
       this.setState(this.initialState);
     }
-
     if (this.symbolOptions.length === 0) {
       this.symbolOptions = this.props.stock_symbols.map( symbol => {return {key: symbol.name, text: symbol.name, value: symbol.id};});
     }
-
     this.setState({modalOpen: true});
   }
 
@@ -48,15 +46,11 @@ export default class PositionEditPage extends Component {
 
   render() {
     let {stock_symbol_id, quantity, cost, date_acquired} = this.state;
-
     return (
       <Modal trigger={<Icon name={this.props.iconName} title={this.props.iconName + ' a position'} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Position Editor'/>
-        <Modal.Content>
-          <PositionEdit symbols={this.symbolOptions} tock_symbol_id={stock_symbol_id} quantity={quantity} cost={cost} date_acquired={date_acquired} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/>
-        </Modal.Content>
-        <Modal.Actions>
-        </Modal.Actions>
+        <Modal.Content><PositionEdit symbols={this.symbolOptions} tock_symbol_id={stock_symbol_id} quantity={quantity} cost={cost} date_acquired={date_acquired} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
+        <Modal.Actions></Modal.Actions>
       </Modal>
     );
   }

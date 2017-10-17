@@ -7,9 +7,7 @@ import Portfolios from '../components/Portfolios';
 class PortfoliosPage extends Component {
 
   componentDidMount() {
-    if (this.props.portfolios.length === 0) {
-      this.props.actions.loadPortfolios()
-    }
+    this.props.portfolios.length || this.props.actions.loadPortfolios()
   }
 
   removePortfolio = (portfolio) => {

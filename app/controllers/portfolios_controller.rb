@@ -18,7 +18,6 @@ class PortfoliosController < ApplicationController
     if portfolio.save
       render json: portfolio
     else
-      # binding.pry
       render json: portfolio.errors.full_messages, status: :unprocessable_entity
     end
   end

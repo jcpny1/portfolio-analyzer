@@ -2,8 +2,7 @@ import React from 'react';
 import {Form} from 'semantic-ui-react';
 
 const PositionEdit = (props) => {
-  const {symbols, stock_symbol_id, quantity, cost, date_acquired} = props;
-
+  let {symbols, stock_symbol_id, quantity, cost, date_acquired} = props;
   return (
     <Form onSubmit={props.onSubmit}>
       <p>Update position info. Press Cancel or Submit when done.</p>

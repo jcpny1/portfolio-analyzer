@@ -8,9 +8,7 @@ import Positions from '../components/Positions';
 class PositionsPage extends Component {
 
   componentDidMount() {
-    if (this.props.stockSymbols.length === 0) {
-      this.props.actions.loadStockSymbols();
-    }
+    this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
   }
 
   removePosition = (open_position) => {
@@ -25,13 +23,11 @@ class PositionsPage extends Component {
 
   render() {
     const portfolio_id = parseInt(this.props.match.params.id, 10);
-    const portfolio = this.props.portfolios.find((thisPortfolio) => {
-      return thisPortfolio.id === portfolio_id;
-    });
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
     if (portfolio) {
       return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition}/>);
     }
-    return ('Refresh Error');
+    return ('Refresh Error');  // some kind of refresh flaw.
   }
 }
 

@@ -4,12 +4,12 @@ import {portfolioActions} from '../reducers/portfolios_reducer';
 
 const GUEST_USER_ID = 1;
 
-function addPortfolioAction(payload) {return {type: portfolioActions.ADD_PORTFOLIO, payload: payload};}
-function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO, payload: payload};}
-function errorPortfolioAction(payload) {return {type: portfolioActions.ERROR_PORTFOLIOS, payload: payload};}
-function loadPortfoliosAction(payload) {return {type: portfolioActions.LOAD_PORTFOLIOS, payload: payload};}
+function addPortfolioAction(payload)    {return {type: portfolioActions.ADD_PORTFOLIO,     payload: payload};}
+function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: payload};}
+function errorPortfolioAction(payload)  {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: payload};}
+function loadPortfoliosAction(payload)  {return {type: portfolioActions.LOAD_PORTFOLIOS,   payload: payload};}
 function updatePortfolioAction(payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload};}
-function updatingPortfolioAction() {return {type: portfolioActions.UPDATING_PORTFOLIO};}
+function updatingPortfolioAction()      {return {type: portfolioActions.UPDATING_PORTFOLIO};}
 
 export function addPortfolio(portfolio) {
   return function(dispatch) {
@@ -29,11 +29,10 @@ export function addPortfolio(portfolio) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.id) {
-          dispatch(addPortfolioAction(responseJson));
-        } else {
+        if (!responseJson.id) {
           throw responseJson;
         }
+        dispatch(addPortfolioAction(responseJson));
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Add Portfolio Error: ', error: error})))
     );
@@ -50,11 +49,10 @@ export function deletePortfolio(portfolio) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.id) {
-          dispatch(deletePortfolioAction(portfolio));
-        } else {
+        if (!responseJson.id) {
           throw responseJson;
         }
+        dispatch(deletePortfolioAction(portfolio));
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Delete Portfolio Error: ', error: error})))
     );
@@ -69,11 +67,10 @@ export function loadPortfolios() {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.length) {
-          dispatch(loadPortfoliosAction(responseJson));
-        } else {
+        if (!responseJson.length) {
           throw responseJson;
         }
+        dispatch(loadPortfoliosAction(responseJson));
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
     );
@@ -97,11 +94,10 @@ export function updatePortfolio(portfolio) {
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.id) {
-          dispatch(updatePortfolioAction(responseJson));
-        } else {
+        if (!responseJson.id) {
           throw responseJson;
         }
+        dispatch(updatePortfolioAction(responseJson));
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Update Portfolio Error: ', error: error})))
     );

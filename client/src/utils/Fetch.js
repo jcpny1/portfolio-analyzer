@@ -5,7 +5,6 @@ function checkStatus(response) {
     error.status = response.status;
     error.response = response;
     console.log(error);
-debugger;
   }
   return response;
 }

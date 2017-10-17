@@ -9,10 +9,11 @@ export const priceActions = {
 export default function pricesReducer(state= {updatingPrices: false, prices: {} }, action) {
   switch ( action.type ) {
     // Error on Portfolio action.
-    case priceActions.ERROR_PRICES:
+    case priceActions.ERROR_PRICES: {
       const {prefix, error} = action.payload;
       alert(Fmt.formatServerError(prefix, error));
       return Object.assign({}, state, {updatingPrices: false});
+    }
 
     // Load Last Close Prices.
     case priceActions.LOAD_LAST_CLOSE_PRICES:
