@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
-import {Dropdown, Image, Menu} from 'semantic-ui-react';
+import {Dropdown, Grid, Image, Menu} from 'semantic-ui-react';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
 
@@ -10,24 +10,30 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Menu borderless>
-          <Image src='/images/goldman-snacks.jpg' size='mini'/>
-            <Menu.Item header as={Link} to='/'>StockAnalyzer</Menu.Item>
-            <Dropdown item text='Portfolios'>
-              <Dropdown.Menu>
-                <Dropdown.Item>New</Dropdown.Item>
-                <Dropdown.Divider/>
-                <Dropdown.Item as={Link} to='/portfolios/1'>Portfolio X</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown item text='Help'>
-              <Dropdown.Menu>
-                <Dropdown.Item>StockAnalyzer Help</Dropdown.Item>
-                <Dropdown.Item as={Link} to='/about'>About</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Menu>
-
+          <Grid columns={1} style={{'marginLeft': '1rem'}}>
+            <Grid.Row>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={14}>
+                <Image src='/images/logo.jpg'/>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={14}>
+                <Menu borderless>
+                  <Menu.Item header as={Link} to='/'>Portfolios</Menu.Item>
+                  <Menu.Item header as={Link} to='/'>Symbol Lookup</Menu.Item>
+                  <Dropdown item text='Help'>
+                    <Dropdown.Menu>
+                      <Dropdown.Item>StockAnalyzer Help</Dropdown.Item>
+                      <Dropdown.Divider/>
+                      <Dropdown.Item as={Link} to='/about'>About</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Menu>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
           <Route exact path="/"           component={PortfoliosPage}/>
           <Route path="/about"            component={PortfoliosPage}/>
           <Route path="/home"             component={PortfoliosPage}/>

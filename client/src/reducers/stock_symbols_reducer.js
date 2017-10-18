@@ -1,4 +1,4 @@
-import Fmt from '../utils/Formatters';
+import Fmt from '../components/Formatters';
 
 export const stockSymbolActions = {
   ERROR_STOCK_SYMBOLS:   'ERROR_STOCK_SYMBOLS',
@@ -10,8 +10,8 @@ export default function stockSymbolsReducer(state= { updatingStockSymbols: false
   switch ( action.type ) {
     // Error on Stock Symbol action.
     case stockSymbolActions.ERROR_STOCK_SYMBOLS: {
-      const {prefix, error} = action.payload;
-      alert(Fmt.formatServerError(prefix, error));
+      const {error, prefix} = action.payload;
+      alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingStockSymbols: false});
     }
 

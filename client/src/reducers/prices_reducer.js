@@ -1,4 +1,4 @@
-import Fmt from '../utils/Formatters';
+import Fmt from '../components/Formatters';
 
 export const priceActions = {
   ERROR_PRICES:           'ERROR_PRICES',
@@ -10,8 +10,8 @@ export default function pricesReducer(state= {updatingPrices: false, prices: {} 
   switch ( action.type ) {
     // Error on Portfolio action.
     case priceActions.ERROR_PRICES: {
-      const {prefix, error} = action.payload;
-      alert(Fmt.formatServerError(prefix, error));
+      const {error, prefix} = action.payload;
+      alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPrices: false});
     }
 

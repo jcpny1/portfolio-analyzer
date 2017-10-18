@@ -1,8 +1,8 @@
 import React from 'react';
 import {Grid, Header, Icon, Table} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
-import Fmt from '../utils/Formatters';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
+import Fmt from './Formatters';
 
 const Portfolios = (props) => {
   const {portfolios} = props;
@@ -30,11 +30,14 @@ const Portfolios = (props) => {
       const href = `/portfolios/${portfolio.id}`;
       return (
         <Table.Row key={index}>
-          <Table.Cell>{<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}<Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio)}/></Table.Cell>
+          <Table.Cell>
+            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
+            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio)}/>
+          </Table.Cell>
           <Table.Cell><Link to={href}>{portfolio.name}</Link></Table.Cell>
-          <Table.Cell textAlign='right'>{Fmt.formatCurrency(portfolio.marketValue)}</Table.Cell>
-          <Table.Cell textAlign='right'>{Fmt.formatCurrency(portfolio.totalCost)}</Table.Cell>
-          <Table.Cell textAlign='right'>{Fmt.formatCurrency(gainLoss)}</Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.marketValue}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.totalCost}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={gainLoss}/></Table.Cell>
         </Table.Row>
       );
     });
@@ -49,20 +52,20 @@ const Portfolios = (props) => {
     const totalGainLoss = sumMarketValue - sumTotalCost;
     return (
       <Table.Row>
-        <Table.HeaderCell>Total</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(sumMarketValue)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(sumTotalCost)}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'>{Fmt.formatCurrency(totalGainLoss)}</Table.HeaderCell>
+        <Table.HeaderCell>Total</Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={sumMarketValue}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={sumTotalCost}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={totalGainLoss}/></Table.HeaderCell>
       </Table.Row>
     );
   }
 
   return (
-    <Grid columns={1} style={{margin: '1rem'}}>
+    <Grid columns={1} style={{'marginLeft': '1rem'}}>
       <Grid.Row>
         <Grid.Column>
-          <Header size='large' content='Portfolios'></Header>
+          <Header size='large' color='purple' content='Portfolios'></Header>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>

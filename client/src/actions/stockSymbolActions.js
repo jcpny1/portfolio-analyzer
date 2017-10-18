@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import Fetch from '../utils/Fetch';
+import Fetch from '../utils/fetch';
 import {stockSymbolActions} from '../reducers/stock_symbols_reducer';
 
 function errorStockSymbolAction(payload) {return {type: stockSymbolActions.ERROR_STOCK_SYMBOLS, payload: payload};}

@@ -1,4 +1,4 @@
-import Fmt from '../utils/Formatters';
+import Fmt from '../components/Formatters';
 
 export const portfolioActions = {
   ADD_PORTFOLIO:      'ADD_PORTFOLIO',
@@ -38,8 +38,8 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
 
     // Error on Portfolio action.
     case portfolioActions.ERROR_PORTFOLIOS: {
-      const {prefix, error} = action.payload;
-      alert(Fmt.formatServerError(prefix, error));
+      const {error, prefix} = action.payload;
+      alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolios: false});
     }
 
@@ -83,8 +83,8 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
 
     // Error on Position action.
     case portfolioActions.ERROR_POSITIONS: {
-      const {prefix, error} = action.payload;
-      alert(Fmt.formatServerError(prefix, error));
+      const {error, prefix} = action.payload;
+      alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolios: false});
     }
 
