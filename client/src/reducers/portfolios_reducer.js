@@ -5,6 +5,7 @@ export const portfolioActions = {
   DELETE_PORTFOLIO:   'DELETE_PORTFOLIO',
   ERROR_PORTFOLIOS:   'ERROR_PORTFOLIOS',
   LOAD_PORTFOLIOS:    'LOAD_PORTFOLIOS',
+  SORT_PORTFOLIOS:    'SORT_PORTFOLIOS',
   UPDATE_PORTFOLIOS:  'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
   ADD_POSITION:       'ADD_POSITION',
@@ -17,7 +18,16 @@ export const portfolioActions = {
 export default function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
 // console.log("ACTION type: " + action.type + " payload: " + action.payload + " STATE: " + JSON.stringify(state));
 
+  var sort_by = function(field, reverse, primer) {
+    var key = function (x) {return primer ? primer(x[field]) : x[field]};
+    return function (a,b) {
+  	  var A = key(a), B = key(b);
+      return ((A < B) ? -1 : ((A > B) ? 1 : 0) * [1,-1][+!!reverse]);
+    }
+  }
+
   switch ( action.type ) {
+
     // ************************* //
     // *** PORTFOLIO ACTIONS *** //
     // ************************* //
@@ -46,6 +56,30 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
     // Load Portfolios.
     case portfolioActions.LOAD_PORTFOLIOS:
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: action.payload});
+
+    // Sort Portfolios.
+    case portfolioActions.SORT_PORTFOLIOS: {
+      const portfolios = [...state.portfolios];
+      if (portfolios.length === 0) {
+        return state;
+      }
+      const {columnName, direction} = action.payload;
+      const reverseSort = direction !== 'a';
+      switch (columnName) {
+        case 'name':
+          portfolios.sort(sort_by(columnName, reverseSort, function(a){return a.toUpperCase()}));
+          break;
+        case 'gainLoss':     // fall through
+        case 'marketValue':  // fall through
+        case 'totalCost':
+          portfolios.sort(sort_by(columnName, reverseSort, parseFloat));
+          break;
+        default:
+          portfolios.sort(sort_by(columnName, reverseSort));
+          break;
+      }
+      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+    }
 
     // Update a Portfolio.
     case portfolioActions.UPDATE_PORTFOLIOS: {

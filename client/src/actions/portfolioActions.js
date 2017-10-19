@@ -8,6 +8,7 @@ function addPortfolioAction(payload)    {return {type: portfolioActions.ADD_PORT
 function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: payload};}
 function errorPortfolioAction(payload)  {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: payload};}
 function loadPortfoliosAction(payload)  {return {type: portfolioActions.LOAD_PORTFOLIOS,   payload: payload};}
+function sortPortfoliosAction(payload)  {return {type: portfolioActions.SORT_PORTFOLIOS,   payload: payload};}
 function updatePortfolioAction(payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload};}
 function updatingPortfolioAction()      {return {type: portfolioActions.UPDATING_PORTFOLIO};}
 
@@ -73,6 +74,15 @@ export function loadPortfolios() {
         dispatch(loadPortfoliosAction(responseJson));
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
+    );
+  }
+}
+
+export function sortPortfolios(columnName, direction) {
+  return function(dispatch) {
+    dispatch(updatingPortfolioAction());
+    return (
+        dispatch(sortPortfoliosAction({columnName, direction}))
     );
   }
 }

@@ -16,12 +16,16 @@ class PortfoliosPage extends Component {
     }
   }
 
+  sortPortfolios = (columnName) => {
+    this.props.actions.sortPortfolios(columnName, 'a');
+  }
+
   submitPortfolio = (portfolio) => {
     portfolio.id === '' ? this.props.actions.addPortfolio(portfolio) : this.props.actions.updatePortfolio(portfolio);
   }
 
   render() {
-    return (<Portfolios portfolios={this.props.portfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio}/>);
+    return (<Portfolios portfolios={this.props.portfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
   }
 }
 
