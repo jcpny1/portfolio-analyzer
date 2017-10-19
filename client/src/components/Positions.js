@@ -33,8 +33,6 @@ const Positions = (props) => {
   function listPositions() {
     if (portfolio !== undefined) {
       return portfolio.open_positions.map((open_position,index) => {
-        const marketValue = open_position.quantity * open_position.lastClosePrice;
-        const gainLoss = marketValue - open_position.cost;
         return (
           <Table.Row key={index}>
             <Table.Cell>
@@ -44,9 +42,9 @@ const Positions = (props) => {
             <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
             <Table.Cell textAlign='right'><Fmt.Currency value={open_position.lastClosePrice}/></Table.Cell>
             <Table.Cell textAlign='right'><Fmt.Quantity value={open_position.quantity}/></Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Currency value={marketValue}/></Table.Cell>
+            <Table.Cell textAlign='right'><Fmt.Currency value={open_position.marketValue}/></Table.Cell>
             <Table.Cell textAlign='right'><Fmt.Currency value={open_position.cost}/></Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Currency value={gainLoss}/></Table.Cell>
+            <Table.Cell textAlign='right'><Fmt.Currency value={open_position.gainLoss}/></Table.Cell>
             <Table.Cell>{open_position.date_acquired}</Table.Cell>
           </Table.Row>
         );
@@ -56,7 +54,6 @@ const Positions = (props) => {
   }
 
   function sumPositions() {
-    const gainLoss = props.portfolio.marketValue-props.portfolio.totalCost;
     return (
       <Table.Row>
         <Table.HeaderCell></Table.HeaderCell>
@@ -65,7 +62,7 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='right'><Fmt.Currency value={props.portfolio.marketValue}/></Table.HeaderCell>
         <Table.HeaderCell textAlign='right'><Fmt.Currency value={props.portfolio.totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'><Fmt.Currency value={gainLoss}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={props.portfolio.gainLoss}/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );

@@ -26,7 +26,6 @@ const Portfolios = (props) => {
 
   function listPortfolios() {
     return portfolios.map((portfolio,index) => {
-      const gainLoss = portfolio.marketValue - portfolio.totalCost;
       const href = `/portfolios/${portfolio.id}`;
       return (
         <Table.Row key={index}>
@@ -37,7 +36,7 @@ const Portfolios = (props) => {
           <Table.Cell><Link to={href}>{portfolio.name}</Link></Table.Cell>
           <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.marketValue}/></Table.Cell>
           <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.totalCost}/></Table.Cell>
-          <Table.Cell textAlign='right'><Fmt.Currency value={gainLoss}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.gainLoss}/></Table.Cell>
         </Table.Row>
       );
     });

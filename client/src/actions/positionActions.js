@@ -5,7 +5,6 @@ import {portfolioActions} from '../reducers/portfolios_reducer';
 function addPositionAction(payload)    {return {type: portfolioActions.ADD_POSITION,     payload: payload};}
 function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION,  payload: payload};}
 function errorPositionAction(payload)  {return {type: portfolioActions.ERROR_POSITIONS,  payload: payload};}
-function loadPositionsAction(payload)  {return {type: portfolioActions.LOAD_POSITIONS,   payload: payload};}
 function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITIONS, payload: payload};}
 function updatingPositionAction()      {return {type: portfolioActions.UPDATING_POSITION};}
 
@@ -55,24 +54,6 @@ export function deletePosition(open_position) {
         dispatch(deletePositionAction(open_position));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Delete Position Error: ', error: error})))
-    );
-  }
-}
-
-export function loadPositions(portfolio_id) {
-  return function(dispatch) {
-    dispatch(updatingPositionAction());
-    return (
-      fetch(`/api/portfolios/${portfolio_id}`)
-      .then(Fetch.checkStatus)
-      .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.length) {
-          throw responseJson;
-        }
-        dispatch(loadPositionsAction(responseJson));
-      })
-      .catch(error => dispatch(errorPositionAction({prefix: 'Load Positions Error: ', error: error})))
     );
   }
 }
