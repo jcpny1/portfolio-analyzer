@@ -85,11 +85,11 @@ export function loadPortfolios() {
   }
 }
 
-export function sortPortfolios(columnName, direction) {
+export function sortPortfolios(columnName, reverseSort) {
   return function(dispatch) {
     dispatch(updatingPortfolioAction());
     return (
-        dispatch(sortPortfoliosAction({columnName, direction}))
+        dispatch(sortPortfoliosAction({columnName, reverseSort}))
     );
   }
 }

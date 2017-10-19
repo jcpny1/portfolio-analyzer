@@ -22,7 +22,7 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
     var key = function (x) {return primer ? primer(x[field]) : x[field]};
     return function (a,b) {
   	  var A = key(a), B = key(b);
-      return ((A < B) ? -1 : ((A > B) ? 1 : 0) * [1,-1][+!!reverse]);
+      return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
     }
   }
 
@@ -63,8 +63,7 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       if (portfolios.length === 0) {
         return state;
       }
-      const {columnName, direction} = action.payload;
-      const reverseSort = direction !== 'a';
+      const {columnName, reverseSort} = action.payload;
       switch (columnName) {
         case 'name':
           portfolios.sort(sort_by(columnName, reverseSort, function(a){return a.toUpperCase()}));
