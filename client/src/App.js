@@ -4,8 +4,10 @@ import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import {Dropdown, Grid, Image, Menu} from 'semantic-ui-react';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
+import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
+
   render() {
     return (
       <Router>
@@ -22,7 +24,7 @@ class App extends Component {
               <Grid.Column width={14}>
                 <Menu borderless>
                   <Menu.Item header as={Link} to='/'>Summary</Menu.Item>
-                  <Menu.Item header as={Link} to='/'>Symbol Lookup</Menu.Item>
+                  {<SymbolsPage/>}
                   <Dropdown item text='Help'>
                     <Dropdown.Menu>
                       <Dropdown.Item>StockAnalyzer Help</Dropdown.Item>

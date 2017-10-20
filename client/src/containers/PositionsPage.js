@@ -7,11 +7,8 @@ import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
-  constructor(props) {
-      super(props)
-      this.lastSortColumn = '';      // which column was last sorted.
-      this.lastSortReverse = false;  // was the last sort a reverse sort?
-  }
+  lastSortColumn = '';      // which column was last sorted.
+  lastSortReverse = false;  // was the last sort a reverse sort?
 
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()

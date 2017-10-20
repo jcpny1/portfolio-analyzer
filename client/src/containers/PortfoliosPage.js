@@ -5,11 +5,8 @@ import * as actions from '../actions/portfolioActions.js';
 import Portfolios from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
-  constructor(props) {
-      super(props)
-      this.lastSortColumn = '';      // which column was last sorted.
-      this.lastSortReverse = false;  // was the last sort a reverse sort?
-  }
+  lastSortColumn = '';      // which column was last sorted.
+  lastSortReverse = false;  // was the last sort a reverse sort?
 
   componentDidMount() {
     this.props.portfolios.length || this.props.actions.loadPortfolios()
