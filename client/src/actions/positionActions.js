@@ -5,6 +5,7 @@ import {portfolioActions} from '../reducers/portfolios_reducer';
 function addPositionAction(payload)    {return {type: portfolioActions.ADD_POSITION,     payload: payload};}
 function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION,  payload: payload};}
 function errorPositionAction(payload)  {return {type: portfolioActions.ERROR_POSITIONS,  payload: payload};}
+function sortPositionsAction(payload)  {return {type: portfolioActions.SORT_POSITIONS,   payload: payload};}
 function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITIONS, payload: payload};}
 function updatingPositionAction()      {return {type: portfolioActions.UPDATING_POSITION};}
 
@@ -54,6 +55,15 @@ export function deletePosition(open_position) {
         dispatch(deletePositionAction(open_position));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Delete Position Error: ', error: error})))
+    );
+  }
+}
+
+export function sortPositions(portfolio_id, columnName, reverseSort) {
+  return function(dispatch) {
+    dispatch(updatingPositionAction());
+    return (
+        dispatch(sortPositionsAction({portfolio_id, columnName, reverseSort}))
     );
   }
 }

@@ -11,15 +11,16 @@ export const portfolioActions = {
   ADD_POSITION:       'ADD_POSITION',
   DELETE_POSITION:    'DELETE_POSITION',
   ERROR_POSITIONS:    'ERROR_POSITIONS',
+  SORT_POSITIONS:     'SORT_POSITIONS',
   UPDATE_POSITIONS:   'UPDATE_POSITIONS',
   UPDATING_POSITION:  'UPDATING_POSITION',
 };
 
 export default function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
-// console.log("ACTION type: " + action.type + " payload: " + action.payload + " STATE: " + JSON.stringify(state));
+  // console.log("ACTION type: " + action.type + " payload: " + action.payload + " STATE: " + JSON.stringify(state));
 
-  var sort_by = function(field, reverse, primer) {
-    var key = function (x) {return primer ? primer(x[field]) : x[field]};
+  var sort_by = function(field, reverse = false, compare) {
+    var key = function (x) {return compare ? compare(x[field]) : x[field]};
     return function (a,b) {
   	  var A = key(a), B = key(b);
       return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
@@ -119,6 +120,31 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       const {error, prefix} = action.payload;
       alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolios: false});
+    }
+
+    // Sort Positions within a Portfolio.
+    case portfolioActions.SORT_POSITIONS: {
+      const {portfolio_id, columnName, reverseSort} = action.payload;
+      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === portfolio_id;});
+      const portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
+      switch (columnName) {
+        case 'stock_symbol':
+          portfolio.open_positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name.toUpperCase()}));
+          break;
+        case 'cost':
+        case 'date_acquired':  // fall through
+        case 'gainLoss':       // fall through
+        case 'lastClosePrice': // fall through
+        case 'marketValue':    // fall through
+        case 'quantity':
+          portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseFloat));
+          break;
+        default:
+          portfolio.open_positions.sort(sort_by(columnName, reverseSort));
+          break;
+      }
+      const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
+      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
     // Update a Position.

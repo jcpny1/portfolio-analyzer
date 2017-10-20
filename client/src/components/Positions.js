@@ -19,13 +19,13 @@ const Positions = (props) => {
     return (
       <Table.Row>
         <Table.HeaderCell>{<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}Add</Table.HeaderCell>
-        <Table.HeaderCell>Symbol</Table.HeaderCell>
-        <Table.HeaderCell>Last Close</Table.HeaderCell>
-        <Table.HeaderCell>Quantity</Table.HeaderCell>
-        <Table.HeaderCell>Market Value</Table.HeaderCell>
-        <Table.HeaderCell>Cost Basis</Table.HeaderCell>
-        <Table.HeaderCell>Gain/Loss</Table.HeaderCell>
-        <Table.HeaderCell>Acquired</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('lastClosePrice')}>Last Close</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('date_acquired')}>Acquired</Table.HeaderCell>
       </Table.Row>
     );
   }

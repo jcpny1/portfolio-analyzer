@@ -7,10 +7,8 @@ import Portfolios from '../components/Portfolios';
 class PortfoliosPage extends Component {
   constructor(props) {
       super(props)
-      this.state = {
-        lastSortColumn: '',      // which column was last sorted.
-        lastSortReverse: false,  // was the last sort a reverse sort?
-      };
+      this.lastSortColumn = '';      // which column was last sorted.
+      this.lastSortReverse = false;  // was the last sort a reverse sort?
   }
 
   componentDidMount() {
@@ -24,15 +22,15 @@ class PortfoliosPage extends Component {
   }
 
   sortPortfolios = (columnName) => {
-    let reverseSort = this.state.lastSortReverse;
-    if (this.state.lastSortColumn !== columnName) {
-      this.setState({lastSortColumn: columnName});
+    let reverseSort = this.lastSortReverse;
+    if (this.lastSortColumn !== columnName) {
+      this.lastSortColumn = columnName;
       reverseSort = false;
     } else {
       reverseSort = !reverseSort;
     }
     this.props.actions.sortPortfolios(columnName, reverseSort);
-    this.setState({lastSortReverse: reverseSort});
+    this.lastSortReverse = reverseSort;
   }
 
   submitPortfolio = (portfolio) => {
