@@ -15,7 +15,7 @@ const Portfolios = (props) => {
   function columnTitles() {
     return (
       <Table.Row>
-        <Table.HeaderCell>{<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}Add</Table.HeaderCell>
+        <Table.HeaderCell>{<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' actionName='Add' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
@@ -30,10 +30,10 @@ const Portfolios = (props) => {
       return (
         <Table.Row key={index}>
           <Table.Cell>
-            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
-            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(portfolio)}/>
+            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' actionName='' tooltip='Edit portfolio' onClickSubmit={props.onClickSubmit}/>}
+            <Icon name='remove' title='Delete portfolio' link color='red' onClick={() => props.onClickRemove(portfolio)}/>
           </Table.Cell>
-          <Table.Cell><Link to={href}>{portfolio.name}</Link></Table.Cell>
+          <Table.Cell><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
           <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.marketValue}/></Table.Cell>
           <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.totalCost}/></Table.Cell>
           <Table.Cell textAlign='right'><Fmt.Currency value={portfolio.gainLoss}/></Table.Cell>

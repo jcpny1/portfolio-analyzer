@@ -39,7 +39,7 @@ export default class PortfolioEditPage extends Component {
   render() {
     let {name} = this.state;
     return (
-      <Modal trigger={<Icon name={this.props.iconName} title={this.props.iconName + ' a portfolio'} link color={this.props.iconColor} onClick={this.handleOpen}/>} open={this.state.modalOpen} onClose={this.handleCancel}>
+      <Modal trigger={<Icon name={this.props.iconName} title={this.props.tooltip} link color={this.props.iconColor} onClick={this.handleOpen}> {this.props.actionName}</Icon>} open={this.state.modalOpen} onClose={this.handleCancel}>
         <Header icon='browser' content='Portfolio Editor'/>
         <Modal.Content><PortfolioEdit name={name} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions></Modal.Actions>

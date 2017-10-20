@@ -18,7 +18,7 @@ const Positions = (props) => {
   function columnTitles() {
     return (
       <Table.Row>
-        <Table.HeaderCell>{<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}Add</Table.HeaderCell>
+        <Table.HeaderCell>{<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' actionName='Add' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('lastClosePrice')}>Last Close</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
@@ -35,8 +35,8 @@ const Positions = (props) => {
       return (
         <Table.Row key={index}>
           <Table.Cell>
-            {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
-            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/>
+            {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' actionName='' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
+            <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(open_position)}/>
           </Table.Cell>
           <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
           <Table.Cell textAlign='right'><Fmt.Currency value={open_position.lastClosePrice}/></Table.Cell>
