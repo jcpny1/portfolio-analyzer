@@ -69,7 +69,7 @@ const Portfolios = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <Table celled collapsing padded sortable striped>
+          <Table celled collapsing sortable striped>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listPortfolios()}</Table.Body>
             <Table.Footer>{sumPortfolios()}</Table.Footer>

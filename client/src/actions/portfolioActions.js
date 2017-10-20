@@ -71,13 +71,6 @@ export function loadPortfolios() {
         if (!responseJson.length) {
           throw responseJson;
         }
-        responseJson.forEach(function(portfolio) {
-          portfolio['gainLoss'] = portfolio.marketValue - portfolio.totalCost;
-          portfolio.open_positions.forEach(function(position) {
-            position['marketValue'] = position.quantity * position.lastClosePrice;
-            position['gainLoss']    = position.marketValue - position.cost;
-          });
-        });
         dispatch(loadPortfoliosAction(responseJson));
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))

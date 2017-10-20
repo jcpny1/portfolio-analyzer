@@ -77,7 +77,7 @@ const Positions = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width={7}>
-          <Table celled collapsing padded sortable striped>
+          <Table celled collapsing sortable striped>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listPositions()}</Table.Body>
             <Table.Footer>{sumPositions()}</Table.Footer>

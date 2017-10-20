@@ -52,7 +52,7 @@ export function deletePosition(open_position) {
         if (!responseJson.id) {
           throw responseJson;
         }
-        dispatch(deletePositionAction(open_position));
+        dispatch(deletePositionAction(responseJson));
       })
       .catch(error => dispatch(errorPositionAction({prefix: 'Delete Position Error: ', error: error})))
     );

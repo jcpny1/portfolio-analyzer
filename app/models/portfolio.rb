@@ -5,7 +5,7 @@ class Portfolio < ApplicationRecord
   validates :name, uniqueness: {scope: :user, message: "already exists"}
 
   # In-memory-only values.
-  attr_reader :marketValue, :totalCost
+  attr_reader :gainLoss, :marketValue, :totalCost
 
   # Set an initial valuation on the portfolio.
   after_initialize do |portfolio|
@@ -17,8 +17,9 @@ class Portfolio < ApplicationRecord
     @marketValue = 0.0
     @totalCost   = 0.0;
     self.open_positions.each { |open_position|
-      @marketValue += (open_position.lastClosePrice * open_position.quantity)
+      @marketValue += open_position.marketValue
       @totalCost   += open_position.cost
     }
+    @gainLoss = @marketValue - @totalCost
   end
 end

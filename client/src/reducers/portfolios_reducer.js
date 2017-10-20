@@ -107,11 +107,9 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
 
     // Delete a Position.
     case portfolioActions.DELETE_POSITION: {
-      const payloadPosition = action.payload;
-      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPosition.portfolio_id;});
-      const portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
-      portfolio.open_positions = state.portfolios[portfolioIndex].open_positions.filter(open_position => open_position.id !== payloadPosition.id);
-      const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
+      const payloadPortfolio = action.payload;
+      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id;});
+      const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 

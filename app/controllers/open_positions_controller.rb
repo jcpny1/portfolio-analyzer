@@ -24,8 +24,7 @@ class OpenPositionsController < ApplicationController
 
   # Delete an open position.
   def destroy
-    open_position = @portfolio.open_positions.find(params[:id])
-    if open_position.destroy
+    if @portfolio.open_positions.destroy(params[:id])
       @portfolio.updateValuation
       render json: @portfolio
     else
