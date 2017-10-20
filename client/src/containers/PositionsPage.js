@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as positionActions from '../actions/positionActions.js';
+import * as portfolioActions from '../actions/portfolioActions.js';   // !! kludge for position refresh error.
 import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Positions from '../components/Positions';
 
@@ -14,6 +15,7 @@ class PositionsPage extends Component {
 
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
+    this.props.portfolios.length   || this.props.actions.loadPortfolios() // !! kludge for position refresh error.
   }
 
   removePosition = (open_position) => {
@@ -46,7 +48,8 @@ class PositionsPage extends Component {
     if (portfolio) {
       return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
-    return ('Refresh Error');  // some kind of refresh flaw when refreshing while on Positions page.
+    return ('Refresh Problem!');  // !! Some kind of refresh flaw when refreshing while on Positions page.
+                                  // !! A browser refresh on a positions page seems to clear out app's state.
   }
 }
 
@@ -55,7 +58,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators({ ...positionActions, ...stockSymbolActions }, dispatch)};
+  return {actions: bindActionCreators({ ...positionActions, ...stockSymbolActions, ...portfolioActions }, dispatch)};  // !! ...portfolioActions kludge for position refresh error.
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);
