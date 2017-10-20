@@ -16,7 +16,7 @@ const Portfolios = (props) => {
     return (
       <Table.Row>
         <Table.HeaderCell>{<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}Add</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('name')}>Name</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
@@ -64,7 +64,7 @@ const Portfolios = (props) => {
     <Grid columns={1} style={{'marginLeft': '1rem'}}>
       <Grid.Row>
         <Grid.Column>
-          <Header size='large' color='purple' content='Portfolios'></Header>
+          <Header size='large' color='purple' content='Account Summary'></Header>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>

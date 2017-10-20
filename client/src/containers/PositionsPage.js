@@ -30,9 +30,8 @@ class PositionsPage extends Component {
     } else {
       reverseSort = !reverseSort;
     }
-const portfolio_id = parseInt(this.props.match.params.id, 10);
-const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
-    this.props.actions.sortPositions(portfolio.id, columnName, reverseSort);
+    const portfolio_id = parseInt(this.props.match.params.id, 10);
+    this.props.actions.sortPositions(portfolio_id, columnName, reverseSort);
     this.lastSortReverse = reverseSort;
   }
 
@@ -41,12 +40,13 @@ const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPort
   }
 
   render() {
-const portfolio_id = parseInt(this.props.match.params.id, 10);
-const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
+    const portfolio_id = parseInt(this.props.match.params.id, 10);
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
+
     if (portfolio) {
       return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
-    return ('Refresh Error');  // some kind of refresh flaw.
+    return ('Refresh Error');  // some kind of refresh flaw when refreshing while on Positions page.
   }
 }
 

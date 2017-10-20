@@ -21,7 +21,7 @@ class App extends Component {
             <Grid.Row>
               <Grid.Column width={14}>
                 <Menu borderless>
-                  <Menu.Item header as={Link} to='/'>Portfolios</Menu.Item>
+                  <Menu.Item header as={Link} to='/'>Summary</Menu.Item>
                   <Menu.Item header as={Link} to='/'>Symbol Lookup</Menu.Item>
                   <Dropdown item text='Help'>
                     <Dropdown.Menu>

@@ -31,26 +31,23 @@ const Positions = (props) => {
   }
 
   function listPositions() {
-    if (portfolio !== undefined) {
-      return portfolio.open_positions.map((open_position,index) => {
-        return (
-          <Table.Row key={index}>
-            <Table.Cell>
-              {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
-              <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/>
-            </Table.Cell>
-            <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Currency value={open_position.lastClosePrice}/></Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Quantity value={open_position.quantity}/></Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Currency value={open_position.marketValue}/></Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Currency value={open_position.cost}/></Table.Cell>
-            <Table.Cell textAlign='right'><Fmt.Currency value={open_position.gainLoss}/></Table.Cell>
-            <Table.Cell>{open_position.date_acquired}</Table.Cell>
-          </Table.Row>
-        );
-      });
-    }
-    return;
+    return portfolio.open_positions.map((open_position,index) => {
+      return (
+        <Table.Row key={index}>
+          <Table.Cell>
+            {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' onClickSubmit={props.onClickSubmit}/>}
+            <Icon name='remove' link color='red' onClick={() => props.onClickRemove(open_position)}/>
+          </Table.Cell>
+          <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.lastClosePrice}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Quantity value={open_position.quantity}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.marketValue}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.cost}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.gainLoss}/></Table.Cell>
+          <Table.Cell>{open_position.date_acquired}</Table.Cell>
+        </Table.Row>
+      );
+    });
   }
 
   function sumPositions() {
