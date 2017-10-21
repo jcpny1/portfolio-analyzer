@@ -22,16 +22,18 @@ class App extends Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={14}>
-                <Menu borderless>
-                  <Menu.Item header as={Link} to='/'>Summary</Menu.Item>
+                <Menu>
+                  <Menu.Item as={Link} to='/'>Summary</Menu.Item>
                   {<SymbolsPage/>}
-                  <Dropdown item text='Help'>
-                    <Dropdown.Menu>
-                      <Dropdown.Item>StockAnalyzer Help</Dropdown.Item>
-                      <Dropdown.Divider/>
-                      <Dropdown.Item as={Link} to='/about'>About</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <Menu.Menu position='right'>
+                    <Dropdown item text='Help'>
+                      <Dropdown.Menu>
+                        <Dropdown.Item disabled>StockAnalyzer Help</Dropdown.Item>
+                        <Dropdown.Divider/>
+                        <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </Menu.Menu>
                 </Menu>
               </Grid.Column>
             </Grid.Row>

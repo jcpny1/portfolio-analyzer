@@ -30,7 +30,7 @@ const Symbols = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={4} placeholder='Company Name' name='companyName' value={companyName} onChange={props.onChange}/>
+            <Form.Input width={4} className='icon' icon='search' placeholder='Company Name' name='companyName' value={companyName} onChange={props.onChange}/>
           </Form>
         </Grid.Column>
       </Grid.Row>

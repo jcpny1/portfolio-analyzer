@@ -43,7 +43,7 @@ class SymbolsPage extends Component {
     return (
       <Modal
         size='small'
-        trigger={<Menu.Item header onClick={this.handleOpen}>Symbol Lookup</Menu.Item>}
+        trigger={<Menu.Item onClick={this.handleOpen}>Symbol Lookup</Menu.Item>}
         open={this.state.modalOpen}>
         <Header icon='browser' content='Symbol Lookup'/>
         <Modal.Content
