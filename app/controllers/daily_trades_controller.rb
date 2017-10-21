@@ -40,18 +40,33 @@ class DailyTradesController < ApplicationController
   def last_close
     symbols = params['symbols'].split(',').uniq
     last_close_prices = {}
-    symbols.each { |symbol|
-      resp = Faraday.get("https://www.alphavantage.co/query") do |req|
-        req.params['apikey']   = ENV['ALPHA_VANTAGE_API_KEY']
-        req.params['function'] = 'TIME_SERIES_INTRADAY'
-        req.params['interval'] = '1min'
-        req.params['symbol']   = symbol
-      end
-      response = JSON.parse(resp.body)
-      last_close_prices[symbol] = {}
-      last_close_prices[symbol]['header'] = response['Meta Data']
-      last_close_prices[symbol]['tick']   = response['Time Series (1min)'].first
-    }
+
+    begin
+      conn = Faraday.new(:url => 'https://www.alphavantage.co/query')
+
+      symbols.each { |symbol|
+        resp = conn.get do |req|
+          req.params['apikey']   = ENV['ALPHA_VANTAGE_API_KEY']
+          req.params['function'] = 'TIME_SERIES_INTRADAY'
+          req.params['interval'] = '1min'
+          req.params['symbol']   = symbol
+        end
+
+        response = JSON.parse(resp.body)
+        last_close_prices[symbol] = {}
+
+        if response.key?('Error Message') then
+          last_close_prices[symbol]['header'] = {'0. Error' => response['Error Message']}
+        else
+          last_close_prices[symbol]['header'] = response['Meta Data']
+          last_close_prices[symbol]['tick']   = response['Time Series (1min)'].first
+        end
+      }
+
+    rescue Faraday::ClientError => e
+        puts "Faraday client error: #{e}"
+    end
+
     render json: last_close_prices
   end
 end
