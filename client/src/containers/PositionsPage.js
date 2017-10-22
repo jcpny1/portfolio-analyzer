@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as positionActions from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';   // !! kludge for position refresh error.
+import * as priceActions from '../actions/priceActions.js';
 import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Positions from '../components/Positions';
 
@@ -13,6 +14,10 @@ class PositionsPage extends Component {
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
     this.props.portfolios.length   || this.props.actions.loadPortfolios() // !! kludge for refresh clearing state.
+  }
+
+  refreshPrices = (portfolio) => {
+    this.props.actions.loadLastClosePrices(...[portfolio.open_positions]);
   }
 
   removePosition = (open_position) => {
@@ -43,7 +48,7 @@ class PositionsPage extends Component {
     const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
 
     if (portfolio) {    // if user hit browser refresh, state gets cleared out!
-      return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
+      return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} refreshPrices={this.refreshPrices} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
     return null;
   }
@@ -54,7 +59,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators({ ...positionActions, ...stockSymbolActions, ...portfolioActions }, dispatch)};  // !! ...portfolioActions kludge for position refresh error.
+  return {actions: bindActionCreators({ ...portfolioActions, ...positionActions, ...priceActions, ...stockSymbolActions }, dispatch)};  // !! ...portfolioActions kludge for position refresh error.
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);

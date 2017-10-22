@@ -6,7 +6,7 @@ export const priceActions = {
   UPDATING_PRICE:         'UPDATING_PRICE',
 };
 
-export default function pricesReducer(state= {updatingPrices: false, prices: {} }, action) {
+export default function pricesReducer(state= {updatingPrices: false, prices: [] }, action) {
   switch ( action.type ) {
     // Error on Portfolio action.
     case priceActions.ERROR_PRICES: {
@@ -15,9 +15,15 @@ export default function pricesReducer(state= {updatingPrices: false, prices: {} 
       return Object.assign({}, state, {updatingPrices: false});
     }
 
-    // Load Last Close Prices.
-    case priceActions.LOAD_LAST_CLOSE_PRICES:
-      return Object.assign({}, state, {updatingPrices: false, prices: action.payload})
+    // Update prices with last close prices.
+    case priceActions.LOAD_LAST_CLOSE_PRICES: {
+      const newPrices = Object.assign([], state.prices);
+      action.payload.forEach(function(payloadPrice) {
+        const newPricesIndex = newPrices.findIndex(newPrice => {return payloadPrice.stock_symbol_id === newPrice.stock_symbol_id;});
+        (newPricesIndex === -1) ? newPrices.push(payloadPrice) : newPrices[newPricesIndex] = payloadPrice;
+      });
+      return Object.assign({}, state, {updatingPrices: false, prices: newPrices})
+    }
 
     // Show one or more Last Close Prices are being modified.
     case priceActions.UPDATING_PRICE:

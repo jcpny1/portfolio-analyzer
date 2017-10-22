@@ -40,12 +40,14 @@ class DailyTradesController < ApplicationController
   def last_close
     symbols = params['symbols'].split(',').uniq
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
-    last_close_prices = {}
+
+    prices = {}
+    daily_trades = Array.new(symbols.length)
 
     begin
       conn = Faraday.new(:url => 'https://www.alphavantage.co/query')
 
-      symbols.each { |symbol|
+      symbols.each.with_index { |symbol, i|
         resp = conn.get do |req|
           req.params['function'] = 'TIME_SERIES_INTRADAY'
           req.params['interval'] = '1min'
@@ -54,20 +56,39 @@ class DailyTradesController < ApplicationController
         end
         response = JSON.parse(resp.body)
 
-        last_close_prices[symbol] = {}
+        prices[symbol] = {}
 
-        if response.key?('Error Message') then
-          last_close_prices[symbol]['header'] = {'0. Error' => response['Error Message']}
+        if response.key?('Error Message')
+          prices[symbol]['header'] = {'0. Error' => response['Error Message']}
         else
-          last_close_prices[symbol]['header'] = response['Meta Data']
-          last_close_prices[symbol]['tick']   = response['Time Series (1min)'].first
+          prices[symbol]['header'] = response['Meta Data']
+          prices[symbol]['tick']   = response['Time Series (1min)'].first
         end
+
+        daily_trade = DailyTrade.new
+        daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
+        daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
+        daily_trades[i] = daily_trade
       }
 
     rescue Faraday::ClientError => e
         puts "Faraday client error: #{e}"
     end
 
-    render json: last_close_prices
+    render json: daily_trades
   end
 end
+
+# create_table "daily_trades", force: :cascade do |t|
+#   t.integer "stock_symbol_id", null: false
+#   t.integer "trade_date", null: false
+#   t.decimal "open_price", null: false
+#   t.decimal "close_price", null: false
+#   t.decimal "high_price", null: false
+#   t.decimal "low_price", null: false
+#   t.decimal "trade_volume", null: false
+#   t.datetime "created_at", null: false
+#   t.datetime "updated_at", null: false
+#   t.index ["stock_symbol_id", "trade_date"], name: "index_daily_trades_on_stock_symbol_id_and_trade_date", unique: true
+#   t.index ["stock_symbol_id"], name: "index_daily_trades_on_stock_symbol_id"
+# end
