@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Header, Icon, Table} from 'semantic-ui-react';
+import {Button, Grid, Header, Icon, Table} from 'semantic-ui-react';
 import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
@@ -7,8 +7,8 @@ const Positions = (props) => {
   const {portfolio} = props;
 
   const new_position = {
-      id: '',
       portfolio_id: portfolio.id,
+      id: '',
       stock_symbol: {},
       quantity: '',
       cost: '',
@@ -31,20 +31,20 @@ const Positions = (props) => {
   }
 
   function listPositions() {
-    return portfolio.open_positions.map((open_position,index) => {
+    return portfolio.open_positions.map((position,index) => {
       return (
         <Table.Row key={index}>
           <Table.Cell>
-            {<PositionEditPage position={open_position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' actionName='' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
-            <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(open_position)}/>
+            {<PositionEditPage position={position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' actionName='' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
+            <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(position)}/>
           </Table.Cell>
-          <Table.Cell>{open_position.stock_symbol.name}</Table.Cell>
-          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.lastClosePrice}/></Table.Cell>
-          <Table.Cell textAlign='right'><Fmt.Quantity value={open_position.quantity}/></Table.Cell>
-          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.marketValue}/></Table.Cell>
-          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.cost}/></Table.Cell>
-          <Table.Cell textAlign='right'><Fmt.Currency value={open_position.gainLoss}/></Table.Cell>
-          <Table.Cell>{open_position.date_acquired}</Table.Cell>
+          <Table.Cell>{position.stock_symbol.name}</Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={position.lastClosePrice}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Quantity value={position.quantity}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={position.marketValue}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={position.cost}/></Table.Cell>
+          <Table.Cell textAlign='right'><Fmt.Currency value={position.gainLoss}/></Table.Cell>
+          <Table.Cell>{position.date_acquired}</Table.Cell>
         </Table.Row>
       );
     });
@@ -66,19 +66,24 @@ const Positions = (props) => {
   }
 
   return (
-    <Grid columns={1} style={{margin: '1rem'}}>
+    <Grid columns={2} style={{'margin': '1rem 1rem 0rem 0rem','padding':'0px 15px'}}>
       <Grid.Row>
-        <Grid.Column width={4}>
+        <Grid.Column width={7}>
           <Header size='large' color='purple' content={portfolio.name}></Header>
+        </Grid.Column>
+        <Grid.Column width={9}>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Grid.Column width={7}>
-          <Table celled collapsing sortable striped>
+        <Grid.Column textAlign='right' width={7}>
+          <Button content='Refresh prices' icon='refresh' attached='left' size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}}/>
+          <Table celled compact sortable striped style={{'margin':'0','padding':'0'}}>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listPositions()}</Table.Body>
             <Table.Footer>{sumPositions()}</Table.Footer>
           </Table>
+        </Grid.Column>
+        <Grid.Column width={9}>
         </Grid.Column>
       </Grid.Row>
     </Grid>

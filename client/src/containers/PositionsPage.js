@@ -12,7 +12,7 @@ class PositionsPage extends Component {
 
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
-    this.props.portfolios.length   || this.props.actions.loadPortfolios() // !! kludge for position refresh error.
+    this.props.portfolios.length   || this.props.actions.loadPortfolios() // !! kludge for refresh clearing state.
   }
 
   removePosition = (open_position) => {
@@ -42,11 +42,10 @@ class PositionsPage extends Component {
     const portfolio_id = parseInt(this.props.match.params.id, 10);
     const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
 
-    if (portfolio) {
+    if (portfolio) {    // if user hit browser refresh, state gets cleared out!
       return (<Positions portfolio={portfolio} prices={this.props.prices} stockSymbols={this.props.stockSymbols} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
-    return ('Refresh Problem!');  // !! Some kind of refresh flaw when refreshing while on Positions page.
-                                  // !! A browser refresh on a positions page seems to clear out app's state.
+    return null;
   }
 }
 

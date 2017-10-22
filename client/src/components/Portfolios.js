@@ -60,7 +60,6 @@ const Portfolios = (props) => {
     );
   }
 
-  // <Icon name='refresh' title='Refresh prices' link style={{'color':'darkorchid'}} size='tiny' onClick={this.columnTitles}> Refresh Prices</Icon>
   return (
     <Grid columns={2} style={{'margin': '1rem 1rem 0rem 0rem','padding':'0px 15px'}}>
       <Grid.Row>
