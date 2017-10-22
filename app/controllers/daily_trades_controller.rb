@@ -39,6 +39,7 @@ class DailyTradesController < ApplicationController
   # Retrieve the latest closing price for the supplied symbols.
   def last_close
     symbols = params['symbols'].split(',').uniq
+    api_key = ENV['ALPHA_VANTAGE_API_KEY']
     last_close_prices = {}
 
     begin
@@ -46,13 +47,13 @@ class DailyTradesController < ApplicationController
 
       symbols.each { |symbol|
         resp = conn.get do |req|
-          req.params['apikey']   = ENV['ALPHA_VANTAGE_API_KEY']
           req.params['function'] = 'TIME_SERIES_INTRADAY'
           req.params['interval'] = '1min'
           req.params['symbol']   = symbol
+          req.params['apikey']   = api_key
         end
-
         response = JSON.parse(resp.body)
+
         last_close_prices[symbol] = {}
 
         if response.key?('Error Message') then
