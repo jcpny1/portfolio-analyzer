@@ -2,8 +2,7 @@ import React from 'react';
 import {Form, Grid, Table} from 'semantic-ui-react';
 
 const Symbols = (props) => {
-
-  let {companyName} = props;
+  let {companyName, stockSymbols} = props;
 
   function columnTitles() {
     return (
@@ -15,7 +14,7 @@ const Symbols = (props) => {
   }
 
   function listCompanies() {
-    return props.stockSymbols.map((stockSymbol,index) => {
+    return stockSymbols.map((stockSymbol,index) => {
       return (
         <Table.Row key={index}>
           <Table.Cell width={8}>{stockSymbol.company.name}</Table.Cell>
@@ -30,7 +29,7 @@ const Symbols = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={4} className='icon' icon='search' placeholder='Company Name' name='companyName' value={companyName} onChange={props.onChange}/>
+            <Form.Input width={4} className='icon' icon='search' placeholder='Company Name' name='value' value={companyName} onChange={props.onChange}/>
           </Form>
         </Grid.Column>
       </Grid.Row>

@@ -3,15 +3,21 @@ import {Header, Icon, Modal} from 'semantic-ui-react';
 import PortfolioEdit from '../components/PortfolioEdit';
 
 export default class PortfolioEditPage extends Component {
-  initialState = {
+
+  componentWillMount() {
+    this.resetComponent();
+  }
+
+  resetComponent = () => {
+    this.setState({
       modalOpen: false,
       id: '',
       name: '',
-  };
-  state = Object.assign({}, this.initialState);
+    });
+  }
 
   handleCancel = () => {
-    this.setState(this.initialState);
+    this.resetComponent();
   }
 
   handleChange = (e, {name, value}) => {
@@ -20,8 +26,7 @@ export default class PortfolioEditPage extends Component {
 
   handleOpen = () => {
     if (this.props.portfolio) {
-      this.initialState = {modalOpen: false, id: this.props.portfolio.id, name: this.props.portfolio.name};
-      this.setState(this.initialState);
+      this.setState({id: this.props.portfolio.id, name: this.props.portfolio.name});
     }
     this.setState({modalOpen: true});
   }
@@ -29,7 +34,7 @@ export default class PortfolioEditPage extends Component {
   handleSubmit = () => {
     const {id, name} = this.state;
     this.props.onClickSubmit({id: id, name: name});
-    this.setState(this.initialState);
+    this.resetComponent();
   }
 
   render() {

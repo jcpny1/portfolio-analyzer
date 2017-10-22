@@ -72,7 +72,7 @@ const Portfolios = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign='right' width={5}>
-  <Button content='Refresh prices' icon='refresh' attach size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}}/>
+          <Button content='Refresh prices' icon='refresh' attached='left' size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}}/>
           <Table celled compact sortable striped style={{'margin':'0','padding':'0'}}>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listPortfolios()}</Table.Body>
