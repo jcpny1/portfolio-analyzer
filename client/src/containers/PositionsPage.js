@@ -15,8 +15,8 @@ class PositionsPage extends Component {
     this.props.portfolios.length   || this.props.actions.loadPortfolios() // !! kludge for refresh clearing state.
   }
 
-  refreshPrices = (portfolio) => {
-    this.props.actions.loadLastPrices(portfolio);
+  refreshPortfolio = (portfolio) => {
+    this.props.actions.refreshPortfolio(portfolio.id);
   }
 
   removePosition = (open_position) => {
@@ -47,7 +47,7 @@ class PositionsPage extends Component {
     const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
 
     if (portfolio) {    // if user hit browser refresh, state gets cleared out!
-      return (<Positions portfolio={portfolio} stockSymbols={this.props.stockSymbols} refreshPrices={this.refreshPrices} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
+      return (<Positions portfolio={portfolio} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
     return null;
   }

@@ -42,8 +42,8 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
 
     // Delete a Portfolio.
     case portfolioActions.DELETE_PORTFOLIO: {
-      const payloadPortfolio = action.payload;
-      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id;});
+      const payloadPortfolioId = action.payload;
+      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolioId;});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), ...state.portfolios.slice(portfolioIndex+1)]
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }

@@ -76,7 +76,7 @@ const Positions = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign='right' width={7}>
-          <Button content='Refresh prices' icon='refresh' attached='left' size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}} onClick={() => props.refreshPrices(portfolio)}/>
+          <Button content='Refresh' icon='refresh' attached='left' size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}} onClick={() => props.refreshPortfolio(portfolio)}/>
           <Table celled compact sortable striped style={{'margin':'0','padding':'0'}}>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listPositions()}</Table.Body>
