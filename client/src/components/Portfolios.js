@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Header, Icon, Table} from 'semantic-ui-react';
+import {Button, Grid, Header, Icon, Table} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
@@ -14,9 +14,9 @@ const Portfolios = (props) => {
 
   function columnTitles() {
     return (
-      <Table.Row>
-        <Table.HeaderCell>{<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' actionName='Add' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
+      <Table.Row textAlign='center'>
+        <Table.HeaderCell textAlign='left'>{<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' actionName='Add' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
@@ -60,20 +60,26 @@ const Portfolios = (props) => {
     );
   }
 
+  // <Icon name='refresh' title='Refresh prices' link style={{'color':'darkorchid'}} size='tiny' onClick={this.columnTitles}> Refresh Prices</Icon>
   return (
-    <Grid columns={1} style={{'marginLeft': '1rem'}}>
+    <Grid columns={2} style={{'margin': '1rem 1rem 0rem 0rem','padding':'0px 15px'}}>
       <Grid.Row>
-        <Grid.Column>
+        <Grid.Column width={5}>
           <Header size='large' color='purple' content='Account Summary'></Header>
+        </Grid.Column>
+        <Grid.Column width={11}>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Grid.Column>
-          <Table celled collapsing sortable striped>
+        <Grid.Column textAlign='right' width={5}>
+  <Button content='Refresh prices' icon='refresh' attach size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}}/>
+          <Table celled compact sortable striped style={{'margin':'0','padding':'0'}}>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listPortfolios()}</Table.Body>
             <Table.Footer>{sumPortfolios()}</Table.Footer>
           </Table>
+        </Grid.Column>
+        <Grid.Column width={11}>
         </Grid.Column>
       </Grid.Row>
     </Grid>
