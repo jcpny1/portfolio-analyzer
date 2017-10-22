@@ -7,6 +7,7 @@ const GUEST_USER_ID = 1;
 function addPortfolioAction(payload)    {return {type: portfolioActions.ADD_PORTFOLIO,     payload: payload};}
 function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: payload};}
 function errorPortfolioAction(payload)  {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: payload};}
+function loadLastPricesAction(payload)  {return {type: portfolioActions.LOAD_LAST_PRICES,  payload: payload};}
 function loadPortfoliosAction(payload)  {return {type: portfolioActions.LOAD_PORTFOLIOS,   payload: payload};}
 function sortPortfoliosAction(payload)  {return {type: portfolioActions.SORT_PORTFOLIOS,   payload: payload};}
 function updatePortfolioAction(payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload};}
@@ -57,6 +58,27 @@ export function deletePortfolio(portfolio) {
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Delete Portfolio Error: ', error: error})))
     );
+  }
+}
+
+export function loadLastPrices(portfolio) {
+  let symbols = portfolio.open_positions.map( function(position) {return position.stock_symbol.name});
+  if (symbols.length > 0) {
+    return function(dispatch) {
+      dispatch(updatingPortfolioAction());
+      return (
+        fetch(`/api/daily_trades/last_close?symbols=${symbols.toString()}`)
+        .then(Fetch.checkStatus)
+        .then(response => response.json())
+        .then(responseJson => {
+          if (!responseJson.length) {
+            throw new Error('Empty response from server');
+          }
+          dispatch(loadLastPricesAction({portfolioId: portfolio.id, prices: responseJson}));
+        })
+        .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Last Prices: ', error: error})))
+      )
+    }
   }
 }
 
