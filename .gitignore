@@ -51,9 +51,6 @@ bower.json
 # Ignore Byebug command history file.
 .byebug_history
 
-# Don't track downloaded Node.js packages.
-/node_modules
-
 # Don't bother tracking coverage results.
 coverage
 
