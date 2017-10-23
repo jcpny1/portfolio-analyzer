@@ -35,7 +35,14 @@ class PortfoliosPage extends Component {
   }
 
   render() {
-    return (<Portfolios portfolios={this.props.portfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
+    let {portfolios} = this.props;
+    let sumMarketValue = 0.0, sumTotalCost = 0.0;
+    portfolios.forEach(function(portfolio) {
+      sumMarketValue += parseFloat(portfolio.marketValue);
+      sumTotalCost   += parseFloat(portfolio.totalCost);
+    });
+    const totalGainLoss = sumMarketValue - sumTotalCost;
+    return (<Portfolios portfolios={portfolios} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
   }
 }
 

@@ -25,8 +25,9 @@ export default class PortfolioEditPage extends Component {
   }
 
   handleOpen = () => {
-    if (this.props.portfolio) {
-      this.setState({id: this.props.portfolio.id, name: this.props.portfolio.name});
+    const {portfolio} = this.props;
+    if (portfolio) {
+      this.setState({id: portfolio.id, name: portfolio.name});
     }
     this.setState({modalOpen: true});
   }
@@ -38,14 +39,14 @@ export default class PortfolioEditPage extends Component {
   }
 
   render() {
-    let {modalOpen, name} = this.state;
+    const {actionName, iconColor, iconName, modalOpen, name, tooltip} = this.state;
     return (
       <Modal
-        trigger={<Icon name={this.props.iconName} title={this.props.tooltip} link color={this.props.iconColor} onClick={this.handleOpen}> {this.props.actionName}</Icon>}
+        trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}> {actionName}</Icon>}
         open={modalOpen}
         onClose={this.handleCancel}
       >
-        <Header icon='browser' content='Portfolio Editor'/>
+        <Modal.Header><Header as='h3' icon='browser' content='Portfolio Editor'/></Modal.Header>
         <Modal.Content><PortfolioEdit name={name} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>

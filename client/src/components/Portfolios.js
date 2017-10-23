@@ -5,7 +5,7 @@ import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
 
 const Portfolios = (props) => {
-  const {portfolios} = props;
+  const {portfolios, totalCost, totalGainLoss, totalMarketValue} = props;
 
   const new_portfolio = {
       id: '',
@@ -43,18 +43,12 @@ const Portfolios = (props) => {
   }
 
   function sumPortfolios() {
-    let sumMarketValue = 0.0, sumTotalCost = 0.0;
-    portfolios.forEach(function(portfolio) {
-      sumMarketValue += parseFloat(portfolio.marketValue);
-      sumTotalCost   += parseFloat(portfolio.totalCost);
-    });
-    const totalGainLoss = sumMarketValue - sumTotalCost;
     return (
       <Table.Row>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell>Total</Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'><Fmt.Currency value={sumMarketValue}/></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'><Fmt.Currency value={sumTotalCost}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={totalMarketValue}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={totalCost}/></Table.HeaderCell>
         <Table.HeaderCell textAlign='right'><Fmt.Currency value={totalGainLoss}/></Table.HeaderCell>
       </Table.Row>
     );

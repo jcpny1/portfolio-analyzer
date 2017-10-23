@@ -10,7 +10,7 @@ export default class PositionEditPage extends Component {
 
   componentDidMount() {
     if (this.state.symbolOptions.length === 0) {
-      this.setState({symbolOptions: this.props.stock_symbols.map( symbol => {return {key: symbol.name, text: symbol.name, value: symbol.id};})});
+      this.setState({symbolOptions: this.props.stockSymbols.map( symbol => {return {key: symbol.name, text: symbol.name, value: symbol.id};})});
     }
   }
 
@@ -36,8 +36,9 @@ export default class PositionEditPage extends Component {
   }
 
   handleOpen = () => {
-    if (this.props.position) {
-      this.setState({id: this.props.position.id, portfolio_id: this.props.position.portfolio_id, stock_symbol_id: this.props.position.stock_symbol.id, quantity: this.props.position.quantity, cost: this.props.position.cost, date_acquired: this.props.position.date_acquired});
+    const {position} = this.props;
+    if (position) {
+      this.setState({id: position.id, portfolio_id: position.portfolio_id, stock_symbol_id: position.stock_symbol.id, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired});
     }
     this.setState({modalOpen: true});
   }
@@ -57,9 +58,7 @@ export default class PositionEditPage extends Component {
         open={modalOpen}
         onClose={this.handleCancel}
       >
-        <Modal.Header>
-          <Header as='h3' icon='browser' content='Position Editor'/>
-        </Modal.Header>
+        <Modal.Header><Header as='h3' icon='browser' content='Position Editor'/></Modal.Header>
         <Modal.Content><PositionEdit symbols={symbolOptions} stock_symbol_id={stock_symbol_id} quantity={quantity} cost={cost} date_acquired={date_acquired} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>

@@ -4,7 +4,7 @@ import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
-  const {portfolio} = props;
+  const {portfolio, stockSymbols} = props;
 
   const new_position = {
       portfolio_id: portfolio.id,
@@ -18,7 +18,7 @@ const Positions = (props) => {
   function columnTitles() {
     return (
       <Table.Row>
-        <Table.HeaderCell>{<PositionEditPage position={new_position} stock_symbols={props.stockSymbols} iconName='add' iconColor='blue' actionName='Add' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PositionEditPage position={new_position} stockSymbols={stockSymbols} iconName='add' iconColor='blue' actionName='Add' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('lastClosePrice')}>Last Close</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
@@ -35,7 +35,7 @@ const Positions = (props) => {
       return (
         <Table.Row key={index}>
           <Table.Cell>
-            {<PositionEditPage position={position} stock_symbols={props.stockSymbols} iconName='edit' iconColor='blue' actionName='' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
+            {<PositionEditPage position={position} stockSymbols={stockSymbols} iconName='edit' iconColor='blue' actionName='' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
             <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(position)}/>
           </Table.Cell>
           <Table.Cell>{position.stock_symbol.name}</Table.Cell>
@@ -57,9 +57,9 @@ const Positions = (props) => {
         <Table.HeaderCell>Total</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'><Fmt.Currency value={props.portfolio.marketValue}/></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'><Fmt.Currency value={props.portfolio.totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell textAlign='right'><Fmt.Currency value={props.portfolio.gainLoss}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={portfolio.marketValue}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={portfolio.totalCost}/></Table.HeaderCell>
+        <Table.HeaderCell textAlign='right'><Fmt.Currency value={portfolio.gainLoss}/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );

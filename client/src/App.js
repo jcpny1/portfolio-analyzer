@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Dropdown, Grid, Image, Menu} from 'semantic-ui-react';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
@@ -38,11 +38,13 @@ class App extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Route exact path="/"           component={PortfoliosPage}/>
-          <Route path="/about"            component={PortfoliosPage}/>
-          <Route path="/home"             component={PortfoliosPage}/>
-          <Route path="/portfolios/:id"   component={PositionsPage}/>
-          <Route exact path="/portfolios" component={PortfoliosPage}/>
+          <Switch>
+            <Route exact path="/"           component={PortfoliosPage}/>
+            <Route path="/about"            component={PortfoliosPage}/>
+            <Route path="/home"             component={PortfoliosPage}/>
+            <Route exact path="/portfolios" component={PortfoliosPage}/>
+            <Route path="/portfolios/:id"   component={PositionsPage}/>
+          </Switch>
         </div>
       </Router>
     );

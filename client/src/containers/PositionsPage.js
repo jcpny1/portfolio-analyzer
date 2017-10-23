@@ -58,7 +58,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators({ ...portfolioActions, ...positionActions, ...stockSymbolActions }, dispatch)};  // !! ...portfolioActions kludge for position refresh error.
+  return {actions: bindActionCreators({...portfolioActions, ...positionActions, ...stockSymbolActions}, dispatch)};  // !! ...portfolioActions kludge for position refresh error.
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);
