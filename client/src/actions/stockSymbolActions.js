@@ -18,7 +18,7 @@ export function loadStockSymbols() {
       .then(response => response.json())
       .then(responseJson => {
         if (!responseJson.length) {
-          throw responseJson;
+          throw new Error('Empty response from server');
         }
         dispatch(loadStockSymbolsAction(responseJson));
       })
