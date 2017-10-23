@@ -9,7 +9,11 @@ export function loadStockSymbols() {
   return function(dispatch) {
     dispatch({type: 'LOADING_STOCK_SYMBOLS', payload: ''})
     return (
-      fetch('/api/stock_symbols')
+      fetch('/api/stock_symbols', {
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
