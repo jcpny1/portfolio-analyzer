@@ -3,12 +3,13 @@ import React from 'react';
 // Returns a formatted currency string.
 const Currency = (props) => {
   const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
-
+  let result = '';
   if (formattedValue[0] === '-') {
-    return <span style={{color:'red'}}>{formattedValue}</span>;
+    result = <span style={{color:'red'}}>{formattedValue}</span>;
+  } else {
+    result = <span>{formattedValue}</span>;
   }
-
-  return <span>{formattedValue}</span>;
+  return result;
 }
 
 // Returns a formatted quantity string.
