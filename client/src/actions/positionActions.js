@@ -45,6 +45,9 @@ export function deletePosition(open_position) {
     return (
       fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
         method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+        },
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())

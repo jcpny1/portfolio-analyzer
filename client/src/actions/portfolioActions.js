@@ -46,6 +46,9 @@ export function deletePortfolio(portfolioId) {
     return (
       fetch(`/api/portfolios/${portfolioId}`, {
         method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+        },
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
@@ -64,7 +67,11 @@ export function loadPortfolios() {
   return function(dispatch) {
     dispatch(updatingPortfolioAction());
     return (
-      fetch('/api/portfolios')
+      fetch('/api/portfolios', {
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
@@ -82,7 +89,11 @@ export function refreshPortfolio(portfolioId) {
   return function(dispatch) {
     dispatch(updatingPortfolioAction());
     return (
-      fetch(`/api/portfolios/${portfolioId}`)
+      fetch(`/api/portfolios/${portfolioId}`, {
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
       .then(Fetch.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
