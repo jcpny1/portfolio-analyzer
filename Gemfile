@@ -1,13 +1,14 @@
 source 'https://rubygems.org'
 
+# force use of https.
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.4'  # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'sqlite3'  # Use sqlite3 as the database for Active Record
-gem 'puma', '~> 3.7'  # Use Puma as the app server
+gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
+gem 'sqlite3'                     # Using sqlite3 as the database for Active Record.
+gem 'puma', '~> 3.10'             # HTTP 1.1 server for Ruby/Rack applications.
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
@@ -23,22 +24,22 @@ gem 'puma', '~> 3.7'  # Use Puma as the app server
 # gem 'rack-cors'
 
 # JCP added:
-gem 'active_model_serializers', '~> 0.10.0'
-gem 'dotenv-rails'
-gem 'foreman', '~> 0.84.0'
-gem 'faraday'  # for GET and POST
+gem 'active_model_serializers', '~> 0.10.0'   # JSON generators.
+gem 'dotenv-rails'            # Loads environment variables from `.env`.
+gem 'foreman', '~> 0.84.0'    # Process manager for applications with multiple components.
+gem 'faraday'                 # HTTP/REST API client library.
 # end JCP added
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'spring'  # speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'       # File modification notifications.
+  gem 'spring'                            # Preloads your application so things like console, rake and tests run faster.
+  gem 'spring-watcher-listen', '~> 2.0.0' # Makes spring watch files using the listen gem.
 end
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'pry'
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]   # A Ruby debugger.
+  gem 'pry'   # An IRB alternative runtime developer console.
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]  # Timezone database packaged as Ruby modules for TZInfo.

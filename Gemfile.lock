@@ -152,8 +152,8 @@ DEPENDENCIES
   foreman (~> 0.84.0)
   listen (>= 3.0.5, < 3.2)
   pry
-  puma (~> 3.7)
-  rails (~> 5.1.4)
+  puma (~> 3.10)
+  rails (~> 5.1, >= 5.1.4)
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
