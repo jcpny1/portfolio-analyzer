@@ -4,7 +4,6 @@ export const portfolioActions = {
   ADD_PORTFOLIO:      'ADD_PORTFOLIO',
   DELETE_PORTFOLIO:   'DELETE_PORTFOLIO',
   ERROR_PORTFOLIOS:   'ERROR_PORTFOLIOS',
-  LOAD_LAST_PRICES:   'LOAD_LAST_PRICES',
   LOAD_PORTFOLIOS:    'LOAD_PORTFOLIOS',
   SORT_PORTFOLIOS:    'SORT_PORTFOLIOS',
   UPDATE_PORTFOLIOS:  'UPDATE_PORTFOLIOS',
@@ -53,22 +52,6 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       const {error, prefix} = action.payload;
       alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolios: false});
-    }
-
-    // Update position prices with latest prices.
-    case portfolioActions.LOAD_LAST_PRICES: {
-      const payloadPortfolioId = action.payload.portfolioId;
-      const payloadPrices      = action.payload.prices;
-      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolioId;});
-      const portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
-
-      portfolio.open_positions.forEach(function(position) {
-        const payloadPricesIndex = payloadPrices.findIndex(price => {return price.stock_symbol_id === position.stock_symbol.id});
-        position.lastClosePrice = payloadPrices[payloadPricesIndex].close_price;
-      });
-
-      const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
     // Load Portfolios.
