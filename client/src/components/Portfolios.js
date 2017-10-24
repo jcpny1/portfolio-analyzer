@@ -57,7 +57,7 @@ const Portfolios = (props) => {
   return (
     <Grid.Column>
       <Header content='Account Summary' size='large' color='purple'></Header>
-      <Button content='Refresh' icon='refresh' title='Refresh portfolios' size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}}/>
+      <Button content='Refresh' icon='refresh' title='Refresh portfolios' size='tiny' inverted compact style={{'color':'darkorchid', 'padding':'0'}} onClick={() => props.refreshPortfolios()}/>
       <Table celled compact sortable striped style={{'margin':'0','padding':'0'}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPortfolios()}</Table.Body>

@@ -12,6 +12,10 @@ class PortfoliosPage extends Component {
     this.props.portfolios.length || this.props.actions.loadPortfolios()
   }
 
+  refreshPortfolios = () => {
+    this.props.actions.refreshPortfolios();
+  }
+
   removePortfolio = (portfolio) => {
     if (window.confirm('Are you sure?')) {
       this.props.actions.deletePortfolio(portfolio);
@@ -42,7 +46,7 @@ class PortfoliosPage extends Component {
       sumTotalCost   += parseFloat(portfolio.totalCost);
     });
     const totalGainLoss = sumMarketValue - sumTotalCost;
-    return (<Portfolios portfolios={portfolios} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
+    return (<Portfolios portfolios={portfolios} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
   }
 }
 

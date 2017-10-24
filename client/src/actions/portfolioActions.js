@@ -190,7 +190,13 @@ export function refreshPortfolio(portfolioId) {
         }
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Refresh Portfolio Error: ', error: error})))
-    )
+    );
+  }
+}
+
+export function refreshPortfolios() {
+  return function(dispatch) {
+    dispatch(updatingPortfolioAction());
   }
 }
 
