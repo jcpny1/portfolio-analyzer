@@ -65,10 +65,10 @@ puts "FETCH complete for: " + symbol
         begin
           response = JSON.parse(resp.body)
 
-
         prices[symbol] = {}
 
-        if response.key?('Error Message')
+# TODO create an error message if response length is 0.
+        if response.key?('Error Message') || response.length == 0
           prices[symbol]['header'] = {'0. Error' => response['Error Message']}
         else
 puts("prices: " + prices.inspect)

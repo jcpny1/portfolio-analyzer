@@ -12,16 +12,14 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Grid columns={1} style={{'marginLeft': '1rem'}}>
+          <Grid celled divided padded>
             <Grid.Row>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={14}>
+              <Grid.Column stretched>
                 <Image src='/images/logo.jpg'/>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column width={14}>
+              <Grid.Column>
                 <Menu>
                   <Menu.Item as={Link} to='/'>Summary</Menu.Item>
                   {<SymbolsPage/>}
@@ -37,14 +35,16 @@ class App extends Component {
                 </Menu>
               </Grid.Column>
             </Grid.Row>
+            <Grid.Row>
+              <Switch>
+                <Route exact path="/"           component={PortfoliosPage}/>
+                <Route path="/about"            component={PortfoliosPage}/>
+                <Route path="/home"             component={PortfoliosPage}/>
+                <Route exact path="/portfolios" component={PortfoliosPage}/>
+                <Route path="/portfolios/:id"   component={PositionsPage}/>
+              </Switch>
+            </Grid.Row>
           </Grid>
-          <Switch>
-            <Route exact path="/"           component={PortfoliosPage}/>
-            <Route path="/about"            component={PortfoliosPage}/>
-            <Route path="/home"             component={PortfoliosPage}/>
-            <Route exact path="/portfolios" component={PortfoliosPage}/>
-            <Route path="/portfolios/:id"   component={PositionsPage}/>
-          </Switch>
         </div>
       </Router>
     );

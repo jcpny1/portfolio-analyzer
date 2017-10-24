@@ -51,10 +51,10 @@ export default class PositionEditPage extends Component {
 
   render() {
     const {modalOpen, symbolOptions, stock_symbol_id, quantity, cost, date_acquired} = this.state;
-    const {actionName, iconColor, iconName, tooltip} = this.props;
+    const {iconColor, iconName, tooltip} = this.props;
     return (
       <Modal
-        trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}> {actionName}</Icon>}
+        trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
         open={modalOpen}
         onClose={this.handleCancel}
       >
