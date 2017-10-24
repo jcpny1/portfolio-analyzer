@@ -34,7 +34,8 @@ export default class PortfolioEditPage extends Component {
 
   handleSubmit = () => {
     const {id, name} = this.state;
-    this.props.onClickSubmit({id: id, name: name});
+    const portfolio = Object.assign({}, this.props.portfolio, {id, name});
+    this.props.onClickSubmit(portfolio);
     this.resetComponent();
   }
 

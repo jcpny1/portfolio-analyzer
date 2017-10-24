@@ -9,7 +9,7 @@ export default class PositionEditPage extends Component {
   }
 
   componentDidMount() {
-    if (this.state.symbolOptions.length === 0) {
+    if (!('symbolOptions' in this.state)) {
       this.setState({symbolOptions: this.props.stockSymbols.map( symbol => {return {key: symbol.name, text: symbol.name, value: symbol.id};})});
     }
   }
@@ -17,7 +17,6 @@ export default class PositionEditPage extends Component {
   resetComponent = () => {
     this.setState({
       modalOpen: false,
-      symbolOptions: [],
       id: '',
       portfolio_id: '',
       stock_symbol_id: '',
@@ -45,7 +44,10 @@ export default class PositionEditPage extends Component {
 
   handleSubmit = () => {
     const {id, portfolio_id, stock_symbol_id, quantity, cost, date_acquired} = this.state;
-    this.props.onClickSubmit({id: id, portfolio_id: portfolio_id, stock_symbol_id: stock_symbol_id, quantity: quantity, cost: cost, date_acquired: date_acquired});
+    const {position, stockSymbols} = this.props;
+    const stock_symbol = stockSymbols.find(stockSymbol => {return stockSymbol.id === stock_symbol_id});
+    const newPosition = Object.assign({}, position, {id, portfolio_id, stock_symbol, quantity, cost, date_acquired});
+    this.props.onClickSubmit(newPosition);
     this.resetComponent();
   }
 

@@ -3,11 +3,11 @@ class OpenPositionsController < ApplicationController
 
   # Add a new open position to a portfolio and save it to the database.
   def create
-    @portfolio.open_positions.new(open_position_params)
-    if @portfolio.save
-      render json: @portfolio
+    open_position = @portfolio.open_positions.new(open_position_params)
+    if open_position.save
+      render json: open_position
     else
-      render json: @portfolio.errors.full_messages, status: :unprocessable_entity
+      render json: open_position.errors.full_messages, status: :unprocessable_entity
     end
   end
 

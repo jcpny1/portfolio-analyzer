@@ -66,18 +66,18 @@ puts "FETCH complete for: " + symbol
           response = JSON.parse(resp.body)
 
         prices[symbol] = {}
+        daily_trade = DailyTrade.new
+        daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
 
 # TODO create an error message if response length is 0.
         if response.key?('Error Message') || response.length == 0
           prices[symbol]['header'] = {'0. Error' => response['Error Message']}
         else
-puts("prices: " + prices.inspect)
           prices[symbol]['header'] = response['Meta Data']
           prices[symbol]['tick']   = response['Time Series (1min)'].first
+puts("prices: " + prices[symbol].inspect)
+          daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
         end
-        daily_trade = DailyTrade.new
-        daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
-        daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
         daily_trades[i] = daily_trade
 
       rescue SyntaxError => e

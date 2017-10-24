@@ -16,11 +16,11 @@ export function loadStockSymbols() {
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.length) {
+      .then(stockSymbols => {
+        if (!stockSymbols.length) {
           throw new Error('Empty response from server');
         }
-        dispatch(loadStockSymbolsAction(responseJson));
+        dispatch(loadStockSymbolsAction(stockSymbols));
       })
       .catch(error => dispatch(errorStockSymbolAction({prefix: 'Load Stock Symbols Error: ', error: error})))
     )

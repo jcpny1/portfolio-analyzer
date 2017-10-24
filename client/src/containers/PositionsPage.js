@@ -12,7 +12,7 @@ class PositionsPage extends Component {
 
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
-    this.props.portfolios.length   || this.props.actions.loadPortfolios() // !! kludge for refresh clearing state.
+    this.props.portfolios.length   || this.props.actions.loadPortfolios(false)   // !! kludge for refresh clearing state.
   }
 
   refreshPortfolio = (portfolio) => {
@@ -38,14 +38,15 @@ class PositionsPage extends Component {
     this.lastSortReverse = reverseSort;
   }
 
-  submitPosition = (open_position) => {
-    (open_position.id === '') ? this.props.actions.addPosition(open_position) : this.props.actions.updatePosition(open_position);
+  submitPosition = (openPosition) => {
+    (openPosition.id === '') ? this.props.actions.addPosition(openPosition) : this.props.actions.updatePosition(openPosition);
+    const portfolio = Object.assign({}, this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === openPosition.portfolio_id}));
+    this.props.actions.repricePortfolioForPosition(portfolio, openPosition);
   }
 
   render() {
-    const portfolio_id = parseInt(this.props.match.params.id, 10);
-    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolio_id;});
-
+    const portfolioId = parseInt(this.props.match.params.id, 10);
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
     if (portfolio) {    // if user hit browser refresh, state gets cleared out!
       return (<Positions portfolio={portfolio} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
@@ -58,7 +59,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators({...portfolioActions, ...positionActions, ...stockSymbolActions}, dispatch)};  // !! ...portfolioActions kludge for position refresh error.
+  return {actions: bindActionCreators({...portfolioActions, ...positionActions, ...stockSymbolActions}, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);

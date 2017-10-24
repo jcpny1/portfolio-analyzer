@@ -1,20 +1,12 @@
 import fetch from 'isomorphic-fetch';
 import Fetch from '../utils/fetch';
-import {portfolioActions} from '../reducers/portfolios_reducer';
+import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 
 const GUEST_USER_ID = 1;
 
-function addPortfolioAction(payload)    {return {type: portfolioActions.ADD_PORTFOLIO,     payload: payload};}
-function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: payload};}
-function errorPortfolioAction(payload)  {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: payload};}
-function loadPortfoliosAction(payload)  {return {type: portfolioActions.LOAD_PORTFOLIOS,   payload: payload};}
-function sortPortfoliosAction(payload)  {return {type: portfolioActions.SORT_PORTFOLIOS,   payload: payload};}
-function updatePortfolioAction(payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload};}
-function updatingPortfolioAction()      {return {type: portfolioActions.UPDATING_PORTFOLIO};}
-
 export function addPortfolio(portfolio) {
   return function(dispatch) {
-    dispatch(updatingPortfolioAction());
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch('/api/portfolios/', {
         method: 'POST',
@@ -33,16 +25,16 @@ export function addPortfolio(portfolio) {
         if (!responseJson.id) {
           throw responseJson;
         }
-        dispatch(addPortfolioAction(responseJson));
+        dispatch(PortfolioReducerFunctions.addPortfolioAction(responseJson));
       })
-      .catch(error => dispatch(errorPortfolioAction({prefix: 'Add Portfolio Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio Error: ', error: error})))
     );
   }
 }
 
 export function deletePortfolio(portfolioId) {
   return function(dispatch) {
-    dispatch(updatingPortfolioAction());
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${portfolioId}`, {
         method: 'DELETE',
@@ -56,9 +48,9 @@ export function deletePortfolio(portfolioId) {
         if (!responseJson.id) {
           throw responseJson;
         }
-        dispatch(deletePortfolioAction(portfolioId));
+        dispatch(PortfolioReducerFunctions.deletePortfolioAction(portfolioId));
       })
-      .catch(error => dispatch(errorPortfolioAction({prefix: 'Delete Portfolio Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Portfolio Error: ', error: error})))
     );
   }
 }
@@ -66,9 +58,6 @@ export function deletePortfolio(portfolioId) {
 // Initialize a portfolio's summary values. Return an array of stock symbols contained in the portfolio.
 function initPortfolioSummaryValues(portfolio) {
   let symbols = [];
-  portfolio.marketValue = 0.0;
-  portfolio.totalCost   = 0.0;
-  portfolio.gainLoss    = 0.0;
   portfolio.open_positions.forEach(function(position) {
     position.lastClosePrice = 0.0;
     position.marketValue    = 0.0;
@@ -80,22 +69,27 @@ function initPortfolioSummaryValues(portfolio) {
 
 // Update the portfolio with dailyTrade prices. Assumes summary values have been initialized beforehand.
 function processPrices(portfolio, dailyTrades) {
+  portfolio.marketValue = 0.0;
+  portfolio.totalCost   = 0.0;
+  portfolio.gainLoss    = 0.0;
   portfolio.open_positions.forEach(function(position) {
     const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
     if (dailyTradesIndex !== -1) {
       position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
       position.marketValue    = position.quantity * position.lastClosePrice;
       position.gainLoss       = position.marketValue - position.cost;
-      portfolio.marketValue  += position.marketValue;
-      portfolio.totalCost    += position.cost;
-      portfolio.gainLoss     += position.gainLoss;
     }
+    portfolio.marketValue  += position.marketValue;
+    portfolio.totalCost    += position.cost;
+    portfolio.gainLoss     += position.gainLoss;
   });
 }
 
+// Specify portfolioId to load one portfolio. Do not specify portfolioId to load all portfolios.
 export function loadPortfolios(loadLivePrices, portfolioId) {
   return function(dispatch) {
-    dispatch(updatingPortfolioAction());
+console.log("LOAD PORTFOLIOS");
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     const pId = (typeof portfolioId === 'number') ? portfolioId : '';
     return (
       fetch(`/api/portfolios/${pId}`, {
@@ -129,27 +123,59 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
               throw new Error('Empty response from server');
             }
             portfolios.forEach(function(portfolio) {processPrices(portfolio, dailyTrades)});
-            dispatch(loadPortfoliosAction(portfolios));
+
+            if (pId.length === 0) {
+              dispatch(PortfolioReducerFunctions.loadPortfoliosAction(portfolios));
+            } else {
+              dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolios[0]));
+            }
           });
         }
       })
-      .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
+    );
+  }
+}
+
+// Updates a position's applicable portfolio with new prices.
+export function repricePortfolioForPosition(portfolio, openPosition) {
+  return function(dispatch) {
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
+    return (
+      fetch(`/api/daily_trades/lastPrices?symbols=${openPosition.stock_symbol.name}&livePrices`, {
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(dailyTrades => {
+        if (!dailyTrades.length) {
+          throw new Error('Empty response from server');
+        }
+        portfolio.marketValue = 0.0;
+        portfolio.totalCost   = 0.0;
+        portfolio.gainLoss    = 0.0;
+        processPrices(portfolio, dailyTrades);
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
+      })
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
     );
   }
 }
 
 export function sortPortfolios(columnName, reverseSort) {
   return function(dispatch) {
-    dispatch(updatingPortfolioAction());
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
-        dispatch(sortPortfoliosAction({columnName, reverseSort}))
+        dispatch(PortfolioReducerFunctions.sortPortfoliosAction({columnName, reverseSort}))
     );
   }
 }
 
 export function updatePortfolio(portfolio) {
   return function(dispatch) {
-    dispatch(updatingPortfolioAction());
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${portfolio.id}`, {
         method: 'PATCH',
@@ -167,9 +193,9 @@ export function updatePortfolio(portfolio) {
         if (!responseJson.id) {
           throw responseJson;
         }
-        dispatch(updatePortfolioAction(responseJson));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
       })
-      .catch(error => dispatch(errorPortfolioAction({prefix: 'Update Portfolio Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio Error: ', error: error})))
     );
   }
 }
