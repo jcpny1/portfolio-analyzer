@@ -89,7 +89,7 @@ export function refreshPortfolio(portfolioId) {
   return function(dispatch) {
     dispatch(updatingPortfolioAction());
     return (
-      fetch(`/api/portfolios/${portfolioId}`, {
+      fetch(`/api/portfolios/${portfolioId}?livePrices`, {
         headers: {
           'Accept': 'application/json',
         },

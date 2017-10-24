@@ -89,15 +89,16 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
-    // Show one or more Portfolios are being modified.
-    case portfolioActions.UPDATING_PORTFOLIO:
+    // Show that one or more Portfolios are being modified.
+    case portfolioActions.UPDATING_PORTFOLIO:   // fall through
+    case portfolioActions.UPDATING_POSITION:
       return Object.assign({}, state, {updatingPortfolios: true});
 
     // **********************************
     // >>> PORTFOLIO POSITION ACTIONS <<<
     // **********************************
 
-      // Update a Position.
+    // Update a Position.
     case portfolioActions.ADD_POSITION: {
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id;});
@@ -129,7 +130,7 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
         case 'stock_symbol':
           portfolio.open_positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name.toUpperCase()}));
           break;
-        case 'date_acquired':  // fall through
+        case 'date_acquired':
           portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseInt));
           break;
         case 'cost':           // fall through
@@ -154,10 +155,6 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
-
-    // Show one or more Portfolios are being modified.
-    case portfolioActions.UPDATING_POSITION:
-      return Object.assign({}, state, {updatingPortfolios: true});
 
     // Default action.
     default:
