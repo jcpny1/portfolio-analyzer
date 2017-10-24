@@ -39,7 +39,8 @@ export default class PortfolioEditPage extends Component {
   }
 
   render() {
-    const {actionName, iconColor, iconName, modalOpen, name, tooltip} = this.state;
+    const {modalOpen, name} = this.state;
+    const {actionName, iconColor, iconName, tooltip} = this.props;
     return (
       <Modal
         trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}> {actionName}</Icon>}

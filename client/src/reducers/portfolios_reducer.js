@@ -17,10 +17,10 @@ export const portfolioActions = {
 };
 
 export default function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
-  // console.log("ACTION type: " + action.type + " payload: " + action.payload + " STATE: " + JSON.stringify(state));
 
-  var sort_by = function(field, reverse = false, compare) {
-    var key = function (x) {return compare ? compare(x[field]) : x[field]};
+  // A generic sort comparator function.
+  var sort_by = function(field, reverse = false, compareFn) {
+    var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
     return function (a,b) {
   	  var A = key(a), B = key(b);
       return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
@@ -29,9 +29,9 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
 
   switch ( action.type ) {
 
-    // ************************* //
-    // *** PORTFOLIO ACTIONS *** //
-    // ************************* //
+    // *************************
+    // >>> PORTFOLIO ACTIONS <<<
+    // *************************
 
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
@@ -93,9 +93,9 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
     case portfolioActions.UPDATING_PORTFOLIO:
       return Object.assign({}, state, {updatingPortfolios: true});
 
-      // ********************************** //
-      // *** PORTFOLIO POSITION ACTIONS *** //
-      // ********************************** //
+    // **********************************
+    // >>> PORTFOLIO POSITION ACTIONS <<<
+    // **********************************
 
       // Update a Position.
     case portfolioActions.ADD_POSITION: {
@@ -129,8 +129,10 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
         case 'stock_symbol':
           portfolio.open_positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name.toUpperCase()}));
           break;
-        case 'cost':
         case 'date_acquired':  // fall through
+          portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseInt));
+          break;
+        case 'cost':           // fall through
         case 'gainLoss':       // fall through
         case 'lastClosePrice': // fall through
         case 'marketValue':    // fall through
