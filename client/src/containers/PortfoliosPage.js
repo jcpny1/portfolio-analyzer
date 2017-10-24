@@ -9,11 +9,11 @@ class PortfoliosPage extends Component {
   lastSortReverse = false;  // was the last sort a reverse sort?
 
   componentDidMount() {
-    this.props.portfolios.length || this.props.actions.loadPortfolios()
+    this.props.portfolios.length || this.props.actions.loadPortfolios(false)
   }
 
   refreshPortfolios = () => {
-    this.props.actions.refreshPortfolios();
+    this.props.actions.loadPortfolios(true);
   }
 
   removePortfolio = (portfolio) => {

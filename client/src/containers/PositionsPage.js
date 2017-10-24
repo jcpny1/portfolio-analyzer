@@ -16,7 +16,7 @@ class PositionsPage extends Component {
   }
 
   refreshPortfolio = (portfolio) => {
-    this.props.actions.refreshPortfolio(portfolio.id);
+    this.props.actions.loadPortfolios(true, portfolio.id);
   }
 
   removePosition = (open_position) => {

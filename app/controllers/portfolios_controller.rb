@@ -8,7 +8,7 @@ class PortfoliosController < ApplicationController
 
   # Retrieve a portfolio.
   def show
-    render json: @portfolio
+    render json: [@portfolio]
   end
 
   # Create a new portfolio and save it to the database.

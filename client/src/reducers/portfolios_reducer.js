@@ -8,6 +8,7 @@ export const portfolioActions = {
   SORT_PORTFOLIOS:    'SORT_PORTFOLIOS',
   UPDATE_PORTFOLIOS:  'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
+
   ADD_POSITION:       'ADD_POSITION',
   DELETE_POSITION:    'DELETE_POSITION',
   ERROR_POSITIONS:    'ERROR_POSITIONS',
@@ -17,7 +18,6 @@ export const portfolioActions = {
 };
 
 export default function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
-
   // A generic sort comparator function.
   var sort_by = function(field, reverse = false, compareFn) {
     var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
