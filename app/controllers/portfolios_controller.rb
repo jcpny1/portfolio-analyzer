@@ -8,7 +8,6 @@ class PortfoliosController < ApplicationController
 
   # Retrieve a portfolio.
   def show
-    @portfolio.updateValuation
     render json: @portfolio
   end
 

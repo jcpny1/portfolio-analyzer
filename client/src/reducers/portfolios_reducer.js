@@ -27,6 +27,7 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
     }
   }
 
+console.log("ACTION: " + action.type);
   switch ( action.type ) {
 
     // *************************
@@ -55,8 +56,9 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
     }
 
     // Load Portfolios.
-    case portfolioActions.LOAD_PORTFOLIOS:
+    case portfolioActions.LOAD_PORTFOLIOS: {
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: action.payload});
+    }
 
     // Sort Portfolios.
     case portfolioActions.SORT_PORTFOLIOS: {
@@ -85,6 +87,7 @@ export default function portfoliosReducer(state= {updatingPortfolios: false, por
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id;});
+console.log("PORTFOLIOINDEX: " + portfolioIndex);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }

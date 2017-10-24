@@ -5,7 +5,6 @@ class OpenPositionsController < ApplicationController
   def create
     @portfolio.open_positions.new(open_position_params)
     if @portfolio.save
-      @portfolio.updateValuation
       render json: @portfolio
     else
       render json: @portfolio.errors.full_messages, status: :unprocessable_entity
@@ -15,7 +14,6 @@ class OpenPositionsController < ApplicationController
   # Commit open position edits to the database.
   def update
     if @portfolio.open_positions.find(params[:id]).update(open_position_params)
-      @portfolio.updateValuation
       render json: @portfolio
     else
       render json: @portfolio.errors.full_messages, status: :unprocessable_entity
@@ -25,7 +23,6 @@ class OpenPositionsController < ApplicationController
   # Delete an open position.
   def destroy
     if @portfolio.open_positions.destroy(params[:id])
-      @portfolio.updateValuation
       render json: @portfolio
     else
       render json: @portfolio.errors.full_messages, status: :unprocessable_entity

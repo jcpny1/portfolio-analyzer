@@ -37,47 +37,73 @@ class DailyTradesController < ApplicationController
   # }
 
   # Retrieve the latest closing price for the supplied symbols.
-  def last_close
-    symbols = params['symbols'].split(',').uniq
-    api_key = ENV['ALPHA_VANTAGE_API_KEY']
+  def last_prices
 
-    prices = {}
+    symbols = params['symbols'].split(',').uniq
     daily_trades = Array.new(symbols.length)
+
+if params.key?('livePrices')
+    api_key = ENV['ALPHA_VANTAGE_API_KEY']
+    prices = {}
 
     begin
       conn = Faraday.new(:url => 'https://www.alphavantage.co/query')
 
       symbols.each.with_index { |symbol, i|
+
+puts "START price fetch for: " + symbol
+
         resp = conn.get do |req|
           req.params['function'] = 'TIME_SERIES_INTRADAY'
           req.params['interval'] = '1min'
           req.params['symbol']   = symbol
           req.params['apikey']   = api_key
         end
-        response = JSON.parse(resp.body)
+
+puts "FETCH complete for: " + symbol
+
+        begin
+          response = JSON.parse(resp.body)
+
 
         prices[symbol] = {}
 
         if response.key?('Error Message')
           prices[symbol]['header'] = {'0. Error' => response['Error Message']}
         else
+puts("prices: " + prices.inspect)
           prices[symbol]['header'] = response['Meta Data']
           prices[symbol]['tick']   = response['Time Series (1min)'].first
         end
-
         daily_trade = DailyTrade.new
         daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
         daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
         daily_trades[i] = daily_trade
+
+      rescue SyntaxError => e
+        puts "JSON parse error: #{e}"
+      end
+puts "END   price fetch for: " + symbol
       }
 
     rescue Faraday::ClientError => e
-        puts "Faraday client error: #{e}"
+      puts "Faraday client error: #{e}"
     end
+else
+  symbols.each.with_index { |symbol, i|
+    stock_symbol = StockSymbol.find_by(name: symbol)
+    daily_trade = DailyTrade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC').first
+    daily_trades[i] = daily_trade.present? ? daily_trade : DailyTrade.new
+  }
+end
 
     render json: daily_trades
   end
 end
+
+
+# end
+
 
 # create_table "daily_trades", force: :cascade do |t|
 #   t.integer "stock_symbol_id", null: false

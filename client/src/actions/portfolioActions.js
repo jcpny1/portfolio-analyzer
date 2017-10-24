@@ -74,11 +74,57 @@ export function loadPortfolios() {
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.length) {
+      .then(portfolios => {
+        if (!portfolios.length) {
           throw new Error('Empty response from server');
         }
-        dispatch(loadPortfoliosAction(responseJson));
+        let symbols = [];
+
+        portfolios.forEach(function(portfolio) {
+          portfolio.marketValue = 0.0;
+          portfolio.totalCost   = 0.0;
+          portfolio.gainLoss    = 0.0;
+          portfolio.open_positions.forEach(function(position) {
+            position.lastClosePrice = 0.0;
+            position.marketValue    = 0.0;
+            position.gainLoss       = 0.0;
+            symbols.push(position.stock_symbol.name);
+          });
+        });
+
+        if (symbols.length > 0) {
+          fetch(`/api/daily_trades/lastPrices?symbols=${symbols.toString()}`, {
+            headers: {
+              'Accept': 'application/json',
+            },
+          })
+          .then(Fetch.checkStatus)
+          .then(response => response.json())
+          .then(dailyTrades => {
+            if (!dailyTrades.length) {
+              throw new Error('Empty response from server');
+            }
+
+            portfolios.forEach(function(portfolio) {
+              portfolio.open_positions.forEach(function(position) {
+                const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
+                if (dailyTradesIndex !== -1) {
+                  position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
+                  position.marketValue    = position.quantity * position.lastClosePrice;
+                  position.gainLoss       = position.marketValue - position.cost;
+                  portfolio.marketValue  += position.marketValue;
+                  portfolio.totalCost    += position.cost;
+                  portfolio.gainLoss     += position.gainLoss;
+                }
+              });
+            });
+            dispatch(loadPortfoliosAction(portfolios));
+          });
+        }
+
+
+
+
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
     );
@@ -89,18 +135,59 @@ export function refreshPortfolio(portfolioId) {
   return function(dispatch) {
     dispatch(updatingPortfolioAction());
     return (
-      fetch(`/api/portfolios/${portfolioId}?livePrices`, {
+      fetch(`/api/portfolios/${portfolioId}`, {
         headers: {
           'Accept': 'application/json',
         },
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.id) {
-          throw responseJson;
+      .then(portfolio => {
+        if (!portfolio.id) {
+          throw portfolio;
         }
-        dispatch(updatePortfolioAction(responseJson));
+
+
+        let symbols = [];
+
+        portfolio.marketValue = 0.0;
+        portfolio.totalCost   = 0.0;
+        portfolio.gainLoss    = 0.0;
+        portfolio.open_positions.forEach(function(position) {
+          position.lastClosePrice = 0.0;
+          position.marketValue    = 0.0;
+          position.gainLoss       = 0.0;
+          symbols.push(position.stock_symbol.name);
+        });
+
+        if (symbols.length > 0) {
+          fetch(`/api/daily_trades/lastPrices?symbols=${symbols.toString()}&livePrices`, {
+            headers: {
+              'Accept': 'application/json',
+            },
+          })
+          .then(Fetch.checkStatus)
+          .then(response => response.json())
+          .then(dailyTrades => {
+            if (!dailyTrades.length) {
+              throw new Error('Empty response from server');
+            }
+
+
+            portfolio.open_positions.forEach(function(position) {
+              const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
+              if (dailyTradesIndex !== -1) {
+                position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
+                position.marketValue    = position.quantity * position.lastClosePrice;
+                position.gainLoss       = position.marketValue - position.cost;
+                portfolio.marketValue  += position.marketValue;
+                portfolio.totalCost    += position.cost;
+                portfolio.gainLoss     += position.gainLoss;
+              }
+            });
+            dispatch(updatePortfolioAction(portfolio));
+          });
+        }
       })
       .catch(error => dispatch(errorPortfolioAction({prefix: 'Refresh Portfolio Error: ', error: error})))
     )
