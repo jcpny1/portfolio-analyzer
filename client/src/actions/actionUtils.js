@@ -9,5 +9,14 @@ function checkStatus(response) {
   return response;
 }
 
-const ActionUtils = {checkStatus};
+// A generic sort comparator function.
+var sort_by = function(field, reverse = false, compareFn) {
+  var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
+  return function (a,b) {
+    var A = key(a), B = key(b);
+    return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
+  }
+}
+
+const ActionUtils = {checkStatus, sort_by};
 export default ActionUtils;
