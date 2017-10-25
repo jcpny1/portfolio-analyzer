@@ -64,6 +64,17 @@ export function sortPositions(portfolio_id, columnName, reverseSort) {
   }
 }
 
+
+
+// TODO this belongs to portfolio actions and is duplicate code.
+function recomputePositionSummary(position, closePrice) {
+  position.lastClosePrice = closePrice;
+  position.marketValue    = position.quantity * position.lastClosePrice;
+  position.gainLoss       = position.marketValue - position.cost;
+}
+
+
+
 export function updatePosition(open_position) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
@@ -75,7 +86,7 @@ export function updatePosition(open_position) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          stock_symbol_id: open_position.stock_symbol.id,
+          stock_symbol_id: open_position.stock_symbol_id,
           quantity:        open_position.quantity,
           cost:            open_position.cost,
           date_acquired:   open_position.date_acquired,
@@ -87,6 +98,7 @@ export function updatePosition(open_position) {
         if (!newPosition.id) {
           throw newPosition;
         }
+        recomputePositionSummary(newPosition, open_position.lastClosePrice);
         dispatch(PortfolioReducerFunctions.updatePositionAction(newPosition));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position Error: ', error: error})))

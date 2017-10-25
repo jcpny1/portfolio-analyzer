@@ -28,6 +28,23 @@ export function deletePositionAction(payload) {return {type: portfolioActions.DE
 export function sortPositionsAction(payload)  {return {type: portfolioActions.SORT_POSITIONS,  payload: payload};}
 export function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITION, payload: payload};}
 
+
+
+// TODO Dup from portfolioActions
+function recomputePortfolioSummary(portfolio) {
+  portfolio.marketValue = 0.0;
+  portfolio.totalCost   = 0.0;
+  portfolio.gainLoss    = 0.0;
+  portfolio.open_positions.forEach(function(position) {
+    portfolio.marketValue  += position.marketValue;
+    portfolio.totalCost    += position.cost;
+    portfolio.gainLoss     += position.gainLoss;
+  });
+}
+
+
+
+
 export function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
   // A generic sort comparator function.
   var sort_by = function(field, reverse = false, compareFn) {
@@ -163,6 +180,11 @@ console.log("ACTION: " + action.type);
       let portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
       const positionIndex = portfolio.open_positions.findIndex(position => {return position.id === payloadPosition.id});
       portfolio.open_positions = [...portfolio.open_positions.slice(0,positionIndex), payloadPosition, ...portfolio.open_positions.slice(positionIndex+1)];
+
+  recomputePortfolioSummary(portfolio);
+
+
+
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
