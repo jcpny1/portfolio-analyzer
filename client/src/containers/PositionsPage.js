@@ -33,8 +33,9 @@ class PositionsPage extends Component {
     } else {
       reverseSort = !reverseSort;
     }
-    const portfolio_id = parseInt(this.props.match.params.id, 10);
-    this.props.actions.sortPositions(portfolio_id, columnName, reverseSort);
+const portfolioId = parseInt(this.props.match.params.id, 10);
+const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
+    this.props.actions.sortPositions(portfolio, columnName, reverseSort);
     this.lastSortReverse = reverseSort;
   }
 
@@ -45,8 +46,8 @@ class PositionsPage extends Component {
   }
 
   render() {
-    const portfolioId = parseInt(this.props.match.params.id, 10);
-    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
+const portfolioId = parseInt(this.props.match.params.id, 10);
+const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
     if (portfolio) {    // if user hits browser refresh, state gets cleared out!
       return (<Positions portfolio={portfolio} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }

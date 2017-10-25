@@ -55,12 +55,37 @@ export function deletePosition(open_position) {
   }
 }
 
-export function sortPositions(portfolio_id, columnName, reverseSort) {
+// A generic sort comparator function.
+var sort_by = function(field, reverse = false, compareFn) {
+  var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
+  return function (a,b) {
+    var A = key(a), B = key(b);
+    return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
+  }
+}
+
+export function sortPositions(portfolio, columnName, reverseSort) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    return (
-        dispatch(PortfolioReducerFunctions.sortPositionsAction({portfolio_id, columnName, reverseSort}))
-    );
+    switch (columnName) {
+      case 'stock_symbol':
+        portfolio.open_positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name.toUpperCase()}));
+        break;
+      case 'date_acquired':
+        portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseInt));
+        break;
+      case 'cost':           // fall through
+      case 'gainLoss':       // fall through
+      case 'lastClosePrice': // fall through
+      case 'marketValue':    // fall through
+      case 'quantity':
+        portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseFloat));
+        break;
+      default:
+        portfolio.open_positions.sort(sort_by(columnName, reverseSort));
+        break;
+    }
+    return (dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio)));
   }
 }
 

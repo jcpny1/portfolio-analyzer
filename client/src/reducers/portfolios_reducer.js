@@ -11,7 +11,6 @@ export const portfolioActions = {
 
   ADD_POSITION:       'ADD_POSITION',
   DELETE_POSITION:    'DELETE_POSITION',
-  SORT_POSITIONS:     'SORT_POSITIONS',
   UPDATE_POSITION:    'UPDATE_POSITION',
 };
 
@@ -25,7 +24,6 @@ export function updatingPortfolioAction()      {return {type: portfolioActions.U
 
 export function addPositionAction(payload)    {return {type: portfolioActions.ADD_POSITION,    payload: payload};}
 export function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION, payload: payload};}
-export function sortPositionsAction(payload)  {return {type: portfolioActions.SORT_POSITIONS,  payload: payload};}
 export function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITION, payload: payload};}
 
 
@@ -134,6 +132,7 @@ console.log("ACTION: " + action.type);
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPosition.portfolio_id});
       let portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
       portfolio.open_positions.push(payloadPosition);
+      recomputePortfolioSummary(portfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
@@ -142,34 +141,8 @@ console.log("ACTION: " + action.type);
     case portfolioActions.DELETE_POSITION: {
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
+      recomputePortfolioSummary(payloadPortfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
-    }
-
-    // Sort Positions within a Portfolio.
-    case portfolioActions.SORT_POSITIONS: {
-      const {portfolio_id, columnName, reverseSort} = action.payload;
-      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === portfolio_id});
-      const portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
-      switch (columnName) {
-        case 'stock_symbol':
-          portfolio.open_positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name.toUpperCase()}));
-          break;
-        case 'date_acquired':
-          portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseInt));
-          break;
-        case 'cost':           // fall through
-        case 'gainLoss':       // fall through
-        case 'lastClosePrice': // fall through
-        case 'marketValue':    // fall through
-        case 'quantity':
-          portfolio.open_positions.sort(sort_by(columnName, reverseSort, parseFloat));
-          break;
-        default:
-          portfolio.open_positions.sort(sort_by(columnName, reverseSort));
-          break;
-      }
-      const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
@@ -180,11 +153,7 @@ console.log("ACTION: " + action.type);
       let portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
       const positionIndex = portfolio.open_positions.findIndex(position => {return position.id === payloadPosition.id});
       portfolio.open_positions = [...portfolio.open_positions.slice(0,positionIndex), payloadPosition, ...portfolio.open_positions.slice(positionIndex+1)];
-
-  recomputePortfolioSummary(portfolio);
-
-
-
+      recomputePortfolioSummary(portfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
