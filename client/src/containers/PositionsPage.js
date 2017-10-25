@@ -2,13 +2,24 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as positionActions from '../actions/positionActions.js';
-import * as portfolioActions from '../actions/portfolioActions.js';   // !! kludge for position refresh error.
+import * as portfolioActions from '../actions/portfolioActions.js';   // !! !! kludge for refresh clearing state.
 import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
   lastSortColumn = '';      // which column was last sorted.
   lastSortReverse = false;  // was the last sort a reverse sort?
+
+  newPosition = (portfolioId) => {
+    return {
+      portfolio_id: portfolioId,
+      id: '',
+      stock_symbol: {},
+      quantity: '',
+      cost: '',
+      date_acquired: '',
+    }
+  };
 
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
@@ -41,15 +52,13 @@ const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPort
 
   submitPosition = (openPosition) => {
     (openPosition.id === '') ? this.props.actions.addPosition(openPosition) : this.props.actions.updatePosition(openPosition);
-    // const portfolio = Object.assign({}, this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === openPosition.portfolio_id}));
-    // this.props.actions.repricePortfolioForPosition(portfolio, openPosition);
   }
 
   render() {
 const portfolioId = parseInt(this.props.match.params.id, 10);
 const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    if (portfolio) {    // if user hits browser refresh, state gets cleared out!
-      return (<Positions portfolio={portfolio} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
+    if (portfolio) {    // !! kludge for refresh clearing state.
+      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
     return null;
   }

@@ -7,15 +7,10 @@ import Fmt from './Formatters';
 const Portfolios = (props) => {
   const {portfolios, totalCost, totalGainLoss, totalMarketValue} = props;
 
-  const new_portfolio = {
-      id: '',
-      name: '',
-  };
-
   function columnTitles() {
     return (
       <Table.Row textAlign='center'>
-        <Table.HeaderCell>{<PortfolioEditPage portfolio={new_portfolio} iconName='add' iconColor='blue' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PortfolioEditPage portfolio={props.emptyPortfolio} iconName='add' iconColor='blue' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>

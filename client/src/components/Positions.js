@@ -6,19 +6,10 @@ import PositionEditPage from '../containers/PositionEditPage';
 const Positions = (props) => {
   const {portfolio, stockSymbols} = props;
 
-  const new_position = {
-      portfolio_id: portfolio.id,
-      id: '',
-      stock_symbol: {},
-      quantity: '',
-      cost: '',
-      date_acquired: '',
-  };
-
   function columnTitles() {
     return (
       <Table.Row textAlign='center'>
-        <Table.HeaderCell>{<PositionEditPage position={new_position} stockSymbols={stockSymbols} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} stockSymbols={stockSymbols} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('lastClosePrice')}>Last Close</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>

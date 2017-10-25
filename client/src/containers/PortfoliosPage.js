@@ -8,6 +8,13 @@ class PortfoliosPage extends Component {
   lastSortColumn = '';      // which column was last sorted.
   lastSortReverse = false;  // was the last sort a reverse sort?
 
+  newPortfolio = () => {
+    return {
+      id: '',
+      name: '',
+    }
+  };
+
   componentDidMount() {
     this.props.portfolios.length || this.props.actions.loadPortfolios(false)
   }
@@ -46,7 +53,7 @@ class PortfoliosPage extends Component {
       sumTotalCost   += parseFloat(portfolio.totalCost);
     });
     const totalGainLoss = sumMarketValue - sumTotalCost;
-    return (<Portfolios portfolios={portfolios} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={this.newPortfolio} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
   }
 }
 
