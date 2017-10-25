@@ -9,5 +9,5 @@ function checkStatus(response) {
   return response;
 }
 
-const Fetch = {checkStatus};
-export default Fetch;
+const ActionUtils = {checkStatus};
+export default ActionUtils;

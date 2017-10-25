@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import Fetch from '../utils/fetch';
+import ActionUtils from './actionUtils';
 import * as StockSymbolReducerFunctions from '../reducers/stock_symbols_reducer';
 
 // Fetch stock symbols from server.
@@ -12,7 +12,7 @@ export function loadStockSymbols() {
           'Accept': 'application/json',
         },
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(stockSymbols => {
         if (!stockSymbols.length) {

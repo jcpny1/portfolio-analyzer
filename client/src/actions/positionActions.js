@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import Fetch from '../utils/fetch';
+import ActionUtils from './actionUtils';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 
 export function addPosition(openPosition) {
@@ -19,7 +19,7 @@ export function addPosition(openPosition) {
           date_acquired:   openPosition.date_acquired,
         }),
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(portfolio => {
         if (!portfolio.id) {
@@ -42,7 +42,7 @@ export function deletePosition(open_position) {
           'Accept': 'application/json',
         },
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(portfolio => {
         if (!portfolio.id) {
@@ -107,7 +107,7 @@ export function updatePosition(open_position) {
           date_acquired:   open_position.date_acquired,
         }),
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(portfolio => {
         if (!portfolio.id) {

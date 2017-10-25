@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import Fetch from '../utils/fetch';
+import ActionUtils from './actionUtils';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 
 const GUEST_USER_ID = 1;
@@ -19,7 +19,7 @@ export function addPortfolio(portfolio) {
           name: portfolio.name,
         }),
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
         if (!responseJson.id) {
@@ -42,7 +42,7 @@ export function deletePortfolio(portfolioId) {
           'Accept': 'application/json',
         },
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
         if (!responseJson.id) {
@@ -78,7 +78,7 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
           'Accept': 'application/json',
         },
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(portfolios => {
         if (!portfolios.length) {
@@ -97,7 +97,7 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
               'Accept': 'application/json',
             },
           })
-          .then(Fetch.checkStatus)
+          .then(ActionUtils.checkStatus)
           .then(response => response.json())
           .then(dailyTrades => {
             if (!dailyTrades.length) {
@@ -156,7 +156,7 @@ export function repricePortfolio(portfolio) {
           'Accept': 'application/json',
         },
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(dailyTrades => {
         if (!dailyTrades.length) {
@@ -180,7 +180,7 @@ export function repricePortfolioForPosition(portfolio, openPosition) {
           'Accept': 'application/json',
         },
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(dailyTrades => {
         if (!dailyTrades.length) {
@@ -240,7 +240,7 @@ export function updatePortfolio(portfolio) {
           name: portfolio.name,
         }),
       })
-      .then(Fetch.checkStatus)
+      .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(responseJson => {
         if (!responseJson.id) {

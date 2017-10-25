@@ -16,7 +16,7 @@ export function updatePortfolioAction(portfolio)   {return {type: portfolioActio
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-// Redo portfolio summary calculations.
+// Redo portfolio summary calculations whenever a portfolio has changed.
 function recomputePortfolioSummary(portfolio) {
   portfolio.marketValue = 0.0;
   portfolio.totalCost   = 0.0;

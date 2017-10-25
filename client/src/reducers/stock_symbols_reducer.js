@@ -6,10 +6,9 @@ export const stockSymbolActions = {
   UPDATING_STOCK_SYMBOL: 'UPDATING_STOCK_SYMBOL',
 };
 
-export function updatingStockSymbolAction()        {return {type: stockSymbolActions.UPDATING_STOCK_SYMBOL}}
-
-export function errorStockSymbolAction   (payload) {return {type: stockSymbolActions.ERROR_STOCK_SYMBOLS,  payload: payload}}
-export function updateStockSymbolsAction (payload) {return {type: stockSymbolActions.UPDATE_STOCK_SYMBOLS, payload: payload}}
+export function errorStockSymbolAction(error)          {return {type: stockSymbolActions.ERROR_STOCK_SYMBOLS,  payload: error}}
+export function updateStockSymbolsAction(stockSymbols) {return {type: stockSymbolActions.UPDATE_STOCK_SYMBOLS, payload: stockSymbols}}
+export function updatingStockSymbolAction()            {return {type: stockSymbolActions.UPDATING_STOCK_SYMBOL}}
 
 export function stockSymbolsReducer(state= { updatingStockSymbol: false, stockSymbols: [] }, action) {
   switch ( action.type ) {
