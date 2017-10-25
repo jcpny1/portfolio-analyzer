@@ -40,14 +40,14 @@ class PositionsPage extends Component {
 
   submitPosition = (openPosition) => {
     (openPosition.id === '') ? this.props.actions.addPosition(openPosition) : this.props.actions.updatePosition(openPosition);
-    const portfolio = Object.assign({}, this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === openPosition.portfolio_id}));
-    this.props.actions.repricePortfolioForPosition(portfolio, openPosition);
+    // const portfolio = Object.assign({}, this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === openPosition.portfolio_id}));
+    // this.props.actions.repricePortfolioForPosition(portfolio, openPosition);
   }
 
   render() {
     const portfolioId = parseInt(this.props.match.params.id, 10);
     const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    if (portfolio) {    // if user hit browser refresh, state gets cleared out!
+    if (portfolio) {    // if user hits browser refresh, state gets cleared out!
       return (<Positions portfolio={portfolio} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
     return null;

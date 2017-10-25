@@ -15,14 +15,9 @@ export default class PositionEditPage extends Component {
   }
 
   resetComponent = () => {
-    this.setState({
+    this.setState({     // do not reset symbolOptions.
       modalOpen: false,
-      id: '',
-      portfolio_id: '',
-      stock_symbol_id: '',
-      quantity: '',
-      cost: '',
-      date_acquired: '',
+      editedPosition: {},
     });
   }
 
@@ -31,29 +26,26 @@ export default class PositionEditPage extends Component {
   }
 
   handleChange = (e, {name, value}) => {
-    this.setState({[name]: value});
+    this.setState({
+      editedPosition: {
+        ...this.state.editedPosition,
+        [name]: value,
+      },
+    });
   }
 
   handleOpen = () => {
-    const {position} = this.props;
-    if (position) {
-      this.setState({id: position.id, portfolio_id: position.portfolio_id, stock_symbol_id: position.stock_symbol.id, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired});
-    }
-    this.setState({modalOpen: true});
+    this.setState({modalOpen: true, editedPosition: Object.assign({}, this.props.position, {stock_symbol_id: this.props.position.stock_symbol.id})});
   }
 
   handleSubmit = () => {
-    const {id, portfolio_id, stock_symbol_id, quantity, cost, date_acquired} = this.state;
-    const {position, stockSymbols} = this.props;
-    const stock_symbol = stockSymbols.find(stockSymbol => {return stockSymbol.id === stock_symbol_id});
-    const newPosition = Object.assign({}, position, {id, portfolio_id, stock_symbol, quantity, cost, date_acquired});
-    this.props.onClickSubmit(newPosition);
+    this.props.onClickSubmit(this.state.editedPosition);
     this.resetComponent();
   }
 
   render() {
-    const {modalOpen, symbolOptions, stock_symbol_id, quantity, cost, date_acquired} = this.state;
     const {iconColor, iconName, tooltip} = this.props;
+    const {modalOpen, symbolOptions, editedPosition} = this.state;
     return (
       <Modal
         trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
@@ -61,7 +53,7 @@ export default class PositionEditPage extends Component {
         onClose={this.handleCancel}
       >
         <Modal.Header><Header as='h3' icon='browser' content='Position Editor'/></Modal.Header>
-        <Modal.Content><PositionEdit symbols={symbolOptions} stock_symbol_id={stock_symbol_id} quantity={quantity} cost={cost} date_acquired={date_acquired} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
+        <Modal.Content><PositionEdit symbols={symbolOptions} position={editedPosition} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>
     );

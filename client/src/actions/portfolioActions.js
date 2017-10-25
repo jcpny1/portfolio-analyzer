@@ -67,28 +67,9 @@ function initPortfolioSummaryValues(portfolio) {
   return symbols;
 }
 
-// Update the portfolio with dailyTrade prices. Assumes summary values have been initialized beforehand.
-function processPrices(portfolio, dailyTrades) {
-  portfolio.marketValue = 0.0;
-  portfolio.totalCost   = 0.0;
-  portfolio.gainLoss    = 0.0;
-  portfolio.open_positions.forEach(function(position) {
-    const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
-    if (dailyTradesIndex !== -1) {
-      position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
-      position.marketValue    = position.quantity * position.lastClosePrice;
-      position.gainLoss       = position.marketValue - position.cost;
-    }
-    portfolio.marketValue  += position.marketValue;
-    portfolio.totalCost    += position.cost;
-    portfolio.gainLoss     += position.gainLoss;
-  });
-}
-
 // Specify portfolioId to load one portfolio. Do not specify portfolioId to load all portfolios.
 export function loadPortfolios(loadLivePrices, portfolioId) {
   return function(dispatch) {
-console.log("LOAD PORTFOLIOS");
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     const pId = (typeof portfolioId === 'number') ? portfolioId : '';
     return (
@@ -137,6 +118,58 @@ console.log("LOAD PORTFOLIOS");
   }
 }
 
+// Update the portfolio with dailyTrade prices. Assumes summary values have been initialized beforehand.
+function processPrices(portfolio, dailyTrades) {
+  portfolio.marketValue = 0.0;
+  portfolio.totalCost   = 0.0;
+  portfolio.gainLoss    = 0.0;
+  portfolio.open_positions.forEach(function(position) {
+    const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
+    if (dailyTradesIndex !== -1) {
+      position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
+      position.marketValue    = position.quantity * position.lastClosePrice;
+      position.gainLoss       = position.marketValue - position.cost;
+    }
+    portfolio.marketValue  += position.marketValue;
+    portfolio.totalCost    += position.cost;
+    portfolio.gainLoss     += position.gainLoss;
+  });
+}
+
+// Update a portfolio's valuation. Get any missing position prices first.
+export function repricePortfolio(portfolio) {
+  return function(dispatch) {
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
+
+    let symbols = [];
+    portfolio.open_positions.forEach(function(position) {
+      if (!('lastClosePrice' in position)) {
+        symbols.push(position.stock_symbol.name);
+      }
+    });
+
+// TODO candidate for consolidation with other price lookups.
+    if (symbols.length > 0) {
+      const livePrices = '&livePrices';
+      fetch(`/api/daily_trades/lastPrices?symbols=${symbols.toString()}${livePrices}`, {
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+      .then(Fetch.checkStatus)
+      .then(response => response.json())
+      .then(dailyTrades => {
+        if (!dailyTrades.length) {
+          throw new Error('Empty response from server');
+        }
+        processPrices(portfolio, dailyTrades);
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
+      })
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Reprice Portfolio Error: ', error: error})))
+    }
+  }
+}
+
 // Updates a position's applicable portfolio with new prices.
 export function repricePortfolioForPosition(portfolio, openPosition) {
   return function(dispatch) {
@@ -153,9 +186,6 @@ export function repricePortfolioForPosition(portfolio, openPosition) {
         if (!dailyTrades.length) {
           throw new Error('Empty response from server');
         }
-        portfolio.marketValue = 0.0;
-        portfolio.totalCost   = 0.0;
-        portfolio.gainLoss    = 0.0;
         processPrices(portfolio, dailyTrades);
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
       })

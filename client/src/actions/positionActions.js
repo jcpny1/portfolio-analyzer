@@ -14,9 +14,9 @@ export function addPosition(openPosition) {
         },
         body: JSON.stringify({
           stock_symbol_id: openPosition.stock_symbol.id,
-          quantity: openPosition.quantity,
-          cost: openPosition.cost,
-          date_acquired: openPosition.date_acquired,
+          quantity:        openPosition.quantity,
+          cost:            openPosition.cost,
+          date_acquired:   openPosition.date_acquired,
         }),
       })
       .then(Fetch.checkStatus)
@@ -75,19 +75,19 @@ export function updatePosition(open_position) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          stock_symbol_id: open_position.stock_symbol_id,
-          quantity: open_position.quantity,
-          cost: open_position.cost,
-          date_acquired: open_position.date_acquired,
+          stock_symbol_id: open_position.stock_symbol.id,
+          quantity:        open_position.quantity,
+          cost:            open_position.cost,
+          date_acquired:   open_position.date_acquired,
         }),
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.id) {
-          throw responseJson;
+      .then(newPosition => {
+        if (!newPosition.id) {
+          throw newPosition;
         }
-        dispatch(PortfolioReducerFunctions.updatePositionAction(open_position));
+        dispatch(PortfolioReducerFunctions.updatePositionAction(newPosition));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position Error: ', error: error})))
     );

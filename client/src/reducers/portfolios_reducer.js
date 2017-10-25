@@ -111,7 +111,7 @@ console.log("ACTION: " + action.type);
     // >>> PORTFOLIO POSITION ACTIONS <<<
     // **********************************
 
-    // Add a Position.
+    // Add a Position to a Portfolio.
     case portfolioActions.ADD_POSITION: {
       const payloadPosition = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPosition.portfolio_id});
@@ -121,7 +121,7 @@ console.log("ACTION: " + action.type);
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
-    // Delete a Position.
+    // Delete a Position from a Portfolio.
     case portfolioActions.DELETE_POSITION: {
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
@@ -156,11 +156,14 @@ console.log("ACTION: " + action.type);
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
-    // Update a Position.
+    // Update a Position in a Portfolio.
     case portfolioActions.UPDATE_POSITION: {
-      const payloadPortfolio = action.payload;
-      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
-      const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
+      const payloadPosition = action.payload;
+      const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPosition.portfolio_id});
+      let portfolio = Object.assign({}, state.portfolios[portfolioIndex]);
+      const positionIndex = portfolio.open_positions.findIndex(position => {return position.id === payloadPosition.id});
+      portfolio.open_positions = [...portfolio.open_positions.slice(0,positionIndex), payloadPosition, ...portfolio.open_positions.slice(positionIndex+1)];
+      const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
@@ -169,11 +172,3 @@ console.log("ACTION: " + action.type);
       return state;
   }
 }
-
-// const PortfolioReducerFunctions = {
-//   portfoliosReducer,
-//   addPortfolioAction, deletePortfolioAction, errorPortfolioAction, loadPortfoliosAction, sortPortfoliosAction, updatePortfolioAction, updatingPortfolioAction,
-//   addPositionAction,  deletePositionAction,  sortPositionsAction
-// };
-//
-// export default PortfolioReducerFunctions;
