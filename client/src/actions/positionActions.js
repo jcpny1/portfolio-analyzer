@@ -13,7 +13,7 @@ export function addPosition(openPosition) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          stock_symbol_id: openPosition.stock_symbol.id,
+          stock_symbol_id: openPosition.stock_symbol_id,
           quantity:        openPosition.quantity,
           cost:            openPosition.cost,
           date_acquired:   openPosition.date_acquired,
