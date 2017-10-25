@@ -131,7 +131,7 @@ function processPrices(portfolio, dailyTrades) {
       position.gainLoss       = position.marketValue - position.cost;
     }
     portfolio.marketValue  += position.marketValue;
-    portfolio.totalCost    += position.cost;
+    portfolio.totalCost    += parseFloat(position.cost);
     portfolio.gainLoss     += position.gainLoss;
   });
 }
