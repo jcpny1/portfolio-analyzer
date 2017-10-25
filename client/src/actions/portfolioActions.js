@@ -118,11 +118,8 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
   }
 }
 
-// Update the portfolio with dailyTrade prices. Assumes summary values have been initialized beforehand.
+// Update open positions with dailyTrade prices.
 function processPrices(portfolio, dailyTrades) {
-  portfolio.marketValue = 0.0;
-  portfolio.totalCost   = 0.0;
-  portfolio.gainLoss    = 0.0;
   portfolio.open_positions.forEach(function(position) {
     const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
     if (dailyTradesIndex !== -1) {
@@ -130,9 +127,6 @@ function processPrices(portfolio, dailyTrades) {
       position.marketValue    = position.quantity * position.lastClosePrice;
       position.gainLoss       = position.marketValue - position.cost;
     }
-    portfolio.marketValue  += position.marketValue;
-    portfolio.totalCost    += parseFloat(position.cost);
-    portfolio.gainLoss     += position.gainLoss;
   });
 }
 

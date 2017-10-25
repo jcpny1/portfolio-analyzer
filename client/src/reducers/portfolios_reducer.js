@@ -17,14 +17,14 @@ export function updatePortfoliosAction(portfolios) {return {type: portfolioActio
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
 // Redo portfolio summary calculations whenever a portfolio has changed.
-function recomputePortfolioSummary(portfolio) {
+function refreshPortfolioSummary(portfolio) {
   portfolio.marketValue = 0.0;
   portfolio.totalCost   = 0.0;
   portfolio.gainLoss    = 0.0;
   portfolio.open_positions.forEach(function(position) {
-    portfolio.marketValue  += position.marketValue;
-    portfolio.totalCost    += position.cost;
-    portfolio.gainLoss     += position.gainLoss;
+    portfolio.marketValue  += parseFloat(position.marketValue);
+    portfolio.totalCost    += parseFloat(position.cost);
+    portfolio.gainLoss     += parseFloat(position.gainLoss);
   });
 }
 
@@ -56,7 +56,7 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update a Portfolio.
     case portfolioActions.UPDATE_PORTFOLIO: {
       const payloadPortfolio = action.payload;
-      recomputePortfolioSummary(payloadPortfolio);
+      refreshPortfolioSummary(payloadPortfolio);
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
@@ -65,6 +65,7 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
+      payloadPortfolios.forEach(function(portfolio) {refreshPortfolioSummary(portfolio)});
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
     }
 
