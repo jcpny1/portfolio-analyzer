@@ -21,11 +21,11 @@ export function addPosition(openPosition) {
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(newPosition => {
-        if (!newPosition.id) {
-          throw newPosition;
+      .then(portfolio => {
+        if (!portfolio.id) {
+          throw portfolio;
         }
-        dispatch(PortfolioReducerFunctions.addPositionAction(newPosition));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position Error: ', error: error})))
     );
@@ -44,11 +44,11 @@ export function deletePosition(open_position) {
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.id) {
-          throw responseJson;
+      .then(portfolio => {
+        if (!portfolio.id) {
+          throw portfolio;
         }
-        dispatch(PortfolioReducerFunctions.deletePositionAction(responseJson));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position Error: ', error: error})))
     );
@@ -90,17 +90,6 @@ export function sortPositions(portfolio, columnName, reverseSort) {
   }
 }
 
-
-
-// TODO this belongs to portfolio actions and is duplicate code.
-function recomputePositionSummary(position, closePrice) {
-  position.lastClosePrice = closePrice;
-  position.marketValue    = position.quantity * position.lastClosePrice;
-  position.gainLoss       = position.marketValue - position.cost;
-}
-
-
-
 export function updatePosition(open_position) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
@@ -120,12 +109,11 @@ export function updatePosition(open_position) {
       })
       .then(Fetch.checkStatus)
       .then(response => response.json())
-      .then(newPosition => {
-        if (!newPosition.id) {
-          throw newPosition;
+      .then(portfolio => {
+        if (!portfolio.id) {
+          throw portfolio;
         }
-        recomputePositionSummary(newPosition, open_position.lastClosePrice);
-        dispatch(PortfolioReducerFunctions.updatePositionAction(newPosition));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position Error: ', error: error})))
     );
