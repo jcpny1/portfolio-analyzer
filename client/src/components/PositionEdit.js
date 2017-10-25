@@ -2,7 +2,7 @@ import React from 'react';
 import {Form} from 'semantic-ui-react';
 
 const PositionEdit = (props) => {
-  let {symbols, position} = props;
+  const {symbols, position} = props;
   return (
     <Form onSubmit={props.onSubmit}>
       <p>Update position info. Press Cancel or Submit when done.</p>

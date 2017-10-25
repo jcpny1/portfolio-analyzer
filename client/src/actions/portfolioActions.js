@@ -21,11 +21,11 @@ export function addPortfolio(portfolio) {
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.id) {
-          throw responseJson;
+      .then(newPortfolio => {
+        if (!newPortfolio.id) {
+          throw newPortfolio;
         }
-        dispatch(PortfolioReducerFunctions.addPortfolioAction(responseJson));
+        dispatch(PortfolioReducerFunctions.addPortfolioAction(newPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio Error: ', error: error})))
     );
@@ -44,9 +44,9 @@ export function deletePortfolio(portfolioId) {
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.id) {
-          throw responseJson;
+      .then(deletedPortfolio => {
+        if (!deletedPortfolio.id) {
+          throw deletedPortfolio;
         }
         dispatch(PortfolioReducerFunctions.deletePortfolioAction(portfolioId));
       })
@@ -242,11 +242,11 @@ export function updatePortfolio(portfolio) {
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.id) {
-          throw responseJson;
+      .then(updatedPortfolio => {
+        if (!updatedPortfolio.id) {
+          throw updatedPortfolio;
         }
-        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio Error: ', error: error})))
     );

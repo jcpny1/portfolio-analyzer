@@ -2,7 +2,7 @@ import React from 'react';
 import {Form, Grid, Table} from 'semantic-ui-react';
 
 const Symbols = (props) => {
-  let {companyName, stockSymbols} = props;
+  const {companyName, stockSymbols} = props;
 
   function columnTitles() {
     return (

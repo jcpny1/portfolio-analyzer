@@ -21,11 +21,11 @@ export function addPosition(openPosition) {
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
-      .then(portfolio => {
-        if (!portfolio.id) {
-          throw portfolio;
+      .then(updatedPortfolio => {
+        if (!updatedPortfolio.id) {
+          throw updatedPortfolio;
         }
-        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position Error: ', error: error})))
     );
@@ -44,11 +44,11 @@ export function deletePosition(open_position) {
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
-      .then(portfolio => {
-        if (!portfolio.id) {
-          throw portfolio;
+      .then(updatedPortfolio => {
+        if (!updatedPortfolio.id) {
+          throw updatedPortfolio;
         }
-        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position Error: ', error: error})))
     );
@@ -109,11 +109,11 @@ export function updatePosition(open_position) {
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
-      .then(portfolio => {
-        if (!portfolio.id) {
-          throw portfolio;
+      .then(updatedPortfolio => {
+        if (!updatedPortfolio.id) {
+          throw updatedPortfolio;
         }
-        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
+        dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position Error: ', error: error})))
     );

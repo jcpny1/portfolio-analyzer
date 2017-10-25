@@ -11,37 +11,43 @@ export default class PortfolioEditPage extends Component {
   resetComponent = () => {
     this.setState({
       modalOpen: false,
-      id: '',
-      name: '',
+      editedPortfolio: {},
     });
   }
+
+  // id: '',
+  // name: '',
+
 
   handleCancel = () => {
     this.resetComponent();
   }
 
   handleChange = (e, {name, value}) => {
-    this.setState({[name]: value});
+    this.setState({
+      editedPortfolio: {
+        ...this.state.editedPortfolio,
+        [name]: value,
+      },
+    });
   }
 
   handleOpen = () => {
     const {portfolio} = this.props;
     if (portfolio) {
-      this.setState({id: portfolio.id, name: portfolio.name});
+      this.setState({editedPortfolio: {id: portfolio.id, name: portfolio.name}});
     }
     this.setState({modalOpen: true});
   }
 
   handleSubmit = () => {
-    const {id, name} = this.state;
-    const portfolio = Object.assign({}, this.props.portfolio, {id, name});
-    this.props.onClickSubmit(portfolio);
+    this.props.onClickSubmit(this.state.editedPortfolio);
     this.resetComponent();
   }
 
   render() {
-    const {modalOpen, name} = this.state;
     const {iconColor, iconName, tooltip} = this.props;
+    const {modalOpen, editedPortfolio} = this.state;
     return (
       <Modal
         trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
@@ -49,7 +55,7 @@ export default class PortfolioEditPage extends Component {
         onClose={this.handleCancel}
       >
         <Modal.Header><Header as='h3' icon='browser' content='Portfolio Editor'/></Modal.Header>
-        <Modal.Content><PortfolioEdit name={name} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
+        <Modal.Content><PortfolioEdit portfolio={editedPortfolio} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>
     );
