@@ -106,7 +106,7 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
             portfolios.forEach(function(portfolio) {processPrices(portfolio, dailyTrades)});
 
             if (pId.length === 0) {
-              dispatch(PortfolioReducerFunctions.loadPortfoliosAction(portfolios));
+              dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
             } else {
               dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolios[0]));
             }

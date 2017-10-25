@@ -4,7 +4,6 @@ export const portfolioActions = {
   ADD_PORTFOLIO:      'ADD_PORTFOLIO',
   DELETE_PORTFOLIO:   'DELETE_PORTFOLIO',
   ERROR_PORTFOLIOS:   'ERROR_PORTFOLIOS',
-  LOAD_PORTFOLIOS:    'LOAD_PORTFOLIOS',
   UPDATE_PORTFOLIO:   'UPDATE_PORTFOLIO',
   UPDATE_PORTFOLIOS:  'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
@@ -19,7 +18,6 @@ export function updatingPortfolioAction()        {return {type: portfolioActions
 export function addPortfolioAction     (payload) {return {type: portfolioActions.ADD_PORTFOLIO,     payload: payload}}
 export function deletePortfolioAction  (payload) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: payload}}
 export function errorPortfolioAction   (payload) {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: payload}}
-export function loadPortfoliosAction   (payload) {return {type: portfolioActions.LOAD_PORTFOLIOS,   payload: payload}}
 export function updatePortfolioAction  (payload) {return {type: portfolioActions.UPDATE_PORTFOLIO,  payload: payload}}
 export function updatePortfoliosAction (payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload}}
 
@@ -56,7 +54,8 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
 
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
-      const portfolios = [action.payload, ...state.portfolios];
+      const payloadPortfolio = action.payload;
+      const portfolios = [payloadPortfolio, ...state.portfolios];
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
@@ -73,11 +72,6 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
       const {error, prefix} = action.payload;
       alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolios: false});
-    }
-
-    // Load Portfolios.
-    case portfolioActions.LOAD_PORTFOLIOS: {
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: action.payload});
     }
 
     // Update a Portfolio.
