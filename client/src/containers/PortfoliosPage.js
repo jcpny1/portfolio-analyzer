@@ -30,7 +30,7 @@ class PortfoliosPage extends Component {
     } else {
       reverseSort = !reverseSort;
     }
-    this.props.actions.sortPortfolios(columnName, reverseSort);
+    this.props.actions.sortPortfolios(this.props.portfolios, columnName, reverseSort);
     this.lastSortReverse = reverseSort;
   }
 

@@ -194,12 +194,35 @@ export function repricePortfolioForPosition(portfolio, openPosition) {
   }
 }
 
-export function sortPortfolios(columnName, reverseSort) {
+
+// TODO Also in positionActions. move this to a utils file. Maybe within the actions folder.
+// A generic sort comparator function.
+var sort_by = function(field, reverse = false, compareFn) {
+  var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
+  return function (a,b) {
+    var A = key(a), B = key(b);
+    return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
+  }
+}
+
+
+export function sortPortfolios(portfolios, columnName, reverseSort) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    return (
-        dispatch(PortfolioReducerFunctions.sortPortfoliosAction({columnName, reverseSort}))
-    );
+    switch (columnName) {
+      case 'name':
+        portfolios.sort(sort_by(columnName, reverseSort, function(a){return a.toUpperCase()}));
+        break;
+      case 'gainLoss':     // fall through
+      case 'marketValue':  // fall through
+      case 'totalCost':
+        portfolios.sort(sort_by(columnName, reverseSort, parseFloat));
+        break;
+      default:
+        portfolios.sort(sort_by(columnName, reverseSort));
+        break;
+    }
+    return (dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios)));
   }
 }
 

@@ -55,6 +55,7 @@ export function deletePosition(open_position) {
   }
 }
 
+// TODO Also in portfolioActions. move this to a utils file. Maybe within the actions folder.
 // A generic sort comparator function.
 var sort_by = function(field, reverse = false, compareFn) {
   var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};

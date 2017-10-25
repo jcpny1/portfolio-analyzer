@@ -5,8 +5,8 @@ export const portfolioActions = {
   DELETE_PORTFOLIO:   'DELETE_PORTFOLIO',
   ERROR_PORTFOLIOS:   'ERROR_PORTFOLIOS',
   LOAD_PORTFOLIOS:    'LOAD_PORTFOLIOS',
-  SORT_PORTFOLIOS:    'SORT_PORTFOLIOS',
   UPDATE_PORTFOLIO:   'UPDATE_PORTFOLIO',
+  UPDATE_PORTFOLIOS:  'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
 
   ADD_POSITION:       'ADD_POSITION',
@@ -14,17 +14,18 @@ export const portfolioActions = {
   UPDATE_POSITION:    'UPDATE_POSITION',
 };
 
-export function addPortfolioAction(payload)    {return {type: portfolioActions.ADD_PORTFOLIO,    payload: payload};}
-export function deletePortfolioAction(payload) {return {type: portfolioActions.DELETE_PORTFOLIO, payload: payload};}
-export function errorPortfolioAction(payload)  {return {type: portfolioActions.ERROR_PORTFOLIOS, payload: payload};}
-export function loadPortfoliosAction(payload)  {return {type: portfolioActions.LOAD_PORTFOLIOS,  payload: payload};}
-export function sortPortfoliosAction(payload)  {return {type: portfolioActions.SORT_PORTFOLIOS,  payload: payload};}
-export function updatePortfolioAction(payload) {return {type: portfolioActions.UPDATE_PORTFOLIO, payload: payload};}
-export function updatingPortfolioAction()      {return {type: portfolioActions.UPDATING_PORTFOLIO};}
+export function updatingPortfolioAction()        {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-export function addPositionAction(payload)    {return {type: portfolioActions.ADD_POSITION,    payload: payload};}
-export function deletePositionAction(payload) {return {type: portfolioActions.DELETE_POSITION, payload: payload};}
-export function updatePositionAction(payload) {return {type: portfolioActions.UPDATE_POSITION, payload: payload};}
+export function addPortfolioAction     (payload) {return {type: portfolioActions.ADD_PORTFOLIO,     payload: payload}}
+export function deletePortfolioAction  (payload) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: payload}}
+export function errorPortfolioAction   (payload) {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: payload}}
+export function loadPortfoliosAction   (payload) {return {type: portfolioActions.LOAD_PORTFOLIOS,   payload: payload}}
+export function updatePortfolioAction  (payload) {return {type: portfolioActions.UPDATE_PORTFOLIO,  payload: payload}}
+export function updatePortfoliosAction (payload) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: payload}}
+
+export function addPositionAction      (payload) {return {type: portfolioActions.ADD_POSITION,      payload: payload}}
+export function deletePositionAction   (payload) {return {type: portfolioActions.DELETE_POSITION,   payload: payload}}
+export function updatePositionAction   (payload) {return {type: portfolioActions.UPDATE_POSITION,   payload: payload}}
 
 
 
@@ -44,16 +45,9 @@ function recomputePortfolioSummary(portfolio) {
 
 
 export function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
-  // A generic sort comparator function.
-  var sort_by = function(field, reverse = false, compareFn) {
-    var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
-    return function (a,b) {
-  	  var A = key(a), B = key(b);
-      return ( ((A < B) ? -1 : ((A > B) ? 1 : 0)) * [1,-1][+!!reverse] );
-    }
-  }
 
-console.log("ACTION: " + action.type);
+  console.log("ACTION: " + action.type);
+
   switch ( action.type ) {
 
     // *************************
@@ -86,29 +80,6 @@ console.log("ACTION: " + action.type);
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: action.payload});
     }
 
-    // Sort Portfolios.
-    case portfolioActions.SORT_PORTFOLIOS: {
-      const portfolios = [...state.portfolios];
-      if (portfolios.length === 0) {
-        return state;
-      }
-      const {columnName, reverseSort} = action.payload;
-      switch (columnName) {
-        case 'name':
-          portfolios.sort(sort_by(columnName, reverseSort, function(a){return a.toUpperCase()}));
-          break;
-        case 'gainLoss':     // fall through
-        case 'marketValue':  // fall through
-        case 'totalCost':
-          portfolios.sort(sort_by(columnName, reverseSort, parseFloat));
-          break;
-        default:
-          portfolios.sort(sort_by(columnName, reverseSort));
-          break;
-      }
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
-    }
-
     // Update a Portfolio.
     case portfolioActions.UPDATE_PORTFOLIO: {
       const payloadPortfolio = action.payload;
@@ -117,9 +88,14 @@ console.log("ACTION: " + action.type);
       return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
     }
 
+    // Update all Portfolios.
+    case portfolioActions.UPDATE_PORTFOLIOS: {
+      const payloadPortfolios = action.payload;
+      return Object.assign({}, state, {updatingPortfolios: false, portfolios: payloadPortfolios});
+    }
+
     // Show that one or more Portfolios are being modified.
-    case portfolioActions.UPDATING_PORTFOLIO:   // fall through
-    case portfolioActions.UPDATING_POSITION:
+    case portfolioActions.UPDATING_PORTFOLIO:
       return Object.assign({}, state, {updatingPortfolios: true});
 
     // **********************************
