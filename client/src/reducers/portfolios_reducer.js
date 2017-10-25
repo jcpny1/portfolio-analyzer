@@ -1,16 +1,16 @@
 import Fmt from '../components/Formatters';
 
 export const portfolioActions = {
-  ADD_PORTFOLIO:      'ADD_PORTFOLIO',
-  DELETE_PORTFOLIO:   'DELETE_PORTFOLIO',
-  ERROR_PORTFOLIOS:   'ERROR_PORTFOLIOS',
-  UPDATE_PORTFOLIO:   'UPDATE_PORTFOLIO',
-  UPDATE_PORTFOLIOS:  'UPDATE_PORTFOLIOS',
+  ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
+  DELETE_PORTFOLIO  : 'DELETE_PORTFOLIO',
+  ERROR_PORTFOLIOS  : 'ERROR_PORTFOLIOS',
+  UPDATE_PORTFOLIO  : 'UPDATE_PORTFOLIO',
+  UPDATE_PORTFOLIOS : 'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
 
-  ADD_POSITION:       'ADD_POSITION',
-  DELETE_POSITION:    'DELETE_POSITION',
-  UPDATE_POSITION:    'UPDATE_POSITION',
+  ADD_POSITION      : 'ADD_POSITION',
+  DELETE_POSITION   : 'DELETE_POSITION',
+  UPDATE_POSITION   : 'UPDATE_POSITION',
 };
 
 export function updatingPortfolioAction()        {return {type: portfolioActions.UPDATING_PORTFOLIO}}
@@ -26,7 +26,6 @@ export function deletePositionAction   (payload) {return {type: portfolioActions
 export function updatePositionAction   (payload) {return {type: portfolioActions.UPDATE_POSITION,   payload: payload}}
 
 
-
 // TODO Dup from portfolioActions
 function recomputePortfolioSummary(portfolio) {
   portfolio.marketValue = 0.0;
@@ -40,9 +39,7 @@ function recomputePortfolioSummary(portfolio) {
 }
 
 
-
-
-export function portfoliosReducer(state= {updatingPortfolios: false, portfolios: []}, action) {
+export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: []}, action) {
 
   console.log("ACTION: " + action.type);
 
@@ -56,7 +53,7 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
     case portfolioActions.ADD_PORTFOLIO: {
       const payloadPortfolio = action.payload;
       const portfolios = [payloadPortfolio, ...state.portfolios];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
 
     // Delete a Portfolio.
@@ -64,14 +61,14 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
       const payloadPortfolioId = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolioId;});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), ...state.portfolios.slice(portfolioIndex+1)]
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
 
     // Error on Portfolio action.
     case portfolioActions.ERROR_PORTFOLIOS: {
       const {error, prefix} = action.payload;
       alert(Fmt.ServerError(error, prefix));
-      return Object.assign({}, state, {updatingPortfolios: false});
+      return Object.assign({}, state, {updatingPortfolio: false});
     }
 
     // Update a Portfolio.
@@ -79,18 +76,18 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: payloadPortfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
     }
 
     // Show that one or more Portfolios are being modified.
     case portfolioActions.UPDATING_PORTFOLIO:
-      return Object.assign({}, state, {updatingPortfolios: true});
+      return Object.assign({}, state, {updatingPortfolio: true});
 
     // **********************************
     // >>> PORTFOLIO POSITION ACTIONS <<<
@@ -104,7 +101,7 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
       portfolio.open_positions.push(payloadPosition);
       recomputePortfolioSummary(portfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
 
     // Delete a Position from a Portfolio.
@@ -113,7 +110,7 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
       recomputePortfolioSummary(payloadPortfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
 
     // Update a Position in a Portfolio.
@@ -125,7 +122,7 @@ export function portfoliosReducer(state= {updatingPortfolios: false, portfolios:
       portfolio.open_positions = [...portfolio.open_positions.slice(0,positionIndex), payloadPosition, ...portfolio.open_positions.slice(positionIndex+1)];
       recomputePortfolioSummary(portfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolios: false, portfolios: portfolios});
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
 
     // Default action.
