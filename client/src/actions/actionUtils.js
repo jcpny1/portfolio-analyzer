@@ -35,5 +35,18 @@ var sort_by = function(field, reverse = false, compareFn) {
   }
 }
 
-const ActionUtils = {checkStatus, columnSorter, sort_by};
+// Transfer last prices from existing portfolio to updated portfolio.
+function transferPortfolioPrices(srcPortfolio, tgtPortfolio) {
+   srcPortfolio.open_positions.forEach(function(srcPosition) {
+     const tgtPositionIndex = tgtPortfolio.open_positions.findIndex(position => {return position.id === srcPosition.id;});
+     if (tgtPositionIndex !== -1) {
+       const tgtPosition = tgtPortfolio.open_positions[tgtPositionIndex];
+       tgtPosition.lastClosePrice = srcPosition.lastClosePrice;
+       tgtPosition.marketValue    = tgtPosition.quantity * tgtPosition.lastClosePrice;
+       tgtPosition.gainLoss       = tgtPosition.marketValue - tgtPosition.cost;
+     }
+   });
+}
+
+const ActionUtils = {checkStatus, columnSorter, sort_by, transferPortfolioPrices};
 export default ActionUtils;

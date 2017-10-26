@@ -1,4 +1,5 @@
 import Fmt from '../components/Formatters';
+import ActionUtils from '../actions/actionUtils';
 
 export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
@@ -56,8 +57,9 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update a Portfolio.
     case portfolioActions.UPDATE_PORTFOLIO: {
       const payloadPortfolio = action.payload;
-      refreshPortfolioSummary(payloadPortfolio);
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
+      ActionUtils.transferPortfolioPrices(state.portfolios[portfolioIndex], payloadPortfolio);
+      refreshPortfolioSummary(payloadPortfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
