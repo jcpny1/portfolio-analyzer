@@ -8,8 +8,8 @@ const PositionEdit = (props) => {
       <p>Update position info. Press Cancel or Submit when done.</p>
       <Form.Group>
         <Form.Select search options={symbols} width={4} label='Symbol' placeholder='Symbol' name='stock_symbol_id' value={position.stock_symbol_id} onChange={props.onChange} required/>
-        <Form.Input width={4} label='Quantity' placeholder='Quantity' name='quantity' value={position.quantity} onChange={props.onChange}/>
-        <Form.Input width={4} label='Cost' placeholder='Cost' name='cost' value={position.cost} onChange={props.onChange}/>
+        <Form.Input width={4} label='Quantity' placeholder='Quantity' name='quantity' value={position.quantity} onChange={props.onChange} required/>
+        <Form.Input width={4} label='Cost' placeholder='Cost' name='cost' value={position.cost} onChange={props.onChange} required/>
         <Form.Input width={4} label='Date Acquired' type='date' placeholder='YYYY-MM-DD' name='date_acquired' value={position.date_acquired} onChange={props.onChange}/>
       </Form.Group>
       <Form.Group>
