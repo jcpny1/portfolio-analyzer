@@ -3,7 +3,7 @@ class PortfoliosController < ApplicationController
 
   # Retrieve all portfolios.
   def index
-    render json: Portfolio.all
+    render json: Portfolio.order(:name)
   end
 
   # Retrieve a portfolio.

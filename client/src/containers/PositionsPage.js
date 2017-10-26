@@ -22,10 +22,8 @@ class PositionsPage extends Component {
 
   constructor(props) {
     super(props);
-    const portfolioId = parseInt(this.props.match.params.id, 10);
-    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
     this.state = {
-      portfolio: portfolio,
+      portfolioId: parseInt(this.props.match.params.id, 10),
       positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions),
     };
   }
@@ -46,7 +44,9 @@ class PositionsPage extends Component {
   }
 
   sortPositions = (columnName) => {
-    this.state.positionsSorter(this.state.portfolio, columnName);
+    const {portfolioId, positionsSorter} = this.state;
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
+    positionsSorter(portfolio, columnName);
   }
 
   submitPosition = (openPosition) => {
@@ -54,7 +54,8 @@ class PositionsPage extends Component {
   }
 
   render() {
-    const {portfolio} = this.state;
+    const {portfolioId} = this.state;
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
     if (portfolio) {    // !! kludge for refresh clearing state.
       return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
