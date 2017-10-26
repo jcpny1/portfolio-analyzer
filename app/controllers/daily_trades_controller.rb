@@ -73,6 +73,8 @@ class DailyTradesController < ApplicationController
             else
               prices[symbol]['header'] = response['Meta Data']
               prices[symbol]['tick']   = response['Time Series (1min)'].first
+              # TODO get timezone from Meta Data
+              daily_trade.trade_date   = prices[symbol]['tick'].first + " EDT"
               daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
             end
             daily_trades[i] = daily_trade

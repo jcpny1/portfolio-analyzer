@@ -12,6 +12,23 @@ const Currency = (props) => {
   return result;
 }
 
+// Returns a formatted Date string.
+const DateOnly = (props) => {
+  const date = new Date(props.value);
+  return date.toLocaleDateString();
+}
+
+// Returns a formatted DateTime string.
+const DateTime = (props) => {
+// TODO find out why props.value is undefined.
+  if (typeof props.value !== "undefined") {
+    const date = new Date(props.value);
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+  } else {
+    return '';
+  }
+}
+
 // Returns a formatted quantity string.
 const Quantity = (props) => {
   const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'decimal', minimumFractionDigits: 0, maximumFractionDigits: 5});
@@ -29,5 +46,5 @@ const ServerError = (error, prefix) => {
   return formattedValue;
 }
 
-const Fmt = {Currency, Quantity, ServerError};
+const Fmt = {Currency, DateOnly, DateTime, Quantity, ServerError};
 export default Fmt;
