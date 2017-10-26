@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import ActionUtils from '../actions/actionUtils';
 import * as positionActions from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';   // !! !! kludge for refresh clearing state.
 import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
-  lastSortColumn = '';      // which column was last sorted.
-  lastSortReverse = false;  // was the last sort a reverse sort?
 
   newPosition = (portfolioId) => {
     return {
@@ -21,6 +20,11 @@ class PositionsPage extends Component {
     }
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions)};
+  }
+
   componentDidMount() {
     this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
     this.props.portfolios.length   || this.props.actions.loadPortfolios(false)   // !! kludge for refresh clearing state.
@@ -30,24 +34,16 @@ class PositionsPage extends Component {
     this.props.actions.loadPortfolios(true, portfolio.id);
   }
 
-  removePosition = (open_position) => {
+  removePosition = (portfolioId, positionId) => {
     if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePosition(open_position);
+      this.props.actions.deletePosition(portfolioId, positionId);
     }
   }
 
   sortPositions = (columnName) => {
-    let reverseSort = this.lastSortReverse;
-    if (this.lastSortColumn !== columnName) {
-      this.lastSortColumn = columnName;
-      reverseSort = false;
-    } else {
-      reverseSort = !reverseSort;
-    }
 const portfolioId = parseInt(this.props.match.params.id, 10);
 const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    this.props.actions.sortPositions(portfolio, columnName, reverseSort);
-    this.lastSortReverse = reverseSort;
+    this.state.positionsSorter(portfolio, columnName);
   }
 
   submitPosition = (openPosition) => {

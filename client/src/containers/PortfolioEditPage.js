@@ -3,7 +3,6 @@ import {Header, Icon, Modal} from 'semantic-ui-react';
 import PortfolioEdit from '../components/PortfolioEdit';
 
 export default class PortfolioEditPage extends Component {
-
   componentWillMount() {
     this.resetComponent();
   }
@@ -14,10 +13,6 @@ export default class PortfolioEditPage extends Component {
       editedPortfolio: {},
     });
   }
-
-  // id: '',
-  // name: '',
-
 
   handleCancel = () => {
     this.resetComponent();

@@ -29,7 +29,7 @@ function refreshPortfolioSummary(portfolio) {
 }
 
 export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: []}, action) {
-  console.log("ACTION: " + action.type);
+  // console.log("ACTION: " + action.type);
   switch ( action.type ) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {

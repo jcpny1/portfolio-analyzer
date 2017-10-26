@@ -9,6 +9,23 @@ function checkStatus(response) {
   return response;
 }
 
+// Call the appropriate action function to sort an array by column name.
+var columnSorter = (function (sortAction) {
+  var lastSortColumn  = '';     // which column was last sorted.
+  var lastSortReverse = false;  // was the last sort a reverse sort?
+    return function (array, columnName) {
+      let reverseSort = lastSortReverse;
+      if (lastSortColumn !== columnName) {
+        lastSortColumn = columnName;
+        reverseSort = false;
+      } else {
+        reverseSort = !reverseSort;
+      }
+      sortAction(array, columnName, reverseSort);
+      lastSortReverse = reverseSort;
+    }
+});
+
 // A generic sort comparator function.
 var sort_by = function(field, reverse = false, compareFn) {
   var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
@@ -18,5 +35,5 @@ var sort_by = function(field, reverse = false, compareFn) {
   }
 }
 
-const ActionUtils = {checkStatus, sort_by};
+const ActionUtils = {checkStatus, columnSorter, sort_by};
 export default ActionUtils;

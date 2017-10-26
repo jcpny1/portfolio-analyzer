@@ -32,11 +32,11 @@ export function addPosition(openPosition) {
   }
 }
 
-export function deletePosition(open_position) {
+export function deletePosition(portfolioId, openPositionId) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
-      fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
+      fetch(`/api/portfolios/${portfolioId}/open_positions/${openPositionId}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',

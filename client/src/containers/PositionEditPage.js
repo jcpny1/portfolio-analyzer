@@ -3,7 +3,6 @@ import {Header, Icon, Modal} from 'semantic-ui-react';
 import PositionEdit from '../components/PositionEdit';
 
 export default class PositionEditPage extends Component {
-
   componentWillMount() {
     this.resetComponent();
   }

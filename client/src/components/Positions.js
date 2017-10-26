@@ -27,7 +27,7 @@ const Positions = (props) => {
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PositionEditPage position={position} stockSymbols={stockSymbols} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
-            <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(position)}/>
+            <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
           </Table.Cell>
           <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
           <Table.Cell><Fmt.Currency value={position.lastClosePrice}/></Table.Cell>
