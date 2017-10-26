@@ -37,19 +37,19 @@ class PortfoliosPage extends Component {
   }
 
   render() {
-    const {portfolios} = this.props;
+    const {portfolios, updatingPortfolio} = this.props;
     let sumMarketValue = 0.0, sumTotalCost = 0.0;
     portfolios.forEach(function(portfolio) {
       sumMarketValue += portfolio.marketValue;
       sumTotalCost   += portfolio.totalCost;
     });
     const totalGainLoss = sumMarketValue - sumTotalCost;
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios};
+  return {portfolios: state.portfolios.portfolios, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {

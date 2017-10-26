@@ -5,7 +5,7 @@ import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
 
 const Portfolios = (props) => {
-  const {portfolios, totalCost, totalGainLoss, totalMarketValue} = props;
+  const {portfolios, totalCost, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
 
   function columnTitles() {
     return (
@@ -52,7 +52,7 @@ const Portfolios = (props) => {
   return (
     <Grid.Column>
       <Header content='Account Summary' size='large' color='purple'></Header>
-      <Button content='Refresh' icon='refresh' title='Refresh portfolios' size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolios()}/>
+      <Button content='Refresh' icon='refresh' title='Refresh portfolios' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolios()}/>
       <Table celled compact sortable striped style={{'marginTop':'0'}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPortfolios()}</Table.Body>

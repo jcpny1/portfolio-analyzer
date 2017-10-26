@@ -4,7 +4,7 @@ import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
-  const {portfolio, stockSymbols} = props;
+  const {portfolio, stockSymbols, updatingPortfolio} = props;
 
   function columnTitles() {
     return (
@@ -62,7 +62,7 @@ const Positions = (props) => {
   return (
     <Grid.Column>
       <Header size='large' color='purple' content={portfolio.name}></Header>
-      <Button content='Refresh' icon='refresh' title='Refresh positions' size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
+      <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
       <Table celled compact sortable striped style={{'marginTop':'0'}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPositions()}</Table.Body>

@@ -54,17 +54,18 @@ class PositionsPage extends Component {
   }
 
   render() {
+    const {portfolios, stockSymbols, updatingPortfolio} = this.props;
     const {portfolioId} = this.state;
-    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
+    const portfolio = portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
     if (portfolio) {    // !! kludge for refresh clearing state.
-      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
+      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
     return null;
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, stockSymbols: state.stock_symbols.stockSymbols};
+  return {portfolios: state.portfolios.portfolios, stockSymbols: state.stock_symbols.stockSymbols, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {
