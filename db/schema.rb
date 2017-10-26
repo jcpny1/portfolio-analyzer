@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20170929135938) do
 
   create_table "daily_trades", force: :cascade do |t|
     t.integer "stock_symbol_id", null: false
-    t.integer "trade_date", null: false
+    t.datetime "trade_date", null: false
     t.decimal "open_price", null: false
     t.decimal "close_price", null: false
     t.decimal "high_price", null: false
