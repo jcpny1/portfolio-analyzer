@@ -1,7 +1,8 @@
 class DailyTradesController < ApplicationController
-
+  #
+  # # #  SAMPLE DATA  # # #
   # https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
-
+  #
   # {
   #   "Meta Data"=>
   #   {
@@ -42,79 +43,56 @@ class DailyTradesController < ApplicationController
     symbols = params['symbols'].split(',').uniq
     daily_trades = Array.new(symbols.length)
 
-if params.key?('livePrices')
-    api_key = ENV['ALPHA_VANTAGE_API_KEY']
-    prices = {}
+    if params.key?('livePrices')
+      api_key = ENV['ALPHA_VANTAGE_API_KEY']
+      prices = {}
 
-    begin
-      conn = Faraday.new(:url => 'https://www.alphavantage.co/query')
+      begin
+        conn = Faraday.new(:url => 'https://www.alphavantage.co/query')
 
-      symbols.each.with_index { |symbol, i|
+        symbols.each.with_index { |symbol, i|
+          puts "PRICE FETCH BEGIN for: " + symbol
+          resp = conn.get do |req|
+            req.params['function'] = 'TIME_SERIES_INTRADAY'
+            req.params['interval'] = '1min'
+            req.params['symbol']   = symbol
+            req.params['apikey']   = api_key
+          end
+          puts "PRICE FETCH END   for: " + symbol
 
-puts "START price fetch for: " + symbol
+          begin
+            response = JSON.parse(resp.body)
 
-        resp = conn.get do |req|
-          req.params['function'] = 'TIME_SERIES_INTRADAY'
-          req.params['interval'] = '1min'
-          req.params['symbol']   = symbol
-          req.params['apikey']   = api_key
-        end
+            prices[symbol] = {}
+            daily_trade = DailyTrade.new
+            daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
 
-puts "FETCH complete for: " + symbol
+            # TODO create an error message if response length is 0.
+            if response.key?('Error Message') || response.length == 0
+              prices[symbol]['header'] = {'0. Error' => response['Error Message']}
+            else
+              prices[symbol]['header'] = response['Meta Data']
+              prices[symbol]['tick']   = response['Time Series (1min)'].first
+              daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
+            end
+            daily_trades[i] = daily_trade
 
-        begin
-          response = JSON.parse(resp.body)
+          rescue SyntaxError => e
+            puts "JSON parse error: #{e}"
+          end
+        }
 
-        prices[symbol] = {}
-        daily_trade = DailyTrade.new
-        daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
-
-# TODO create an error message if response length is 0.
-        if response.key?('Error Message') || response.length == 0
-          prices[symbol]['header'] = {'0. Error' => response['Error Message']}
-        else
-          prices[symbol]['header'] = response['Meta Data']
-          prices[symbol]['tick']   = response['Time Series (1min)'].first
-puts("prices: " + prices[symbol].inspect)
-          daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
-        end
-        daily_trades[i] = daily_trade
-
-      rescue SyntaxError => e
-        puts "JSON parse error: #{e}"
+      rescue Faraday::ClientError => e
+        puts "Faraday client error: #{e}"
       end
-puts "END   price fetch for: " + symbol
+    else
+      symbols.each.with_index { |symbol, i|
+        stock_symbol = StockSymbol.find_by(name: symbol)
+        daily_trade = DailyTrade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC').first
+        daily_trades[i] = daily_trade.present? ? daily_trade : DailyTrade.new
       }
-
-    rescue Faraday::ClientError => e
-      puts "Faraday client error: #{e}"
     end
-else
-  symbols.each.with_index { |symbol, i|
-    stock_symbol = StockSymbol.find_by(name: symbol)
-    daily_trade = DailyTrade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC').first
-    daily_trades[i] = daily_trade.present? ? daily_trade : DailyTrade.new
-  }
-end
 
     render json: daily_trades
   end
 end
-
-
-# end
-
-
-# create_table "daily_trades", force: :cascade do |t|
-#   t.integer "stock_symbol_id", null: false
-#   t.integer "trade_date", null: false
-#   t.decimal "open_price", null: false
-#   t.decimal "close_price", null: false
-#   t.decimal "high_price", null: false
-#   t.decimal "low_price", null: false
-#   t.decimal "trade_volume", null: false
-#   t.datetime "created_at", null: false
-#   t.datetime "updated_at", null: false
-#   t.index ["stock_symbol_id", "trade_date"], name: "index_daily_trades_on_stock_symbol_id_and_trade_date", unique: true
-#   t.index ["stock_symbol_id"], name: "index_daily_trades_on_stock_symbol_id"
-# end

@@ -1,6 +1,5 @@
-# Rails controller for Company model.
 class CompaniesController < ApplicationController
-  # Retrieve all companies.
+  # Retrieve companies.
   def index
     q = params[:q]
 

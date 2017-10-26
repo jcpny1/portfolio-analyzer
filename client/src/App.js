@@ -7,7 +7,6 @@ import PositionsPage from './containers/PositionsPage';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
-
   render() {
     return (
       <Router>
