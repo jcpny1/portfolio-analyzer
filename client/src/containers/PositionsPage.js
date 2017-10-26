@@ -22,7 +22,12 @@ class PositionsPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions)};
+    const portfolioId = parseInt(this.props.match.params.id, 10);
+    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
+    this.state = {
+      portfolio: portfolio,
+      positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions),
+    };
   }
 
   componentDidMount() {
@@ -41,9 +46,7 @@ class PositionsPage extends Component {
   }
 
   sortPositions = (columnName) => {
-const portfolioId = parseInt(this.props.match.params.id, 10);
-const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    this.state.positionsSorter(portfolio, columnName);
+    this.state.positionsSorter(this.state.portfolio, columnName);
   }
 
   submitPosition = (openPosition) => {
@@ -51,8 +54,7 @@ const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPort
   }
 
   render() {
-const portfolioId = parseInt(this.props.match.params.id, 10);
-const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
+    const {portfolio} = this.state;
     if (portfolio) {    // !! kludge for refresh clearing state.
       return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={this.props.stockSymbols} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
     }
