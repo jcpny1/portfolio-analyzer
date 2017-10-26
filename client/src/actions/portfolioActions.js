@@ -124,8 +124,8 @@ function processPrices(portfolio, dailyTrades) {
     const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
     if (dailyTradesIndex !== -1) {
       position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
-      position.marketValue    = position.quantity * position.lastClosePrice;
-      position.gainLoss       = position.marketValue - position.cost;
+      position.marketValue    = position.quantity    * parseFloat(position.lastClosePrice);
+      position.gainLoss       = position.marketValue - parseFloat(position.cost);
     }
   });
 }

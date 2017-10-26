@@ -23,9 +23,11 @@ function refreshPortfolioSummary(portfolio) {
   portfolio.totalCost   = 0.0;
   portfolio.gainLoss    = 0.0;
   portfolio.open_positions.forEach(function(position) {
-    portfolio.marketValue  += parseFloat(position.marketValue);
-    portfolio.totalCost    += parseFloat(position.cost);
-    portfolio.gainLoss     += parseFloat(position.gainLoss);
+    if (!isNaN(position.marketValue)) {
+      portfolio.totalCost    += parseFloat(position.cost);
+      portfolio.marketValue  += position.marketValue;
+      portfolio.gainLoss     += position.gainLoss;
+    }
   });
 }
 

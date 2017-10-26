@@ -41,9 +41,11 @@ function transferPortfolioPrices(srcPortfolio, tgtPortfolio) {
      const tgtPositionIndex = tgtPortfolio.open_positions.findIndex(position => {return position.id === srcPosition.id;});
      if (tgtPositionIndex !== -1) {
        const tgtPosition = tgtPortfolio.open_positions[tgtPositionIndex];
-       tgtPosition.lastClosePrice = srcPosition.lastClosePrice;
-       tgtPosition.marketValue    = tgtPosition.quantity * tgtPosition.lastClosePrice;
-       tgtPosition.gainLoss       = tgtPosition.marketValue - tgtPosition.cost;
+       if (!isNaN(srcPosition.lastClosePrice)) {
+         tgtPosition.lastClosePrice = srcPosition.lastClosePrice;
+         tgtPosition.marketValue    = tgtPosition.quantity    * parseFloat(tgtPosition.lastClosePrice);
+         tgtPosition.gainLoss       = tgtPosition.marketValue - parseFloat(tgtPosition.cost);
+       }
      }
    });
 }
