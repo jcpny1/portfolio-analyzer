@@ -67,13 +67,11 @@ function initPortfolioSummaryValues(portfolio) {
   return symbols;
 }
 
-// Specify portfolioId to load one portfolio. Do not specify portfolioId to load all portfolios.
-export function loadPortfolios(loadLivePrices, portfolioId) {
+export function loadPortfolios(loadLivePrices) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    const pId = (typeof portfolioId === 'number') ? portfolioId : '';
     return (
-      fetch(`/api/portfolios/${pId}`, {
+      fetch(`/api/portfolios`, {
         headers: {
           'Accept': 'application/json',
         },
@@ -91,7 +89,7 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
 
         if (symbols.length > 0) {
           const livePrices = (loadLivePrices === true) ? '&livePrices' : '';
-          fetch(`/api/daily_trades/lastPrices?symbols=${symbols.toString()}${livePrices}`, {
+          fetch(`/api/daily_trades/latestPrices?symbols=${symbols.toString()}${livePrices}`, {
             headers: {
               'Accept': 'application/json',
             },
@@ -103,12 +101,10 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
               throw new Error('Empty response from server');
             }
             portfolios.forEach(function(portfolio) {processPrices(portfolio, dailyTrades)});
+            dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
           });
-        }
-        if (pId.length === 0) {
-          dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
         } else {
-          dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolios[0]));
+          dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
         }
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
@@ -134,7 +130,7 @@ export function repricePortfolioForPosition(portfolio, openPosition) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
-      fetch(`/api/daily_trades/lastPrices?symbols=${openPosition.stock_symbol.name}&livePrices`, {
+      fetch(`/api/daily_trades/latestPrices?symbols=${openPosition.stock_symbol.name}&livePrices`, {
         headers: {
           'Accept': 'application/json',
         },

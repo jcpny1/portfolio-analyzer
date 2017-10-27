@@ -34,7 +34,7 @@ class PositionsPage extends Component {
   }
 
   refreshPortfolio = (portfolio) => {
-    this.props.actions.loadPortfolios(true, portfolio.id);
+    this.props.actions.loadPortfolios(true);
   }
 
   removePosition = (portfolioId, positionId) => {
@@ -57,10 +57,7 @@ class PositionsPage extends Component {
     const {portfolios, stockSymbols, updatingPortfolio} = this.props;
     const {portfolioId} = this.state;
     const portfolio = portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    if (portfolio) {    // !! kludge for refresh clearing state.
-      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
-    }
-    return null;
+    return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
   }
 }
 

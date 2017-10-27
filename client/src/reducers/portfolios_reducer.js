@@ -69,13 +69,7 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
-      payloadPortfolios.forEach(function(payloadPortfolio) {
-        const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
-        if (portfolioIndex !== -1) {
-          ActionUtils.transferPortfolioPrices(state.portfolios[portfolioIndex], payloadPortfolio);
-        }
-        refreshPortfolioSummary(payloadPortfolio);
-      });
+      payloadPortfolios.forEach(function(portfolio) {refreshPortfolioSummary(portfolio)});
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
     }
 

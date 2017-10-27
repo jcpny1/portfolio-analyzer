@@ -1,8 +1,7 @@
 class DailyTradesController < ApplicationController
   #
-  # # #  SAMPLE DATA  # # #
+  # # #  SAMPLE RESPONSE DATA  # # #
   # https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
-  #
   # {
   #   "Meta Data"=>
   #   {
@@ -37,17 +36,17 @@ class DailyTradesController < ApplicationController
   #   }
   # }
 
-  # Retrieve the latest closing price for the supplied symbols.
-  def last_prices
-
+  # Retrieve the latest prices for the supplied symbols.
+  # from live feed if 'livePrices' is specified. Else, from database.
+  def latest_prices
     symbols = params['symbols'].split(',').uniq
     daily_trades = Array.new(symbols.length)
 
     if params.key?('livePrices')
       api_key = ENV['ALPHA_VANTAGE_API_KEY']
       prices = {}
-
       begin
+# TODO put conn in session?
         conn = Faraday.new(:url => 'https://www.alphavantage.co/query')
 
         symbols.each.with_index { |symbol, i|
@@ -62,21 +61,27 @@ class DailyTradesController < ApplicationController
 
           begin
             response = JSON.parse(resp.body)
-
-            prices[symbol] = {}
             daily_trade = DailyTrade.new
             daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
 
             # TODO create an error message if response length is 0.
             if response.key?('Error Message') || response.length == 0
-              prices[symbol]['header'] = {'0. Error' => response['Error Message']}
+              header = {'0. Error' => response['Error Message']}
             else
-              prices[symbol]['header'] = response['Meta Data']
-              prices[symbol]['tick']   = response['Time Series (1min)'].first
+              header = response['Meta Data']
+              tick   = response['Time Series (1min)'].first
+              time   = tick.first
+              prices = tick.second
               # TODO get timezone from Meta Data
-              daily_trade.trade_date   = prices[symbol]['tick'].first + " EDT"
-              daily_trade.close_price  = prices[symbol]['tick'].second['4. close'].to_f
+              daily_trade.trade_date   = time + " EDT"
+              daily_trade.open_price   = prices['1. open'].to_f
+              daily_trade.high_price   = prices['2. high'].to_f
+              daily_trade.low_price    = prices['3. low'].to_f
+              daily_trade.close_price  = prices['4. close'].to_f
+              daily_trade.trade_volume = prices['5. volume'].to_f
             end
+
+            daily_trade.save
             daily_trades[i] = daily_trade
 
           rescue SyntaxError => e
@@ -94,7 +99,6 @@ class DailyTradesController < ApplicationController
         daily_trades[i] = daily_trade.present? ? daily_trade : DailyTrade.new
       }
     end
-
     render json: daily_trades
   end
 end

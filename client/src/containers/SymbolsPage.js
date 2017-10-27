@@ -47,7 +47,7 @@ class SymbolsPage extends Component {
   render() {
     let {results, value} = this.state;
     return (
-      <Modal style={{'marginTop':'-350px'}}
+      <Modal
         size='small'
         trigger={<Menu.Item onClick={this.handleOpen}>Symbol Lookup</Menu.Item>}
         open={this.state.modalOpen}

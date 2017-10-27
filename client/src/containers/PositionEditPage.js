@@ -14,7 +14,7 @@ export default class PositionEditPage extends Component {
   }
 
   resetComponent = () => {
-    this.setState({     // do not reset symbolOptions.
+    this.setState({     // Do not reset symbolOptions. Keep it cached.
       modalOpen: false,
       editedPosition: {},
     });
