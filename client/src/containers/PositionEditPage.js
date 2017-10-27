@@ -7,12 +7,6 @@ export default class PositionEditPage extends Component {
     this.resetComponent();
   }
 
-  componentDidMount() {
-    if (!('symbolOptions' in this.state)) {
-      this.setState({symbolOptions: this.props.stockSymbols.map( symbol => {return {key: symbol.name, text: symbol.name, value: symbol.id};})});
-    }
-  }
-
   resetComponent = () => {
     this.setState({     // Do not reset symbolOptions. Keep it cached.
       modalOpen: false,
@@ -28,13 +22,17 @@ export default class PositionEditPage extends Component {
     this.setState({
       editedPosition: {
         ...this.state.editedPosition,
-        [name]: value,
+        [name]: (name === 'stock_symbol_name') ? value.toUpperCase() : value,
       },
     });
   }
 
   handleOpen = () => {
-    this.setState({modalOpen: true, editedPosition: Object.assign({}, this.props.position, {stock_symbol_id: this.props.position.stock_symbol.id})});
+    let stock_symbol_name = '';   // We need a stock_symbol_name property to interact with the modal form field for symbol name.
+    if ('name' in this.props.position.stock_symbol) {
+      stock_symbol_name = this.props.position.stock_symbol.name;
+    }
+    this.setState({modalOpen: true, editedPosition: Object.assign({}, this.props.position, {stock_symbol_name: stock_symbol_name})});
   }
 
   handleSubmit = () => {
@@ -44,7 +42,7 @@ export default class PositionEditPage extends Component {
 
   render() {
     const {iconColor, iconName, tooltip} = this.props;
-    const {modalOpen, symbolOptions, editedPosition} = this.state;
+    const {modalOpen, editedPosition} = this.state;
     return (
       <Modal
         trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
@@ -52,7 +50,7 @@ export default class PositionEditPage extends Component {
         onClose={this.handleCancel}
       >
         <Modal.Header><Header as='h3' icon='browser' content='Position Editor'/></Modal.Header>
-        <Modal.Content><PositionEdit symbols={symbolOptions} position={editedPosition} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
+        <Modal.Content><PositionEdit position={editedPosition} onCancel={this.handleCancel} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>
     );

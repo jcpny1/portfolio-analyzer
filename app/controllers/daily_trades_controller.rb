@@ -64,9 +64,12 @@ class DailyTradesController < ApplicationController
             daily_trade = DailyTrade.new
             daily_trade.stock_symbol = StockSymbol.find_by(name: symbol)
 
-            # TODO create an error message if response length is 0.
+            # Error example:
+            # {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
+            #
             if response.key?('Error Message') || response.length == 0
               header = {'0. Error' => response['Error Message']}
+              daily_trades[i] = header
             else
               header = response['Meta Data']
               tick   = response['Time Series (1min)'].first
@@ -79,10 +82,9 @@ class DailyTradesController < ApplicationController
               daily_trade.low_price    = prices['3. low'].to_f
               daily_trade.close_price  = prices['4. close'].to_f
               daily_trade.trade_volume = prices['5. volume'].to_f
+              daily_trade.save
+              daily_trades[i] = daily_trade
             end
-
-            daily_trade.save
-            daily_trades[i] = daily_trade
 
           rescue SyntaxError => e
             puts "JSON parse error: #{e}"

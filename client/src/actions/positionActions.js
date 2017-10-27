@@ -13,10 +13,10 @@ export function addPosition(openPosition) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          stock_symbol_id: openPosition.stock_symbol_id,
-          quantity:        openPosition.quantity,
-          cost:            openPosition.cost,
-          date_acquired:   openPosition.date_acquired,
+          stock_symbol_name: openPosition.stock_symbol_name,
+          quantity:          openPosition.quantity,
+          cost:              openPosition.cost,
+          date_acquired:     openPosition.date_acquired,
         }),
       })
       .then(ActionUtils.checkStatus)
@@ -80,21 +80,21 @@ export function sortPositions(portfolio, columnName, reverseSort) {
   }
 }
 
-export function updatePosition(open_position) {
+export function updatePosition(openPosition) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
-      fetch(`/api/portfolios/${open_position.portfolio_id}/open_positions/${open_position.id}`, {
+      fetch(`/api/portfolios/${openPosition.portfolio_id}/open_positions/${openPosition.id}`, {
         method: 'PATCH',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          stock_symbol_id: open_position.stock_symbol_id,
-          quantity:        open_position.quantity,
-          cost:            open_position.cost,
-          date_acquired:   open_position.date_acquired,
+          stock_symbol_name: openPosition.stock_symbol_name,
+          quantity:          openPosition.quantity,
+          cost:              openPosition.cost,
+          date_acquired:     openPosition.date_acquired,
         }),
       })
       .then(ActionUtils.checkStatus)

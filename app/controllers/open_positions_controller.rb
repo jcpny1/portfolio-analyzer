@@ -3,7 +3,8 @@ class OpenPositionsController < ApplicationController
 
   # Add a new open position to a portfolio and save it to the database.
   def create
-    @portfolio.open_positions.new(open_position_params)
+    input_params = add_param_symbol_id
+    @portfolio.open_positions.new(input_params)
     if @portfolio.save
       render json: @portfolio
     else
@@ -13,7 +14,8 @@ class OpenPositionsController < ApplicationController
 
   # Commit open position edits to the database.
   def update
-    if @portfolio.open_positions.find(params[:id]).update(open_position_params)
+    input_params = add_param_symbol_id
+    if @portfolio.open_positions.find(params[:id]).update(input_params)
       render json: @portfolio
     else
       render json: @portfolio.errors.full_messages, status: :unprocessable_entity
@@ -31,6 +33,15 @@ class OpenPositionsController < ApplicationController
 
   private
 
+  # Derive stock_symbol_id from params stock_symbol_name.
+  def add_param_symbol_id
+    result = open_position_params.clone;
+    stock_symbol = StockSymbol.find_by(name: params['stock_symbol_name'])
+    # TODO validate symbol name
+    result['stock_symbol_id'] = stock_symbol.id
+    result
+  end
+
   # Load the portfolio identified in the route.
   def get_portfolio
     @portfolio = Portfolio.find_by(id: params[:portfolio_id])
@@ -38,6 +49,6 @@ class OpenPositionsController < ApplicationController
 
   # Filter params for allowed elements only.
   def open_position_params
-    params.require(:open_position).permit(:stock_symbol_id, :quantity, :cost, :date_acquired)
+    params.require(:open_position).permit(:stock_symbol_name, :quantity, :cost, :date_acquired)
   end
 end
