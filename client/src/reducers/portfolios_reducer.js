@@ -62,7 +62,6 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
       ActionUtils.transferPortfolioPrices(state.portfolios[portfolioIndex], payloadPortfolio);
       refreshPortfolioSummary(payloadPortfolio);
-console.log(JSON.stringify(payloadPortfolio));
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }

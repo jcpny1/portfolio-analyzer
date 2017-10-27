@@ -84,7 +84,6 @@ export function loadPortfolios(loadLivePrices, portfolioId) {
         if (!portfolios.length) {
           throw new Error('Empty response from server');
         }
-
         let symbols = [];
         portfolios.forEach(function(portfolio) {
           symbols.push(...initPortfolioSummaryValues(portfolio));
