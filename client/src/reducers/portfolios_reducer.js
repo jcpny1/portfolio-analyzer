@@ -56,12 +56,13 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
       return Object.assign({}, state, {updatingPortfolio: false});
     }
 
-    // Update a Portfolio.
+    // Update one Portfolio.
     case portfolioActions.UPDATE_PORTFOLIO: {
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
       ActionUtils.transferPortfolioPrices(state.portfolios[portfolioIndex], payloadPortfolio);
       refreshPortfolioSummary(payloadPortfolio);
+console.log(JSON.stringify(payloadPortfolio));
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
@@ -69,7 +70,13 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
-      payloadPortfolios.forEach(function(portfolio) {refreshPortfolioSummary(portfolio)});
+      payloadPortfolios.forEach(function(payloadPortfolio) {
+        const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
+        if (portfolioIndex !== -1) {
+          ActionUtils.transferPortfolioPrices(state.portfolios[portfolioIndex], payloadPortfolio);
+        }
+        refreshPortfolioSummary(payloadPortfolio);
+      });
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
     }
 
