@@ -1,3 +1,3 @@
 class CompanySerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :name, :stock_symbols
 end

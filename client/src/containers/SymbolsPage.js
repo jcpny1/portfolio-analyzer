@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import fetch from 'isomorphic-fetch';
 import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Symbols from '../components/Symbols';
 
@@ -23,6 +24,17 @@ class SymbolsPage extends Component {
     });
   }
 
+  search = (query, cb) => {
+    return fetch(`/api/companies?q=${query}`, {
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+    .then(response => response)
+    .then(response => response.json())
+    .then(cb);
+  }
+
   handleCancel = () => {
     this.resetComponent();
   }
@@ -30,13 +42,15 @@ class SymbolsPage extends Component {
   handleChange = (e, {name, value}) => {
     this.setState({[name]: value.toUpperCase()});
     if ((e.target.name === 'value') && (value.length > 0)) {
-      const symbolList = this.props.stockSymbols.filter(stockSymbol => stockSymbol.company.name.includes(value.toUpperCase()));
-      symbolList.sort(function(s1,s2) {
-        return (s1.company.name < s2.company.name) ? -1 : ((s1.company.name > s2.company.name) ? 1 : 0);
+      this.search(value, companies => {
+        let symbolList = [];
+        companies.forEach( company => {
+          company.stock_symbols.forEach( stock_symbol => {
+            symbolList.push({name: company.name, stockSymbolName: stock_symbol.name});
+          })
+        });
+        this.setState({results: symbolList.slice(0, 10)});
       });
-      this.setState({results: symbolList.slice(0,10)});
-    } else {
-      this.setState({results: []});
     }
   }
 
@@ -57,7 +71,7 @@ class SymbolsPage extends Component {
           <Header as='h3' icon='browser' content='Symbol Lookup'/>
         </Modal.Header>
         <Modal.Content>
-          <Symbols companyName={value} stockSymbols={results} onChange={this.handleChange}/>
+          <Symbols companyName={value} companies={results} onChange={this.handleChange}/>
         </Modal.Content>
         <Modal.Actions>
           <Button color='green' onClick={this.handleCancel}>Done</Button>
