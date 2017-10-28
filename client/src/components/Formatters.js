@@ -2,37 +2,47 @@ import React from 'react';
 
 // Returns a formatted currency string.
 const Currency = (props) => {
-  const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
   let result = '';
-  if (formattedValue[0] === '-') {
-    result = <span style={{color:'red'}}>{formattedValue}</span>;
-  } else {
-    result = <span>{formattedValue}</span>;
+  if (typeof props.value !== "undefined") {
+    const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (formattedValue[0] === '-') {
+      result = <span style={{color:'red'}}>{formattedValue}</span>;
+    } else {
+      result = <span>{formattedValue}</span>;
+    }
   }
   return result;
 }
 
 // Returns a formatted Date string.
 const DateOnly = (props) => {
-  const date = new Date(props.value);
-  return date.toLocaleDateString();
+  let result = '';
+  if (typeof props.value !== "undefined") {
+    const date = new Date(props.value);
+    result = date.toLocaleDateString();
+  }
+  return result;
 }
 
 // Returns a formatted DateTime string.
 const DateTime = (props) => {
 // TODO find out why props.value is undefined.
+  let result = '';
   if (typeof props.value !== "undefined") {
     const date = new Date(props.value);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-  } else {
-    return '';
+    result = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   }
+  return result;
 }
 
 // Returns a formatted quantity string.
 const Quantity = (props) => {
-  const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'decimal', minimumFractionDigits: 0, maximumFractionDigits: 5});
-  return <span>{formattedValue}</span>;
+  let result = '';
+  if (typeof props.value !== "undefined") {
+    const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'decimal', minimumFractionDigits: 0, maximumFractionDigits: 5});
+    result = <span>{formattedValue}</span>;
+  }
+  return result;
 }
 
 // Returns a formatted server error string.

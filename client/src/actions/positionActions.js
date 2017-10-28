@@ -60,10 +60,11 @@ export function sortPositions(portfolio, columnName, reverseSort) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     switch (columnName) {
       case 'stock_symbol':
-        portfolio.open_positions.sort(ActionUtils.sort_by('stock_symbol', reverseSort, function(a){return a.name.toUpperCase()}));
+        portfolio.open_positions.sort(ActionUtils.sort_by('stock_symbol', reverseSort, function(a){return a.name}));
         break;
-      case 'date_acquired':
-        portfolio.open_positions.sort(ActionUtils.sort_by(columnName, reverseSort, parseInt));
+      case 'date_acquired': // fall through
+      case 'lastTradeDate':
+        portfolio.open_positions.sort(ActionUtils.sort_by(columnName, reverseSort));
         break;
       case 'cost':           // fall through
       case 'gainLoss':       // fall through

@@ -37,7 +37,7 @@ class OpenPositionsController < ApplicationController
   def add_param_symbol_id
     result = open_position_params.clone;
     stock_symbol = StockSymbol.find_by(name: params['stock_symbol_name'])
-    # TODO return error if symbol is not valid.
+    # TODO return error to user if symbol is not valid.
     if !stock_symbol.nil?
       result['stock_symbol_id'] = stock_symbol.id
     end

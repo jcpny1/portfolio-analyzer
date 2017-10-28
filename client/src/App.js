@@ -23,9 +23,10 @@ class App extends Component {
                   <Menu.Item as={Link} to='/'>Summary</Menu.Item>
                   {<SymbolsPage/>}
                   <Menu.Menu position='right'>
+                    <Menu.Item disabled>Settings</Menu.Item>
                     <Dropdown item text='Help'>
                       <Dropdown.Menu>
-                        <Dropdown.Item disabled>StockAnalyzer Help</Dropdown.Item>
+                      <Dropdown.Item disabled>StockAnalyzer Help</Dropdown.Item>
                         <Dropdown.Divider/>
                         <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
                       </Dropdown.Menu>
