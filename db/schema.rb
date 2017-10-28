@@ -33,11 +33,11 @@ ActiveRecord::Schema.define(version: 20170929135938) do
   end
 
   create_table "open_positions", force: :cascade do |t|
-    t.integer "portfolio_id"
-    t.integer "stock_symbol_id"
-    t.decimal "quantity"
-    t.decimal "cost"
-    t.date "date_acquired"
+    t.integer "portfolio_id", null: false
+    t.integer "stock_symbol_id", null: false
+    t.decimal "quantity", null: false
+    t.decimal "cost", null: false
+    t.date "date_acquired", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["portfolio_id"], name: "index_open_positions_on_portfolio_id"
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 20170929135938) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "email"
+    t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

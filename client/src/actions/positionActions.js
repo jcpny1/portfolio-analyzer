@@ -27,7 +27,7 @@ export function addPosition(openPosition) {
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position: ', error: error})))
     );
   }
 }
@@ -50,7 +50,7 @@ export function deletePosition(portfolioId, openPositionId) {
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position: ', error: error})))
     );
   }
 }
@@ -106,7 +106,7 @@ export function updatePosition(openPosition) {
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position: ', error: error})))
     );
   }
 }

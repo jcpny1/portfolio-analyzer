@@ -27,7 +27,7 @@ export function addPortfolio(portfolio) {
         }
         dispatch(PortfolioReducerFunctions.addPortfolioAction(newPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio: ', error: error})))
     );
   }
 }
@@ -50,7 +50,7 @@ export function deletePortfolio(portfolioId) {
         }
         dispatch(PortfolioReducerFunctions.deletePortfolioAction(portfolioId));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Portfolio Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Portfolio: ', error: error})))
     );
   }
 }
@@ -80,7 +80,7 @@ export function loadPortfolios(loadLivePrices) {
       .then(response => response.json())
       .then(portfolios => {
         if (!portfolios.length) {
-          throw new Error('Empty response from server');
+          throw 'No portfolios were found';
         }
         let symbols = [];
         portfolios.forEach(function(portfolio) {
@@ -98,7 +98,7 @@ export function loadPortfolios(loadLivePrices) {
           .then(response => response.json())
           .then(dailyTrades => {
             if (!dailyTrades.length) {
-              throw new Error('Empty response from server');
+              throw 'No prices were found for positions';
             }
             portfolios.forEach(function(portfolio) {processPrices(portfolio, dailyTrades)});
             dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
@@ -107,7 +107,7 @@ export function loadPortfolios(loadLivePrices) {
           dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
         }
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error})))
     );
   }
 }
@@ -123,30 +123,6 @@ function processPrices(portfolio, dailyTrades) {
       position.gainLoss       = position.marketValue - parseFloat(position.cost);
     }
   });
-}
-
-// Updates a position's applicable portfolio with new prices.
-export function repricePortfolioForPosition(portfolio, openPosition) {
-  return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    return (
-      fetch(`/api/daily_trades/latestPrices?symbols=${openPosition.stock_symbol.name}&livePrices`, {
-        headers: {
-          'Accept': 'application/json',
-        },
-      })
-      .then(ActionUtils.checkStatus)
-      .then(response => response.json())
-      .then(dailyTrades => {
-        if (!dailyTrades.length) {
-          throw new Error('Empty response from server');
-        }
-        processPrices(portfolio, dailyTrades);
-        dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
-      })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Reprice Portfolio Error: ', error: error})))
-    );
-  }
 }
 
 export function sortPortfolios(portfolios, columnName, reverseSort) {
@@ -191,7 +167,7 @@ export function updatePortfolio(portfolio) {
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio Error: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio: ', error: error})))
     );
   }
 }
