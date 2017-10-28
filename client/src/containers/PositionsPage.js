@@ -3,11 +3,17 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import ActionUtils from '../actions/actionUtils';
 import * as positionActions from '../actions/positionActions.js';
-import * as portfolioActions from '../actions/portfolioActions.js';   // !! !! kludge for refresh clearing state.
-import * as stockSymbolActions from '../actions/stockSymbolActions.js';
+import * as portfolioActions from '../actions/portfolioActions.js';
 import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      portfolioId: parseInt(this.props.match.params.id, 10),
+      positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions),
+    };
+  }
 
   newPosition = (portfolioId) => {
     return {
@@ -20,17 +26,8 @@ class PositionsPage extends Component {
     }
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      portfolioId: parseInt(this.props.match.params.id, 10),
-      positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions),
-    };
-  }
-
   componentDidMount() {
-    this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
-    this.props.portfolios.length   || this.props.actions.loadPortfolios(false)   // !! kludge for refresh clearing state.
+    this.props.portfolios.length || this.props.actions.loadPortfolios(false)
   }
 
   refreshPortfolio = (portfolio) => {
@@ -65,11 +62,11 @@ class PositionsPage extends Component {
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, stockSymbols: state.stock_symbols.stockSymbols, updatingPortfolio: state.portfolios.updatingPortfolio};
+  return {portfolios: state.portfolios.portfolios, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators({...portfolioActions, ...positionActions, ...stockSymbolActions}, dispatch)};
+  return {actions: bindActionCreators({...portfolioActions, ...positionActions}, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PositionsPage);

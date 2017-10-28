@@ -1,19 +1,11 @@
 import React, {Component} from 'react';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
-import * as stockSymbolActions from '../actions/stockSymbolActions.js';
 import Symbols from '../components/Symbols';
 
-class SymbolsPage extends Component {
-
+export default class SymbolsPage extends Component {
   componentWillMount() {
     this.resetComponent();
-  }
-
-  componentDidMount() {
-    this.props.stockSymbols.length || this.props.actions.loadStockSymbols()
   }
 
   resetComponent = () => {
@@ -80,13 +72,3 @@ class SymbolsPage extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {stockSymbols: state.stock_symbols.stockSymbols};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(stockSymbolActions, dispatch)};
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SymbolsPage);
