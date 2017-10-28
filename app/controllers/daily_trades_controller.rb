@@ -82,7 +82,18 @@ class DailyTradesController < ApplicationController
               daily_trade.low_price    = prices['3. low'].to_f
               daily_trade.close_price  = prices['4. close'].to_f
               daily_trade.trade_volume = prices['5. volume'].to_f
-              daily_trade.save
+
+              # This is needed because symbol/trade datetime is unique and our feed only updates about once a minute.
+              # If we make multiple pricing requests for a symbol in a short amount of time, we'll get duplicates.
+              begin
+                if !DailyTrade.exists?(stock_symbol_id: daily_trade.stock_symbol.id, trade_date: daily_trade.trade_date)
+                  daily_trade.save
+                end
+              rescue ActiveRecord::ActiveRecordError => e
+                daily_trades[i] = "DailyTrade save error: #{e}"
+                puts daily_trades[i]
+              end
+
               daily_trades[i] = daily_trade
             end
 
