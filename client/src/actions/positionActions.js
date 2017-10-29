@@ -23,11 +23,11 @@ export function addPosition(openPosition) {
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
-          throw updatedPortfolio;
+          throw new Error(`Position add failed! ${updatedPortfolio[0]}.`);
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position: ', error: error.message})))
     );
   }
 }
@@ -46,11 +46,11 @@ export function deletePosition(portfolioId, openPositionId) {
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
-          throw updatedPortfolio;
+          throw new Error(`Position delete failed! ${updatedPortfolio[0]}.`);
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position: ', error: error.message})))
     );
   }
 }
@@ -102,11 +102,11 @@ export function updatePosition(openPosition) {
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
-          throw updatedPortfolio;
+          throw new Error(`Position update failed! ${updatedPortfolio[0]}.`);
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position: ', error: error.message})))
     );
   }
 }

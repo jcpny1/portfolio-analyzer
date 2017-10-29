@@ -23,11 +23,11 @@ export function addPortfolio(portfolio) {
       .then(response => response.json())
       .then(newPortfolio => {
         if (!newPortfolio.id) {
-          throw newPortfolio;
+          throw new Error('Portfolio add failed!');
         }
         dispatch(PortfolioReducerFunctions.addPortfolioAction(newPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio: ', error: error.message})))
     );
   }
 }
@@ -46,11 +46,11 @@ export function deletePortfolio(portfolioId) {
       .then(response => response.json())
       .then(deletedPortfolio => {
         if (!deletedPortfolio.id) {
-          throw deletedPortfolio;
+          throw new Error('Portfolio delete failed!');
         }
         dispatch(PortfolioReducerFunctions.deletePortfolioAction(portfolioId));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Portfolio: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Portfolio: ', error: error.message})))
     );
   }
 }
@@ -80,7 +80,7 @@ export function loadPortfolios(loadLivePrices) {
       .then(response => response.json())
       .then(portfolios => {
         if (!portfolios.length) {
-          throw 'No portfolios were found';
+          throw new Error('No portfolios were found.');
         }
         let symbols = [];
         portfolios.forEach(function(portfolio) {
@@ -88,8 +88,8 @@ export function loadPortfolios(loadLivePrices) {
         });
 
         if (symbols.length > 0) {
-          const livePrices = (loadLivePrices === true) ? '&livePrices' : '';
-          fetch(`/api/daily_trades/latestPrices?symbols=${symbols.toString()}${livePrices}`, {
+          const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
+          fetch(`/api/daily_trades/latestPrices?${livePrices}symbols=${symbols.toString()}`, {
             headers: {
               'Accept': 'application/json',
             },
@@ -98,8 +98,13 @@ export function loadPortfolios(loadLivePrices) {
           .then(response => response.json())
           .then(dailyTrades => {
             if (!dailyTrades.length) {
-              throw 'No prices were found for positions';
+              throw new Error('No prices were found for positions.');
             }
+            // Validate dailyTrade data.
+            dailyTrades.forEach(function(dailyTrade) {
+              if ('error' in dailyTrade)
+                dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: dailyTrade.error}));
+            });
             portfolios.forEach(function(portfolio) {processPrices(portfolio, dailyTrades)});
             dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
           });
@@ -107,7 +112,7 @@ export function loadPortfolios(loadLivePrices) {
           dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
         }
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
     );
   }
 }
@@ -163,11 +168,11 @@ export function updatePortfolio(portfolio) {
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
-          throw updatedPortfolio;
+          throw new Error('Portfolio update failed!');
         }
         dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
       })
-      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio: ', error: error})))
+      .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio: ', error: error.message})))
     );
   }
 }
