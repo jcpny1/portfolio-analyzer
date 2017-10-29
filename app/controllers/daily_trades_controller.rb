@@ -1,8 +1,14 @@
 class DailyTradesController < ApplicationController
-   include Alphavantage
+   include Yahoo
 
   # Retrieve the latest prices for the supplied symbols.
   # from live feed if 'livePrices' is specified. Else, from database.
+
+  # NOTE: Keep symbols array and daily_trades array in sync by symbol name.
+  #       Use daily_trade.close_price = nil to signal a failed price fetch.
+
+  # TODO Combine symbols and daily_trades arrays into a single object.
+
   def latest_prices
     symbols = params['symbols'].split(',')
     daily_trades = Array.new(symbols.length)
@@ -14,7 +20,7 @@ class DailyTradesController < ApplicationController
       daily_trades.each.with_index { |daily_trade, i|
         begin
           if daily_trade.close_price.nil?
-            daily_trades[i] = {error: "Failed to get price for #{daily_trade.stock_symbol.name}"}
+            daily_trades[i] = {error: "Failed to get price for #{symbols[i]}"}
           else
             if !DailyTrade.exists?(stock_symbol_id: daily_trade.stock_symbol.id, trade_date: daily_trade.trade_date)
               daily_trade.save
