@@ -62,7 +62,10 @@ function initPortfolioSummaryValues(portfolio) {
     position.lastClosePrice = 0.0;
     position.marketValue    = 0.0;
     position.gainLoss       = 0.0;
-    symbols.push(position.stock_symbol.name);
+    const symbolName = position.stock_symbol.name;
+    if (symbols.indexOf(symbolName) === -1) {
+      symbols.push(symbolName);
+    }
   });
   return symbols;
 }
@@ -71,7 +74,7 @@ export function loadPortfolios(loadLivePrices) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
-      fetch(`/api/portfolios`, {
+      fetch('/api/portfolios', {
         headers: {
           'Accept': 'application/json',
         },

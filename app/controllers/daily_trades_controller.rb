@@ -4,7 +4,7 @@ class DailyTradesController < ApplicationController
   # Retrieve the latest prices for the supplied symbols.
   # from live feed if 'livePrices' is specified. Else, from database.
   def latest_prices
-    symbols = params['symbols'].split(',').uniq
+    symbols = params['symbols'].split(',')
     daily_trades = Array.new(symbols.length)
 
     if params.key?('livePrices')
@@ -13,7 +13,7 @@ class DailyTradesController < ApplicationController
       # Save new prices to database.
       daily_trades.each.with_index { |daily_trade, i|
         begin
-          if daily_trade.open_price.nil?
+          if daily_trade.close_price.nil?
             daily_trades[i] = {error: "Failed to get price for #{daily_trade.stock_symbol.name}"}
           else
             if !DailyTrade.exists?(stock_symbol_id: daily_trade.stock_symbol.id, trade_date: daily_trade.trade_date)
