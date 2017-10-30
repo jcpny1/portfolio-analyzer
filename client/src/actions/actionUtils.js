@@ -51,19 +51,16 @@ function computePortfolioSummaries(portfolio) {
   });
 }
 
-// Initialize a portfolio's summary values. Return an array of stock symbols contained in the portfolio.
+// Initialize a portfolio's summary values. Return whether or not there were any positions found.
 function initPortfolioValues(portfolios) {
-  let symbols = [];
+  let positionsFound = false;
   portfolios.forEach(function(portfolio) {
     portfolio.positions.forEach(function(position) {
       initPositionValues(position);
-      const symbolName = position.stock_symbol.name;
-      if (symbols.indexOf(symbolName) === -1) {
-        symbols.push(symbolName);
-      }
+      positionsFound = true;
     });
   });
-  return symbols;
+  return positionsFound;
 }
 
 // Initialize a position's price-related values.

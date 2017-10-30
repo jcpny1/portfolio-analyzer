@@ -10,7 +10,8 @@ class TradesController < ApplicationController
   # TODO Combine symbols and trades arrays into a single object.
 
   def latest_prices
-    symbols = params['symbols'].split(',')
+    user_id = params['userId']
+    symbols = Portfolio.find_by(user_id: user_id).stock_symbols.map{|ss| ss.name}.uniq
     trades = Array.new(symbols.length)
 
     if params.key?('livePrices')
