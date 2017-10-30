@@ -6,6 +6,6 @@ class CreateTrades < ActiveRecord::Migration[5.1]
       t.decimal    :trade_price,  null: false
       t.timestamps
     end
-    add_index(:trades, [:stock_symbol_id, :trade_date], unique: true)
+    add_index(:trades, [:stock_symbol_id, :trade_date])
   end
 end
