@@ -54,6 +54,7 @@ export default class SymbolsPage extends Component {
     let {results, value} = this.state;
     return (
       <Modal
+        closeOnDimmerClick={false}
         size='small'
         trigger={<Menu.Item onClick={this.handleOpen}>Symbol Lookup</Menu.Item>}
         open={this.state.modalOpen}

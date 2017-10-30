@@ -45,6 +45,7 @@ export default class PortfolioEditPage extends Component {
     const {modalOpen, editedPortfolio} = this.state;
     return (
       <Modal
+        closeOnDimmerClick={false}
         trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
         open={modalOpen}
         onClose={this.handleCancel}

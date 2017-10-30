@@ -45,6 +45,7 @@ export default class PositionEditPage extends Component {
     const {modalOpen, editedPosition} = this.state;
     return (
       <Modal
+        closeOnDimmerClick={false}
         trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
         open={modalOpen}
         onClose={this.handleCancel}
