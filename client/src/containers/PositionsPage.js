@@ -5,19 +5,20 @@ import ActionUtils from '../actions/actionUtils';
 import * as positionActions from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import Positions from '../components/Positions';
+import PortfoliosPage from './PortfoliosPage';
 
 class PositionsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       portfolioId: parseInt(this.props.match.params.id, 10),
-      positionsSorter: ActionUtils.columnSorter(this.props.actions.sortPositions),
+      sortFn: ActionUtils.columnSorter(this.props.actions.sortPositions),
     };
   }
 
-  newPosition = (portfolioId) => {
+  newPosition = () => {
     return {
-      portfolio_id: portfolioId,
+      portfolio_id: this.state.portfolioId,
       id: '',
       stock_symbol: {},
       quantity: '',
@@ -41,23 +42,21 @@ class PositionsPage extends Component {
   }
 
   sortPositions = (columnName) => {
-    const {portfolioId, positionsSorter} = this.state;
-    const portfolio = this.props.portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    positionsSorter(portfolio, columnName);
+    const portfolio = this.props.portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
+    this.state.sortFn(portfolio, columnName);
   }
 
-  submitPosition = (openPosition) => {
-    (openPosition.id === '') ? this.props.actions.addPosition(openPosition) : this.props.actions.updatePosition(openPosition);
+  submitPosition = (position) => {
+    (position.id === '') ? this.props.actions.addPosition(position) : this.props.actions.updatePosition(position);
   }
 
   render() {
     const {portfolios, stockSymbols, updatingPortfolio} = this.props;
-    const {portfolioId} = this.state;
-    const portfolio = portfolios.find((thisPortfolio) => {return thisPortfolio.id === portfolioId;});
-    if (portfolio) {
-      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition(portfolio.id)} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
+    let portfolio = portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
+    if (!portfolio) {  // may be null until props.portfolios is loaded.
+      portfolio = PortfoliosPage.newPortfolio;
     }
-    return null;
+    return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
   }
 }
 

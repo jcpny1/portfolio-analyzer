@@ -40,14 +40,14 @@ module Alphavantage extend ActiveSupport::Concern
   # }
 
   # Make data request(s) for symbols and return results in daily_trades.
-  def fillDailyTrades(symbols, daily_trades)
+  def fillTrades(symbols, daily_trades)
     begin
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: 'https://www.alphavantage.co/query')
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
       puts "PRICE FETCH ERROR for: #{symbols.inspect}"
-      puts "Faraday client error: #{e}"
-      fetch_failure(symbols, daily_trades)
+      errorMsg = "Faraday client error: #{e}"
+      fetch_failure(symbols, daily_trades, errorMsg)
     end
 
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
@@ -65,17 +65,17 @@ module Alphavantage extend ActiveSupport::Concern
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e
         puts "PRICE FETCH ERROR for: #{symbol}"
-        puts "Faraday client error: #{e}"
-        daily_trade = error_trade(symbol)
+        errorMsg = "Faraday client error: #{e}"
+        daily_trade = error_trade(symbol, errorMsg, true)
       rescue SyntaxError => e
-        puts "JSON parse error: #{e}"
-        daily_trade = error_trade(symbol)
+        errorMsg = "JSON parse error: #{e}"
+        daily_trade = error_trade(symbol, errorMsg, true)
       else
         # Error example:
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
         if response.key?('Error Message') || response.length == 0
-          puts "Price request failure for symbol (#{symbol}): #{response['Error Message']}"
-          daily_trade = error_trade(symbol)
+          errorMsg = "Price request failure for symbol (#{symbol}): #{response['Error Message']}"
+          daily_trade = error_trade(symbol, errorMsg, true)
         else
           header = response['Meta Data']
           tick   = response['Time Series (1min)'].first
@@ -84,31 +84,16 @@ module Alphavantage extend ActiveSupport::Concern
 
           # TODO Get timezone from Meta Data.
           # TODO Derive day_change value.
-          daily_trade = DailyTrade.new do |dt|
+          daily_trade = Trade.new do |dt|
             dt.stock_symbol = StockSymbol.find_by(name: symbol)
             dt.trade_date   = time + " EDT"
-            dt.open_price   = prices['1. open'].to_f
-            dt.high_price   = prices['2. high'].to_f
-            dt.low_price    = prices['3. low'].to_f
-            dt.close_price  = prices['4. close'].to_f
-            dt.trade_volume = prices['5. volume'].to_f
-            dt.day_change   = 0.0
+            dt.trade_price  = prices['4. close'].to_f
+            dt.day_change   = nil
           end
         end
       ensure
         daily_trades[i] = daily_trade
       end
-    }
-  end
-
-  # TODOO Consolidate these two functions into one place in common with yahoo.rb
-  def error_trade(symbol)
-    DailyTrade.new(stock_symbol: StockSymbol.new(name: symbol), close_price: nil)
-  end
-
-  def fetch_failure(symbols, daily_trades)
-    symbols.each.with_index { |symbol, i|
-      daily_trades[i] = error_trade(symbol)
     }
   end
 end

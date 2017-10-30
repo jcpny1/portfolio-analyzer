@@ -20,7 +20,7 @@ module Yahoo extend ActiveSupport::Concern
   DAY_CHANGE_COL       = 4
 
   # Make data request(s) for symbols and return results in daily_trades.
-  def fillDailyTrades(symbols, daily_trades)
+  def fillTrades(symbols, daily_trades)
     begin
       symbolList = symbols.join('+')
       puts "PRICE FETCH BEGIN for: #{symbolList}"
@@ -31,11 +31,11 @@ module Yahoo extend ActiveSupport::Concern
       response = CSV.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
       puts "PRICE FETCH ERROR for: #{symbolList}"
-      puts "Faraday client error: #{e}"
-      fetch_failure(symbols, daily_trades)
+      errorMsg = "Faraday client error: #{e}"
+      fetch_failure(symbols, daily_trades, errorMsg)
     rescue CSV::MalformedCSVError => e
-      puts "CSV parse error: #{e}"
-      fetch_failure(symbols, daily_trades)
+      errorMsg = "CSV parse error: #{e}"
+      fetch_failure(symbols, daily_trades, errorMsg)
     else
       # TODO If length of symbols != length of response, something went wrong.
       symbols.each.with_index { |symbol, i|
@@ -44,38 +44,23 @@ module Yahoo extend ActiveSupport::Concern
           responseRow = response[responseIndex]
           if responseRow[LAST_TRADE_PRICE_COL] == 'N/A'
             # Error example: "AXXX","N/A","N/A","N/A","N/A"
-            puts "Price request failure for symbol (#{symbol})."
-            daily_trade = error_trade(symbol)
+            errorMsg = "Price request failure for symbol (#{symbol})."
+            daily_trade = error_trade(symbol, errorMsg, true)
           else
             # TODO Replace 'EDT' with proper timezone info.
-            daily_trade = DailyTrade.new do |dt|
+            daily_trade = Trade.new do |dt|
               dt.stock_symbol = StockSymbol.find_by(name: symbol)
               dt.trade_date   = DateTime.strptime("#{responseRow[LAST_TRADE_DATE_COL]} #{response[responseIndex][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z')
-              dt.open_price   = 0.0
-              dt.high_price   = 0.0
-              dt.low_price    = 0.0
-              dt.close_price  = responseRow[LAST_TRADE_PRICE_COL]
-              dt.trade_volume = 0
+              dt.trade_price  = responseRow[LAST_TRADE_PRICE_COL]
               dt.day_change   = responseRow[DAY_CHANGE_COL]
             end
           end
         else
-          puts "Price request failure for symbol (#{symbol})."
-          daily_trade = error_trade(symbol)
+          errorMsg = "Price request failure for symbol (#{symbol})."
+          daily_trade = error_trade(symbol, errorMsg, true)
         end
         daily_trades[i] = daily_trade
       }
     end
-  end
-
-  # TODO Consolidate these two functions into one place in common with alphavantage.rb
-  def error_trade(symbol)
-    DailyTrade.new(stock_symbol: StockSymbol.new(name: symbol), close_price: nil)
-  end
-
-  def fetch_failure(symbols, daily_trades)
-    symbols.each.with_index { |symbol, i|
-      daily_trades[i] = error_trade(symbol)
-    }
   end
 end

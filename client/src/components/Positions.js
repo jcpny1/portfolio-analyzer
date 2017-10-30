@@ -11,7 +11,8 @@ const Positions = (props) => {
       <Table.Row textAlign='center' style={{'color':'darkorchid'}}>
         <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} stockSymbols={stockSymbols} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('lastClosePrice')}>Last Close</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('lastTrade')}>Last Trade</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('lastTradeDate')}>Last Update</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
@@ -23,7 +24,7 @@ const Positions = (props) => {
   }
 
   function listPositions() {
-    return portfolio.open_positions.map((position,index) => {
+    return portfolio.positions.map((position,index) => {
       return (
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
@@ -31,7 +32,8 @@ const Positions = (props) => {
             <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
           </Table.Cell>
           <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.lastClosePrice}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.lastTrade}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.dayChange} plusSign/></Table.Cell>
           <Table.Cell><Fmt.DateTime value={position.lastTradeDate}/></Table.Cell>
           <Table.Cell><Fmt.Quantity value={position.quantity}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.marketValue}/></Table.Cell>
@@ -48,6 +50,7 @@ const Positions = (props) => {
       <Table.Row textAlign='right'>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='left'>Total</Table.HeaderCell>
+        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>

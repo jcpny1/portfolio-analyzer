@@ -6,13 +6,18 @@ import * as actions from '../actions/portfolioActions.js';
 import Portfolios from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
-
-  static newPortfolio = {id: '', name: ''};
-
   constructor(props) {
     super(props);
-    this.state = {portfoliosSorter: ActionUtils.columnSorter(this.props.actions.sortPortfolios)};
+    this.state = {
+      sortFn: ActionUtils.columnSorter(this.props.actions.sortPortfolios),
+    };
   }
+
+  static newPortfolio = {
+    id: '',
+    name: '',
+    positions: [],
+  };
 
   componentDidMount() {
     this.props.portfolios.length || this.props.actions.loadPortfolios(false)
@@ -29,7 +34,7 @@ class PortfoliosPage extends Component {
   }
 
   sortPortfolios = (columnName) => {
-    this.state.portfoliosSorter(this.props.portfolios, columnName);
+    this.state.sortFn(this.props.portfolios, columnName);
   }
 
   submitPortfolio = (portfolio) => {
@@ -38,12 +43,7 @@ class PortfoliosPage extends Component {
 
   render() {
     const {portfolios, updatingPortfolio} = this.props;
-    let sumMarketValue = 0.0, sumTotalCost = 0.0;
-    portfolios.forEach(function(portfolio) {
-      sumMarketValue += portfolio.marketValue;
-      sumTotalCost   += portfolio.totalCost;
-    });
-    const totalGainLoss = sumMarketValue - sumTotalCost;
+    const {sumMarketValue, sumTotalCost, totalGainLoss} = ActionUtils.computeAccountSummaries(portfolios);
     return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalMarketValue={sumMarketValue} totalCost={sumTotalCost} totalGainLoss={totalGainLoss} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
   }
 }

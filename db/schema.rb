@@ -18,21 +18,16 @@ ActiveRecord::Schema.define(version: 20170929135938) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "daily_trades", force: :cascade do |t|
-    t.integer "stock_symbol_id", null: false
-    t.datetime "trade_date", null: false
-    t.decimal "open_price", null: false
-    t.decimal "close_price", null: false
-    t.decimal "high_price", null: false
-    t.decimal "low_price", null: false
-    t.decimal "trade_volume", null: false
+  create_table "portfolios", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["stock_symbol_id", "trade_date"], name: "index_daily_trades_on_stock_symbol_id_and_trade_date", unique: true
-    t.index ["stock_symbol_id"], name: "index_daily_trades_on_stock_symbol_id"
+    t.index ["user_id", "name"], name: "index_portfolios_on_user_id_and_name", unique: true
+    t.index ["user_id"], name: "index_portfolios_on_user_id"
   end
 
-  create_table "open_positions", force: :cascade do |t|
+  create_table "positions", force: :cascade do |t|
     t.integer "portfolio_id", null: false
     t.integer "stock_symbol_id", null: false
     t.decimal "quantity", null: false
@@ -40,17 +35,8 @@ ActiveRecord::Schema.define(version: 20170929135938) do
     t.date "date_acquired", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["portfolio_id"], name: "index_open_positions_on_portfolio_id"
-    t.index ["stock_symbol_id"], name: "index_open_positions_on_stock_symbol_id"
-  end
-
-  create_table "portfolios", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id", "name"], name: "index_portfolios_on_user_id_and_name", unique: true
-    t.index ["user_id"], name: "index_portfolios_on_user_id"
+    t.index ["portfolio_id"], name: "index_positions_on_portfolio_id"
+    t.index ["stock_symbol_id"], name: "index_positions_on_stock_symbol_id"
   end
 
   create_table "stock_symbols", force: :cascade do |t|
@@ -60,6 +46,16 @@ ActiveRecord::Schema.define(version: 20170929135938) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_stock_symbols_on_company_id"
+  end
+
+  create_table "trades", force: :cascade do |t|
+    t.integer "stock_symbol_id", null: false
+    t.datetime "trade_date", null: false
+    t.decimal "trade_price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stock_symbol_id", "trade_date"], name: "index_trades_on_stock_symbol_id_and_trade_date", unique: true
+    t.index ["stock_symbol_id"], name: "index_trades_on_stock_symbol_id"
   end
 
   create_table "users", force: :cascade do |t|

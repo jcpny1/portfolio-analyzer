@@ -1,6 +1,6 @@
-class CreateOpenPositions < ActiveRecord::Migration[5.1]
+class CreatePositions < ActiveRecord::Migration[5.1]
   def change
-    create_table :open_positions do |t|
+    create_table :positions do |t|
       t.references :portfolio,     null: false, foreign_key: true
       t.references :stock_symbol,  null: false, foreign_key: true
       t.decimal    :quantity,      null: false

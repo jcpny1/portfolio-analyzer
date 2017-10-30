@@ -55,21 +55,6 @@ export function deletePortfolio(portfolioId) {
   }
 }
 
-// Initialize a portfolio's summary values. Return an array of stock symbols contained in the portfolio.
-function initPortfolioSummaryValues(portfolio) {
-  let symbols = [];
-  portfolio.open_positions.forEach(function(position) {
-    position.lastClosePrice = 0.0;
-    position.marketValue    = 0.0;
-    position.gainLoss       = 0.0;
-    const symbolName = position.stock_symbol.name;
-    if (symbols.indexOf(symbolName) === -1) {
-      symbols.push(symbolName);
-    }
-  });
-  return symbols;
-}
-
 export function loadPortfolios(loadLivePrices) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
@@ -85,30 +70,27 @@ export function loadPortfolios(loadLivePrices) {
         if (!portfolios.length) {
           throw new Error('No portfolios were found.');
         }
-        let symbols = [];
-        portfolios.forEach(function(portfolio) {
-          symbols.push(...initPortfolioSummaryValues(portfolio));
-        });
 
+        const symbols = ActionUtils.initPortfolioValues(portfolios);
         if (symbols.length > 0) {
           const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
-          fetch(`/api/daily_trades/latestPrices?${livePrices}symbols=${symbols.toString()}`, {
+          fetch(`/api/trades/latestPrices?${livePrices}symbols=${symbols.toString()}`, {
             headers: {
               'Accept': 'application/json',
             },
           })
           .then(ActionUtils.checkStatus)
           .then(response => response.json())
-          .then(dailyTrades => {
-            if (!dailyTrades.length) {
+          .then(trades => {
+            if (!trades.length) {
               throw new Error('No prices were found for positions.');
             }
-            // Validate dailyTrade data.
-            dailyTrades.forEach(function(dailyTrade) {
-              if ('error' in dailyTrade)
-                dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: dailyTrade.error}));
+            // Validate trade data.
+            trades.forEach(function(trade) {
+              if (trade.error !== null)
+                dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: trade.error}));
             });
-            portfolios.forEach(function(portfolio) {processPrices(portfolio, dailyTrades)});
+            portfolios.forEach(function(portfolio) {ActionUtils.processPrices(portfolio, trades)});
             dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
           });
         } else {
@@ -118,19 +100,6 @@ export function loadPortfolios(loadLivePrices) {
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
     );
   }
-}
-
-// Update open positions with dailyTrade prices.
-function processPrices(portfolio, dailyTrades) {
-  portfolio.open_positions.forEach(function(position) {
-    const dailyTradesIndex = dailyTrades.findIndex(dailyTrade => {return dailyTrade.stock_symbol_id === position.stock_symbol.id});
-    if (dailyTradesIndex !== -1) {
-      position.lastClosePrice = dailyTrades[dailyTradesIndex].close_price;
-      position.lastTradeDate  = dailyTrades[dailyTradesIndex].trade_date;
-      position.marketValue    = position.quantity    * parseFloat(position.lastClosePrice);
-      position.gainLoss       = position.marketValue - parseFloat(position.cost);
-    }
-  });
 }
 
 export function sortPortfolios(portfolios, columnName, reverseSort) {

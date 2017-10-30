@@ -17,23 +17,8 @@ export function updatePortfolioAction(portfolio)   {return {type: portfolioActio
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-// Redo portfolio summary calculations whenever a portfolio has changed.
-function refreshPortfolioSummary(portfolio) {
-  portfolio.marketValue = 0.0;
-  portfolio.totalCost   = 0.0;
-  portfolio.gainLoss    = 0.0;
-  portfolio.open_positions.forEach(function(position) {
-    if (!isNaN(position.marketValue)) {
-      portfolio.totalCost    += parseFloat(position.cost);
-      portfolio.marketValue  += position.marketValue;
-      portfolio.gainLoss     += position.gainLoss;
-    }
-  });
-}
-
 export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: []}, action) {
-  // console.log("ACTION: " + action.type);
-  switch ( action.type ) {
+  switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
       const payloadPortfolio = action.payload;
@@ -60,8 +45,6 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     case portfolioActions.UPDATE_PORTFOLIO: {
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
-      ActionUtils.transferPortfolioPrices(state.portfolios[portfolioIndex], payloadPortfolio);
-      refreshPortfolioSummary(payloadPortfolio);
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
@@ -69,7 +52,7 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
-      payloadPortfolios.forEach(function(portfolio) {refreshPortfolioSummary(portfolio)});
+      payloadPortfolios.forEach(function(portfolio) {ActionUtils.computePortfolioSummaries(portfolio)});
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
     }
 

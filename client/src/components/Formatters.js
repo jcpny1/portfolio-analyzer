@@ -1,14 +1,19 @@
 import React from 'react';
 
 // Returns a formatted currency string.
+// Specify prop plusSign for positive numbers to receive a plus sign.
 const Currency = (props) => {
   let result = '';
-  if (typeof props.value !== "undefined") {
+  if (props.value !== null) {
     const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
     if (formattedValue[0] === '-') {
       result = <span style={{color:'red'}}>{formattedValue}</span>;
     } else {
-      result = <span>{formattedValue}</span>;
+      if (props.plusSign) {
+        result = <span>+{formattedValue}</span>;
+      } else {
+        result = <span>{formattedValue}</span>;
+      }
     }
   }
   return result;
@@ -17,7 +22,7 @@ const Currency = (props) => {
 // Returns a formatted Date string.
 const DateOnly = (props) => {
   let result = '';
-  if (typeof props.value !== "undefined") {
+  if (props.value !== null) {
     const date = new Date(props.value);
     result = date.toLocaleDateString();
   }
@@ -26,9 +31,8 @@ const DateOnly = (props) => {
 
 // Returns a formatted DateTime string.
 const DateTime = (props) => {
-// TODO find out why props.value is undefined.
   let result = '';
-  if (typeof props.value !== "undefined") {
+  if (props.value !== null) {
     const date = new Date(props.value);
     result = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   }
@@ -38,7 +42,7 @@ const DateTime = (props) => {
 // Returns a formatted quantity string.
 const Quantity = (props) => {
   let result = '';
-  if (typeof props.value !== "undefined") {
+  if (props.value !== null) {
     const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'decimal', minimumFractionDigits: 0, maximumFractionDigits: 5});
     result = <span>{formattedValue}</span>;
   }
