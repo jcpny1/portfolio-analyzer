@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Dropdown, Grid, Image, Menu} from 'semantic-ui-react';
+import HelpPage from './containers/HelpPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
 import SymbolsPage from './containers/SymbolsPage';
@@ -26,7 +27,7 @@ class App extends Component {
                     <Menu.Item disabled>Settings</Menu.Item>
                     <Dropdown item text='Help'>
                       <Dropdown.Menu>
-                      <Dropdown.Item disabled>StockAnalyzer Help</Dropdown.Item>
+                        <HelpPage />
                         <Dropdown.Divider/>
                         <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
                       </Dropdown.Menu>
