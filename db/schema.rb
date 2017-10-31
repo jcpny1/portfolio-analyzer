@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20170929135938) do
     t.decimal "trade_price", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["stock_symbol_id", "trade_date"], name: "index_trades_on_stock_symbol_id_and_trade_date", unique: true
+    t.index ["stock_symbol_id", "trade_date"], name: "index_trades_on_stock_symbol_id_and_trade_date"
     t.index ["stock_symbol_id"], name: "index_trades_on_stock_symbol_id"
   end
 

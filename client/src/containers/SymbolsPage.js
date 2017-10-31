@@ -32,9 +32,10 @@ export default class SymbolsPage extends Component {
   }
 
   handleChange = (e, {name, value}) => {
-    this.setState({[name]: value.toUpperCase()});
+    const upperCaseValue = value.toUpperCase();
+    this.setState({[name]: upperCaseValue});
     if ((e.target.name === 'value') && (value.length > 0)) {
-      this.search(value, companies => {
+      this.search(upperCaseValue, companies => {
         let symbolList = [];
         companies.forEach( company => {
           company.stock_symbols.forEach( stock_symbol => {

@@ -56,6 +56,6 @@ class PositionsController < ApplicationController
 
   # Filter params for allowed elements only.
   def position_params
-    params.require(:position).permit(:stock_symbol_name, :quantity, :cost, :date_acquired)
+    params.require(:position).permit(:stock_symbol_id, :quantity, :cost, :date_acquired)
   end
 end
