@@ -39,7 +39,7 @@ const Positions = (props) => {
           <Table.Cell><Fmt.Currency value={position.marketValue}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.cost}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.gainLoss}/></Table.Cell>
-          <Table.Cell><Fmt.DateOnly value={position.date_acquired}/></Table.Cell>
+          <Table.Cell>{position.date_acquired}</Table.Cell>
         </Table.Row>
       );
     });
