@@ -441,16 +441,16 @@ c=Company.create(name: 'A B R INFORMATION SERVICES INC')
 c.stock_symbols.create(name: 'ABRX', trading_name: 'ABRX')
 c=Company.create(name: 'ABLE LABORATORIES INC')
 c.stock_symbols.create(name: 'ABRXQ', trading_name: 'ABRXQ')
-stock_symbol_1 = StockSymbol.offset(20).limit(1).first
-stock_symbol_2 = StockSymbol.offset(80).limit(1).first
+stock_symbol_1 = StockSymbol.order(:name).offset( 2).limit(1).first
+stock_symbol_2 = StockSymbol.order(:name).offset(42).limit(1).first
 user_guest_1 = User.create!(name: 'guest', email: '')
 portfolio_1 = Portfolio.create(user: user_guest_1, name: 'Crazy Eights')
 portfolio_1.positions.new(stock_symbol: stock_symbol_1, quantity: 100, cost: 113.16, date_acquired: Date.new(2009,9, 1))
 portfolio_1.positions.new(stock_symbol: stock_symbol_2, quantity: 250, cost:   3.16, date_acquired: Date.new(2010,2,15))
 portfolio_1.save!
-Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-08-12', trade_price: 114.24)
-Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-09-12', trade_price: 116.24)
-Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-10-12', trade_price: 114.24)
-Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-01-16', trade_price:   4.24)
-Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-02-16', trade_price:   6.24)
-Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-03-16', trade_price:   5.24)
+Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-08-12', trade_price: 114.24, price_change:  1.12)
+Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-09-12', trade_price: 116.24, price_change:  2.00)
+Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-10-12', trade_price: 114.24, price_change: -2.00)
+Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-01-16', trade_price:   4.24, price_change:  0.23)
+Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-02-16', trade_price:   6.36, price_change:  2.12)
+Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-03-16', trade_price:   5.24, price_change: -1.12)

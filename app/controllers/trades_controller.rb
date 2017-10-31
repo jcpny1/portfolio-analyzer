@@ -21,6 +21,8 @@ class TradesController < ApplicationController
         if trade.trade_price.nil?
           trades[i] = error_trade(symbols[i], "Failed to get price for #{symbols[i]}", true)
         else
+          # TODO When we get a feed that has some sort of unique identifier in it,
+          #      then add that id to the database to avoid saving duplicates.
           begin
             trade.save
           rescue ActiveRecord::ActiveRecordError => e
