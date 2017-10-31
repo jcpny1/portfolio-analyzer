@@ -54,7 +54,7 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.marketValue}/></Table.HeaderCell>
-        <Table.HeaderCell></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.Currency value={portfolio.dayChange}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.totalCost}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.gainLoss}/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>

@@ -28,24 +28,27 @@ function columnSorter(sortActionFn) {
 
 // Calculate account summary info.
 function computeAccountSummaries(portfolios) {
-  let sumMarketValue = 0.0, sumTotalCost = 0.0;
+  let sumMarketValue = 0.0, sumTotalCost = 0.0, sumDayChange = 0.0;
   portfolios.forEach(function(portfolio) {
     sumMarketValue += portfolio.marketValue;
     sumTotalCost   += portfolio.totalCost;
+    sumDayChange   += portfolio.dayChange;
   });
-  const totalGainLoss = sumMarketValue - sumTotalCost;
-  return {sumMarketValue, sumTotalCost, totalGainLoss};
+  const sumGainLoss = sumMarketValue - sumTotalCost;
+  return {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss,};
 }
 
 // Calculate portfolio summary info.
 function computePortfolioSummaries(portfolio) {
-  portfolio.marketValue = 0.0;
   portfolio.totalCost   = 0.0;
+  portfolio.marketValue = 0.0;
+  portfolio.dayChange   = 0.0;
   portfolio.gainLoss    = 0.0;
   portfolio.positions.forEach(function(position) {
     if (!isNaN(position.marketValue)) {
       portfolio.totalCost    += parseFloat(position.cost);
       portfolio.marketValue  += position.marketValue;
+      portfolio.dayChange    += position.dayChange;
       portfolio.gainLoss     += position.gainLoss;
     }
   });
@@ -69,6 +72,7 @@ function initPositionValues(position) {
   position.lastTradeDate = null;
   position.priceChange   = null;
   position.marketValue   = null;
+  position.dayChange     = null;
   position.gainLoss      = null;
 }
 
@@ -80,8 +84,13 @@ function processPrices(portfolio, trades) {
       position.lastTrade     = trades[tradesIndex].trade_price;
       position.priceChange   = trades[tradesIndex].price_change;
       position.lastTradeDate = trades[tradesIndex].trade_date;
-      position.marketValue   = position.quantity    * parseFloat(position.lastTrade);
-      position.gainLoss      = position.marketValue - parseFloat(position.cost);
+      if (position.lastTrade != null) {
+        position.marketValue = position.quantity * parseFloat(position.lastTrade);
+        position.gainLoss    = position.marketValue - parseFloat(position.cost);
+      }
+      if (position.priceChange != null) {
+        position.dayChange = position.quantity * parseFloat(position.priceChange);
+      }
     }
   });
 }
@@ -113,22 +122,5 @@ var sort_by = function(field, reverse = false, compareFn) {
   }
 }
 
-// Transfer last prices from existing portfolio to updated portfolio.
-//    When we update a position manually, we get back a server response without prices. So, we want to preserve the prices we already have.
-//    When we refresh the pricing on a position, we want the new prices. We do not want to preserve the older prices.
-function transferPortfolioPrices(srcPortfolio, tgtPortfolio) {
-  srcPortfolio.positions.forEach(function(srcPosition) {
-    const tgtPositionIndex = tgtPortfolio.positions.findIndex(position => {return position.id === srcPosition.id;});
-    if (tgtPositionIndex !== -1) {
-      const tgtPosition = tgtPortfolio.positions[tgtPositionIndex];
-      if ((isNaN(tgtPosition.lastClosPrice)) && (!isNaN(srcPosition.lastTrade))) {
-        tgtPosition.lastTrade   = srcPosition.lastTrade;
-        tgtPosition.marketValue = tgtPosition.quantity    * parseFloat(tgtPosition.lastTrade);
-        tgtPosition.gainLoss    = tgtPosition.marketValue - parseFloat(tgtPosition.cost);
-      }
-    }
-  });
-}
-
-const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, computePortfolioSummaries, initPortfolioValues, initPositionValues, processPrices, sort_by, transferPortfolioPrices};
+const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, computePortfolioSummaries, initPortfolioValues, initPositionValues, processPrices, sort_by};
 export default ActionUtils;

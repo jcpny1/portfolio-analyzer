@@ -5,7 +5,7 @@ import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
 
 const Portfolios = (props) => {
-  const {portfolios, totalCost, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
+  const {portfolios, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
 
   function columnTitles() {
     return (
@@ -45,7 +45,7 @@ const Portfolios = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='left'>Total</Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={totalMarketValue}/></Table.HeaderCell>
-        <Table.HeaderCell></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.Currency value={totalDayChange}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={totalCost}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={totalGainLoss}/></Table.HeaderCell>
       </Table.Row>
