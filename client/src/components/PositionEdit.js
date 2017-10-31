@@ -9,7 +9,7 @@ const PositionEdit = (props) => {
       <Form.Group>
         <Form.Input width={4} label='Symbol' placeholder='Symbol' name='stock_symbol_name' value={position.stock_symbol_name} onChange={props.onChange} required/>
         <Form.Input width={4} label='Quantity' placeholder='Quantity' name='quantity' value={position.quantity} onChange={props.onChange} required/>
-        <Form.Input width={4} label='Cost' placeholder='Cost' name='cost' value={position.cost} onChange={props.onChange} required/>
+        <Form.Input width={4} label='Cost Basis' placeholder='Cost Basis' name='cost' value={position.cost} onChange={props.onChange} required/>
         <Form.Input width={4} label='Date Acquired' type='date' placeholder='YYYY-MM-DD' name='date_acquired' value={position.date_acquired} onChange={props.onChange} required/>
       </Form.Group>
       <Form.Group>
