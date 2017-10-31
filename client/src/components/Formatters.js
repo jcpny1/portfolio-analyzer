@@ -5,14 +5,15 @@ import React from 'react';
 const Currency = (props) => {
   let result = '';
   if (props.value !== null) {
-    const formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
+    let formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
     if (formattedValue[0] === '-') {
       result = <span style={{color:'red'}}>{formattedValue}</span>;
     } else {
-      if (props.plusSign) {
-        result = <span>+{formattedValue}</span>;
+      if (props.delta) {
+        formattedValue = `+${formattedValue}`;
+        result = <span style={{color:'green'}}>{formattedValue}</span>;
       } else {
-        result = <span>{formattedValue}</span>;
+        result = <span style={{color:'black'}}>{formattedValue}</span>;
       }
     }
   }

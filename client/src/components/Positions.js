@@ -34,11 +34,11 @@ const Positions = (props) => {
           <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
           <Table.Cell><Fmt.Quantity value={position.quantity}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.lastTrade}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.priceChange} plusSign/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.priceChange} delta/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.marketValue}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.dayChange} plusSign/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.dayChange} delta/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.cost}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.gainLoss}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.gainLoss} delta/></Table.Cell>
           <Table.Cell><Fmt.DateTime value={position.lastTradeDate}/></Table.Cell>
         </Table.Row>
       );
@@ -54,9 +54,9 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.marketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={portfolio.dayChange}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.Currency value={portfolio.dayChange} delta/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={portfolio.gainLoss}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.Currency value={portfolio.gainLoss} delta/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );
