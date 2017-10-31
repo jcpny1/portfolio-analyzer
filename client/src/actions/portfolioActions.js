@@ -70,7 +70,7 @@ export function loadPortfolios(loadLivePrices) {
         if (!portfolios.length) {
           throw new Error('No portfolios were found.');
         }
-        if (ActionUtils.initPortfolioValues(portfolios)) {
+        if (ActionUtils.initPortfolioPositionValues(portfolios)) {
           const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
           fetch(`/api/portfolios/latestPrices?${livePrices}userId=${portfolios[0].user.id}`, {
             headers: {

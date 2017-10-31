@@ -9,7 +9,8 @@ const Currency = (props) => {
     if (formattedValue[0] === '-') {
       result = <span style={{color:'red'}}>{formattedValue}</span>;
     } else {
-      if (props.delta) {
+      // TODO codify the zero test with a constant or a function based on significant fraction digits.
+      if ((props.delta) && (props.value > 0.0001)) {
         formattedValue = `+${formattedValue}`;
         result = <span style={{color:'green'}}>{formattedValue}</span>;
       } else {

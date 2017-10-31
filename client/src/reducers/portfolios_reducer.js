@@ -22,6 +22,7 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
       const payloadPortfolio = action.payload;
+      ActionUtils.computePortfolioSummaries(payloadPortfolio);
       const portfolios = [payloadPortfolio, ...state.portfolios];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }

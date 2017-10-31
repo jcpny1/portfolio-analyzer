@@ -54,8 +54,8 @@ function computePortfolioSummaries(portfolio) {
   });
 }
 
-// Initialize a portfolio's summary values. Return whether or not there were any positions found.
-function initPortfolioValues(portfolios) {
+// Initialize a portfolio's position summary values. Return whether or not there were any positions found.
+function initPortfolioPositionValues(portfolios) {
   let positionsFound = false;
   portfolios.forEach(function(portfolio) {
     portfolio.positions.forEach(function(position) {
@@ -122,5 +122,5 @@ var sort_by = function(field, reverse = false, compareFn) {
   }
 }
 
-const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, computePortfolioSummaries, initPortfolioValues, initPositionValues, processPrices, sort_by};
+const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, computePortfolioSummaries, initPortfolioPositionValues, initPositionValues, processPrices, sort_by};
 export default ActionUtils;
