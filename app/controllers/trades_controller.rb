@@ -10,15 +10,14 @@ class TradesController < ApplicationController
   # TODO Combine symbols and trades arrays into a single object.
 
   def latest_prices
-    user_id = params['userId']
-    symbols = Portfolio.find_by(user_id: user_id).stock_symbols.map{|ss| ss.name}.uniq
+    symbols = symbolsForUser(params['userId'])
     trades = Array.new(symbols.length)
 
     if params.key?('livePrices')
       # Fetch live prices
       fillTrades(symbols, trades);
       # Save new prices to database.
-      trades.each.with_index { |trade, i|
+      trades.each_with_index { |trade, i|
         if trade.trade_price.nil?
           trades[i] = error_trade(symbols[i], "Failed to get price for #{symbols[i]}", true)
         else
@@ -31,7 +30,7 @@ class TradesController < ApplicationController
       }
     else  # not fetching live prices.
       # Load last saved prices from database.
-      symbols.each.with_index { |symbol, i|
+      symbols.each_with_index { |symbol, i|
         stock_symbol = StockSymbol.find_by(name: symbol)
         if !stock_symbol.nil?
           trade = Trade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC, created_at DESC').first
@@ -55,8 +54,19 @@ class TradesController < ApplicationController
   end
 
   def fetch_failure(symbols, trades, errorMsg)
-    symbols.each.with_index { |symbol, i|
+    symbols.each_with_index { |symbol, i|
       trades[i] = error_trade(symbol, errorMsg, true)
     }
+  end
+
+  def symbolsForUser(user_id)
+    symbols = []
+    portfolios = Portfolio.where('user_id = ?', params['userId'])
+    portfolios.each { |portfolio|
+      portfolio.positions.each { |position|
+        symbols.push(position.stock_symbol.name)
+      }
+    }.uniq
+    symbols
   end
 end

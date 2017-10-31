@@ -67,7 +67,7 @@ function initPortfolioValues(portfolios) {
 function initPositionValues(position) {
   position.lastTrade     = null;
   position.lastTradeDate = null;
-  position.dayChange     = null;
+  position.priceChange   = null;
   position.marketValue   = null;
   position.gainLoss      = null;
 }
@@ -78,7 +78,7 @@ function processPrices(portfolio, trades) {
     const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
     if (tradesIndex !== -1) {
       position.lastTrade     = trades[tradesIndex].trade_price;
-      position.dayChange     = trades[tradesIndex].day_change;
+      position.priceChange   = trades[tradesIndex].price_change;
       position.lastTradeDate = trades[tradesIndex].trade_date;
       position.marketValue   = position.quantity    * parseFloat(position.lastTrade);
       position.gainLoss      = position.marketValue - parseFloat(position.cost);

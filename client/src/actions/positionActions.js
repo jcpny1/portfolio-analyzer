@@ -74,6 +74,7 @@ export function sortPositions(portfolio, columnName, reverseSort) {
       case 'gainLoss':    // fall through
       case 'lastTrade':   // fall through
       case 'marketValue': // fall through
+      case 'priceChange': // fall through
       case 'quantity':
         portfolio.positions.sort(ActionUtils.sort_by(columnName, reverseSort, parseFloat));
         break;

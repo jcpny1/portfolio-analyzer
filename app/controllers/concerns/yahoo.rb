@@ -38,7 +38,7 @@ module Yahoo extend ActiveSupport::Concern
       fetch_failure(symbols, daily_trades, errorMsg)
     else
       # TODO If length of symbols != length of response, something went wrong.
-      symbols.each.with_index { |symbol, i|
+      symbols.each_with_index { |symbol, i|
         responseIndex = response.index{ |row| row[SYMBOL_COL] == symbol}
         if !responseIndex.nil?
           responseRow = response[responseIndex]
@@ -52,7 +52,7 @@ module Yahoo extend ActiveSupport::Concern
               dt.stock_symbol = StockSymbol.find_by(name: symbol)
               dt.trade_date   = DateTime.strptime("#{responseRow[LAST_TRADE_DATE_COL]} #{response[responseIndex][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z')
               dt.trade_price  = responseRow[LAST_TRADE_PRICE_COL]
-              dt.day_change   = responseRow[DAY_CHANGE_COL]
+              dt.price_change = responseRow[DAY_CHANGE_COL]
             end
           end
         else

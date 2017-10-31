@@ -11,14 +11,14 @@ const Positions = (props) => {
       <Table.Row textAlign='center' style={{'color':'darkorchid'}}>
         <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} stockSymbols={stockSymbols} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('lastTrade')}>Last Trade</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('lastTradeDate')}>Last Update</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('priceChange')}>Price Change</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('date_acquired')}>Acquired</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('lastTradeDate')}>Last Trade</Table.HeaderCell>
       </Table.Row>
     );
   }
@@ -32,14 +32,14 @@ const Positions = (props) => {
             <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
           </Table.Cell>
           <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.lastTrade}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.dayChange} plusSign/></Table.Cell>
-          <Table.Cell><Fmt.DateTime value={position.lastTradeDate}/></Table.Cell>
           <Table.Cell><Fmt.Quantity value={position.quantity}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.lastTrade}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.priceChange} plusSign/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.marketValue}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={position.dayChange} plusSign/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.cost}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.gainLoss}/></Table.Cell>
-          <Table.Cell>{position.date_acquired}</Table.Cell>
+          <Table.Cell><Fmt.DateTime value={position.lastTradeDate}/></Table.Cell>
         </Table.Row>
       );
     });
@@ -53,8 +53,8 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.marketValue}/></Table.HeaderCell>
+        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.totalCost}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.gainLoss}/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>

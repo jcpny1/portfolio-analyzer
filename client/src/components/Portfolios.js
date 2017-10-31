@@ -13,6 +13,7 @@ const Portfolios = (props) => {
         <Table.HeaderCell>{<PortfolioEditPage portfolio={props.emptyPortfolio} iconName='add' iconColor='blue' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
       </Table.Row>
@@ -30,6 +31,7 @@ const Portfolios = (props) => {
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
           <Table.Cell><Fmt.Currency value={portfolio.marketValue}/></Table.Cell>
+          <Table.Cell><Fmt.Currency value={portfolio.dayChange}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={portfolio.totalCost}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={portfolio.gainLoss}/></Table.Cell>
         </Table.Row>
@@ -43,6 +45,7 @@ const Portfolios = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='left'>Total</Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={totalMarketValue}/></Table.HeaderCell>
+        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={totalCost}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={totalGainLoss}/></Table.HeaderCell>
       </Table.Row>

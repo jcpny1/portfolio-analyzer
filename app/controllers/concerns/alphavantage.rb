@@ -52,7 +52,7 @@ module Alphavantage extend ActiveSupport::Concern
 
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
 
-    symbols.each.with_index { |symbol, i|
+    symbols.each_with_index { |symbol, i|
       begin
         puts "PRICE FETCH BEGIN for: #{symbol}"
         resp = conn.get do |req|
@@ -83,12 +83,12 @@ module Alphavantage extend ActiveSupport::Concern
           prices = tick.second
 
           # TODO Get timezone from Meta Data.
-          # TODO Derive day_change value.
+          # TODO Derive price_change value.
           daily_trade = Trade.new do |dt|
             dt.stock_symbol = StockSymbol.find_by(name: symbol)
             dt.trade_date   = time + " EDT"
             dt.trade_price  = prices['4. close'].to_f
-            dt.day_change   = nil
+            dt.price_change = nil
           end
         end
       ensure
