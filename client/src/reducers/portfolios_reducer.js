@@ -4,6 +4,8 @@ export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
   DELETE_PORTFOLIO  : 'DELETE_PORTFOLIO',
   ERROR_PORTFOLIOS  : 'ERROR_PORTFOLIOS',
+  SORT_POSITIONS    : 'SORT_POSITIONS',
+  SORT_PORTFOLIOS   : 'SORT_PORTFOLIOS',
   UPDATE_PORTFOLIO  : 'UPDATE_PORTFOLIO',
   UPDATE_PORTFOLIOS : 'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
@@ -12,11 +14,13 @@ export const portfolioActions = {
 export function addPortfolioAction(portfolio)      {return {type: portfolioActions.ADD_PORTFOLIO,     payload: portfolio}}
 export function deletePortfolioAction(portfolioId) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: portfolioId}}
 export function errorPortfolioAction(error)        {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: error}}
+export function sortPositionsAction(sortInfo)      {return {type: portfolioActions.SORT_POSITIONS,    payload: sortInfo}}
+export function sortPortfoliosAction(sortInfo)     {return {type: portfolioActions.SORT_PORTFOLIOS,   payload: sortInfo}}
 export function updatePortfolioAction(portfolio)   {return {type: portfolioActions.UPDATE_PORTFOLIO,  payload: portfolio}}
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: []}, action) {
+export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: [], sorting: {portfolios: {colName: 'name', colDirection: 'ascending'}, positions: {colName: 'stock_symbol', colDirection: 'ascending'}}}, action) {
   switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
@@ -38,6 +42,26 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
       const {error, prefix} = action.payload;
       alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolio: false});
+    }
+
+    // Sort Portfolio Positions.
+    //   payload: {portfolio: portfolio, colName: property, colDirection: sorting.colDirection}
+    case portfolioActions.SORT_POSITIONS: {
+      const {portfolio, colName, colDirection} = action.payload;
+      const portfolioIndex = state.portfolios.findIndex(thisPortfolio => {return thisPortfolio.id === portfolio.id});
+      const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
+      const sorting = Object.assign({}, state.sorting, {positions: {colName: colName, colDirection: colDirection}});
+console.log("SORTING STATE: " + JSON.stringify(sorting));
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios, sorting: sorting});
+    }
+
+    // Sort Portfolios.
+    //   payload: {portfolios: portfolios, colName: property, colDirection: sorting.colDirection}
+    case portfolioActions.SORT_PORTFOLIOS: {
+      const {portfolios, colName, colDirection} = action.payload;
+      const sorting = Object.assign({}, state.sorting, {portfolios: {colName: colName, colDirection: colDirection}});
+console.log("SORTING STATE: " + JSON.stringify(sorting));
+      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios, sorting: sorting});
     }
 
     // Update one Portfolio.

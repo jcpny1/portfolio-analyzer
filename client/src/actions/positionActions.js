@@ -67,6 +67,19 @@ export function sortPositions(portfolio, property, reverseSort) {
   }
 }
 
+
+// Process click on positions table column header.
+export function sortPositionsClick(sortFn, portfolio, property, sorting) {
+  return function(dispatch) {
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
+
+const newColDirection = sortFn(portfolio.positions, 'Position.'+property, property);
+
+    return (dispatch(PortfolioReducerFunctions.sortPositionsAction({portfolio: portfolio, colName: property, colDirection: newColDirection})));
+  }
+}
+
+
 export function updatePosition(position) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());

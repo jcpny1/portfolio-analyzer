@@ -5,7 +5,7 @@ import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
 
 const Portfolios = (props) => {
-  const {portfolios, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio, sortColName, sortDirection} = props;
+  const {portfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
 
   function columnTitles() {
     return (

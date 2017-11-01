@@ -100,12 +100,27 @@ export function loadPortfolios(loadLivePrices) {
   }
 }
 
+////////////////
+// do we still need reverseSort parameter?
+////////////////
+
 export function sortPortfolios(portfolios, property, reverseSort) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     var arraySort = ActionUtils.sortArray('Portfolio.'+property, property, reverseSort);
     arraySort(portfolios);
     return (dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios)));
+  }
+}
+
+// Process click on portfolios table column header.
+export function sortPortfoliosClick(sortFn, portfolios, property, sorting) {
+  return function(dispatch) {
+    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
+
+const newColDirection = sortFn(portfolios, 'Portfolio.'+property, property);
+
+    return (dispatch(PortfolioReducerFunctions.sortPortfoliosAction({portfolios: portfolios, colName: property, colDirection: newColDirection})));
   }
 }
 

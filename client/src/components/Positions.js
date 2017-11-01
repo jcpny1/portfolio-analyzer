@@ -4,7 +4,7 @@ import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
-  const {portfolio, stockSymbols, updatingPortfolio, sortColName, sortDirection} = props;
+  const {portfolio, sortColName, sortDirection, stockSymbols, updatingPortfolio} = props;
 
   function columnTitles() {
     return (

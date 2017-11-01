@@ -15,7 +15,7 @@ function checkStatus(response) {
 function columnSorter(sortActionFn) {
   var lastSortColumn  = '';     // which column was last sorted.
   var lastSortReverse = false;  // was the last sort a reverse sort?
-  return function(objectArray, columnName, direction) {
+  return function(objectArray, columnName, property, direction) {
     let reverseSort = lastSortReverse;
     if (direction) {
       reverseSort = (direction === 'ascending') ? false : true;
@@ -27,7 +27,14 @@ function columnSorter(sortActionFn) {
         reverseSort = !reverseSort;
       }
     }
-    sortActionFn(objectArray, columnName, reverseSort);
+
+
+////// closure on sortArray is probably overkill.
+
+    var sortFn = sortActionFn(columnName, property, reverseSort);
+    sortFn(objectArray);
+
+
     lastSortReverse = reverseSort;
     return reverseSort ? 'descending' : 'ascending';
   }

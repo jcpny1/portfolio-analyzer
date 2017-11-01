@@ -9,9 +9,8 @@ class PortfoliosPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sortColName  : 'name',
-      sortDirection: 'ascending',
-      sortFn: ActionUtils.columnSorter(this.props.actions.sortPortfolios),
+// this is pretty static. Probably should not be here.
+      sortFn: ActionUtils.columnSorter(ActionUtils.sortArray),
     };
   }
 
@@ -36,8 +35,7 @@ class PortfoliosPage extends Component {
   }
 
   sortPortfolios = (columnName) => {
-    const sortDirection = this.state.sortFn(this.props.portfolios, columnName);
-    this.setState({sortColName: columnName, sortDirection: sortDirection});
+    this.props.actions.sortPortfoliosClick(this.state.sortFn, this.props.portfolios, columnName, this.props.sorting);
   }
 
   submitPortfolio = (portfolio) => {
@@ -45,14 +43,14 @@ class PortfoliosPage extends Component {
   }
 
   render() {
-    const {portfolios, updatingPortfolio} = this.props;
+    const {portfolios, sorting, updatingPortfolio} = this.props;
     const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = ActionUtils.computeAccountSummaries(portfolios);
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={this.state.sortColName} sortDirection={this.state.sortDirection}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sorting.colName} sortDirection={sorting.colDirection}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, updatingPortfolio: state.portfolios.updatingPortfolio};
+  return {portfolios: state.portfolios.portfolios, sorting: state.portfolios.sorting.portfolios, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {
