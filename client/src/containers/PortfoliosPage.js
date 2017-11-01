@@ -6,14 +6,6 @@ import * as actions from '../actions/portfolioActions.js';
 import Portfolios from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-// this is pretty static. Probably should not be here.
-      sortFn: ActionUtils.columnSorter(ActionUtils.sortArray),
-    };
-  }
-
   static newPortfolio = {
     id: '',
     name: '',
@@ -35,7 +27,7 @@ class PortfoliosPage extends Component {
   }
 
   sortPortfolios = (columnName) => {
-    this.props.actions.sortPortfoliosClick(this.state.sortFn, this.props.portfolios, columnName, this.props.sorting);
+    this.props.actions.sortPortfolios(this.props.portfolios, columnName, this.props.sorting);
   }
 
   submitPortfolio = (portfolio) => {

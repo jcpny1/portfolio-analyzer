@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import ActionUtils from '../actions/actionUtils';
 import * as positionActions from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import Positions from '../components/Positions';
@@ -12,8 +11,6 @@ class PositionsPage extends Component {
     super(props);
     this.state = {
       portfolioId: parseInt(this.props.match.params.id, 10),
-      // this is pretty static. Probably should not be here.
-      sortFn: ActionUtils.columnSorter(ActionUtils.sortArray),
     };
   }
 
@@ -44,7 +41,7 @@ class PositionsPage extends Component {
 
   sortPositions = (columnName) => {
     const portfolio = this.props.portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
-    this.props.actions.sortPositionsClick(this.state.sortFn, portfolio, columnName, this.props.sorting);
+    this.props.actions.sortPositions(portfolio, columnName, this.props.sorting);
   }
 
   submitPosition = (position) => {

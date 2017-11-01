@@ -9,32 +9,25 @@ function checkStatus(response) {
   return response;
 }
 
-// Call the appropriate action function to sort an array by column name.
+// Sort an objectArray by column name.
 // Sort direction is optional and overrides the calculated direction.
 // Returns direction column was sorted.
-function columnSorter(sortActionFn) {
-  var lastSortColumn  = '';     // which column was last sorted.
-  var lastSortReverse = false;  // was the last sort a reverse sort?
-  return function(objectArray, columnName, property, direction) {
+function columnSorter(objectName) {
+  var lastSortProperty  = '';     // which property was last sorted.
+  var lastSortReverse   = false;  // was the last sort a reverse sort?
+  return function(objectArray, property, direction) {
     let reverseSort = lastSortReverse;
     if (direction) {
       reverseSort = (direction === 'ascending') ? false : true;
     } else {
-      if (lastSortColumn !== columnName) {
-        lastSortColumn = columnName;
+      if (lastSortProperty !== property) {
+        lastSortProperty = property;
         reverseSort = false;
       } else {
         reverseSort = !reverseSort;
       }
     }
-
-
-////// closure on sortArray is probably overkill.
-
-    var sortFn = sortActionFn(columnName, property, reverseSort);
-    sortFn(objectArray);
-
-
+    sortArray(objectArray, objectName, property, reverseSort);
     lastSortReverse = reverseSort;
     return reverseSort ? 'descending' : 'ascending';
   }
@@ -118,35 +111,48 @@ var sort_by = function(field, reverse = false, compareFn) {
 }
 
 // Sort an object array.
-function sortArray(colName, property, reverseSort) {
-  return function(array) {
-    // TODO put column => handler list somewhere where it will not be forgotten when a new column is added.
-    switch (colName) {
-      case 'Portfolio.name':
-        array.sort(sort_by(property, reverseSort, function(a){return a.toUpperCase()}));
-        break;
-      case 'Position.stock_symbol':
-        array.sort(ActionUtils.sort_by('stock_symbol', reverseSort, function(a){return a.name}));
-        break;
-      case 'Portfolio.dayChange':     // fall through
-      case 'Portfolio.gainLoss':      // fall through
-      case 'Portfolio.marketValue':   // fall through
-      case 'Portfolio.totalCost':     // fall through
-      case 'Position.cost':           // fall through
-      case 'Position.dayChange':      // fall through
-      case 'Position.gainLoss':       // fall through
-      case 'Position.lastTrade':      // fall through
-      case 'Position.marketValue':    // fall through
-      case 'Position.priceChange':    // fall through
-      case 'Position.quantity':
-        array.sort(sort_by(property, reverseSort, parseFloat));
-        break;
-      case 'Position.date_acquired': // fall through
-      case 'Position.lastTradeDate': // fall through
-      default:
-        array.sort(sort_by(property, reverseSort));
-        break;
-    }
+function sortArray(array, objectName, property, reverseSort) {
+  // TODO put column => handler list somewhere where it will not be forgotten when a new column is added.
+  switch (objectName) {
+    case 'Portfolio':
+      switch (property) {
+        case 'name':
+          array.sort(sort_by(property, reverseSort, function(a){return a.toUpperCase()}));
+          break;
+        case 'dayChange':     // fall through
+        case 'gainLoss':      // fall through
+        case 'marketValue':   // fall through
+        case 'totalCost':
+          array.sort(sort_by(property, reverseSort, parseFloat));
+          break;
+        default:
+          array.sort(sort_by(property, reverseSort));
+          break;
+      }
+      break;
+    case 'Position':
+      switch (property) {
+        case 'stock_symbol':
+          array.sort(ActionUtils.sort_by('stock_symbol', reverseSort, function(a){return a.name}));
+          break;
+        case 'cost':           // fall through
+        case 'dayChange':      // fall through
+        case 'gainLoss':       // fall through
+        case 'lastTrade':      // fall through
+        case 'marketValue':    // fall through
+        case 'priceChange':    // fall through
+        case 'quantity':
+          array.sort(sort_by(property, reverseSort, parseFloat));
+          break;
+        case 'date_acquired': // fall through
+        case 'lastTradeDate': // fall through
+        default:
+          array.sort(sort_by(property, reverseSort));
+          break;
+      }
+      break;
+    default:
+      break;
   }
 }
 
@@ -166,5 +172,5 @@ function updatePortfolioSummaries(portfolio) {
   });
 }
 
-const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, initPortfolioPositionValues, processPrices, sort_by, sortArray, updatePortfolioSummaries};
+const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, initPortfolioPositionValues, processPrices, sort_by, updatePortfolioSummaries};
 export default ActionUtils;

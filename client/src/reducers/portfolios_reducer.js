@@ -1,4 +1,5 @@
 import Fmt from '../components/Formatters';
+import ActionUtils from '../actions/actionUtils';
 
 export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
@@ -20,7 +21,7 @@ export function updatePortfolioAction(portfolio)   {return {type: portfolioActio
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: [], sorting: {portfolios: {colName: 'name', colDirection: 'ascending'}, positions: {colName: 'stock_symbol', colDirection: 'ascending'}}}, action) {
+export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sorting: {portfolios: {sortFn: ActionUtils.columnSorter('Portfolio'), colName: 'name', colDirection: 'ascending'}, positions: {sortFn: ActionUtils.columnSorter('Position'), colName: 'stock_symbol', colDirection: 'ascending'}}}, action) {
   switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
@@ -50,8 +51,7 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
       const {portfolio, colName, colDirection} = action.payload;
       const portfolioIndex = state.portfolios.findIndex(thisPortfolio => {return thisPortfolio.id === portfolio.id});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), portfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      const sorting = Object.assign({}, state.sorting, {positions: {colName: colName, colDirection: colDirection}});
-console.log("SORTING STATE: " + JSON.stringify(sorting));
+      const sorting = Object.assign({}, state.sorting, {positions: {sortFn: state.sorting.positions.sortFn, colName: colName, colDirection: colDirection}});
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios, sorting: sorting});
     }
 
@@ -59,8 +59,7 @@ console.log("SORTING STATE: " + JSON.stringify(sorting));
     //   payload: {portfolios: portfolios, colName: property, colDirection: sorting.colDirection}
     case portfolioActions.SORT_PORTFOLIOS: {
       const {portfolios, colName, colDirection} = action.payload;
-      const sorting = Object.assign({}, state.sorting, {portfolios: {colName: colName, colDirection: colDirection}});
-console.log("SORTING STATE: " + JSON.stringify(sorting));
+      const sorting = Object.assign({}, state.sorting, {portfolios: {sortFn: state.sorting.portfolios.sortFn, colName: colName, colDirection: colDirection}});
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios, sorting: sorting});
     }
 

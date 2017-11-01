@@ -58,27 +58,14 @@ export function deletePosition(portfolioId, positionId) {
   }
 }
 
-export function sortPositions(portfolio, property, reverseSort) {
-  return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    var arraySort = ActionUtils.sortArray('Position.'+property, property, reverseSort);
-    arraySort(portfolio.positions);
-    return (dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio)));
-  }
-}
-
-
 // Process click on positions table column header.
-export function sortPositionsClick(sortFn, portfolio, property, sorting) {
+export function sortPositions(portfolio, property, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-
-const newColDirection = sortFn(portfolio.positions, 'Position.'+property, property);
-
+    const newColDirection = sorting.sortFn(portfolio.positions, property);
     return (dispatch(PortfolioReducerFunctions.sortPositionsAction({portfolio: portfolio, colName: property, colDirection: newColDirection})));
   }
 }
-
 
 export function updatePosition(position) {
   return function(dispatch) {
