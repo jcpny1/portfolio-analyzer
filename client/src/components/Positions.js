@@ -10,15 +10,15 @@ const Positions = (props) => {
     return (
       <Table.Row textAlign='center' style={{'color':'darkorchid'}}>
         <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} stockSymbols={stockSymbols} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'quantity'      ? sortDirection : null} onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'lastTrade'     ? sortDirection : null} onClick={() => props.onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'priceChange'   ? sortDirection : null} onClick={() => props.onClickColHeader('priceChange')}>Price Change</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'marketValue'   ? sortDirection : null} onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'dayChange'     ? sortDirection : null} onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'cost'          ? sortDirection : null} onClick={() => props.onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'gainLoss'      ? sortDirection : null} onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
-        <Table.HeaderCell sort={sortedColName === 'lastTradeDate' ? sortDirection : null} onClick={() => props.onClickColHeader('lastTradeDate')}>Last Trade</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => props.onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'priceChange'   ? sortDirection : null} onClick={() => props.onClickColHeader('priceChange')}>Price Change</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'marketValue'   ? sortDirection : null} onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'dayChange'     ? sortDirection : null} onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'cost'          ? sortDirection : null} onClick={() => props.onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'gainLoss'      ? sortDirection : null} onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'lastTradeDate' ? sortDirection : null} onClick={() => props.onClickColHeader('lastTradeDate')}>Last Trade</Table.HeaderCell>
       </Table.Row>
     );
   }
