@@ -5,17 +5,17 @@ import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
 
 const Portfolios = (props) => {
-  const {portfolios, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
+  const {portfolios, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio, sortColName, sortDirection} = props;
 
   function columnTitles() {
     return (
       <Table.Row textAlign='center'>
         <Table.HeaderCell>{<PortfolioEditPage portfolio={props.emptyPortfolio} iconName='add' iconColor='blue' tooltip='Add a portfolio' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
-        <Table.HeaderCell textAlign='left' onClick={() => props.onClickColHeader('name')}>Portfolios</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
-        <Table.HeaderCell onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'name'        ? sortDirection : null} onClick={() => props.onClickColHeader('name')} textAlign='left'>Portfolios</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'marketValue' ? sortDirection : null} onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'dayChange'   ? sortDirection : null} onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'totalCost'   ? sortDirection : null} onClick={() => props.onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'gainLoss'    ? sortDirection : null} onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
       </Table.Row>
     );
   }

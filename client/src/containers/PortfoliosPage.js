@@ -9,6 +9,8 @@ class PortfoliosPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      sortColName  : 'name',
+      sortDirection: 'ascending',
       sortFn: ActionUtils.columnSorter(this.props.actions.sortPortfolios),
     };
   }
@@ -17,10 +19,6 @@ class PortfoliosPage extends Component {
     id: '',
     name: '',
     positions: [],
-    dayChange: null,
-    gainLoss: null,
-    marketValue: null,
-    totalCost: null,
   };
 
   componentDidMount() {
@@ -38,7 +36,8 @@ class PortfoliosPage extends Component {
   }
 
   sortPortfolios = (columnName) => {
-    this.state.sortFn(this.props.portfolios, columnName);
+    const sortDirection = this.state.sortFn(this.props.portfolios, columnName);
+    this.setState({sortColName: columnName, sortDirection: sortDirection});
   }
 
   submitPortfolio = (portfolio) => {
@@ -48,7 +47,7 @@ class PortfoliosPage extends Component {
   render() {
     const {portfolios, updatingPortfolio} = this.props;
     const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = ActionUtils.computeAccountSummaries(portfolios);
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={this.state.sortColName} sortDirection={this.state.sortDirection}/>);
   }
 }
 

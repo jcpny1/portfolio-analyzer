@@ -1,5 +1,4 @@
 import Fmt from '../components/Formatters';
-import ActionUtils from '../actions/actionUtils';
 
 export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
@@ -22,7 +21,6 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
       const payloadPortfolio = action.payload;
-      ActionUtils.computePortfolioSummaries(payloadPortfolio);
       const portfolios = [payloadPortfolio, ...state.portfolios];
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
     }
@@ -53,7 +51,6 @@ export function portfoliosReducer(state= {updatingPortfolio: false, portfolios: 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
-      payloadPortfolios.forEach(function(portfolio) {ActionUtils.computePortfolioSummaries(portfolio)});
       return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
     }
 

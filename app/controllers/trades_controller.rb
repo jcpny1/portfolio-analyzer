@@ -68,7 +68,7 @@ class TradesController < ApplicationController
       portfolio.positions.each { |position|
         symbols.push(position.stock_symbol.name)
       }
-    }.uniq
-    symbols
+    }
+    symbols.uniq
   end
 end

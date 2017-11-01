@@ -25,6 +25,7 @@ export function addPortfolio(portfolio) {
         if (!newPortfolio.id) {
           throw new Error('Portfolio add failed!');
         }
+        ActionUtils.initPortfolioPositionValues([newPortfolio]);
         dispatch(PortfolioReducerFunctions.addPortfolioAction(newPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio: ', error: error.message})))
@@ -70,52 +71,40 @@ export function loadPortfolios(loadLivePrices) {
         if (!portfolios.length) {
           throw new Error('No portfolios were found.');
         }
-        if (ActionUtils.initPortfolioPositionValues(portfolios)) {
-          const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
-          fetch(`/api/portfolios/latestPrices?${livePrices}userId=${portfolios[0].user.id}`, {
-            headers: {
-              'Accept': 'application/json',
-            },
-          })
-          .then(ActionUtils.checkStatus)
-          .then(response => response.json())
-          .then(trades => {
-            if (!trades.length) {
-              throw new Error('No prices were found for positions.');
+        ActionUtils.initPortfolioPositionValues(portfolios)
+        const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
+        fetch(`/api/portfolios/latestPrices?${livePrices}userId=${portfolios[0].user.id}`, {
+          headers: {
+            'Accept': 'application/json',
+          },
+        })
+        .then(ActionUtils.checkStatus)
+        .then(response => response.json())
+        .then(trades => {
+          if (!trades.length) {
+            throw new Error('No prices were found for positions.');
+          }
+          // Validate trade data.
+          trades.forEach(function(trade) {
+            if (trade.error !== null) {
+              dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: trade.error}));
             }
-            // Validate trade data.
-            trades.forEach(function(trade) {
-              if (trade.error !== null)
-                dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: trade.error}));
-            });
-            portfolios.forEach(function(portfolio) {ActionUtils.processPrices(portfolio, trades)});
-            dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
           });
-        } else {
+          portfolios.forEach(function(portfolio) {ActionUtils.processPrices(portfolio, trades)});
+// sortFn(portfolios);
           dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
-        }
+        });
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
     );
   }
 }
 
-export function sortPortfolios(portfolios, columnName, reverseSort) {
+export function sortPortfolios(portfolios, property, reverseSort) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    switch (columnName) {
-      case 'name':
-        portfolios.sort(ActionUtils.sort_by(columnName, reverseSort, function(a){return a.toUpperCase()}));
-        break;
-      case 'gainLoss':     // fall through
-      case 'marketValue':  // fall through
-      case 'totalCost':
-        portfolios.sort(ActionUtils.sort_by(columnName, reverseSort, parseFloat));
-        break;
-      default:
-        portfolios.sort(ActionUtils.sort_by(columnName, reverseSort));
-        break;
-    }
+    var arraySort = ActionUtils.sortArray('Portfolio.'+property, property, reverseSort);
+    arraySort(portfolios);
     return (dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios)));
   }
 }

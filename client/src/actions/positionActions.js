@@ -58,30 +58,11 @@ export function deletePosition(portfolioId, positionId) {
   }
 }
 
-export function sortPositions(portfolio, columnName, reverseSort) {
+export function sortPositions(portfolio, property, reverseSort) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    switch (columnName) {
-      case 'stock_symbol':
-        portfolio.positions.sort(ActionUtils.sort_by('stock_symbol', reverseSort, function(a){return a.name}));
-        break;
-      case 'date_acquired': // fall through
-      case 'lastTradeDate':
-        portfolio.positions.sort(ActionUtils.sort_by(columnName, reverseSort));
-        break;
-      case 'cost':        // fall through
-      case 'dayChange':   // fall through
-      case 'gainLoss':    // fall through
-      case 'lastTrade':   // fall through
-      case 'marketValue': // fall through
-      case 'priceChange': // fall through
-      case 'quantity':
-        portfolio.positions.sort(ActionUtils.sort_by(columnName, reverseSort, parseFloat));
-        break;
-      default:
-        portfolio.positions.sort(ActionUtils.sort_by(columnName, reverseSort));
-        break;
-    }
+    var arraySort = ActionUtils.sortArray('Position.'+property, property, reverseSort);
+    arraySort(portfolio.positions);
     return (dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio)));
   }
 }

@@ -12,6 +12,8 @@ class PositionsPage extends Component {
     super(props);
     this.state = {
       portfolioId: parseInt(this.props.match.params.id, 10),
+      sortColName  : 'name',
+      sortDirection: 'ascending',
       sortFn: ActionUtils.columnSorter(this.props.actions.sortPositions),
     };
   }
@@ -43,7 +45,8 @@ class PositionsPage extends Component {
 
   sortPositions = (columnName) => {
     const portfolio = this.props.portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
-    this.state.sortFn(portfolio, columnName);
+    const sortDirection = this.state.sortFn(portfolio, columnName);
+    this.setState({sortColName: columnName, sortDirection: sortDirection});
   }
 
   submitPosition = (position) => {
@@ -56,7 +59,7 @@ class PositionsPage extends Component {
     if (!portfolio) {  // may be null until props.portfolios is loaded.
       portfolio = PortfoliosPage.newPortfolio;
     }
-    return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions}/>);
+    return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} stockSymbols={stockSymbols} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={this.state.sortColName} sortDirection={this.state.sortDirection}/>);
   }
 }
 
