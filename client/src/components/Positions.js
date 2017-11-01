@@ -4,12 +4,12 @@ import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {
-  const {portfolio, sortColName, sortDirection, stockSymbols, updatingPortfolio} = props;
+  const {portfolio, sortColName, sortDirection, updatingPortfolio} = props;
 
   function columnTitles() {
     return (
       <Table.Row textAlign='center' style={{'color':'darkorchid'}}>
-        <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} stockSymbols={stockSymbols} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => props.onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
@@ -28,7 +28,7 @@ const Positions = (props) => {
       return (
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
-            {<PositionEditPage position={position} stockSymbols={stockSymbols} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
+            {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
             <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
           </Table.Cell>
           <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
