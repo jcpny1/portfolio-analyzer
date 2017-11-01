@@ -13,11 +13,11 @@ class PortfoliosPage extends Component {
   };
 
   componentDidMount() {
-    this.props.portfolios.length || this.props.actions.loadPortfolios(false)
+    this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sorting)
   }
 
   refreshPortfolios = () => {
-    this.props.actions.loadPortfolios(true);
+    this.props.actions.loadPortfolios(true, this.props.sorting);
   }
 
   removePortfolio = (portfolioId) => {
@@ -37,12 +37,12 @@ class PortfoliosPage extends Component {
   render() {
     const {portfolios, sorting, updatingPortfolio} = this.props;
     const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = ActionUtils.computeAccountSummaries(portfolios);
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sorting.colName} sortDirection={sorting.colDirection}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sorting.portfolios.colName} sortDirection={sorting.portfolios.colDirection}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, sorting: state.portfolios.sorting.portfolios, updatingPortfolio: state.portfolios.updatingPortfolio};
+  return {portfolios: state.portfolios.portfolios, sorting: state.portfolios.sorting, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {

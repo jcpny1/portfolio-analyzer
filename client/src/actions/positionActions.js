@@ -3,7 +3,7 @@ import ActionUtils from './actionUtils';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 import {loadPortfolios} from './portfolioActions';
 
-export function addPosition(position) {
+export function addPosition(position, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
@@ -26,7 +26,7 @@ export function addPosition(position) {
         if (!updatedPortfolio.id) {
           throw new Error(`Position add failed! ${updatedPortfolio[0]}.`);
         }
-        var reloadPortfolios = loadPortfolios();
+        var reloadPortfolios = loadPortfolios(true, sorting);
         reloadPortfolios(dispatch);
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position: ', error: error.message})))
@@ -34,7 +34,7 @@ export function addPosition(position) {
   }
 }
 
-export function deletePosition(portfolioId, positionId) {
+export function deletePosition(portfolioId, positionId, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
@@ -50,7 +50,7 @@ export function deletePosition(portfolioId, positionId) {
         if (!updatedPortfolio.id) {
           throw new Error(`Position delete failed! ${updatedPortfolio[0]}.`);
         }
-        var reloadPortfolios = loadPortfolios();
+        var reloadPortfolios = loadPortfolios(true, sorting);
         reloadPortfolios(dispatch);
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position: ', error: error.message})))
@@ -59,15 +59,17 @@ export function deletePosition(portfolioId, positionId) {
 }
 
 // Process click on positions table column header.
-export function sortPositions(portfolio, property, sorting) {
+export function sortPositions(portfolios, property, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    const newColDirection = sorting.sortFn(portfolio.positions, property);
-    return (dispatch(PortfolioReducerFunctions.sortPositionsAction({portfolio: portfolio, colName: property, colDirection: newColDirection})));
+    const newColDirection = sorting.positions.sortFn(property);
+    const newSorting = Object.assign({}, sorting, {positions: {sortFn: sorting.positions.sortFn, colName: property, colDirection: newColDirection}});
+    ActionUtils.sortPortfolios(portfolios, newSorting);
+    return (dispatch(PortfolioReducerFunctions.sortPortfoliosAction({portfolios: portfolios, sorting: newSorting})));
   }
 }
 
-export function updatePosition(position) {
+export function updatePosition(position, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
@@ -90,7 +92,7 @@ export function updatePosition(position) {
         if (!updatedPortfolio.id) {
           throw new Error(`Position update failed! ${updatedPortfolio[0]}.`);
         }
-        var reloadPortfolios = loadPortfolios();
+        var reloadPortfolios = loadPortfolios(true, sorting);
         reloadPortfolios(dispatch);
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position: ', error: error.message})))

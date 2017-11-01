@@ -56,7 +56,7 @@ export function deletePortfolio(portfolioId) {
   }
 }
 
-export function loadPortfolios(loadLivePrices) {
+export function loadPortfolios(loadLivePrices, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
@@ -91,7 +91,7 @@ export function loadPortfolios(loadLivePrices) {
             }
           });
           portfolios.forEach(function(portfolio) {ActionUtils.processPrices(portfolio, trades)});
-// sortFn(portfolios);
+          ActionUtils.sortPortfolios(portfolios, sorting);
           dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
         });
       })
@@ -104,8 +104,10 @@ export function loadPortfolios(loadLivePrices) {
 export function sortPortfolios(portfolios, property, sorting) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    const newColDirection = sorting.sortFn(portfolios, property);
-    return (dispatch(PortfolioReducerFunctions.sortPortfoliosAction({portfolios: portfolios, colName: property, colDirection: newColDirection})));
+    const newColDirection = sorting.portfolios.sortFn(property);
+    const newSorting = Object.assign({}, sorting, {portfolios: {sortFn: sorting.portfolios.sortFn, colName: property, colDirection: newColDirection}});
+    ActionUtils.sortPortfolios(portfolios, newSorting);
+    return (dispatch(PortfolioReducerFunctions.sortPortfoliosAction({portfolios: portfolios, sorting: newSorting})));
   }
 }
 

@@ -26,26 +26,25 @@ class PositionsPage extends Component {
   };
 
   componentDidMount() {
-    this.props.portfolios.length || this.props.actions.loadPortfolios(false)
+    this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sorting)
   }
 
   refreshPortfolio = (portfolio) => {
-    this.props.actions.loadPortfolios(true);
+    this.props.actions.loadPortfolios(true, this.props.sorting);
   }
 
   removePosition = (portfolioId, positionId) => {
     if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePosition(portfolioId, positionId);
+      this.props.actions.deletePosition(portfolioId, positionId, this.props.sorting);
     }
   }
 
   sortPositions = (columnName) => {
-    const portfolio = this.props.portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
-    this.props.actions.sortPositions(portfolio, columnName, this.props.sorting);
+    this.props.actions.sortPositions(this.props.portfolios, columnName, this.props.sorting);
   }
 
   submitPosition = (position) => {
-    (position.id === '') ? this.props.actions.addPosition(position) : this.props.actions.updatePosition(position);
+    (position.id === '') ? this.props.actions.addPosition(position, this.props.sorting) : this.props.actions.updatePosition(position, this.props.sorting);
   }
 
   render() {
@@ -54,12 +53,12 @@ class PositionsPage extends Component {
     if (!portfolio) {  // may be null until props.portfolios is loaded.
       portfolio = PortfoliosPage.newPortfolio;
     }
-    return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sorting.colName} sortDirection={sorting.colDirection}/>);
+    return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sorting.positions.colName} sortDirection={sorting.positions.colDirection}/>);
   }
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, sorting: state.portfolios.sorting.positions, updatingPortfolio: state.portfolios.updatingPortfolio};
+  return {portfolios: state.portfolios.portfolios, sorting: state.portfolios.sorting, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {
