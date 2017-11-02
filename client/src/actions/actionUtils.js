@@ -11,9 +11,9 @@ function checkStatus(response) {
 
 // Manage the sort status of portfolio and position properties.
 // Returns the direction the property is to sorted.
-function columnSorter() {
-  var lastSortProperty  = '';     // which property was last sorted.
-  var lastSortReverse   = false;  // was the last sort a reverse sort?
+function columnSorter(property, sortReverse) {
+  var lastSortProperty  = property;     // which property was last sorted.
+  var lastSortReverse   = sortReverse;  // was the last sort a reverse sort?
   return function(property, direction) {
     let reverseSort = lastSortReverse;
     if (direction) {
@@ -119,9 +119,9 @@ function sortPortfolios(portfolios, sorting) {
     case 'name':
       portfolios.sort(sort_by(property, reverseSort, function(a){return a.toUpperCase()}));
       break;
-    case 'dayChange':     // fall through
-    case 'gainLoss':      // fall through
-    case 'marketValue':   // fall through
+    case 'dayChange':    // fall through
+    case 'gainLoss':     // fall through
+    case 'marketValue':  // fall through
     case 'totalCost':
       portfolios.sort(sort_by(property, reverseSort, parseFloat));
       break;
@@ -136,7 +136,7 @@ function sortPortfolios(portfolios, sorting) {
   portfolios.forEach(function(portfolio) {
     switch (property) {
       case 'stock_symbol':
-        portfolio.positions.sort(ActionUtils.sort_by('stock_symbol', reverseSort, function(a){return a.name}));
+        portfolio.positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name}));
         break;
       case 'cost':           // fall through
       case 'dayChange':      // fall through
@@ -147,8 +147,8 @@ function sortPortfolios(portfolios, sorting) {
       case 'quantity':
         portfolio.positions.sort(sort_by(property, reverseSort, parseFloat));
         break;
-      case 'date_acquired': // fall through
-      case 'lastTradeDate': // fall through
+      case 'date_acquired':  // fall through
+      case 'lastTradeDate':  // fall through
       default:
         portfolio.positions.sort(sort_by(property, reverseSort));
         break;
@@ -172,5 +172,5 @@ function updatePortfolioSummaries(portfolio) {
   });
 }
 
-const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, initPortfolioPositionValues, processPrices, sort_by, sortPortfolios, updatePortfolioSummaries};
+const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, initPortfolioPositionValues, processPrices, sortPortfolios, updatePortfolioSummaries};
 export default ActionUtils;

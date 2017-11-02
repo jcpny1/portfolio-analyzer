@@ -19,7 +19,7 @@ export function updatePortfolioAction(portfolio)   {return {type: portfolioActio
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sorting: {portfolios: {sortFn: ActionUtils.columnSorter(), colName: 'name', colDirection: 'ascending'}, positions: {sortFn: ActionUtils.columnSorter(), colName: 'stock_symbol', colDirection: 'ascending'}}}, action) {
+export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sorting: {portfolios: {sortFn: ActionUtils.columnSorter('name', false), colName: 'name', colDirection: 'ascending'}, positions: {sortFn: ActionUtils.columnSorter('stock_symbol', false), colName: 'stock_symbol', colDirection: 'ascending'}}}, action) {
   switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
