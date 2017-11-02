@@ -8,6 +8,7 @@ export const portfolioActions = {
   UPDATE_PORTFOLIO  : 'UPDATE_PORTFOLIO',
   UPDATE_PORTFOLIOS : 'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
+  WARN_PORTFOLIOS   : 'WARN_PORTFOLIOS',
 };
 
 export function addPortfolioAction(portfolio)      {return {type: portfolioActions.ADD_PORTFOLIO,     payload: portfolio}}
@@ -16,6 +17,7 @@ export function errorPortfolioAction(error)        {return {type: portfolioActio
 export function updatePortfolioAction(portfolio)   {return {type: portfolioActions.UPDATE_PORTFOLIO,  payload: portfolio}}
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
+export function warnPortfolioAction(warning)       {return {type: portfolioActions.WARN_PORTFOLIOS,   payload: warning}}
 
 export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: ActionUtils.columnSorter('name', 'ascending', 'stock_symbol', 'ascending')}, action) {
   switch (action.type) {
@@ -58,6 +60,13 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
     // Show that one or more Portfolios are being modified.
     case portfolioActions.UPDATING_PORTFOLIO:
       return Object.assign({}, state, {updatingPortfolio: true});
+
+    // Warning on Portfolio action.
+    case portfolioActions.WARN_PORTFOLIOS: {
+      const {warning, prefix} = action.payload;
+      alert(Fmt.ServerError(warning, prefix));
+      return state;
+    }
 
     // Default action.
     default:

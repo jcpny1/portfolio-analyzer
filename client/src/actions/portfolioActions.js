@@ -87,7 +87,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
           // Validate trade data.
           trades.forEach(function(trade) {
             if (trade.error !== null) {
-              dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Prices for ', error: trade.error}));
+              dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Prices for ', warning: trade.error}));
             }
           });
           portfolios.forEach(function(portfolio) {ActionUtils.processPrices(portfolio, trades)});
