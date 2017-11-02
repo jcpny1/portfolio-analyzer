@@ -10,24 +10,46 @@ function checkStatus(response) {
 }
 
 // Manage the sort status of portfolio and position properties.
-// Returns the direction the property is to sorted.
-function columnSorter(property, sortReverse) {
-  var lastSortProperty  = property;     // which property was last sorted.
-  var lastSortReverse   = sortReverse;  // was the last sort a reverse sort?
-  return function(property, direction) {
-    let reverseSort = lastSortReverse;
-    if (direction) {
-      reverseSort = (direction === 'ascending') ? false : true;
-    } else {
-      if (lastSortProperty !== property) {
-        reverseSort = false;
-      } else {
-        reverseSort = !reverseSort;
-      }
+// Calling with no arguments, returns current sorting info.
+function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initialPositionProperty, initialPositionDirection) {
+  var lastPortfolioProperty    = initialPortfolioProperty;     // which property was last sorted.
+  var lastPortfolioDirection   = initialPortfolioDirection;
+  var lastPortfolioReverseSort = (lastPortfolioDirection === 'ascending') ? false : true;
+  var lastPositionProperty     = initialPositionProperty;     // which property was last sorted.
+  var lastPositionDirection    = initialPositionDirection;
+  var lastPositionReverseSort  = (lastPositionDirection === 'ascending') ? false : true;
+  return function(portfolios, portfolioProperty, positionProperty) {
+
+    if (typeof portfolios === 'undefined') {
+      var lastPortfolioDirection = (lastPortfolioReverseSort) ? 'descending' : 'ascending';
+      var lastPositionDirection  = (lastPositionReverseSort)  ? 'descending' : 'ascending';
+      return {portfolios: {property: lastPortfolioProperty, direction: lastPortfolioDirection}, positions: {property: lastPositionProperty, direction: lastPositionDirection}};
     }
-    lastSortProperty = property;
-    lastSortReverse  = reverseSort;
-    return reverseSort ? 'descending' : 'ascending';
+
+    if (portfolioProperty) {
+      let portfolioReverseSort = lastPortfolioReverseSort;
+      if (lastPortfolioProperty !== portfolioProperty) {
+        portfolioReverseSort = false;
+      } else {
+        portfolioReverseSort = !portfolioReverseSort;
+      }
+      lastPortfolioProperty    = portfolioProperty;
+      lastPortfolioReverseSort = portfolioReverseSort;
+    }
+
+    if (positionProperty) {
+      let positionReverseSort = lastPositionReverseSort;
+      if (lastPositionProperty !== positionProperty) {
+        positionReverseSort = false;
+      } else {
+        positionReverseSort = !positionReverseSort;
+      }
+      lastPositionProperty    = positionProperty;
+      lastPositionReverseSort = positionReverseSort;
+    }
+
+    sortPortfolios(portfolios, lastPortfolioProperty, lastPortfolioReverseSort, lastPositionProperty, lastPositionReverseSort);
+
   }
 }
 
@@ -109,34 +131,30 @@ var sort_by = function(field, reverse = false, compareFn) {
 }
 
 // Sort Portfolios according to supplied arguments.
-function sortPortfolios(portfolios, sorting) {
+function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, positionProperty, positionReverseSort) {
   // TODO put column => handler list somewhere where it will not be forgotten when a new column is added.
 
   // Sort portfolios.
-  let property = sorting.portfolios.colName;
-  let reverseSort = (sorting.portfolios.colDirection === 'ascending') ? false : true;
-    switch (property) {
+    switch (portfolioProperty) {
     case 'name':
-      portfolios.sort(sort_by(property, reverseSort, function(a){return a.toUpperCase()}));
+      portfolios.sort(sort_by(portfolioProperty, portfolioReverseSort, function(a){return a.toUpperCase()}));
       break;
     case 'dayChange':    // fall through
     case 'gainLoss':     // fall through
     case 'marketValue':  // fall through
     case 'totalCost':
-      portfolios.sort(sort_by(property, reverseSort, parseFloat));
+      portfolios.sort(sort_by(portfolioProperty, portfolioReverseSort, parseFloat));
       break;
     default:
-      portfolios.sort(sort_by(property, reverseSort));
+      portfolios.sort(sort_by(portfolioProperty, portfolioReverseSort));
       break;
   }
 
   // Sort positions within portfolios.
-  property = sorting.positions.colName;
-  reverseSort = (sorting.positions.colDirection === 'ascending') ? false : true;
   portfolios.forEach(function(portfolio) {
-    switch (property) {
+    switch (positionProperty) {
       case 'stock_symbol':
-        portfolio.positions.sort(sort_by('stock_symbol', reverseSort, function(a){return a.name}));
+        portfolio.positions.sort(sort_by(positionProperty, positionReverseSort, function(a){return a.name}));
         break;
       case 'cost':           // fall through
       case 'dayChange':      // fall through
@@ -145,12 +163,12 @@ function sortPortfolios(portfolios, sorting) {
       case 'marketValue':    // fall through
       case 'priceChange':    // fall through
       case 'quantity':
-        portfolio.positions.sort(sort_by(property, reverseSort, parseFloat));
+        portfolio.positions.sort(sort_by(positionProperty, positionReverseSort, parseFloat));
         break;
       case 'date_acquired':  // fall through
       case 'lastTradeDate':  // fall through
       default:
-        portfolio.positions.sort(sort_by(property, reverseSort));
+        portfolio.positions.sort(sort_by(positionProperty, positionReverseSort));
         break;
     }
   });

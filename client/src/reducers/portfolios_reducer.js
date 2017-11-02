@@ -5,7 +5,6 @@ export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
   DELETE_PORTFOLIO  : 'DELETE_PORTFOLIO',
   ERROR_PORTFOLIOS  : 'ERROR_PORTFOLIOS',
-  SORT_PORTFOLIOS   : 'SORT_PORTFOLIOS',
   UPDATE_PORTFOLIO  : 'UPDATE_PORTFOLIO',
   UPDATE_PORTFOLIOS : 'UPDATE_PORTFOLIOS',
   UPDATING_PORTFOLIO: 'UPDATING_PORTFOLIO',
@@ -14,12 +13,11 @@ export const portfolioActions = {
 export function addPortfolioAction(portfolio)      {return {type: portfolioActions.ADD_PORTFOLIO,     payload: portfolio}}
 export function deletePortfolioAction(portfolioId) {return {type: portfolioActions.DELETE_PORTFOLIO,  payload: portfolioId}}
 export function errorPortfolioAction(error)        {return {type: portfolioActions.ERROR_PORTFOLIOS,  payload: error}}
-export function sortPortfoliosAction(sortInfo)     {return {type: portfolioActions.SORT_PORTFOLIOS,   payload: sortInfo}}
 export function updatePortfolioAction(portfolio)   {return {type: portfolioActions.UPDATE_PORTFOLIO,  payload: portfolio}}
 export function updatePortfoliosAction(portfolios) {return {type: portfolioActions.UPDATE_PORTFOLIOS, payload: portfolios}}
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 
-export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sorting: {portfolios: {sortFn: ActionUtils.columnSorter('name', false), colName: 'name', colDirection: 'ascending'}, positions: {sortFn: ActionUtils.columnSorter('stock_symbol', false), colName: 'stock_symbol', colDirection: 'ascending'}}}, action) {
+export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: ActionUtils.columnSorter('name', 'ascending', 'stock_symbol', 'ascending')}, action) {
   switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
@@ -41,12 +39,6 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       const {error, prefix} = action.payload;
       alert(Fmt.ServerError(error, prefix));
       return Object.assign({}, state, {updatingPortfolio: false});
-    }
-
-    // Sort Portfolios.
-    case portfolioActions.SORT_PORTFOLIOS: {
-      const {portfolios, sorting} = action.payload;
-      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios, sorting: sorting});
     }
 
     // Update one Portfolio.
