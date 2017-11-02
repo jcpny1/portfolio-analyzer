@@ -1,5 +1,5 @@
 class TradesController < ApplicationController
-   include Alphavantage
+   include Yahoo  # include Feed handler here.
 
   # Retrieve the latest prices for the supplied symbols.
   # from live feed if 'livePrices' is specified. Else, from database.
@@ -49,6 +49,8 @@ class TradesController < ApplicationController
           rescue ActiveRecord::ActiveRecordError => e
             puts "Error saving trade: #{trade.inspect}, #{e}"
           end
+        else
+          trades[i].error = trade.error
         end
       }
     end

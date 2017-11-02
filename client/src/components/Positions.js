@@ -19,6 +19,7 @@ const Positions = (props) => {
         <Table.HeaderCell sorted={sortColName === 'cost'          ? sortDirection : null} onClick={() => props.onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'gainLoss'      ? sortDirection : null} onClick={() => props.onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTradeDate' ? sortDirection : null} onClick={() => props.onClickColHeader('lastTradeDate')}>Last Trade</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'lastUpdate'    ? sortDirection : null} onClick={() => props.onClickColHeader('lastUpdate')}>Last Update</Table.HeaderCell>
       </Table.Row>
     );
   }
@@ -40,6 +41,7 @@ const Positions = (props) => {
           <Table.Cell><Fmt.Currency value={position.cost}/></Table.Cell>
           <Table.Cell><Fmt.Currency value={position.gainLoss} delta/></Table.Cell>
           <Table.Cell><Fmt.DateTime value={position.lastTradeDate}/></Table.Cell>
+          <Table.Cell><Fmt.DateTime value={position.lastUpdate}/></Table.Cell>
         </Table.Row>
       );
     });
@@ -57,6 +59,7 @@ const Positions = (props) => {
         <Table.HeaderCell><Fmt.Currency value={portfolio.dayChange} delta/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.totalCost}/></Table.HeaderCell>
         <Table.HeaderCell><Fmt.Currency value={portfolio.gainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );
