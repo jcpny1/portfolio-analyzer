@@ -1,5 +1,5 @@
 class TradesController < ApplicationController
-   include Yahoo  # include Feed handler here.
+   include Alphavantage  # include Feed handler here.
 
   # Retrieve the latest prices for the supplied symbols.
   # from live feed if 'livePrices' is specified. Else, from database.

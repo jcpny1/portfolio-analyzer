@@ -108,7 +108,7 @@ function processPrices(portfolio, trades) {
 
 // A generic sort comparator function.
 // Handles null and NaN cases (makes null/NaN's less than not null/NaN's).
-var sort_by = function(field, reverse = false, compareFn) {
+var sortBy = function(field, reverse = false, compareFn) {
   var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
   return function (a,b) {
     var A = key(a), B = key(b);
@@ -140,16 +140,16 @@ function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, pos
   // Sort portfolios.
     switch (portfolioProperty) {
     case 'name':
-      portfolios.sort(sort_by(portfolioProperty, portfolioReverseSort, function(a){return a.toUpperCase()}));
+      portfolios.sort(sortBy(portfolioProperty, portfolioReverseSort, function(a){return a.toUpperCase()}));
       break;
     case 'dayChange':    // fall through
     case 'gainLoss':     // fall through
     case 'marketValue':  // fall through
     case 'totalCost':
-      portfolios.sort(sort_by(portfolioProperty, portfolioReverseSort, parseFloat));
+      portfolios.sort(sortBy(portfolioProperty, portfolioReverseSort, parseFloat));
       break;
     default:
-      portfolios.sort(sort_by(portfolioProperty, portfolioReverseSort));
+      portfolios.sort(sortBy(portfolioProperty, portfolioReverseSort));
       break;
   }
 
@@ -157,7 +157,7 @@ function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, pos
   portfolios.forEach(function(portfolio) {
     switch (positionProperty) {
       case 'stock_symbol':
-        portfolio.positions.sort(sort_by(positionProperty, positionReverseSort, function(a){return a.name}));
+        portfolio.positions.sort(sortBy(positionProperty, positionReverseSort, function(a){return a.name}));
         break;
       case 'cost':           // fall through
       case 'dayChange':      // fall through
@@ -166,12 +166,12 @@ function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, pos
       case 'marketValue':    // fall through
       case 'priceChange':    // fall through
       case 'quantity':
-        portfolio.positions.sort(sort_by(positionProperty, positionReverseSort, parseFloat));
+        portfolio.positions.sort(sortBy(positionProperty, positionReverseSort, parseFloat));
         break;
       case 'date_acquired':  // fall through
       case 'lastTradeDate':  // fall through
       default:
-        portfolio.positions.sort(sort_by(positionProperty, positionReverseSort));
+        portfolio.positions.sort(sortBy(positionProperty, positionReverseSort));
         break;
     }
   });
