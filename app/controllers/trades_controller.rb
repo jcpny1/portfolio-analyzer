@@ -3,6 +3,9 @@ class TradesController < ApplicationController
 
   # Retrieve the latest prices for the supplied symbols.
   # from live feed if 'livePrices' is specified. Else, from database.
+  # To handle case of feed down not trashing client's existing prices,
+  # first load database latest prices, then overlay with whatever we
+  # can get from live feed.
 
   # NOTE: Keep symbols array and trades array in sync by symbol name.
   #       Use trade.error to signal a failed price fetch.
@@ -13,33 +16,35 @@ class TradesController < ApplicationController
     symbols = symbolsForUser(params['userId'])
     trades = Array.new(symbols.length)
 
+    # Load last saved prices from database.
+    symbols.each_with_index { |symbol, i|
+      stock_symbol = StockSymbol.find_by(name: symbol)
+      if !stock_symbol.nil?
+        trade = Trade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC, created_at DESC').first
+        if !trade.nil?
+          trades[i] = trade
+        else
+          trades[i] = error_trade(symbol, 'No trades available.')
+        end
+      else
+        trades[i] = error_trade(symbol, 'Invalid symbol.')
+      end
+    }
+
     if params.key?('livePrices')
+      liveTrades = Array.new(symbols.length)
       # Fetch live prices
-      fillTrades(symbols, trades);
+      fillTrades(symbols, liveTrades);
       # Save new prices to database.
-      trades.each_with_index { |trade, i|
+      liveTrades.each_with_index { |trade, i|
         if !trade.trade_price.nil?
           # TODO When we get a feed that has some sort of unique identifier in it, then add that id to the database to avoid saving duplicates.
           begin
             trade.save
+            trades[i] = trade
           rescue ActiveRecord::ActiveRecordError => e
             puts "Error saving trade: #{trade.inspect}, #{e}"
           end
-        end
-      }
-    else  # not fetching live prices.
-      # Load last saved prices from database.
-      symbols.each_with_index { |symbol, i|
-        stock_symbol = StockSymbol.find_by(name: symbol)
-        if !stock_symbol.nil?
-          trade = Trade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC, created_at DESC').first
-          if !trade.nil?
-            trades[i] = trade
-          else
-            trades[i] = error_trade(symbol, 'No trades available.')
-          end
-        else
-          trades[i] = error_trade(symbol, 'Invalid symbol.')
         end
       }
     end
