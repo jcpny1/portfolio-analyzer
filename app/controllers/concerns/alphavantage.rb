@@ -45,7 +45,7 @@ module Alphavantage extend ActiveSupport::Concern
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: 'https://www.alphavantage.co/query')
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-      puts "PRICE FETCH ERROR for: #{symbols.inspect}"
+      puts "AA PRICE FETCH ERROR for: #{symbols.inspect}"
       errorMsg = "Faraday client error: #{e}"
       fetch_failure(symbols, daily_trades, errorMsg)
     end
@@ -54,17 +54,17 @@ module Alphavantage extend ActiveSupport::Concern
 
     symbols.each_with_index { |symbol, i|
       begin
-        puts "PRICE FETCH BEGIN for: #{symbol}"
+        puts "AA PRICE FETCH BEGIN for: #{symbol}"
         resp = conn.get do |req|
           req.params['function'] = 'TIME_SERIES_INTRADAY'
           req.params['interval'] = '1min'
           req.params['symbol']   = symbol
           req.params['apikey']   = api_key
         end
-        puts "PRICE FETCH END   for: #{symbol}"
+        puts "AA PRICE FETCH END   for: #{symbol}"
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e
-        puts "PRICE FETCH ERROR for: #{symbol}"
+        puts "AA PRICE FETCH ERROR for: #{symbol}"
         errorMsg = "Faraday client error: #{e}"
         daily_trade = error_trade(symbol, errorMsg, true)
       rescue SyntaxError => e

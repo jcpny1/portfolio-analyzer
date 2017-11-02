@@ -18,11 +18,8 @@ class TradesController < ApplicationController
       fillTrades(symbols, trades);
       # Save new prices to database.
       trades.each_with_index { |trade, i|
-        if trade.trade_price.nil?
-          trades[i] = error_trade(symbols[i], "Failed to get price for #{symbols[i]}", true)
-        else
-          # TODO When we get a feed that has some sort of unique identifier in it,
-          #      then add that id to the database to avoid saving duplicates.
+        if !trade.trade_price.nil?
+          # TODO When we get a feed that has some sort of unique identifier in it, then add that id to the database to avoid saving duplicates.
           begin
             trade.save
           rescue ActiveRecord::ActiveRecordError => e
@@ -39,10 +36,10 @@ class TradesController < ApplicationController
           if !trade.nil?
             trades[i] = trade
           else
-            trades[i] = error_trade(symbol, nil)
+            trades[i] = error_trade(symbol, 'No trades available.')
           end
         else
-          trades[i] = error_trade(symbol, 'Invalid symbol: (' + symbol + ').')
+          trades[i] = error_trade(symbol, 'Invalid symbol.')
         end
       }
     end
@@ -50,14 +47,13 @@ class TradesController < ApplicationController
   end
 
   # TODO Consolidate these two functions into one place in common with yahoo.rb
-  def error_trade(symbol, errorMsg, logMsg = false)
-    puts errorMsg if logMsg
-    Trade.new(stock_symbol: StockSymbol.new(name: symbol), error: errorMsg)
+  def error_trade(symbol, errorMsg)
+    Trade.new(stock_symbol: StockSymbol.new(name: symbol), error: "#{symbol}: #{errorMsg}")
   end
 
   def fetch_failure(symbols, trades, errorMsg)
     symbols.each_with_index { |symbol, i|
-      trades[i] = error_trade(symbol, errorMsg, true)
+      trades[i] = error_trade(symbol, errorMsg)
     }
   end
 

@@ -19,23 +19,26 @@ module Yahoo extend ActiveSupport::Concern
   LAST_TRADE_TIME_COL  = 3
   DAY_CHANGE_COL       = 4
 
-  # Make data request(s) for symbols and return results in daily_trades.
-  def fillTrades(symbols, daily_trades)
+  # Make data request(s) for symbols and return results in trades.
+  def fillTrades(symbols, trades)
     begin
       symbolList = symbols.join('+')
-      puts "PRICE FETCH BEGIN for: #{symbolList}"
+      puts "YAHOO PRICE FETCH BEGIN for: #{symbolList}"
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
       resp = conn.get '', {s: symbolList, f: 'sl1d1t1c1'}
-      puts "PRICE FETCH END   for: #{symbolList}"
+      puts "YAHOO PRICE FETCH END   for: #{symbolList}"
       response = CSV.parse(resp.body)
+      raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-      puts "PRICE FETCH ERROR for: #{symbolList}"
-      errorMsg = "Faraday client error: #{e}"
-      fetch_failure(symbols, daily_trades, errorMsg)
+      puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
+      fetch_failure(symbols, trades, 'The feed is down.')
     rescue CSV::MalformedCSVError => e
-      errorMsg = "CSV parse error: #{e}"
-      fetch_failure(symbols, daily_trades, errorMsg)
+      puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: CSV parse error: #{e}"
+      fetch_failure(symbols, trades, 'The feed is down.')
+    rescue LoadError => e
+      puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: #{e}"
+      fetch_failure(symbols, trades, 'The feed is down.')
     else
       # TODO If length of symbols != length of response, something went wrong.
 
@@ -49,11 +52,10 @@ module Yahoo extend ActiveSupport::Concern
           responseRow = response[responseIndex]
           if responseRow[LAST_TRADE_PRICE_COL] == 'N/A'
             # Error example: "AXXX","N/A","N/A","N/A","N/A"
-            errorMsg = "Price request failure for symbol (#{symbol})."
-            daily_trade = error_trade(symbol, errorMsg, true)
+            trade = error_trade(symbol, errorMsg, 'Price is not available.')
           else
             # TODO Replace 'EDT' with proper timezone info.
-            daily_trade = Trade.new do |dt|
+            trade = Trade.new do |dt|
               dt.stock_symbol = StockSymbol.find_by(name: symbol)
               dt.trade_date   = DateTime.strptime("#{responseRow[LAST_TRADE_DATE_COL]} #{response[responseIndex][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z')
               dt.trade_price  = responseRow[LAST_TRADE_PRICE_COL]
@@ -61,10 +63,9 @@ module Yahoo extend ActiveSupport::Concern
             end
           end
         else
-          errorMsg = "Price request failure for symbol (#{symbol})."
-          daily_trade = error_trade(symbol, errorMsg, true)
+          trade = error_trade(symbol, 'Price for symbol is not available.')
         end
-        daily_trades[i] = daily_trade
+        trades[i] = trade
       }
     end
   end
