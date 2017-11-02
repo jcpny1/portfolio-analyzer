@@ -39,15 +39,15 @@ module Alphavantage extend ActiveSupport::Concern
   #   }
   # }
 
-  # Make data request(s) for symbols and return results in daily_trades.
-  def fillTrades(symbols, daily_trades)
+  # Make data request(s) for symbols and return results in trades.
+  def fillTrades(symbols, trades)
     begin
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: 'https://www.alphavantage.co/query')
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
       puts "AA PRICE FETCH ERROR for: #{symbols.inspect}"
       errorMsg = "Faraday client error: #{e}"
-      fetch_failure(symbols, daily_trades, errorMsg)
+      fetch_failure(symbols, trades, errorMsg)
     end
 
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
@@ -64,18 +64,17 @@ module Alphavantage extend ActiveSupport::Concern
         puts "AA PRICE FETCH END   for: #{symbol}"
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e
-        puts "AA PRICE FETCH ERROR for: #{symbol}"
-        errorMsg = "Faraday client error: #{e}"
-        daily_trade = error_trade(symbol, errorMsg, true)
+        puts "AA PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
+        fetch_failure(symbols, trades, 'The feed is down.')
       rescue SyntaxError => e
-        errorMsg = "JSON parse error: #{e}"
-        daily_trade = error_trade(symbol, errorMsg, true)
+        puts "AA PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
+        fetch_failure(symbols, trades, 'The feed is down.')
       else
         # Error example:
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
         if response.key?('Error Message') || response.length == 0
-          errorMsg = "Price request failure for symbol (#{symbol}): #{response['Error Message']}"
-          daily_trade = error_trade(symbol, errorMsg, true)
+          puts "AA PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
+          trade = error_trade(symbol, 'Price is not available.')
         else
           header = response['Meta Data']
           tick   = response['Time Series (1min)'].first
@@ -84,7 +83,7 @@ module Alphavantage extend ActiveSupport::Concern
 
           # TODO Get timezone from Meta Data.
           # TODO Derive price_change value.
-          daily_trade = Trade.new do |dt|
+          trade = Trade.new do |dt|
             dt.stock_symbol = StockSymbol.find_by(name: symbol)
             dt.trade_date   = time + " EDT"
             dt.trade_price  = prices['4. close'].to_f
@@ -92,7 +91,7 @@ module Alphavantage extend ActiveSupport::Concern
           end
         end
       ensure
-        daily_trades[i] = daily_trade
+        trades[i] = trade
       end
     }
   end

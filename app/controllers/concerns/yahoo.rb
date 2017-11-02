@@ -52,7 +52,7 @@ module Yahoo extend ActiveSupport::Concern
           responseRow = response[responseIndex]
           if responseRow[LAST_TRADE_PRICE_COL] == 'N/A'
             # Error example: "AXXX","N/A","N/A","N/A","N/A"
-            trade = error_trade(symbol, errorMsg, 'Price is not available.')
+            trade = error_trade(symbol, 'Price is not available.')
           else
             # TODO Replace 'EDT' with proper timezone info.
             trade = Trade.new do |dt|
