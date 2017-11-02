@@ -55,11 +55,12 @@ module Yahoo extend ActiveSupport::Concern
             trade = error_trade(symbol, 'Price is not available.')
           else
             # TODO Replace 'EDT' with proper timezone info.
-            trade = Trade.new do |dt|
-              dt.stock_symbol = StockSymbol.find_by(name: symbol)
-              dt.trade_date   = DateTime.strptime("#{responseRow[LAST_TRADE_DATE_COL]} #{response[responseIndex][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z')
-              dt.trade_price  = responseRow[LAST_TRADE_PRICE_COL]
-              dt.price_change = responseRow[DAY_CHANGE_COL]
+            trade = Trade.new do |t|
+              t.stock_symbol = StockSymbol.find_by(name: symbol)
+              t.trade_date   = DateTime.strptime("#{responseRow[LAST_TRADE_DATE_COL]} #{response[responseIndex][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z')
+              t.trade_price  = responseRow[LAST_TRADE_PRICE_COL]
+              t.price_change = responseRow[DAY_CHANGE_COL]
+              t.created_at   = DateTime.now
             end
           end
         else

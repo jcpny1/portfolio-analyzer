@@ -1,43 +1,8 @@
 module Alphavantage extend ActiveSupport::Concern
+
   #
-  #  # # # # # # # # # # # #
-  #  # #  SAMPLE DATA  # # #
-  #  # # # # # # # # # # # #
+  # See the bottom of this file for sample data.
   #
-  # https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
-  # {
-  #   "Meta Data"=>
-  #   {
-  #     "1. Information"=>"Intraday (1min) prices and volumes",
-  #     "2. Symbol"=>"MSFT",
-  #     "3. Last Refreshed"=>"2017-10-20 16:00:00",
-  #     "4. Interval"=>"1min",
-  #     "5. Output Size"=>"Compact",
-  #     "6. Time Zone"=>"US/Eastern"
-  #   },
-  #   "Time Series (1min)"=>
-  #   {
-  #     "2017-10-20 16:00:00"=>
-  #     {
-  #       "1. open"=>"78.7000",
-  #       "2. high"=>"78.8100",
-  #       "3. low"=>"78.6950",
-  #       "4. close"=>"78.8100",
-  #       "5. volume"=>"2663315"
-  #     },
-  #     "2017-10-20 15:59:00"=>
-  #     {
-  #       "1. open"=>"78.7000",
-  #       "2. high"=>"78.7200",
-  #       "3. low"=>"78.6900",
-  #       "4. close"=>"78.7000",
-  #       "5. volume"=>"320215"
-  #     },
-  #     .
-  #     .
-  #     .
-  #   }
-  # }
 
   # Make data request(s) for symbols and return results in trades.
   def fillTrades(symbols, trades)
@@ -56,8 +21,7 @@ module Alphavantage extend ActiveSupport::Concern
       begin
         puts "AA PRICE FETCH BEGIN for: #{symbol}"
         resp = conn.get do |req|
-          req.params['function'] = 'TIME_SERIES_INTRADAY'
-          req.params['interval'] = '1min'
+          req.params['function'] = 'TIME_SERIES_DAILY'
           req.params['symbol']   = symbol
           req.params['apikey']   = api_key
         end
@@ -77,17 +41,20 @@ module Alphavantage extend ActiveSupport::Concern
           trade = error_trade(symbol, 'Price is not available.')
         else
           header = response['Meta Data']
-          tick   = response['Time Series (1min)'].first
-          time   = tick.first
-          prices = tick.second
+          ticks = response['Time Series (Daily)']
+          current_prices = ticks.values[0]
+          current_trade_price = current_prices['4. close'].to_f
+          prior_prices = ticks.values[1]
+          prior_trade_price = prior_prices['4. close'].to_f
 
           # TODO Get timezone from Meta Data.
           # TODO Derive price_change value.
-          trade = Trade.new do |dt|
-            dt.stock_symbol = StockSymbol.find_by(name: symbol)
-            dt.trade_date   = time + " EDT"
-            dt.trade_price  = prices['4. close'].to_f
-            dt.price_change = nil
+          trade = Trade.new do |t|
+            t.stock_symbol = StockSymbol.find_by(name: symbol)
+            t.trade_date   = Date.new(1492)
+            t.trade_price  = current_trade_price
+            t.price_change = current_trade_price - prior_trade_price
+            t.created_at   = DateTime.now
           end
         end
       ensure
@@ -96,3 +63,79 @@ module Alphavantage extend ActiveSupport::Concern
     }
   end
 end
+
+#################
+#  SAMPLE DATA  #
+#################
+#
+### INTRADAY:
+# https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
+# {
+#   "Meta Data"=>
+#   {
+#     "1. Information"=>"Intraday (1min) prices and volumes",
+#     "2. Symbol"=>"MSFT",
+#     "3. Last Refreshed"=>"2017-10-20 16:00:00",
+#     "4. Interval"=>"1min",
+#     "5. Output Size"=>"Compact",
+#     "6. Time Zone"=>"US/Eastern"
+#   },
+#   "Time Series (1min)"=>
+#   {
+#     "2017-10-20 16:00:00"=>
+#     {
+#       "1. open"=>"78.7000",
+#       "2. high"=>"78.8100",
+#       "3. low"=>"78.6950",
+#       "4. close"=>"78.8100",
+#       "5. volume"=>"2663315"
+#     },
+#     "2017-10-20 15:59:00"=>
+#     {
+#       "1. open"=>"78.7000",
+#       "2. high"=>"78.7200",
+#       "3. low"=>"78.6900",
+#       "4. close"=>"78.7000",
+#       "5. volume"=>"320215"
+#     },
+#     .
+#     .
+#     .
+#   }
+# }
+#
+#
+### DAILY:
+# https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo
+# {
+#   "Meta Data"=>
+#   {
+#    "1. Information	"Daily Prices (open, high, low, close) and Volumes"
+#    "2. Symbol	"MSFT"
+#    "3. Last Refreshed	"2017-11-02 11:46:00"
+#    "4. Output Size	"Compact"
+#    "5. Time Zone	"US/Eastern"
+#   },
+#   "Time Series (Daily)"=>
+#   {
+#    "2017-11-02"=>
+#    {
+#      "1. open	"83.3500"
+#      "2. high	"84.0300"
+#      "3. low	"83.1200"
+#      "4. close	"83.5500"
+#      "5. volume	"8642391"
+#    },
+#    "2017-11-01"=>
+#    {
+#     "1. open	"83.6800"
+#     "2. high	"83.7600"
+#     "3. low	"82.8800"
+#     "4. close	"83.1800"
+#     "5. volume	"22039635"
+#    },
+#     .
+#     .
+#     .
+#   }
+# }

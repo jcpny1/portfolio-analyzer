@@ -1,14 +1,18 @@
 class TradesController < ApplicationController
-   include Yahoo
+   include Alphavantage
 
   # Retrieve the latest prices for the supplied symbols.
   # from live feed if 'livePrices' is specified. Else, from database.
   # To handle case of feed down not trashing client's existing prices,
   # first load database latest prices, then overlay with whatever we
   # can get from live feed.
+  # In a production environment, going to the database here would not
+  # be necessary. The latest prices (live or otherwise) would be in an
+  # in-memory cache.
 
   # NOTE: Keep symbols array and trades array in sync by symbol name.
   #       Use trade.error to signal a failed price fetch.
+  #       For feeds without a last trade datetime, use year 1492 to signal its absence.
 
   # TODO Combine symbols and trades arrays into a single object.
 

@@ -90,7 +90,9 @@ function processPrices(portfolio, trades) {
     if (tradesIndex !== -1) {
       position.lastTrade     = trades[tradesIndex].trade_price;
       position.priceChange   = trades[tradesIndex].price_change;
-      position.lastTradeDate = trades[tradesIndex].trade_date;
+      if (!trades[tradesIndex].trade_date.startsWith('1492')) {
+        position.lastTradeDate = trades[tradesIndex].trade_date;        
+      }
       if (position.lastTrade != null) {
         position.marketValue = position.quantity * parseFloat(position.lastTrade);
         position.gainLoss    = position.marketValue - parseFloat(position.cost);

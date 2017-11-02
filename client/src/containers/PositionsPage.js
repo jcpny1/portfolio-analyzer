@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import * as positionActions from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import Positions from '../components/Positions';
-import PortfoliosPage from './PortfoliosPage';
 
 class PositionsPage extends Component {
   constructor(props) {
