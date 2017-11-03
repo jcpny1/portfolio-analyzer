@@ -48,7 +48,6 @@ module Alphavantage extend ActiveSupport::Concern
           prior_trade_price = prior_prices['4. close'].to_f
 
           # TODO Get timezone from Meta Data.
-          # TODO Derive price_change value.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
             t.trade_date   = Date.new(1492)
