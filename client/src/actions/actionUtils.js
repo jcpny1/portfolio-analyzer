@@ -84,26 +84,28 @@ function initPortfolioPositionValues(portfolios) {
 }
 
 // Update a portfolio's positions with the given trade prices.
-function processPrices(portfolio, trades) {
-  portfolio.positions.forEach(function(position) {
-    const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
-    if (tradesIndex !== -1) {
-      position.lastTrade     = trades[tradesIndex].trade_price;
-      position.priceChange   = trades[tradesIndex].price_change;
-      position.lastUpdate    = trades[tradesIndex].created_at;
-      if (!trades[tradesIndex].trade_date.startsWith('1492')) {
-        position.lastTradeDate = trades[tradesIndex].trade_date;
+function processPrices(portfolios, trades) {
+  portfolios.forEach(portfolio => {
+    portfolio.positions.forEach(function(position) {
+      const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
+      if (tradesIndex !== -1) {
+        position.lastTrade     = trades[tradesIndex].trade_price;
+        position.priceChange   = trades[tradesIndex].price_change;
+        position.lastUpdate    = trades[tradesIndex].created_at;
+        if (!trades[tradesIndex].trade_date.startsWith('1492')) {
+          position.lastTradeDate = trades[tradesIndex].trade_date;
+        }
+        if (position.lastTrade != null) {
+          position.marketValue = position.quantity * parseFloat(position.lastTrade);
+          position.gainLoss    = position.marketValue - parseFloat(position.cost);
+        }
+        if (position.priceChange != null) {
+          position.dayChange = position.quantity * parseFloat(position.priceChange);
+        }
       }
-      if (position.lastTrade != null) {
-        position.marketValue = position.quantity * parseFloat(position.lastTrade);
-        position.gainLoss    = position.marketValue - parseFloat(position.cost);
-      }
-      if (position.priceChange != null) {
-        position.dayChange = position.quantity * parseFloat(position.priceChange);
-      }
-    }
+    });
   });
-  updatePortfolioSummaries(portfolio);
+  updatePortfolioSummaries(portfolios);
 }
 
 // A generic sort comparator function.
@@ -178,18 +180,20 @@ function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, pos
 }
 
 // Calculate portfolio summary info.
-function updatePortfolioSummaries(portfolio) {
-  portfolio.totalCost   = 0.0;
-  portfolio.marketValue = 0.0;
-  portfolio.dayChange   = 0.0;
-  portfolio.gainLoss    = 0.0;
-  portfolio.positions.forEach(function(position) {
-    if (!isNaN(position.marketValue)) {
-      portfolio.totalCost    += parseFloat(position.cost);
-      portfolio.marketValue  += position.marketValue;
-      portfolio.dayChange    += position.dayChange;
-      portfolio.gainLoss     += position.gainLoss;
-    }
+function updatePortfolioSummaries(portfolios) {
+  portfolios.forEach(portfolio => {
+    portfolio.totalCost   = 0.0;
+    portfolio.marketValue = 0.0;
+    portfolio.dayChange   = 0.0;
+    portfolio.gainLoss    = 0.0;
+    portfolio.positions.forEach(function(position) {
+      if (!isNaN(position.marketValue)) {
+        portfolio.totalCost    += parseFloat(position.cost);
+        portfolio.marketValue  += position.marketValue;
+        portfolio.dayChange    += position.dayChange;
+        portfolio.gainLoss     += position.gainLoss;
+      }
+    });
   });
 }
 
@@ -215,7 +219,6 @@ const ActionUtils = {
   initPortfolioPositionValues,
   processPrices,
   sortPortfolios,
-  updatePortfolioSummaries,
   validatePosition
 };
 export default ActionUtils;

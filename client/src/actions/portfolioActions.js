@@ -72,6 +72,8 @@ export function loadPortfolios(loadLivePrices, sortFn) {
           throw new Error('No portfolios were found.');
         }
         ActionUtils.initPortfolioPositionValues(portfolios)
+        dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
+        dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
         const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
         fetch(`/api/portfolios/latestPrices?${livePrices}userId=${portfolios[0].user.id}`, {
           headers: {
@@ -81,19 +83,17 @@ export function loadPortfolios(loadLivePrices, sortFn) {
         .then(ActionUtils.checkStatus)
         .then(response => response.json())
         .then(trades => {
-          if (!trades.length) {
-            throw new Error('No prices were found for positions.');
-          }
           // Validate trade data.
           trades.forEach(function(trade) {
             if (trade.error !== null) {
               dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Prices for ', warning: trade.error}));
             }
           });
-          portfolios.forEach(function(portfolio) {ActionUtils.processPrices(portfolio, trades)});
+          ActionUtils.processPrices(portfolios, trades);
           sortFn(portfolios);
           dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
-        });
+        })
+        .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
     );
