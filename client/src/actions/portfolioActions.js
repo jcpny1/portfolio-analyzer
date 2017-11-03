@@ -68,14 +68,10 @@ export function loadPortfolios(loadLivePrices, sortFn) {
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(portfolios => {
-        if (!portfolios.length) {
-          throw new Error('No portfolios were found.');
-        }
         ActionUtils.initPortfolioPositionValues(portfolios)
-        dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
-        dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
         const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
-        fetch(`/api/portfolios/latestPrices?${livePrices}userId=${portfolios[0].user.id}`, {
+        const userId = (portfolios.length > 0) ? portfolios[0].user.id : '';
+        fetch(`/api/portfolios/latestPrices?${livePrices}userId=${userId}`, {
           headers: {
             'Accept': 'application/json',
           },
