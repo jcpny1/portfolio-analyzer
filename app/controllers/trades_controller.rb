@@ -18,7 +18,7 @@ class TradesController < ApplicationController
 
   MISSING_TRADE_DATE_VALUE = 1492
 
-  def latest_prices
+  def last_price
     symbols = symbolsForUser(params['userId'])
     trades = Array.new(symbols.length)
 

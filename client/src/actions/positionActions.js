@@ -8,17 +8,9 @@ export function addPosition(position, sortFn) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${position.portfolio_id}/positions`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          stock_symbol_name: position.stock_symbol_name,
-          quantity:          position.quantity,
-          cost:              position.cost,
-          date_acquired:     position.date_acquired,
-        }),
+        method:  'POST',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body:    JSON.stringify({stock_symbol_name: position.stock_symbol_name, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
@@ -26,7 +18,7 @@ export function addPosition(position, sortFn) {
         if (!updatedPortfolio.id) {
           throw new Error(`Position add failed! ${updatedPortfolio[0]}.`);
         }
-        var reloadPortfolios = loadPortfolios(true, sortFn);
+        var reloadPortfolios = loadPortfolios(false, sortFn);
         reloadPortfolios(dispatch);
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Position: ', error: error.message})))
@@ -39,10 +31,8 @@ export function deletePosition(portfolioId, positionId, sortFn) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${portfolioId}/positions/${positionId}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-        },
+        method:  'DELETE',
+        headers: {'Accept': 'application/json'},
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
@@ -50,7 +40,7 @@ export function deletePosition(portfolioId, positionId, sortFn) {
         if (!updatedPortfolio.id) {
           throw new Error(`Position delete failed! ${updatedPortfolio[0]}.`);
         }
-        var reloadPortfolios = loadPortfolios(true, sortFn);
+        var reloadPortfolios = loadPortfolios(false, sortFn);
         reloadPortfolios(dispatch);
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Delete Position: ', error: error.message})))
@@ -72,17 +62,9 @@ export function updatePosition(position, sortFn) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${position.portfolio_id}/positions/${position.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          stock_symbol_name: position.stock_symbol_name,
-          quantity:          position.quantity,
-          cost:              position.cost,
-          date_acquired:     position.date_acquired,
-        }),
+        method:  'PATCH',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body:    JSON.stringify({stock_symbol_name: position.stock_symbol_name, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
@@ -90,7 +72,7 @@ export function updatePosition(position, sortFn) {
         if (!updatedPortfolio.id) {
           throw new Error(`Position update failed! ${updatedPortfolio[0]}.`);
         }
-        var reloadPortfolios = loadPortfolios(true, sortFn);
+        var reloadPortfolios = loadPortfolios(false, sortFn);
         reloadPortfolios(dispatch);
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position: ', error: error.message})))

@@ -9,15 +9,9 @@ export function addPortfolio(portfolio) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch('/api/portfolios/', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: GUEST_USER_ID,
-          name: portfolio.name,
-        }),
+        method:  'POST',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body:    JSON.stringify({user_id: GUEST_USER_ID, name: portfolio.name}),
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
@@ -38,10 +32,8 @@ export function deletePortfolio(portfolioId) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${portfolioId}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-        },
+        method:  'DELETE',
+        headers: {'Accept': 'application/json'},
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
@@ -61,9 +53,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch('/api/portfolios', {
-        headers: {
-          'Accept': 'application/json',
-        },
+        headers: {'Accept': 'application/json'},
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
@@ -71,10 +61,8 @@ export function loadPortfolios(loadLivePrices, sortFn) {
         ActionUtils.initPortfolioPositionValues(portfolios)
         const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
         const userId = (portfolios.length > 0) ? portfolios[0].user.id : '';
-        fetch(`/api/portfolios/latestPrices?${livePrices}userId=${userId}`, {
-          headers: {
-            'Accept': 'application/json',
-          },
+        fetch(`/api/portfolios/lastPrice?${livePrices}userId=${userId}`, {
+          headers: {'Accept': 'application/json'},
         })
         .then(ActionUtils.checkStatus)
         .then(response => response.json())
@@ -110,14 +98,9 @@ export function updatePortfolio(portfolio) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
     return (
       fetch(`/api/portfolios/${portfolio.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: portfolio.name,
-        }),
+        method:  'PATCH',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body:    JSON.stringify({name: portfolio.name,}),
       })
       .then(ActionUtils.checkStatus)
       .then(response => response.json())

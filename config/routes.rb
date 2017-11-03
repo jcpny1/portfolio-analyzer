@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   scope '/api' do
-    get '/portfolios/latestPrices', to: 'trades#latest_prices'
+    get '/portfolios/lastPrice', to: 'trades#last_price'
     resources :portfolios do
       resources :positions, only: [:create, :update, :destroy]
     end
