@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
 import fetch from 'isomorphic-fetch';
+import ActionUtils from '../actions/actionUtils';
 import Symbols from '../components/Symbols';
 
 export default class SymbolsPage extends Component {
@@ -22,7 +23,7 @@ export default class SymbolsPage extends Component {
         'Accept': 'application/json',
       },
     })
-    .then(response => response)
+    .then(ActionUtils.checkStatus)
     .then(response => response.json())
     .then(cb);
   }
