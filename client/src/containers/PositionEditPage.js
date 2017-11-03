@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
+import ActionUtils from '../actions/actionUtils';
 import PositionEdit from '../components/PositionEdit';
 
 export default class PositionEditPage extends Component {
@@ -11,6 +12,7 @@ export default class PositionEditPage extends Component {
     this.setState({     // Do not reset symbolOptions. Keep it cached.
       modalOpen: false,
       editedPosition: {},
+      formError: {},
     });
   }
 
@@ -36,13 +38,18 @@ export default class PositionEditPage extends Component {
   }
 
   handleSubmit = () => {
-    this.props.onClickSubmit(this.state.editedPosition);
-    this.resetComponent();
+    const formError = ActionUtils.validatePosition(this.state.editedPosition);
+    if (formError == null) {
+      this.props.onClickSubmit(this.state.editedPosition);
+      this.resetComponent();
+    } else {
+      this.setState({formError: formError});
+    }
   }
 
   render() {
     const {iconColor, iconName, tooltip} = this.props;
-    const {modalOpen, editedPosition} = this.state;
+    const {editedPosition, formError, modalOpen} = this.state;
     return (
       <Modal
         closeOnDimmerClick={false}
@@ -52,7 +59,7 @@ export default class PositionEditPage extends Component {
         style={{paddingBottom:'10px'}}
       >
         <Modal.Header><Header as='h3' icon='browser' content='Position Editor'/></Modal.Header>
-        <Modal.Content><PositionEdit position={editedPosition} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
+        <Modal.Content><PositionEdit position={editedPosition} formError={formError} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>
           <Button type='submit' floated='left' color='green' form='positionEditForm'>Submit</Button>

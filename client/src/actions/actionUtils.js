@@ -9,7 +9,7 @@ function checkStatus(response) {
   return response;
 }
 
-// Manage the sort status of portfolio and position properties.
+// Manage the sort status of portfolio and position object arrays.
 // Calling with no arguments, returns current sorting info.
 function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initialPositionProperty, initialPositionDirection) {
   var lastPortfolioProperty    = initialPortfolioProperty;     // which property was last sorted.
@@ -193,5 +193,29 @@ function updatePortfolioSummaries(portfolio) {
   });
 }
 
-const ActionUtils = {checkStatus, columnSorter, computeAccountSummaries, initPortfolioPositionValues, processPrices, sortPortfolios, updatePortfolioSummaries};
+// If position is valid, returns null. Otherwise, returns error message.
+function validatePosition(position) {
+  let errorReturn = null;
+  if (!(/^[A-Z]+$/.test(position.stock_symbol_name))) {
+    errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
+  } else if (!(parseFloat(position.quantity) >= 0)) {
+    errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
+  } else if (!(parseFloat(position.cost) >= 0)) {
+    errorReturn = {name: 'cost', message: 'Cost must be greater than or equal to zero.'};
+  } else if (isNaN(Date.parse(position.date_acquired))) {
+    errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
+  }
+  return errorReturn;
+}
+
+const ActionUtils = {
+  checkStatus,
+  columnSorter,
+  computeAccountSummaries,
+  initPortfolioPositionValues,
+  processPrices,
+  sortPortfolios,
+  updatePortfolioSummaries,
+  validatePosition
+};
 export default ActionUtils;

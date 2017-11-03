@@ -21,7 +21,7 @@ class App extends Component {
             <Grid.Row>
               <Grid.Column>
                 <Menu>
-                  <Menu.Item as={Link} to='/'>Summary</Menu.Item>
+                  <Menu.Item as={Link} to='/'>Portfolios</Menu.Item>
                   {<SymbolsPage/>}
                   <Menu.Menu position='right'>
                     <Menu.Item disabled>Settings</Menu.Item>
