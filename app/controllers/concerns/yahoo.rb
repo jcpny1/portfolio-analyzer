@@ -41,11 +41,11 @@ module Yahoo extend ActiveSupport::Concern
       fetch_failure(symbols, trades, 'The feed is down.')
     else
       # TODO If length of symbols != length of response, something went wrong.
-
+      #
       # overall Fetch error example
       # resp.body: "<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry, Unable to process request at this time -- error 999.</body></html>"
       # => [["<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry", " Unable to process request at this time -- error 999.</body></html>"]]
-
+      #
       symbols.each_with_index { |symbol, i|
         responseIndex = response.index{ |row| row[SYMBOL_COL] == symbol}
         if !responseIndex.nil?

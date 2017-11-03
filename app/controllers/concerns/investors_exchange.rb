@@ -46,13 +46,12 @@ module InvestorsExchange extend ActiveSupport::Concern
         puts "IEX PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
         fetch_failure(symbols, trades, 'The feed is down.')
       else
+        #
         # Error example:
         #
-        # if response.key?('Error Message') || response.length == 0
-        #   puts "IEX PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
-        #   trade = error_trade(symbol, 'Price is not available.')
         # Missing data for symbol example:
         #   {"symbol":"XXX","companyName":"","primaryExchange":"","sector":"","calculationPrice":"previousclose","open":null,"openTime":null,"close":null,"closeTime":null,"latestPrice":null,"latestSource":"N/A","latestTime":"N/A","latestUpdate":null,"latestVolume":0,"delayedPrice":null,"delayedPriceTime":null,"previousClose":null,"change":null,"changePercent":null,"iexMarketPercent":null,"avgTotalVolume":0,"marketCap":null,"peRatio":null,"week52High":0,"week52Low":0,"ytdChange":0}
+        #
         if response['companyName'].length == 0
           trade = error_trade(symbol, 'Price is not available.')
         else

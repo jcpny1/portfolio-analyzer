@@ -16,6 +16,8 @@ class TradesController < ApplicationController
 
   # TODO Combine symbols and trades arrays into a single object.
 
+  MISSING_TRADE_DATE_VALUE = 1492
+
   def latest_prices
     symbols = symbolsForUser(params['userId'])
     trades = Array.new(symbols.length)
@@ -40,17 +42,18 @@ class TradesController < ApplicationController
       # Fetch live prices
       fillTrades(symbols, liveTrades);
       # Save new prices to database.
-      liveTrades.each_with_index { |trade, i|
-        if !trade.trade_price.nil?
-          # TODO When we get a feed that has some sort of unique identifier in it, then add that id to the database to avoid saving duplicates.
+      liveTrades.each_with_index { |liveTrade, i|
+        if !liveTrade.trade_price.nil?
           begin
-            trade.save
-            trades[i] = trade
+            if((liveTrade.trade_price != trades[i].trade_price) || (trades[i].trade_date.to_f.round(4) > trades[i].trade_date.to_f.round(4)))
+              liveTrade.save
+              trades[i] = liveTrade
+            end
           rescue ActiveRecord::ActiveRecordError => e
             puts "Error saving trade: #{trade.inspect}, #{e}"
           end
         else
-          trades[i].error = trade.error
+          trades[i].error = liveTrade.error
         end
       }
     end
@@ -66,6 +69,10 @@ class TradesController < ApplicationController
     symbols.each_with_index { |symbol, i|
       trades[i] = error_trade(symbol, errorMsg)
     }
+  end
+
+  def missing_trade_date()
+    return MISSING_TRADE_DATE_VALUE
   end
 
   def symbolsForUser(user_id)

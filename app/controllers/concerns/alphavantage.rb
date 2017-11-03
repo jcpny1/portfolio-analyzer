@@ -34,8 +34,10 @@ module Alphavantage extend ActiveSupport::Concern
         puts "AA PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
         fetch_failure(symbols, trades, 'The feed is down.')
       else
+        #
         # Error example:
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
+        #
         if response.key?('Error Message') || response.length == 0
           puts "AA PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
           trade = error_trade(symbol, 'Price is not available.')
@@ -50,7 +52,7 @@ module Alphavantage extend ActiveSupport::Concern
           # TODO Get timezone from Meta Data.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
-            t.trade_date   = Date.new(1492)
+            t.trade_date   = Date.new(missing_trade_date)
             t.trade_price  = current_trade_price
             t.price_change = current_trade_price - prior_trade_price
             t.created_at   = DateTime.now
