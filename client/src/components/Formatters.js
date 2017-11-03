@@ -5,12 +5,12 @@ import React from 'react';
 const Currency = (props) => {
   let result = '';
   if (props.value !== null) {
-    let formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 2});
+    let formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 3});
     if (formattedValue[0] === '-') {
       result = <span style={{color:'red'}}>{formattedValue}</span>;
     } else {
       // TODO codify the zero test with a constant or a function based on significant fraction digits.
-      if ((props.delta) && (props.value > 0.0001)) {
+      if ((props.delta) && (props.value > 0.00001)) {
         formattedValue = `+${formattedValue}`;
         result = <span style={{color:'green'}}>{formattedValue}</span>;
       } else {
