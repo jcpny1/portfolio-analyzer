@@ -18,6 +18,7 @@ module Yahoo extend ActiveSupport::Concern
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
       resp = conn.get '', {s: symbolList, f: 'sl1d1t1c1'}
+      fetchTime = DateTime.now
       puts "YAHOO PRICE FETCH END   for: #{symbolList}"
       response = CSV.parse(resp.body)
       raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'
@@ -53,7 +54,7 @@ module Yahoo extend ActiveSupport::Concern
               t.trade_date   = DateTime.strptime("#{responseRow[LAST_TRADE_DATE_COL]} #{response[responseIndex][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0).round(4).to_datetime
               t.trade_price  = responseRow[LAST_TRADE_PRICE_COL].to_f.round(4)
               t.price_change = responseRow[DAY_CHANGE_COL].to_f.round(4)
-              t.created_at   = DateTime.now
+              t.created_at   = fetchTime
             end
           end
         end

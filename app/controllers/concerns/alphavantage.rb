@@ -14,6 +14,7 @@ module Alphavantage extend ActiveSupport::Concern
     end
 
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
+    fetchTime = DateTime.now
 
     symbols.each_with_index { |symbol, i|
       begin
@@ -51,7 +52,7 @@ module Alphavantage extend ActiveSupport::Concern
             t.trade_date   = Date.new(missing_trade_date).to_f/1000.0).round(4).to_datetime
             t.trade_price  = current_trade_price
             t.price_change = (current_trade_price - prior_trade_price).round(4)
-            t.created_at   = DateTime.now
+            t.created_at   = fetchTime
           end
           trades[i] = trade
         end
@@ -64,9 +65,8 @@ end
 ##  SAMPLE DATA  ##
 ###################
 #
-### INTRADAY:
+# INTRADAY:
 # https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
-#
 # {
 #   "Meta Data"=>
 #   {
@@ -101,8 +101,7 @@ end
 #   }
 # }
 #
-#
-### DAILY:
+# DAILY:
 # https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo
 # {
 #   "Meta Data"=>

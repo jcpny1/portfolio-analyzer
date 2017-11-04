@@ -8,8 +8,9 @@ module InvestorsExchange extend ActiveSupport::Concern
       symbolList = symbols.join(',')
       puts "IEX PRICE FETCH BEGIN for: #{symbolList}"
       # TODO put conn creation in session variable to cut overhead?
-      conn = Faraday.new(url: 'https://api.iextrading.com/1.0/stock/market/batch?types=quote')
+      conn = Faraday.new(url: 'https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate')
       resp = conn.get '', {symbols: symbolList}
+      fetchTime = DateTime.now
       puts "IEX PRICE FETCH END   for: #{symbolList}"
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -28,20 +29,16 @@ module InvestorsExchange extend ActiveSupport::Concern
       #
       symbols.each_with_index { |symbol, i|
         symbolTick = response[symbol]['quote']
-        if symbolTick.nil?
+        if symbolTick.nil? || symbolTick['companyName'].length == 0
           trade = error_trade(symbol, 'Price is not available.')
         else
-          if symbolTick['companyName'].length == 0
-            trade = error_trade(symbol, 'Price is not available.')
-          else
-            # TODO Need proper timezone info.
-            trade = Trade.new do |t|
-              t.stock_symbol = StockSymbol.find_by(name: symbol)
-              t.trade_date   = Time.at(symbolTick['latestUpdate'].to_f/1000.0).round(4).to_datetime
-              t.trade_price  = symbolTick['latestPrice'].to_f.round(4)
-              t.price_change = symbolTick['change'].to_f.round(4)
-              t.created_at   = DateTime.now
-            end
+          # TODO Need proper timezone info.
+          trade = Trade.new do |t|
+            t.stock_symbol = StockSymbol.find_by(name: symbol)
+            t.trade_date   = Time.at(symbolTick['latestUpdate'].to_f/1000.0).round(4).to_datetime
+            t.trade_price  = symbolTick['latestPrice'].to_f.round(4)
+            t.price_change = symbolTick['change'].to_f.round(4)
+            t.created_at   = fetchTime
           end
         end
         trades[i] = trade
@@ -54,48 +51,22 @@ end
 ##  SAMPLE DATA  ##
 ###################
 #
-# https://api.iextrading.com/1.0/stock/market/batch?types=quote&symbols=aapl,msft
-#
+# https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate&symbols=aapl,msft
 # {
 #  AAPL: {
 #   quote: {
-#    symbol	"AAPL"
 #    companyName	"Apple Inc."
-#    primaryExchange	"Nasdaq Global Select"
-#    sector	"Technology"
-#    calculationPrice	"close"
-#    open	174.1
-#    openTime	1509715800281
-#    close	172.5
-#    closeTime	1509739200293
 #    latestPrice	172.5
-#    latestSource	"Close"
-#    latestTime	"November 3, 2017"
+#    change	4.39
 #    latestUpdate	1509739200293
-#    latestVolume	58366646
-#    .
-#    .
-#    .
 #   }
 #  },
 #  MSFT: {
 #   quote: {
-#    symbol	"MSFT"
 #    companyName	"Microsoft Corporation"
-#    primaryExchange	"Nasdaq Global Select"
-#    sector	"Technology"
-#    calculationPrice	"sip"
-#    open	83.28
-#    openTime	1509629400502
-#    close	84.05
-#    closeTime	1509652800369
 #    latestPrice	84.4
-#    latestSource	"15 minute delayed price"
-#    latestTime	"8:00:02 AM"
-#    latestVolume	17626663
-#    .
-#    .
-#    .
+#    change	1.09
+#    latestUpdate	1509739220275
 #   }
 #  }
 # }
