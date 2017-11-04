@@ -114,9 +114,7 @@ function processPrices(portfolios, trades) {
 
 // Request the server to refresh the symbololgy database.
 function refreshSymbols() {
-  fetch('/api/stock_symbols/refresh', {
-    headers: {'Accept': 'application/json'},
-  })
+  fetch('/api/stock_symbols/refresh', {headers: {'Accept': 'application/json'}})
   .then(ActionUtils.checkStatus)
   .catch(error => {alert(Fmt.ServerError(error, 'Refresh Symbols: '));});
 }

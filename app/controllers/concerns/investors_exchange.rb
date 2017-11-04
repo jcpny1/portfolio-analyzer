@@ -45,6 +45,11 @@ module InvestorsExchange extend ActiveSupport::Concern
       }
     end
   end
+
+  def getSymbology()
+    puts 'IEX SYMBOLOGY FETCH BEGIN'
+    puts 'IEX SYMBOLOGY FETCH END'
+  end
 end
 
 ###################

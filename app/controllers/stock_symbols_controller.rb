@@ -1,4 +1,6 @@
 class StockSymbolsController < ApplicationController
+  include InvestorsExchange  # include Feed handler here.
+
   # Retrieve stock_symbol by name.
   def by_name
     name = params[:name]
@@ -10,7 +12,8 @@ class StockSymbolsController < ApplicationController
   end
 
   def refresh
-puts "REFRESH"
-  render json: {}, status: :accepted
+    # Call feed handler to refresh.
+    getSymbology();
+    render json: {}, status: :ok
   end
 end
