@@ -45,7 +45,7 @@ class TradesController < ApplicationController
       liveTrades.each_with_index { |liveTrade, i|
         if !liveTrade.trade_price.nil?
           begin
-            if((liveTrade.trade_price != trades[i].trade_price) || (trades[i].trade_date.to_f.round(4) > trades[i].trade_date.to_f.round(4)))
+            if((liveTrade.trade_price != trades[i].trade_price) || (liveTrade.trade_date > trades[i].trade_date))
               liveTrade.save
               trades[i] = liveTrade
             end

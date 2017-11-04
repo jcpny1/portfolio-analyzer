@@ -37,9 +37,9 @@ module InvestorsExchange extend ActiveSupport::Concern
             # TODO Need proper timezone info.
             trade = Trade.new do |t|
               t.stock_symbol = StockSymbol.find_by(name: symbol)
-              t.trade_date   = Time.at(symbolTick['latestUpdate'].to_f/1000.0).to_datetime
-              t.trade_price  = symbolTick['latestPrice']
-              t.price_change = symbolTick['change']
+              t.trade_date   = Time.at(symbolTick['latestUpdate'].to_f/1000.0).round(4).to_datetime
+              t.trade_price  = symbolTick['latestPrice'].to_f.round(4)
+              t.price_change = symbolTick['change'].to_f.round(4)
               t.created_at   = DateTime.now
             end
           end

@@ -42,17 +42,15 @@ module Alphavantage extend ActiveSupport::Concern
         else
           header = response['Meta Data']
           ticks = response['Time Series (Daily)']
-          current_prices = ticks.values[0]
-          current_trade_price = current_prices['4. close'].to_f
-          prior_prices = ticks.values[1]
-          prior_trade_price = prior_prices['4. close'].to_f
+          current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
+          prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
 
           # TODO Get timezone from Meta Data.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
-            t.trade_date   = Date.new(missing_trade_date)
+            t.trade_date   = Date.new(missing_trade_date).to_f/1000.0).round(4).to_datetime
             t.trade_price  = current_trade_price
-            t.price_change = current_trade_price - prior_trade_price
+            t.price_change = (current_trade_price - prior_trade_price).round(4)
             t.created_at   = DateTime.now
           end
           trades[i] = trade
