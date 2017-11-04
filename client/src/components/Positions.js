@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Grid, Header, Icon, Table} from 'semantic-ui-react';
+import {Button, Header, Icon, Table} from 'semantic-ui-react';
 import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
@@ -66,7 +66,7 @@ const Positions = (props) => {
   }
 
   return (
-    <Grid.Column>
+    <div>
       <Header size='large' color='purple' content={portfolio.name}></Header>
       <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
       <Table celled compact sortable striped style={{'marginTop':'0'}}>
@@ -74,7 +74,7 @@ const Positions = (props) => {
         <Table.Body>{listPositions()}</Table.Body>
         <Table.Footer>{sumPositions()}</Table.Footer>
       </Table>
-    </Grid.Column>
+    </div>
   );
 }
 

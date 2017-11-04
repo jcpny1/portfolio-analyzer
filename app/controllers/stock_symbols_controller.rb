@@ -8,4 +8,9 @@ class StockSymbolsController < ApplicationController
       render json: StockSymbol.where("name = ?", name)
     end
   end
+
+  def refresh
+puts "REFRESH"
+  render json: {}, status: :accepted
+  end
 end

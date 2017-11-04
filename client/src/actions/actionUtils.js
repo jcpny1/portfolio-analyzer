@@ -1,3 +1,5 @@
+import Fmt from '../components/Formatters';
+
 const MISSING_TRADE_DATE_VALUE = '1492';
 
 // Check a fetch response status.
@@ -110,6 +112,15 @@ function processPrices(portfolios, trades) {
   updatePortfolioSummaries(portfolios);
 }
 
+// Request the server to refresh the symbololgy database.
+function refreshSymbols() {
+  fetch('/api/stock_symbols/refresh', {
+    headers: {'Accept': 'application/json'},
+  })
+  .then(ActionUtils.checkStatus)
+  .catch(error => {alert(Fmt.ServerError(error, 'Refresh Symbols: '));});
+}
+
 // A generic sort comparator function.
 // Handles null and NaN cases (makes null/NaN's less than not null/NaN's).
 var sortBy = function(field, reverse = false, compareFn) {
@@ -220,6 +231,7 @@ const ActionUtils = {
   computeAccountSummaries,
   initPortfolioPositionValues,
   processPrices,
+  refreshSymbols,
   sortPortfolios,
   validatePosition
 };

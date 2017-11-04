@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Grid, Header, Icon, Table} from 'semantic-ui-react';
+import {Button, Header, Icon, Table} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 import Fmt from './Formatters';
@@ -53,7 +53,7 @@ const Portfolios = (props) => {
   }
 
   return (
-    <Grid.Column>
+    <div>
       <Header content='Account Summary' size='large' color='purple'></Header>
       <Button content='Refresh' icon='refresh' title='Refresh portfolios' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolios()}/>
       <Table celled compact sortable striped style={{'marginTop':'0'}}>
@@ -61,7 +61,7 @@ const Portfolios = (props) => {
         <Table.Body>{listPortfolios()}</Table.Body>
         <Table.Footer>{sumPortfolios()}</Table.Footer>
       </Table>
-    </Grid.Column>
+    </div>
   );
 }
 

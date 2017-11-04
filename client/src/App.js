@@ -5,6 +5,7 @@ import {Dropdown, Grid, Image, Menu} from 'semantic-ui-react';
 import HelpPage from './containers/HelpPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
+import RefreshSymbolsPage from './containers/RefreshSymbolsPage';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
@@ -24,7 +25,11 @@ class App extends Component {
                   <Menu.Item as={Link} to='/'>Portfolios</Menu.Item>
                   {<SymbolsPage/>}
                   <Menu.Menu position='right'>
-                    <Menu.Item disabled>Settings</Menu.Item>
+                    <Dropdown item text='Settings'>
+                      <Dropdown.Menu>
+                        <RefreshSymbolsPage />
+                      </Dropdown.Menu>
+                    </Dropdown>
                     <Dropdown item text='Help'>
                       <Dropdown.Menu>
                         <HelpPage />
@@ -37,6 +42,7 @@ class App extends Component {
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
+            <Grid.Column width={14}>
               <Switch>
                 <Route exact path="/"           component={PortfoliosPage}/>
                 <Route path="/about"            component={PortfoliosPage}/>
@@ -44,6 +50,9 @@ class App extends Component {
                 <Route exact path="/portfolios" component={PortfoliosPage}/>
                 <Route path="/portfolios/:id"   component={PositionsPage}/>
               </Switch>
+              </Grid.Column>
+              <Grid.Column width={2}>
+              </Grid.Column>
             </Grid.Row>
           </Grid>
         </div>

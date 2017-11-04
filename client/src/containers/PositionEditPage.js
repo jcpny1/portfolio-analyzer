@@ -70,7 +70,7 @@ export default class PositionEditPage extends Component {
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header as='h3' icon='browser' content='Position Editor'/></Modal.Header>
+        <Modal.Header><Header as='h3' icon='edit' content='Position Editor'/></Modal.Header>
         <Modal.Content><PositionEdit position={editedPosition} formError={formError} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>
