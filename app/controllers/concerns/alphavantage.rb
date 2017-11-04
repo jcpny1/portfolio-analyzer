@@ -1,9 +1,7 @@
 module Alphavantage extend ActiveSupport::Concern
-
   #
   # See the bottom of this file for sample data.
   #
-
   # Make data request(s) for symbols and return results in trades.
   def fillTrades(symbols, trades)
     begin
@@ -57,20 +55,20 @@ module Alphavantage extend ActiveSupport::Concern
             t.price_change = current_trade_price - prior_trade_price
             t.created_at   = DateTime.now
           end
+          trades[i] = trade
         end
-      ensure
-        trades[i] = trade
       end
     }
   end
 end
 
-#################
-#  SAMPLE DATA  #
-#################
+###################
+##  SAMPLE DATA  ##
+###################
 #
 ### INTRADAY:
 # https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=demo
+#
 # {
 #   "Meta Data"=>
 #   {

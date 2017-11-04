@@ -1,18 +1,9 @@
 module Yahoo extend ActiveSupport::Concern
   require 'csv'
   #
-  #  # # # # # # # # # # # #
-  #  # #  SAMPLE DATA  # # #
-  #  # # # # # # # # # # # #
+  # See the bottom of this file for sample data.
   #
-  # https://download.finance.yahoo.com/d/quotes.csv?s=ORCL+CL&f=sl1d1t1c1
-  # \"ORCL\",50.88,\"10/27/2017\",\"4:01pm\",+0.73\n\"CL\",70.40,\"10/27/2017\",\"4:00pm\",-0.81\n
-  # After conversion:
-  # [
-  #  ["ORCL", "50.88", "10/27/2017", "4:01pm", "+0.73"],
-  #  ["CL",   "70.40", "10/27/2017", "4:00pm", "-0.81"]
-  # ]
-
+  # Response file .csv column positions.
   SYMBOL_COL           = 0
   LAST_TRADE_PRICE_COL = 1
   LAST_TRADE_DATE_COL  = 2
@@ -40,7 +31,7 @@ module Yahoo extend ActiveSupport::Concern
       puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     else
-      # TODO If length of symbols != length of response, something went wrong.
+      # TODO If symbols.length != response.length, something went wrong.
       #
       # overall Fetch error example
       # resp.body: "<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry, Unable to process request at this time -- error 999.</body></html>"
@@ -48,7 +39,9 @@ module Yahoo extend ActiveSupport::Concern
       #
       symbols.each_with_index { |symbol, i|
         responseIndex = response.index{ |row| row[SYMBOL_COL] == symbol}
-        if !responseIndex.nil?
+        if responseIndex.nil?
+          trade = error_trade(symbol, 'Price is not available.')
+        else
           responseRow = response[responseIndex]
           if responseRow[LAST_TRADE_PRICE_COL] == 'N/A'
             # Error example: "AXXX","N/A","N/A","N/A","N/A"
@@ -63,11 +56,21 @@ module Yahoo extend ActiveSupport::Concern
               t.created_at   = DateTime.now
             end
           end
-        else
-          trade = error_trade(symbol, 'Price for symbol is not available.')
         end
         trades[i] = trade
       }
     end
   end
 end
+
+# ##################
+# ## SAMPLE DATA  ##
+# ##################
+#
+# https://download.finance.yahoo.com/d/quotes.csv?s=ORCL+CL&f=sl1d1t1c1
+# \"ORCL\",50.88,\"10/27/2017\",\"4:01pm\",+0.73\n\"CL\",70.40,\"10/27/2017\",\"4:00pm\",-0.81\n
+# After conversion:
+# [
+#  ["ORCL", "50.88", "10/27/2017", "4:01pm", "+0.73"],
+#  ["CL",   "70.40", "10/27/2017", "4:00pm", "-0.81"]
+# ]
