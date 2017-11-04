@@ -2,8 +2,15 @@
 
 # dependencies
 /node_modules
-/semantic
-/src/semantic-ui
+
+/semantic/*
+!/semantic/src
+/semantic/src/*
+!/semantic/src/site
+/semantic/src/site/*
+!/semantic/src/site/collections
+/semantic/src/site/collections/*
+!/semantic/src/site/collections/table.overrides
 
 # testing
 /coverage

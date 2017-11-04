@@ -6,7 +6,6 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 import {WrapperApp} from './App'
 import registerServiceWorker from './registerServiceWorker';
-import './index.css';
 import './semantic-ui/semantic.min.css';
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
