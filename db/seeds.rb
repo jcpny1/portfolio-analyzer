@@ -1,3 +1,16 @@
+# seeds.rb
+# This seed file produces the following values:
+#   companies   : 17681
+#   portfolios  :     2
+#   positions   :    11
+#   stockSymbols: 19262
+#   trades      :    10
+#   users       :     1
+#   yielding account values:
+#     marketValue: 368982.714
+#     dayChange  :   2377.002
+#     costBasis  : 196387.37
+#     gainLoss   : 172595.344
 c=Company.create(name: 'ASTRA AB')
 c.stock_symbols.create(name: 'A.1', trading_name: 'A')
 c.stock_symbols.create(name: 'AAB', trading_name: 'AAB')
@@ -36941,16 +36954,34 @@ c=Company.create(name: 'BLACKLINE INC.')
 c.stock_symbols.create(name: 'BL', trading_name: 'BL')
 c=Company.create(name: 'ACUSHNET HOLDINGS CORP.')
 c.stock_symbols.create(name: 'GOLF', trading_name: 'GOLF')
-stock_symbol_1 = StockSymbol.offset(20).limit(1).first
-stock_symbol_2 = StockSymbol.offset(80).limit(1).first
-user_guest_1 = User.create!(name: 'guest', email: '')
-portfolio_1 = Portfolio.create(user: user_guest_1, name: 'Crazy Eights')
-portfolio_1.positions.new(stock_symbol: stock_symbol_1, quantity: 100, cost: 113.16, date_acquired: Date.new(2009,9, 1))
-portfolio_1.positions.new(stock_symbol: stock_symbol_2, quantity: 250, cost:   3.16, date_acquired: Date.new(2010,2,15))
-portfolio_1.save!
-Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-08-12', trade_price: 114.24, price_change: 0.05)
-Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-09-12', trade_price: 116.24, price_change: 0.10)
-Trade.create(stock_symbol: stock_symbol_1, trade_date: '2009-10-12', trade_price: 114.24, price_change: 0.15)
-Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-01-16', trade_price:   4.24, price_change: 0.20)
-Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-02-16', trade_price:   6.24, price_change: 0.25)
-Trade.create(stock_symbol: stock_symbol_2, trade_date: '2010-03-16', trade_price:   5.24, price_change: 0.30)
+
+u = User.create!(name: 'guest', email: '')
+
+p = Portfolio.create(user: u, name: 'Schwab 1')
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AMZN').first,  quantity:  52, cost: 16058.29, date_acquired: Date.new(2013,11,12))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'BABA').first,  quantity: 146, cost: 17046.96, date_acquired: Date.new(2013,11,12))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'GOOG').first,  quantity:   7, cost:  3022.70, date_acquired: Date.new(2013,11,12))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'GOOGL').first, quantity:  35, cost: 16619.66, date_acquired: Date.new(2013,11,12))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'JNJ').first,   quantity: 425, cost: 39876.54, date_acquired: Date.new(2013,11,12))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'SNY').first,   quantity: 450, cost: 21662.86, date_acquired: Date.new(2013,11,12))
+p.save!
+
+p = Portfolio.create(user: u, name: 'Schwab 2')
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AAPL').first,  quantity: 156.4515, cost: 11273.96, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AMZN').first,  quantity:   1,      cost:  1000.00, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'COF').first,   quantity: 344,      cost: 23256.47, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'FBGX').first,  quantity: 393,      cost: 38276.93, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'HD').first,    quantity: 104,      cost:  8293.00, date_acquired: Date.new(2011,8,2))
+p.save!
+
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'BABA').first,  trade_date: '2017-11-03 20:00:24.201', trade_price:  183.21, price_change: -1.60)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'GOOGL').first, trade_date: '2017-11-03 20:00:00.243', trade_price: 1049.99, price_change:  7.02)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'GOOG').first,  trade_date: '2017-11-03 20:00:00.236', trade_price: 1032.48, price_change:  6.90)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'AMZN').first,  trade_date: '2017-11-03 20:00:00.001', trade_price: 1111.60, price_change: 17.38)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'JNJ').first,   trade_date: '2017-11-03 20:00:39.738', trade_price:  140.08, price_change:  0.15)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'SNY').first,   trade_date: '2017-11-03 20:02:03.386', trade_price:   45.74, price_change: -0.48)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'FBGX').first,  trade_date: '2017-11-03 20:00:00.075', trade_price:  212.80, price_change:  2.49)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'AAPL').first,  trade_date: '2017-11-03 20:00:00.293', trade_price:  172.50, price_change:  4.39)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'COF').first,   trade_date: '2017-11-03 20:00:22.610', trade_price:   91.60, price_change: -0.85)
+Trade.create(stock_symbol: StockSymbol.where('name = ?', 'HD').first,    trade_date: '2017-11-03 20:00:24.088', trade_price:  164.39, price_change:  1.68)
+
