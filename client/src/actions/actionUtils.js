@@ -23,13 +23,11 @@ function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initi
   var lastPositionDirection    = initialPositionDirection;
   var lastPositionReverseSort  = (lastPositionDirection === 'ascending') ? false : true;
   return function(portfolios, portfolioProperty, positionProperty) {
-
     if (typeof portfolios === 'undefined') {
       var lastPortfolioDirection = (lastPortfolioReverseSort) ? 'descending' : 'ascending';
       var lastPositionDirection  = (lastPositionReverseSort)  ? 'descending' : 'ascending';
       return {portfolios: {property: lastPortfolioProperty, direction: lastPortfolioDirection}, positions: {property: lastPositionProperty, direction: lastPositionDirection}};
     }
-
     if (portfolioProperty) {
       let portfolioReverseSort = lastPortfolioReverseSort;
       if (lastPortfolioProperty !== portfolioProperty) {
@@ -40,7 +38,6 @@ function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initi
       lastPortfolioProperty    = portfolioProperty;
       lastPortfolioReverseSort = portfolioReverseSort;
     }
-
     if (positionProperty) {
       let positionReverseSort = lastPositionReverseSort;
       if (lastPositionProperty !== positionProperty) {
@@ -51,9 +48,7 @@ function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initi
       lastPositionProperty    = positionProperty;
       lastPositionReverseSort = positionReverseSort;
     }
-
     sortPortfolios(portfolios, lastPortfolioProperty, lastPortfolioReverseSort, lastPositionProperty, lastPositionReverseSort);
-
   }
 }
 
@@ -116,7 +111,7 @@ function processPrices(portfolios, trades) {
 function refreshSymbols() {
   fetch('/api/stock_symbols/refresh', {headers: {'Accept': 'application/json'}})
   .then(ActionUtils.checkStatus)
-  .catch(error => {alert(Fmt.ServerError(error, 'Refresh Symbols: '));});
+  .catch(error => {alert(Fmt.serverError(error, 'Refresh Symbols: '));});
 }
 
 // A generic sort comparator function.
@@ -149,7 +144,6 @@ var sortBy = function(field, reverse = false, compareFn) {
 // Sort Portfolios according to supplied arguments.
 function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, positionProperty, positionReverseSort) {
   // TODO put column => handler list somewhere where it will not be forgotten when a new column is added.
-
   // Sort portfolios.
     switch (portfolioProperty) {
     case 'name':

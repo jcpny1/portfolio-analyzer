@@ -55,9 +55,6 @@ class PositionsPage extends Component {
     } else {
       return null;
     }
-    // else {
-    //   portfolio = PortfoliosPage.newPortfolio;
-    // }
   }
 }
 

@@ -30,10 +30,10 @@ const Portfolios = (props) => {
             <Icon name='remove' title='Delete portfolio' link color='red' onClick={() => props.onClickRemove(portfolio.id)}/>
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
-          <Table.Cell><Fmt.Currency value={portfolio.marketValue}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={portfolio.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={portfolio.totalCost}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={portfolio.gainLoss} delta/></Table.Cell>
+          <Table.Cell><Fmt.currency value={portfolio.marketValue}/></Table.Cell>
+          <Table.Cell><Fmt.currency value={portfolio.dayChange} delta/></Table.Cell>
+          <Table.Cell><Fmt.currency value={portfolio.totalCost}/></Table.Cell>
+          <Table.Cell><Fmt.currency value={portfolio.gainLoss} delta/></Table.Cell>
         </Table.Row>
       );
     });
@@ -44,17 +44,17 @@ const Portfolios = (props) => {
       <Table.Row textAlign='right'>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='left'>Total</Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={totalMarketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={totalDayChange} delta/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={totalGainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={totalMarketValue}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={totalDayChange} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={totalCost}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={totalGainLoss} delta/></Table.HeaderCell>
       </Table.Row>
     );
   }
 
   return (
     <div>
-      <Header content='Account Summary' size='large' color='purple'></Header>
+      <Header content='Account Summary' size='medium' color='purple'></Header>
       <Button content='Refresh' icon='refresh' title='Refresh portfolios' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolios()}/>
       <Table celled compact sortable striped style={{'marginTop':'0'}}>
         <Table.Header>{columnTitles()}</Table.Header>

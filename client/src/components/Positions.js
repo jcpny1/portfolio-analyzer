@@ -33,15 +33,15 @@ const Positions = (props) => {
             <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
           </Table.Cell>
           <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
-          <Table.Cell><Fmt.Quantity value={position.quantity}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.lastTrade}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.priceChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.marketValue}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.cost}/></Table.Cell>
-          <Table.Cell><Fmt.Currency value={position.gainLoss} delta/></Table.Cell>
-          <Table.Cell><Fmt.DateTime value={position.lastTradeDate}/></Table.Cell>
-          <Table.Cell><Fmt.DateTime value={position.lastUpdate}/></Table.Cell>
+          <Table.Cell><Fmt.quantity value={position.quantity}/></Table.Cell>
+          <Table.Cell><Fmt.currency value={position.lastTrade}/></Table.Cell>
+          <Table.Cell><Fmt.currency value={position.priceChange} delta/></Table.Cell>
+          <Table.Cell><Fmt.currency value={position.marketValue}/></Table.Cell>
+          <Table.Cell><Fmt.currency value={position.dayChange} delta/></Table.Cell>
+          <Table.Cell><Fmt.currency value={position.cost}/></Table.Cell>
+          <Table.Cell><Fmt.currency value={position.gainLoss} delta/></Table.Cell>
+          <Table.Cell><Fmt.dateTime value={position.lastTradeDate}/></Table.Cell>
+          <Table.Cell><Fmt.dateTime value={position.lastUpdate}/></Table.Cell>
         </Table.Row>
       );
     });
@@ -55,10 +55,10 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={portfolio.marketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={portfolio.dayChange} delta/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={portfolio.totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.Currency value={portfolio.gainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={portfolio.marketValue}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={portfolio.dayChange} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={portfolio.totalCost}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.currency value={portfolio.gainLoss} delta/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
@@ -67,7 +67,7 @@ const Positions = (props) => {
 
   return (
     <div>
-      <Header size='large' color='purple' content={portfolio.name}></Header>
+      <Header content={portfolio.name} size='medium' color='purple'></Header>
       <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
       <Table celled compact sortable striped style={{'marginTop':'0'}}>
         <Table.Header>{columnTitles()}</Table.Header>
