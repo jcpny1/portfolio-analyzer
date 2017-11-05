@@ -37,7 +37,7 @@ export default class RefreshSymbolsPage extends Component {
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header as='h3' icon='download' content='Refresh Symbols'/></Modal.Header>
+        <Modal.Header><Header content='Refresh Symbols' icon='download' size='small'/></Modal.Header>
         <Modal.Content><RefreshSymbols/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>

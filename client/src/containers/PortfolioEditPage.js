@@ -51,7 +51,7 @@ export default class PortfolioEditPage extends Component {
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header as='h3' icon='edit' content='Portfolio Editor'/></Modal.Header>
+        <Modal.Header><Header content='Portfolio Editor' icon='edit' size='small'/></Modal.Header>
         <Modal.Content><PortfolioEdit portfolio={editedPortfolio} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>

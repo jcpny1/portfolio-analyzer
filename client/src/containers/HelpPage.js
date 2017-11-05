@@ -6,7 +6,7 @@ export default class HelpPage extends Component {
   render() {
     return (
       <Modal trigger={<Dropdown.Item>Usage Notes</Dropdown.Item>} closeIcon='close'>
-        <Modal.Header><Header as='h2' icon='info circle' content='Notes'/></Modal.Header>
+        <Modal.Header><Header content='Notes' icon='info circle' size='small'/></Modal.Header>
         <Modal.Content><Help/></Modal.Content>
         <Modal.Actions></Modal.Actions>
       </Modal>

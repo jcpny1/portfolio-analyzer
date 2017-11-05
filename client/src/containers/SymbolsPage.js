@@ -61,7 +61,7 @@ export default class SymbolsPage extends Component {
         open={this.state.modalOpen}
         onClose={this.handleCancel}
       >
-        <Modal.Header><Header as='h3' icon='browser' content='Symbol Lookup'/></Modal.Header>
+        <Modal.Header><Header content='Symbol Lookup' icon='search' size='small'/></Modal.Header>
         <Modal.Content><Symbols symbolName={value} symbols={results} onChange={this.handleChange}/></Modal.Content>
         <Modal.Actions><Button color='green' onClick={this.handleCancel}>Done</Button></Modal.Actions>
       </Modal>
