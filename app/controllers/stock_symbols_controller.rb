@@ -22,8 +22,28 @@ class StockSymbolsController < ApplicationController
   end
 
   def refresh
-    # Call feed handler to retrieve symbology.
-    symbolHash = getSymbology();
+    symbolsAdded = 0
+    symbolsErrored = 0
+    symbolsUpdated = 0
+    symbolHashArray = getSymbology();   # Call feed handler to retrieve symbology.
+    StockSymbol.transaction do
+      symbolHashArray.each { |symbol|
+        begin
+          stockSymbol = StockSymbol.where('name = ?', symbol['symbol']).first
+          if stockSymbol.nil?
+            StockSymbol.create(name: symbol['symbol'], long_name: symbol['name'])
+            symbolsAdded += 1
+          elsif symbol['name'].upcase != stockSymbol.long_name.upcase
+            stockSymbol.update(long_name: symbol['name'])
+            symbolsUpdated += 1
+          end
+        rescue ActiveRecord::ActiveRecordError => e
+          puts "STOCK SYMBOL REFRESH: Error saving stock symbol: #{symbol.inspect}, #{e}"
+          symbolsErrored += 1
+        end
+      }
+    end
+    puts "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, errors: #{symbolsErrored})."
     render json: {}, status: :ok
   end
 end

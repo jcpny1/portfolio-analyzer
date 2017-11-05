@@ -29,7 +29,7 @@ module Alphavantage extend ActiveSupport::Concern
       rescue Faraday::ClientError => e
         puts "AA PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
         fetch_failure(symbols, trades, 'The feed is down.')
-      rescue SyntaxError => e
+      rescue JSON::ParserError => e
         puts "AA PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
         fetch_failure(symbols, trades, 'The feed is down.')
       else

@@ -16,7 +16,7 @@ module InvestorsExchange extend ActiveSupport::Concern
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
       puts "IEX PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
-    rescue SyntaxError => e
+    rescue JSON::ParserError => e  # JSON.parse error
       puts "IEX PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     else
@@ -46,11 +46,20 @@ module InvestorsExchange extend ActiveSupport::Concern
     end
   end
 
-  # Return the feed's list if valid symbols.
+  # Return the feed's list of valid symbols.
   def getSymbology()
-    puts 'IEX SYMBOLOGY FETCH BEGIN'
-    puts 'IEX SYMBOLOGY FETCH END'
-    return {}
+    begin
+      response = {}
+      puts 'IEX SYMBOLOGY FETCH BEGIN'
+      resp = Faraday.get('https://api.iextrading.com/1.0/ref-data/symbols')
+      puts 'IEX SYMBOLOGY FETCH END'
+      response = JSON.parse(resp.body)
+    rescue Faraday::ClientError => e  # Can't connect.
+      puts "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}"
+    rescue JSON::ParserError => e  # JSON.parse error
+      puts "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}"
+    end
+    return response
   end
 end
 
@@ -58,6 +67,7 @@ end
 ##  SAMPLE DATA  ##
 ###################
 #
+# Quotes:
 # https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate&symbols=aapl,msft
 # {
 #  AAPL: {
@@ -77,3 +87,25 @@ end
 #   }
 #  }
 # }
+#
+# Symbols:
+# https://api.iextrading.com/1.0/ref-data/symbols'
+# [
+#  {
+#   "symbol":"A",
+#   "name":"Agilent Technologies Inc.",
+#   "date":"2017-11-03",
+#   "isEnabled":true,
+#   "type":"cs"
+#  },
+#  {
+#   "symbol":"AA",
+#   "name":"Alcoa Corporation",
+#   "date":"2017-11-03",
+#   "isEnabled":true,
+#   "type":"cs"
+#   },
+#   .
+#   .
+#   .
+# ]

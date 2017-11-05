@@ -19,6 +19,7 @@ const Help = (props) => {
         <li>Data provided for free by <a href='https://iextrading.com/developer' target='_blank' rel='noopener noreferrer'>IEX</a>. <a href='https://iextrading.com/api-exhibit-a' target="_blank" rel='noopener noreferrer'>(IEX Terms Of Service)</a></li>
         <li>Note that the prices shown may not be the correct prices or the latest prices.</li>
         <li>Any prices displayed should be verfied through other sources.</li>
+        <li>When the application is first opened, the position prices displayed are from the last time someone refreshed their portfolio containing those same symbols. Pressing refresh will update those prices from the market data feed, if it is available.</li>
       </ul>
     </div>
   );
