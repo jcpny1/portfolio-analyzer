@@ -62,6 +62,13 @@ module Yahoo extend ActiveSupport::Concern
       }
     end
   end
+
+  # Return the feed's list if valid symbols.
+  def getSymbology()
+    puts 'YAHOO SYMBOLOGY FETCH BEGIN'
+    puts 'YAHOO SYMBOLOGY FETCH END'
+    return {}
+  end
 end
 
 # ##################

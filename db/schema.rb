@@ -12,12 +12,6 @@
 
 ActiveRecord::Schema.define(version: 20170929135938) do
 
-  create_table "companies", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "portfolios", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name", null: false
@@ -41,11 +35,10 @@ ActiveRecord::Schema.define(version: 20170929135938) do
 
   create_table "stock_symbols", force: :cascade do |t|
     t.string "name", null: false
-    t.string "trading_name", null: false
-    t.integer "company_id", null: false
+    t.string "long_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_stock_symbols_on_company_id"
+    t.index ["long_name"], name: "index_stock_symbols_on_long_name"
   end
 
   create_table "trades", force: :cascade do |t|

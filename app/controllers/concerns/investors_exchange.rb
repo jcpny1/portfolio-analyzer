@@ -46,9 +46,11 @@ module InvestorsExchange extend ActiveSupport::Concern
     end
   end
 
+  # Return the feed's list if valid symbols.
   def getSymbology()
     puts 'IEX SYMBOLOGY FETCH BEGIN'
     puts 'IEX SYMBOLOGY FETCH END'
+    return {}
   end
 end
 

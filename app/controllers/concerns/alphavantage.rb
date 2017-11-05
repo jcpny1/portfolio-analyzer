@@ -59,6 +59,13 @@ module Alphavantage extend ActiveSupport::Concern
       end
     }
   end
+
+  # Return the feed's list if valid symbols.
+  def getSymbology()
+    puts 'AA SYMBOLOGY FETCH BEGIN'
+    puts 'AA SYMBOLOGY FETCH END'
+    return {}
+  end
 end
 
 ###################

@@ -12,16 +12,14 @@ export default class SymbolsPage extends Component {
   resetComponent = () => {
     this.setState({
       modalOpen: false,
-      value: '',
       results: [],
+      value: '',
     });
   }
 
   search = (query, cb) => {
-    return fetch(`/api/companies?q=${query}`, {
-      headers: {
-        'Accept': 'application/json',
-      },
+    return fetch(`/api/stock_symbols/by_long_name?q=${query}`, {
+      headers: {'Accept': 'application/json'},
     })
     .then(ActionUtils.checkStatus)
     .then(response => response.json())
@@ -33,18 +31,19 @@ export default class SymbolsPage extends Component {
   }
 
   handleChange = (e, {name, value}) => {
-    const upperCaseValue = value.toUpperCase();
-    this.setState({[name]: upperCaseValue});
-    if ((e.target.name === 'value') && (value.length > 0)) {
-      this.search(upperCaseValue, companies => {
+    this.setState({[name]: value});
+    if (e.target.name === 'value') {
+      if (value.length === 0) {
+        this.setState({results: []});
+      } else {
+        this.search(value, symbols => {
         let symbolList = [];
-        companies.forEach( company => {
-          company.stock_symbols.forEach( stock_symbol => {
-            symbolList.push({name: company.name, stockSymbolName: stock_symbol.name});
-          })
-        });
+        symbols.forEach( symbol => {
+          symbolList.push({long_name: symbol.long_name, name: symbol.name});
+        })
         this.setState({results: symbolList.slice(0, 10)});
-      });
+        });
+      }
     }
   }
 
@@ -62,15 +61,9 @@ export default class SymbolsPage extends Component {
         open={this.state.modalOpen}
         onClose={this.handleCancel}
       >
-        <Modal.Header>
-          <Header as='h3' icon='browser' content='Symbol Lookup'/>
-        </Modal.Header>
-        <Modal.Content>
-          <Symbols companyName={value} companies={results} onChange={this.handleChange}/>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button color='green' onClick={this.handleCancel}>Done</Button>
-        </Modal.Actions>
+        <Modal.Header><Header as='h3' icon='browser' content='Symbol Lookup'/></Modal.Header>
+        <Modal.Content><Symbols symbolName={value} symbols={results} onChange={this.handleChange}/></Modal.Content>
+        <Modal.Actions><Button color='green' onClick={this.handleCancel}>Done</Button></Modal.Actions>
       </Modal>
     );
   }

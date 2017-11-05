@@ -32,7 +32,7 @@ export default class RefreshSymbolsPage extends Component {
     return (
       <Modal
         closeOnDimmerClick={false}
-        trigger={<Dropdown.Item icon='edit' onClick={this.handleOpen}>Refresh Symbols</Dropdown.Item>}
+        trigger={<Dropdown.Item onClick={this.handleOpen}>Refresh Symbols</Dropdown.Item>}
         open={modalOpen}
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}

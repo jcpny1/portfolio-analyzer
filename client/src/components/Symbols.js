@@ -2,23 +2,23 @@ import React from 'react';
 import {Form, Grid, Table} from 'semantic-ui-react';
 
 const Symbols = (props) => {
-  const {companyName, companies} = props;
+  const {symbols, symbolName} = props;
 
   function columnTitles() {
     return (
       <Table.Row>
-        <Table.HeaderCell>Company</Table.HeaderCell>
+        <Table.HeaderCell>Name</Table.HeaderCell>
         <Table.HeaderCell>Symbol</Table.HeaderCell>
       </Table.Row>
     );
   }
 
-  function listCompanies() {
-    return companies.map((company,index) => {
+  function listSymbols() {
+    return symbols.map((symbol,index) => {
       return (
         <Table.Row key={index}>
-          <Table.Cell width={8}>{company.name}</Table.Cell>
-          <Table.Cell width={3}>{company.stockSymbolName}</Table.Cell>
+          <Table.Cell width={8}>{symbol.long_name}</Table.Cell>
+          <Table.Cell width={3}>{symbol.name}</Table.Cell>
         </Table.Row>
       );
     });
@@ -29,7 +29,7 @@ const Symbols = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={4} className='icon' icon='search' placeholder='Company Name' name='value' value={companyName} onChange={props.onChange}/>
+            <Form.Input width={4} className='icon' icon='search' placeholder='Description' name='value' value={symbolName} onChange={props.onChange}/>
           </Form>
         </Grid.Column>
       </Grid.Row>
@@ -37,7 +37,7 @@ const Symbols = (props) => {
         <Grid.Column>
           <Table columns={2} striped>
             <Table.Header>{columnTitles()}</Table.Header>
-            <Table.Body>{listCompanies()}</Table.Body>
+            <Table.Body>{listSymbols()}</Table.Body>
           </Table>
         </Grid.Column>
       </Grid.Row>
