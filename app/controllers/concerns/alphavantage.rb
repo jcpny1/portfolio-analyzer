@@ -8,7 +8,7 @@ module Alphavantage extend ActiveSupport::Concern
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: 'https://www.alphavantage.co/query')
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-      puts "AA PRICE FETCH ERROR for: #{symbols.inspect}"
+      logger.error "AA PRICE FETCH ERROR for: #{symbols.inspect}"
       errorMsg = "Faraday client error: #{e}"
       fetch_failure(symbols, trades, errorMsg)
     end
@@ -18,19 +18,19 @@ module Alphavantage extend ActiveSupport::Concern
 
     symbols.each_with_index { |symbol, i|
       begin
-        puts "AA PRICE FETCH BEGIN for: #{symbol}"
+        logger.debug "AA PRICE FETCH BEGIN for: #{symbol}"
         resp = conn.get do |req|
           req.params['function'] = 'TIME_SERIES_DAILY'
           req.params['symbol']   = symbol
           req.params['apikey']   = api_key
         end
-        puts "AA PRICE FETCH END   for: #{symbol}"
+        logger.debug "AA PRICE FETCH END   for: #{symbol}"
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e
-        puts "AA PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
+        logger.error "AA PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
         fetch_failure(symbols, trades, 'The feed is down.')
       rescue JSON::ParserError => e
-        puts "AA PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
+        logger.error "AA PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
         fetch_failure(symbols, trades, 'The feed is down.')
       else
         #
@@ -38,7 +38,7 @@ module Alphavantage extend ActiveSupport::Concern
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
         #
         if response.key?('Error Message') || response.length == 0
-          puts "AA PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
+          logger.error "AA PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
           trade = error_trade(symbol, 'Price is not available.')
         else
           header = response['Meta Data']
@@ -62,8 +62,8 @@ module Alphavantage extend ActiveSupport::Concern
 
   # Return the feed's list if valid symbols.
   def getSymbology()
-    puts 'AA SYMBOLOGY FETCH BEGIN'
-    puts 'AA SYMBOLOGY FETCH END'
+    logger.debug 'AA SYMBOLOGY FETCH BEGIN'
+    logger.debug 'AA SYMBOLOGY FETCH END'
     return {}
   end
 end

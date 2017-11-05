@@ -38,12 +38,12 @@ class StockSymbolsController < ApplicationController
             symbolsUpdated += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
-          puts "STOCK SYMBOL REFRESH: Error saving stock symbol: #{symbol.inspect}, #{e}"
+          logger.error "STOCK SYMBOL REFRESH: Error saving stock symbol: #{symbol.inspect}, #{e}"
           symbolsErrored += 1
         end
       }
     end
-    puts "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, errors: #{symbolsErrored})."
+    logger.info "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, errors: #{symbolsErrored})."
     render json: {}, status: :ok
   end
 end

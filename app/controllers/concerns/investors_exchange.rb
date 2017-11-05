@@ -6,18 +6,18 @@ module InvestorsExchange extend ActiveSupport::Concern
   def fillTrades(symbols, trades)
     begin
       symbolList = symbols.join(',')
-      puts "IEX PRICE FETCH BEGIN for: #{symbolList}"
+      logger.debug "IEX PRICE FETCH BEGIN for: #{symbolList}"
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: 'https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate')
       resp = conn.get '', {symbols: symbolList}
       fetchTime = DateTime.now
-      puts "IEX PRICE FETCH END   for: #{symbolList}"
+      logger.debug "IEX PRICE FETCH END   for: #{symbolList}"
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-      puts "IEX PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
+      logger.error "IEX PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     rescue JSON::ParserError => e  # JSON.parse error
-      puts "IEX PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
+      logger.error "IEX PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     else
       # TODO If symbols.length != response.length, something went wrong.
@@ -50,14 +50,14 @@ module InvestorsExchange extend ActiveSupport::Concern
   def getSymbology()
     begin
       response = {}
-      puts 'IEX SYMBOLOGY FETCH BEGIN'
+      logger.debug 'IEX SYMBOLOGY FETCH BEGIN'
       resp = Faraday.get('https://api.iextrading.com/1.0/ref-data/symbols')
-      puts 'IEX SYMBOLOGY FETCH END'
+      logger.debug 'IEX SYMBOLOGY FETCH END'
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect.
-      puts "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}"
+      logger.error "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}"
     rescue JSON::ParserError => e  # JSON.parse error
-      puts "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}"
+      logger.error "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}"
     end
     return response
   end

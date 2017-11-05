@@ -50,7 +50,7 @@ class TradesController < ApplicationController
               trades[i] = liveTrade
             end
           rescue ActiveRecord::ActiveRecordError => e
-            puts "Error saving trade: #{trade.inspect}, #{e}"
+            logger.error "Error saving trade: #{trade.inspect}, #{e}"
           end
         else
           trades[i].error = liveTrade.error

@@ -14,22 +14,22 @@ module Yahoo extend ActiveSupport::Concern
   def fillTrades(symbols, trades)
     begin
       symbolList = symbols.join('+')
-      puts "YAHOO PRICE FETCH BEGIN for: #{symbolList}"
+      logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbolList}"
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
       resp = conn.get '', {s: symbolList, f: 'sl1d1t1c1'}
       fetchTime = DateTime.now
-      puts "YAHOO PRICE FETCH END   for: #{symbolList}"
+      logger.debug "YAHOO PRICE FETCH END   for: #{symbolList}"
       response = CSV.parse(resp.body)
       raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-      puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
+      logger.error "YAHOO PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     rescue CSV::MalformedCSVError => e
-      puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: CSV parse error: #{e}"
+      logger.error "YAHOO PRICE FETCH ERROR for: #{symbolList}: CSV parse error: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     rescue LoadError => e
-      puts "YAHOO PRICE FETCH ERROR for: #{symbolList}: #{e}"
+      logger.error "YAHOO PRICE FETCH ERROR for: #{symbolList}: #{e}"
       fetch_failure(symbols, trades, 'The feed is down.')
     else
       # TODO If symbols.length != response.length, something went wrong.
@@ -65,8 +65,8 @@ module Yahoo extend ActiveSupport::Concern
 
   # Return the feed's list if valid symbols.
   def getSymbology()
-    puts 'YAHOO SYMBOLOGY FETCH BEGIN'
-    puts 'YAHOO SYMBOLOGY FETCH END'
+    logger.debug 'YAHOO SYMBOLOGY FETCH BEGIN'
+    logger.debug 'YAHOO SYMBOLOGY FETCH END'
     return {}
   end
 end
