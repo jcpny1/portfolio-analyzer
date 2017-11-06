@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import * as ActionUtils from './actionUtils';
+import * as Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 import {loadPortfolios} from './portfolioActions';
 
@@ -52,7 +53,7 @@ export function deletePosition(portfolioId, positionId, sortFn) {
 export function sortPositions(portfolios, property, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    sortFn(portfolios, null, property);
+    sortFn(portfolios, Portfolio.sort, null, property);
     return (dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios: portfolios)));
   }
 }

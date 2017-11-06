@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import * as ActionUtils from '../actions/actionUtils';
+import * as Position from './classes/Position';
 import PositionEdit from '../components/PositionEdit';
 
 export default class PositionEditPage extends Component {
@@ -43,7 +44,7 @@ export default class PositionEditPage extends Component {
       if (symbols.length !== 1) {
         formError = {name: 'stock_symbol_name', message: 'This symbol is not available.'};
       } else {
-        formError = ActionUtils.validatePosition(this.state.editedPosition);
+        formError = Position.validate(this.state.editedPosition);
       }
       if (formError !== null) {
         this.setState({formError: formError});

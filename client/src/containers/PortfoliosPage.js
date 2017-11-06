@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as ActionUtils from '../actions/actionUtils';
+import * as Portfolio from './classes/Portfolio';
 import * as actions from '../actions/portfolioActions.js';
 import Portfolios from '../components/Portfolios';
 
@@ -36,7 +36,7 @@ class PortfoliosPage extends Component {
 
   render() {
     const {portfolios, sortFn, updatingPortfolio} = this.props;
-    const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = ActionUtils.computeAccountSummaries(portfolios);
+    const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = Portfolio.computeAccountSummaries(portfolios);
     const sortTerms = sortFn();
     return (<Portfolios portfolios={portfolios} emptyPortfolio={PortfoliosPage.newPortfolio} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.portfolios.property} sortDirection={sortTerms.portfolios.direction}/>);
   }

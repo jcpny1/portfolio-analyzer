@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import * as ActionUtils from './actionUtils';
+import * as Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 
 const GUEST_USER_ID = 1;
@@ -19,7 +20,7 @@ export function addPortfolio(portfolio) {
         if (!newPortfolio.id) {
           throw new Error('Portfolio add failed!');
         }
-        ActionUtils.initPortfolioPositionValues([newPortfolio]);
+        Portfolio.initPositionValues([newPortfolio]);
         dispatch(PortfolioReducerFunctions.addPortfolioAction(newPortfolio));
       })
       .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio: ', error: error.message})))
@@ -58,7 +59,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
       .then(ActionUtils.checkStatus)
       .then(response => response.json())
       .then(portfolios => {
-        ActionUtils.initPortfolioPositionValues(portfolios)
+        Portfolio.initPositionValues(portfolios)
         const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
         const userId = (portfolios.length > 0) ? portfolios[0].user.id : '';
         fetch(`/api/portfolios/lastPrice?${livePrices}userId=${userId}`, {
@@ -73,8 +74,8 @@ export function loadPortfolios(loadLivePrices, sortFn) {
               dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Prices for ', warning: trade.error}));
             }
           });
-          ActionUtils.processPrices(portfolios, trades);
-          sortFn(portfolios);
+          Portfolio.processPrices(portfolios, trades);
+          sortFn(portfolios, Portfolio.sort);
           dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
         })
         .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
@@ -88,7 +89,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
 export function sortPortfolios(portfolios, property, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    sortFn(portfolios, property);
+    sortFn(portfolios, Portfolio.sort, property);
     return (dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios: portfolios)));
   }
 }
