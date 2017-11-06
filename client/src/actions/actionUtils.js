@@ -1,7 +1,5 @@
 import Fmt from '../components/Formatters';
 
-const MISSING_TRADE_DATE_VALUE = '1492';
-
 // Check a fetch response status.
 function checkStatus(response) {
   if (response.status < 200 || response.status >= 300) {
@@ -91,7 +89,7 @@ function processPrices(portfolios, trades) {
         position.lastTrade     = trades[tradesIndex].trade_price;
         position.priceChange   = trades[tradesIndex].price_change;
         position.lastUpdate    = trades[tradesIndex].created_at;
-        if (!trades[tradesIndex].trade_date.startsWith(MISSING_TRADE_DATE_VALUE)) {
+        if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
           position.lastTradeDate = trades[tradesIndex].trade_date;
         }
         if (position.lastTrade != null) {

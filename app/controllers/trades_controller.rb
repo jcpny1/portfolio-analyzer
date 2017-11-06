@@ -9,15 +9,12 @@ class TradesController < ApplicationController
   # In a production environment, going to the database here would not
   # be necessary. The latest prices (live or otherwise) would be in an
   # in-memory cache.
-
+  #
   # NOTE: Keep symbols array and trades array in sync by symbol name.
   #       Use trade.error to signal a failed price fetch.
   #       For feeds without a last trade datetime, use year 1492 to signal its absence.
-
+  #
   # TODO Combine symbols and trades arrays into a single object.
-
-  MISSING_TRADE_DATE_VALUE = 1492
-
   def last_price
     symbols = symbolsForUser(params['userId'])
     trades  = Array.new(symbols.length)
@@ -74,7 +71,7 @@ class TradesController < ApplicationController
   end
 
   def missing_trade_date()
-    return MISSING_TRADE_DATE_VALUE
+    return Time.at(0).to_datetime
   end
 
   def symbolsForUser(user_id)

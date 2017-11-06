@@ -49,7 +49,7 @@ module Alphavantage extend ActiveSupport::Concern
           # TODO Get timezone from Meta Data.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
-            t.trade_date   = Date.new(missing_trade_date).to_f/1000.0).round(4).to_datetime
+            t.trade_date   = missing_trade_date
             t.trade_price  = current_trade_price
             t.price_change = (current_trade_price - prior_trade_price).round(4)
             t.created_at   = fetchTime
