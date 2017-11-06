@@ -26,7 +26,7 @@ const dateFormat = new Intl.DateTimeFormat(locale, options);
 
 // Returns a formatted DateTime string.
 const dateTime = (props) => {
-  return (props.value) ? dateFormat.format(new Date(props.value)) : '';
+  return (props.value) ? dateFormat.format(new Date(props.value)).replace(',', '') : '';
 }
 
 // Returns a formatted quantity string.
