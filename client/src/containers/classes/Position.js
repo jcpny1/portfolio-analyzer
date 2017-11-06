@@ -1,7 +1,7 @@
 // If position is valid, returns null. Otherwise, returns error message.
 export function validate(position) {
   let errorReturn = null;
-  if (!(/^[A-Z]+$/.test(position.stock_symbol_name))) {
+  if (!(/^[A-Z.]+$/.test(position.stock_symbol_name))) {
     errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
   } else if (!(parseFloat(position.quantity) >= 0)) {
     errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
