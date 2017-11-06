@@ -11,42 +11,30 @@ export function checkStatus(response) {
   return response;
 }
 
-// Manage the sort status of portfolio and position object arrays.
+// Manage the sort status of an object array's properties.
 // Calling with no arguments, returns current sorting info.
-export function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initialPositionProperty, initialPositionDirection) {
-  var lastPortfolioProperty    = initialPortfolioProperty;     // which property was last sorted.
-  var lastPortfolioDirection   = initialPortfolioDirection;
-  var lastPortfolioReverseSort = (lastPortfolioDirection === 'ascending') ? false : true;
-  var lastPositionProperty     = initialPositionProperty;     // which property was last sorted.
-  var lastPositionDirection    = initialPositionDirection;
-  var lastPositionReverseSort  = (lastPositionDirection === 'ascending') ? false : true;
-  return function(portfolios, sortFn, portfolioProperty, positionProperty) {
-    if (typeof portfolios === 'undefined') {
-      var lastPortfolioDirection = (lastPortfolioReverseSort) ? 'descending' : 'ascending';
-      var lastPositionDirection  = (lastPositionReverseSort)  ? 'descending' : 'ascending';
-      return {portfolios: {property: lastPortfolioProperty, direction: lastPortfolioDirection}, positions: {property: lastPositionProperty, direction: lastPositionDirection}};
+export function columnSorter(initialPrimaryProperty, initialPrimaryDirection, initialSecondaryProperty, initialSecondaryDirection) {
+  var lastPrimaryProperty    = initialPrimaryProperty;     // which property was last sorted.
+  var lastPrimaryDirection   = initialPrimaryDirection;
+  var lastSecondaryProperty  = initialSecondaryProperty;   // which property was last sorted.
+  var lastSecondaryDirection = initialSecondaryDirection;
+  var lastPrimaryReverseSort   = (lastPrimaryDirection   === 'ascending') ? false : true;   // convert asc|desc to false|true.
+  var lastSecondaryReverseSort = (lastSecondaryDirection === 'ascending') ? false : true;   // convert asc|desc to false|true.
+  return function(objectArray, sortFn, primaryProperty, secondaryProperty) {
+    if (typeof objectArray === 'undefined') {
+      var lastPrimaryDirection    = (lastPrimaryReverseSort)   ? 'descending' : 'ascending';
+      var lastSecondaryDirection  = (lastSecondaryReverseSort) ? 'descending' : 'ascending';
+      return {primary: {property: lastPrimaryProperty, direction: lastPrimaryDirection}, secondary: {property: lastSecondaryProperty, direction: lastSecondaryDirection}};
     }
-    if (portfolioProperty) {
-      let portfolioReverseSort = lastPortfolioReverseSort;
-      if (lastPortfolioProperty !== portfolioProperty) {
-        portfolioReverseSort = false;
-      } else {
-        portfolioReverseSort = !portfolioReverseSort;
-      }
-      lastPortfolioProperty    = portfolioProperty;
-      lastPortfolioReverseSort = portfolioReverseSort;
+    if (primaryProperty) {
+      lastPrimaryReverseSort = (lastPrimaryProperty === primaryProperty) ? !lastPrimaryReverseSort : false;
+      lastPrimaryProperty    = primaryProperty;
     }
-    if (positionProperty) {
-      let positionReverseSort = lastPositionReverseSort;
-      if (lastPositionProperty !== positionProperty) {
-        positionReverseSort = false;
-      } else {
-        positionReverseSort = !positionReverseSort;
-      }
-      lastPositionProperty    = positionProperty;
-      lastPositionReverseSort = positionReverseSort;
+    if (secondaryProperty) {
+      lastSecondaryReverseSort = (lastSecondaryProperty === secondaryProperty) ? !lastSecondaryReverseSort : false;
+      lastSecondaryProperty    = secondaryProperty;
     }
-    sortFn(portfolios, lastPortfolioProperty, lastPortfolioReverseSort, lastPositionProperty, lastPositionReverseSort);
+    sortFn(objectArray, lastPrimaryProperty, lastPrimaryReverseSort, lastSecondaryProperty, lastSecondaryReverseSort);
   }
 }
 

@@ -51,7 +51,7 @@ class PositionsPage extends Component {
     let portfolio = portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
     if (portfolio) {  // may be null until props.portfolios is loaded.
       const sortTerms = sortFn();
-      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.positions.property} sortDirection={sortTerms.positions.direction}/>);
+      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction}/>);
     } else {
       return null;
     }
