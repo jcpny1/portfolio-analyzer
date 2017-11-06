@@ -24,11 +24,7 @@ class TradesController < ApplicationController
       stock_symbol = StockSymbol.find_by(name: symbol)
       if !stock_symbol.nil?
         trade = Trade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC, created_at DESC').first
-        if !trade.nil?
-          trades[i] = trade
-        else
-          trades[i] = error_trade(symbol, 'No trades available.')
-        end
+        trades[i] = (!trade.nil?) ? trade : error_trade(symbol, 'No trades available.')
       else
         trades[i] = error_trade(symbol, 'Invalid symbol.')
       end
@@ -39,20 +35,23 @@ class TradesController < ApplicationController
       # Fetch live prices
       fillTrades(symbols, liveTrades);
       # Save new prices to database.
-      liveTrades.each_with_index { |liveTrade, i|
-        if !liveTrade.trade_price.nil?
-          begin
-            if((liveTrade.trade_price != trades[i].trade_price) || (liveTrade.trade_date > trades[i].trade_date))
-              liveTrade.save
-              trades[i] = liveTrade
+      Trade.transaction do
+        liveTrades.each_with_index { |liveTrade, i|
+          if !liveTrade.trade_price.nil?
+            begin
+              if((liveTrade.trade_price != trades[i].trade_price) || (liveTrade.trade_date > trades[i].trade_date))
+                liveTrade.save!
+                trades[i] = liveTrade
+              end
+            rescue ActiveRecord::ActiveRecordError => e
+              logger.error "Error saving trade: #{trade.inspect}, #{e}"
+              trades[i].error = liveTrade.error
             end
-          rescue ActiveRecord::ActiveRecordError => e
-            logger.error "Error saving trade: #{trade.inspect}, #{e}"
+          else
+            trades[i].error = liveTrade.error
           end
-        else
-          trades[i].error = liveTrade.error
-        end
-      }
+        }
+      end
     end
     render json: trades, each_serializer: TradeSerializer
   end

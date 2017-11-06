@@ -15,7 +15,7 @@ class StockSymbolsController < ApplicationController
 
   # Refresh stock_symbols database table from feed symbology.
   def refresh_from_feed
-    symbolsAdded = 0
+    symbolsAdded   = 0
     symbolsErrored = 0
     symbolsUpdated = 0
     symbolHashArray = getSymbology();   # Call feed handler to retrieve symbology.
@@ -24,10 +24,10 @@ class StockSymbolsController < ApplicationController
         begin
           stockSymbol = StockSymbol.where('name = ?', symbol['symbol']).first
           if stockSymbol.nil?
-            StockSymbol.create(name: symbol['symbol'], long_name: symbol['name'])
+            StockSymbol.create!(name: symbol['symbol'], long_name: symbol['name'])
             symbolsAdded += 1
           elsif symbol['name'].upcase != stockSymbol.long_name.upcase
-            stockSymbol.update(long_name: symbol['name'])
+            stockSymbol.update!(long_name: symbol['name'])
             symbolsUpdated += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
