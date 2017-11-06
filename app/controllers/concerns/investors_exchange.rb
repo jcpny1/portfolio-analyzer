@@ -24,20 +24,17 @@ module InvestorsExchange extend ActiveSupport::Concern
       #
       # Error example:
       #   <no errors defined yet>
-      # Missing data for symbol example:
-      #   {"symbol":"XXX","companyName":"","primaryExchange":"","sector":"","calculationPrice":"previousclose","open":null,"openTime":null,"close":null,"closeTime":null,"latestPrice":null,"latestSource":"N/A","latestTime":"N/A","latestUpdate":null,"latestVolume":0,"delayedPrice":null,"delayedPriceTime":null,"previousClose":null,"change":null,"changePercent":null,"iexMarketPercent":null,"avgTotalVolume":0,"marketCap":null,"peRatio":null,"week52High":0,"week52Low":0,"ytdChange":0}
       #
       symbols.each_with_index { |symbol, i|
-        symbolTick = response[symbol]['quote']
-        if symbolTick.nil? || symbolTick['companyName'].length == 0
+        if (symbolTick = response[symbol]).nil? || (symbolQuote = symbolTick['quote']).nil?
           trade = error_trade(symbol, 'Price is not available.')
         else
           # TODO Need proper timezone info.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
-            t.trade_date   = Time.at(symbolTick['latestUpdate'].to_f/1000.0).round(4).to_datetime
-            t.trade_price  = symbolTick['latestPrice'].to_f.round(4)
-            t.price_change = symbolTick['change'].to_f.round(4)
+            t.trade_date   = Time.at(symbolQuote['latestUpdate'].to_f/1000.0).round(4).to_datetime
+            t.trade_price  = symbolQuote['latestPrice'].to_f.round(4)
+            t.price_change = symbolQuote['change'].to_f.round(4)
             t.created_at   = fetchTime
           end
         end

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
-import fetch from 'isomorphic-fetch';
 import ActionUtils from '../actions/actionUtils';
 import Symbols from '../components/Symbols';
 
@@ -17,15 +16,6 @@ export default class SymbolsPage extends Component {
     });
   }
 
-  search = (query, cb) => {
-    return fetch(`/api/stock_symbols/by_long_name?q=${query}`, {
-      headers: {'Accept': 'application/json'},
-    })
-    .then(ActionUtils.checkStatus)
-    .then(response => response.json())
-    .then(cb);
-  }
-
   handleCancel = () => {
     this.resetComponent();
   }
@@ -36,7 +26,7 @@ export default class SymbolsPage extends Component {
       if (value.length === 0) {
         this.setState({results: []});
       } else {
-        this.search(value, symbols => {
+        ActionUtils.symbolSearch({field: 'long_name', value: value, exact:false}, symbols => {
         let symbolList = [];
         symbols.forEach( symbol => {
           symbolList.push({long_name: symbol.long_name, name: symbol.name});

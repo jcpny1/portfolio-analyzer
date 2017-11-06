@@ -1,27 +1,20 @@
 class StockSymbolsController < ApplicationController
   include InvestorsExchange  # include Feed handler here.
 
-  # Retrieve stock_symbols by [partial] long name.
-  def by_long_name
-    q = params[:q]
-    if q.blank?
-      render json: {error: 'Expected parameter `q` '}, status: :bad_request
+  # Retrieve stock_symbols by specified column name and value.
+  # Use param 'exact' for 'equals' condition. Leave off for 'like'.
+  def index
+    column = params[:f]
+    value  = params[:v]
+    if params.key?("exact")
+      render json: StockSymbol.where("%s = '%s'", column, value)
     else
-      render json: StockSymbol.where("upper(long_name) LIKE ?", "%#{q.upcase}%").order(:long_name).limit(10)
+      render json: StockSymbol.where("upper(%s) LIKE '%s'", column, "%#{value.upcase}%").order("#{column}").limit(10)
     end
   end
 
-  # Retrieve stock_symbols by name.
-  def by_name
-    name = params[:name]
-    if name.blank?
-      render json: {error: 'Expected parameter `name` '}, status: :bad_request
-    else
-      render json: StockSymbol.where("name = ?", name)
-    end
-  end
-
-  def refresh
+  # Refresh stock_symbols database table from feed symbology.
+  def refresh_from_feed
     symbolsAdded = 0
     symbolsErrored = 0
     symbolsUpdated = 0

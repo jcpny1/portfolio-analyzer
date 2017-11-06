@@ -20,7 +20,7 @@ class TradesController < ApplicationController
 
   def last_price
     symbols = symbolsForUser(params['userId'])
-    trades = Array.new(symbols.length)
+    trades  = Array.new(symbols.length)
 
     # Load last saved prices from database.
     symbols.each_with_index { |symbol, i|
@@ -59,6 +59,8 @@ class TradesController < ApplicationController
     end
     render json: trades, each_serializer: TradeSerializer
   end
+
+  private
 
   # TODO Consolidate these two functions into one place in common with yahoo.rb
   def error_trade(symbol, errorMsg)

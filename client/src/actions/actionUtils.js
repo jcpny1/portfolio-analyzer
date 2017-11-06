@@ -114,6 +114,17 @@ function refreshSymbols() {
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Symbols: '));});
 }
 
+// Lookup stock symbol by [partial] name.
+// Specify option 'exact' as true or false accordingly.
+function symbolSearch(params, cb) {
+  const exact = params.exact ? 'exact' : '';
+  return fetch(`/api/stock_symbols?f=${params.field}&v=${params.value}&${exact}`, {headers: {'Accept': 'application/json'}})
+  .then(ActionUtils.checkStatus)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(error.message)});
+}
+
 // A generic sort comparator function.
 // Handles null and NaN cases (makes null/NaN's less than not null/NaN's).
 var sortBy = function(field, reverse = false, compareFn) {
@@ -224,6 +235,7 @@ const ActionUtils = {
   initPortfolioPositionValues,
   processPrices,
   refreshSymbols,
+  symbolSearch,
   sortPortfolios,
   validatePosition
 };

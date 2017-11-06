@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
-import fetch from 'isomorphic-fetch';
 import ActionUtils from '../actions/actionUtils';
 import PositionEdit from '../components/PositionEdit';
 
@@ -39,12 +38,9 @@ export default class PositionEditPage extends Component {
   }
 
   handleSubmit = () => {
-    return fetch(`/api/stock_symbols/by_name/${this.state.editedPosition.stock_symbol_name}`)
-    .then(ActionUtils.checkStatus)
-    .then(response => response.json())
-    .then(stock_symbol => {
+    ActionUtils.symbolSearch({field: 'name', value: this.state.editedPosition.stock_symbol_name, exact:true}, symbols => {
       let formError = null;
-      if (stock_symbol.length !== 1) {
+      if (symbols.length !== 1) {
         formError = {name: 'stock_symbol_name', message: 'This symbol is not available.'};
       } else {
         formError = ActionUtils.validatePosition(this.state.editedPosition);
@@ -55,9 +51,8 @@ export default class PositionEditPage extends Component {
         this.props.onClickSubmit(this.state.editedPosition);
         this.resetComponent();
       }
-    })
-    .catch(error => {alert(error.message)});
-}
+    });
+  }
 
   render() {
     const {iconColor, iconName, tooltip} = this.props;

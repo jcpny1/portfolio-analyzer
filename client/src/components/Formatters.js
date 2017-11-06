@@ -11,8 +11,7 @@ const currency = (props) => {
     } else {
       // TODO codify the zero test with a constant or a function based on significant fraction digits.
       if ((props.delta) && (props.value > 0.00001)) {
-        formattedValue = `+${formattedValue}`;
-        result = <span style={{color:'green'}}>{formattedValue}</span>;
+        result = <span style={{color:'green'}}>+{formattedValue}</span>;
       } else {
         result = <span style={{color:'black'}}>{formattedValue}</span>;
       }

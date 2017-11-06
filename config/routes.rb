@@ -4,10 +4,7 @@ Rails.application.routes.draw do
     resources :portfolios do
       resources :positions, only: [:create, :update, :destroy]
     end
-    scope '/stock_symbols' do
-      get '/by_long_name',  to: 'stock_symbols#by_long_name'
-      get '/by_name/:name', to: 'stock_symbols#by_name'
-      get '/refresh',       to: 'stock_symbols#refresh'
-    end
+    resources :stock_symbols, only: [:index]
+    get '/stock_symbols/refresh', to: 'stock_symbols#refresh_from_feed'
   end
 end
