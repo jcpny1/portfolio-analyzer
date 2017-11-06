@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import ActionUtils from './actionUtils';
+import * as ActionUtils from './actionUtils';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 
 const GUEST_USER_ID = 1;

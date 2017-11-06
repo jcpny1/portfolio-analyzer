@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Dropdown, Header, Modal} from 'semantic-ui-react';
-import ActionUtils from '../actions/actionUtils';
+import * as ActionUtils from '../actions/actionUtils';
 import RefreshSymbols from '../components/RefreshSymbols';
 
 export default class RefreshSymbolsPage extends Component {

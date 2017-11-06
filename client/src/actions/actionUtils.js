@@ -1,7 +1,7 @@
 import Fmt from '../components/Formatters';
 
 // Check a fetch response status.
-function checkStatus(response) {
+export function checkStatus(response) {
   if (response.status < 200 || response.status >= 300) {
     const error = new Error(`HTTP Error ${response.statusText}`);
     error.status = response.status;
@@ -13,7 +13,7 @@ function checkStatus(response) {
 
 // Manage the sort status of portfolio and position object arrays.
 // Calling with no arguments, returns current sorting info.
-function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initialPositionProperty, initialPositionDirection) {
+export function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initialPositionProperty, initialPositionDirection) {
   var lastPortfolioProperty    = initialPortfolioProperty;     // which property was last sorted.
   var lastPortfolioDirection   = initialPortfolioDirection;
   var lastPortfolioReverseSort = (lastPortfolioDirection === 'ascending') ? false : true;
@@ -51,7 +51,7 @@ function columnSorter(initialPortfolioProperty, initialPortfolioDirection, initi
 }
 
 // Calculate account summary info.
-function computeAccountSummaries(portfolios) {
+export function computeAccountSummaries(portfolios) {
   let sumMarketValue = 0.0, sumTotalCost = 0.0, sumDayChange = 0.0;
   portfolios.forEach(function(portfolio) {
     sumMarketValue += portfolio.marketValue;
@@ -63,7 +63,7 @@ function computeAccountSummaries(portfolios) {
 }
 
 // Initialize portfolio and position values for each portfolio.
-function initPortfolioPositionValues(portfolios) {
+export function initPortfolioPositionValues(portfolios) {
   portfolios.forEach(function(portfolio) {
     portfolio.totalCost   = 0.0;
     portfolio.marketValue = 0.0;
@@ -81,7 +81,7 @@ function initPortfolioPositionValues(portfolios) {
 }
 
 // Update a portfolio's positions with the given trade prices.
-function processPrices(portfolios, trades) {
+export function processPrices(portfolios, trades) {
   portfolios.forEach(portfolio => {
     portfolio.positions.forEach(function(position) {
       const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
@@ -106,18 +106,18 @@ function processPrices(portfolios, trades) {
 }
 
 // Request the server to refresh the symbololgy database.
-function refreshSymbols() {
+export function refreshSymbols() {
   fetch('/api/stock_symbols/refresh', {headers: {'Accept': 'application/json'}})
-  .then(ActionUtils.checkStatus)
+  .then(checkStatus)
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Symbols: '));});
 }
 
 // Lookup stock symbol by [partial] name.
 // Specify option 'exact' as true or false accordingly.
-function symbolSearch(params, cb) {
+export function symbolSearch(params, cb) {
   const exact = params.exact ? 'exact' : '';
   return fetch(`/api/stock_symbols?f=${params.field}&v=${params.value}&${exact}`, {headers: {'Accept': 'application/json'}})
-  .then(ActionUtils.checkStatus)
+  .then(checkStatus)
   .then(response => response.json())
   .then(cb)
   .catch(error => {alert(error.message)});
@@ -151,7 +151,7 @@ var sortBy = function(field, reverse = false, compareFn) {
 }
 
 // Sort Portfolios according to supplied arguments.
-function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, positionProperty, positionReverseSort) {
+export function sortPortfolios(portfolios, portfolioProperty, portfolioReverseSort, positionProperty, positionReverseSort) {
   // TODO put column => handler list somewhere where it will not be forgotten when a new column is added.
   // Sort portfolios.
     switch (portfolioProperty) {
@@ -212,7 +212,7 @@ function updatePortfolioSummaries(portfolios) {
 }
 
 // If position is valid, returns null. Otherwise, returns error message.
-function validatePosition(position) {
+export function validatePosition(position) {
   let errorReturn = null;
   if (!(/^[A-Z]+$/.test(position.stock_symbol_name))) {
     errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
@@ -225,16 +225,3 @@ function validatePosition(position) {
   }
   return errorReturn;
 }
-
-const ActionUtils = {
-  checkStatus,
-  columnSorter,
-  computeAccountSummaries,
-  initPortfolioPositionValues,
-  processPrices,
-  refreshSymbols,
-  symbolSearch,
-  sortPortfolios,
-  validatePosition
-};
-export default ActionUtils;

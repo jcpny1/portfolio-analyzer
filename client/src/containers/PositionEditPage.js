@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
-import ActionUtils from '../actions/actionUtils';
+import * as ActionUtils from '../actions/actionUtils';
 import PositionEdit from '../components/PositionEdit';
 
 export default class PositionEditPage extends Component {

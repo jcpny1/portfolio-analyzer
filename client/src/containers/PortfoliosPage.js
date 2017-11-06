@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import ActionUtils from '../actions/actionUtils';
+import * as ActionUtils from '../actions/actionUtils';
 import * as actions from '../actions/portfolioActions.js';
 import Portfolios from '../components/Portfolios';
 
