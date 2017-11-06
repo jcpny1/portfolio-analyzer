@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
-import * as ActionUtils from '../actions/actionUtils';
 import * as Position from './classes/Position';
 import PositionEdit from '../components/PositionEdit';
 
@@ -24,8 +23,8 @@ export default class PositionEditPage extends Component {
   handleChange = (e, {name, value}) => {
     this.setState({
       editedPosition: {
-        ...this.state.editedPosition,
-        [name]: (name === 'stock_symbol_name') ? value.toUpperCase() : value,
+          ...this.state.editedPosition,
+          [name]: (name === 'stock_symbol_name') ? value.toUpperCase() : value,
       },
     });
   }
@@ -39,13 +38,7 @@ export default class PositionEditPage extends Component {
   }
 
   handleSubmit = () => {
-    ActionUtils.symbolSearch({field: 'name', value: this.state.editedPosition.stock_symbol_name, exact:true}, symbols => {
-      let formError = null;
-      if (symbols.length !== 1) {
-        formError = {name: 'stock_symbol_name', message: 'This symbol is not available.'};
-      } else {
-        formError = Position.validate(this.state.editedPosition);
-      }
+    Position.validate(this.state.editedPosition, formError => {
       if (formError !== null) {
         this.setState({formError: formError});
       } else {

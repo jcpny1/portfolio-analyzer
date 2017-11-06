@@ -1,7 +1,9 @@
+import * as ActionUtils from '../../actions/actionUtils';
+
 // If position is valid, returns null. Otherwise, returns error message.
-export function validate(position) {
+export function validate(position, cb) {
   let errorReturn = null;
-  if (!(/^[A-Z.]+$/.test(position.stock_symbol_name))) {
+  if (!(/^[A-Z.*+-]+$/.test(position.stock_symbol_name))) {
     errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
   } else if (!(parseFloat(position.quantity) >= 0)) {
     errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
@@ -9,8 +11,14 @@ export function validate(position) {
     errorReturn = {name: 'cost', message: 'Cost must be greater than or equal to zero.'};
   } else if (isNaN(Date.parse(position.date_acquired))) {
     errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
+  } else {
+    ActionUtils.symbolSearch({field: 'name', value: this.state.editedPosition.stock_symbol_name, exact:true}, symbols => {
+      if (symbols.length !== 1) {
+        errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
+      }
+    });
   }
-  return errorReturn;
+  cb(errorReturn);
 }
 
 // class Position {
