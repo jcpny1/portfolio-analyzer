@@ -25,7 +25,7 @@ const Symbols = (props) => {
   }
 
   return (
-    <Grid style={{'marginLeft': '1rem'}}>
+    <Grid style={{marginLeft: '1rem'}}>
       <Grid.Row>
         <Grid.Column>
           <Form>

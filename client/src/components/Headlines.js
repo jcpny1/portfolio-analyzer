@@ -1,5 +1,5 @@
 import React from 'react';
-import {Header, Table} from 'semantic-ui-react';
+import {Button, Grid, Header, Table} from 'semantic-ui-react';
 
 const Headlines = (props) => {
   const {articles} = props;
@@ -8,9 +8,9 @@ const Headlines = (props) => {
     if (articles) {
       return articles.map((article,index) => {
         return (
-          <Table.Row key={index} textAlign='right'>
-            <Table.Cell>{article.title}</Table.Cell>
-          </Table.Row>
+          <Grid.Row key={index} style={{margin: 0, padding: '3px'}}>
+            <a href={article.url} title={article.description} target='_blank' rel='noopener noreferrer'>{article.title}</a>
+          </Grid.Row>
         );
       });
     } else {
@@ -21,9 +21,11 @@ const Headlines = (props) => {
   return (
     <div>
       <Header content='Headline News' size='medium' color='purple'></Header>
-      <Table celled compact sortable striped style={{'marginTop':'0'}}>
-        <Table.Body>{listHeadlines()}</Table.Body>
-      </Table>
+      <Button content='Refresh' icon='refresh' title='Refresh headlines' /*loading={updatingPortfolio}*/ size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshHeadlines()}/>
+      <span style={{float:'right'}}>powered by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a></span>
+      <Grid padded style={{margin: 0, padding: 0}}>
+        {listHeadlines()}
+      </Grid>
     </div>
   );
 }

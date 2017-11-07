@@ -23,6 +23,6 @@ export default class HeadlinesPage extends Component {
   }
 
   render() {
-    return (<Headlines articles={this.state.articles}/>);
+    return (<Headlines articles={this.state.articles} refreshHeadlines={this.refreshHeadlines}/>);
   }
 }
