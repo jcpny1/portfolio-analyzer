@@ -38,9 +38,9 @@ export default class PositionEditPage extends Component {
   }
 
   handleSubmit = () => {
-    Position.validate(this.state.editedPosition, formError => {
-      if (formError !== null) {
-        this.setState({formError: formError});
+    Position.validate(this.state.editedPosition, error => {
+      if (error !== null) {
+        this.setState({formError: error});
       } else {
         this.props.onClickSubmit(this.state.editedPosition);
         this.resetComponent();

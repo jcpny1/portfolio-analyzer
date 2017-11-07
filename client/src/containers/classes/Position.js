@@ -25,13 +25,16 @@ export default class Position {
       errorReturn = {name: 'cost', message: 'Cost must be greater than or equal to zero.'};
     } else if (isNaN(Date.parse(position.date_acquired))) {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
-    } else {
-      ActionUtils.symbolSearch({field: 'name', value: position.stock_symbol_name, exact:true}, symbols => {
+    }
+    if (errorReturn === null) {
+      ActionUtils.symbolSearch({value: position.stock_symbol_name, exact:true}, symbols => {
         if (symbols.length !== 1) {
           errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
         }
+        cb(errorReturn);
       });
+    } else {
+      cb(errorReturn);
     }
-    cb(errorReturn);
   }
 }

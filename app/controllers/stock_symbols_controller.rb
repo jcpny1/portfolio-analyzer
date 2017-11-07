@@ -4,12 +4,12 @@ class StockSymbolsController < ApplicationController
   # Retrieve stock_symbols by specified column name and value.
   # Use param 'exact' for 'equals' condition. Leave off for 'like'.
   def index
-    column = params[:f]
-    value  = params[:v]
+    value = params[:v]
     if params.key?("exact")
-      render json: StockSymbol.where("%s = '%s'", column, value)
+      render json: StockSymbol.where("name = '%s'", value)
     else
-      render json: StockSymbol.where("upper(%s) LIKE '%s'", column, "%#{value.upcase}%").order("#{column}").limit(10)
+      value = "%#{value.upcase}%"
+      render json: StockSymbol.where("upper(name) LIKE '%s' OR upper(long_name) LIKE '%s'", value, value).order(:name).limit(10)
     end
   end
 
