@@ -28,7 +28,7 @@ export default class SymbolsPage extends Component {
       } else {
         ActionUtils.symbolSearch({field: 'long_name', value: value, exact:false}, symbols => {
         let symbolList = [];
-        symbols.forEach( symbol => {
+        symbols.forEach(symbol => {
           symbolList.push({long_name: symbol.long_name, name: symbol.name});
         })
         this.setState({results: symbolList.slice(0, 10)});

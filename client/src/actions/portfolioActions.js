@@ -69,7 +69,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
         .then(response => response.json())
         .then(trades => {
           // Validate trade data.
-          trades.forEach(function(trade) {
+          trades.forEach(trade => {
             if (trade.error !== null) {
               dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Prices for ', warning: trade.error}));
             }

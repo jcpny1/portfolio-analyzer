@@ -54,8 +54,12 @@ const Portfolios = (props) => {
 
   return (
     <div>
-      <Header content='Account Summary' size='medium' color='purple'></Header>
-      <Button content='Refresh' icon='refresh' title='Refresh portfolios' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolios()}/>
+      <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
+        Account Summary
+        <span style={{float:'right'}}>
+          <Button content='Refresh' icon='refresh' title='Refresh portfolio' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolios()}/>
+        </span>
+      </Header>
       <Table celled compact sortable striped style={{marginTop:0}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPortfolios()}</Table.Body>

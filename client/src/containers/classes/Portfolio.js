@@ -14,7 +14,7 @@ export default class Portfolio {
   // Calculate account summary info.
   static computeAccountSummaries(portfolios) {
     let sumMarketValue = 0.0, sumTotalCost = 0.0, sumDayChange = 0.0;
-    portfolios.forEach(function(portfolio) {
+    portfolios.forEach(portfolio => {
       sumMarketValue += portfolio.marketValue;
       sumTotalCost   += portfolio.totalCost;
       sumDayChange   += portfolio.dayChange;
@@ -25,12 +25,12 @@ export default class Portfolio {
 
   // Initialize portfolio and position values for each portfolio.
   static initPositionValues(portfolios) {
-    portfolios.forEach(function(portfolio) {
+    portfolios.forEach(portfolio => {
       portfolio.totalCost   = 0.0;
       portfolio.marketValue = 0.0;
       portfolio.dayChange   = 0.0;
       portfolio.gainLoss    = 0.0;
-      portfolio.positions.forEach(function(position) {
+      portfolio.positions.forEach(position => {
         position.lastTrade     = null;
         position.lastTradeDate = null;
         position.priceChange   = null;
@@ -44,7 +44,7 @@ export default class Portfolio {
   // Update a portfolio's positions with the given trade prices.
   static processPrices(portfolios, trades) {
     portfolios.forEach(portfolio => {
-      portfolio.positions.forEach(function(position) {
+      portfolio.positions.forEach(position => {
         const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
         if (tradesIndex !== -1) {
           position.lastTrade     = trades[tradesIndex].trade_price;
@@ -86,7 +86,7 @@ export default class Portfolio {
     }
 
     // Sort positions within portfolios.
-    portfolios.forEach(function(portfolio) {
+    portfolios.forEach(portfolio => {
       switch (positionProperty) {
         case 'stock_symbol':
           portfolio.positions.sort(ActionUtils.sortBy(positionProperty, positionReverseSort, function(a){return a.name}));
@@ -116,7 +116,7 @@ export default class Portfolio {
       portfolio.marketValue = 0.0;
       portfolio.dayChange   = 0.0;
       portfolio.gainLoss    = 0.0;
-      portfolio.positions.forEach(function(position) {
+      portfolio.positions.forEach(position => {
         if (!isNaN(position.marketValue)) {
           portfolio.totalCost    += parseFloat(position.cost);
           portfolio.marketValue  += position.marketValue;
