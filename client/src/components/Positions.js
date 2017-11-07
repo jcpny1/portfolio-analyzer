@@ -32,7 +32,7 @@ const Positions = (props) => {
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
             <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
           </Table.Cell>
-          <Table.Cell textAlign='left'>{position.stock_symbol.name}</Table.Cell>
+          <Table.Cell textAlign='left' title={position.stock_symbol.long_name}>{position.stock_symbol.name}</Table.Cell>
           <Table.Cell><Fmt.quantity value={position.quantity}/></Table.Cell>
           <Table.Cell><Fmt.currency value={position.lastTrade}/></Table.Cell>
           <Table.Cell><Fmt.currency value={position.priceChange} delta/></Table.Cell>
