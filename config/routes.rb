@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     end
     resources :stock_symbols, only: [:index]
     get '/stock_symbols/refresh', to: 'stock_symbols#refresh_from_feed'
+    get '/headlines', to: 'application#headlines'
   end
 end

@@ -39,6 +39,15 @@ export function columnSorter(initialPrimaryProperty, initialPrimaryDirection, in
 }
 
 // Request the server to refresh the symbololgy database.
+export function refreshHeadlines(cb) {
+  fetch('/api/headlines', {headers: {'Accept': 'application/json'}})
+  .then(checkStatus)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(Fmt.serverError(error, 'Refresh Headlines: '));});
+}
+
+// Request the server to refresh the symbololgy database.
 export function refreshSymbols() {
   fetch('/api/stock_symbols/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
