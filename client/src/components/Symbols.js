@@ -25,17 +25,17 @@ const Symbols = (props) => {
   }
 
   return (
-    <Grid style={{marginLeft: '1rem'}}>
+    <Grid>
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={4} className='icon' icon='search' placeholder='Description' name='value' value={symbolName} onChange={props.onChange}/>
+            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='value' value={symbolName} onChange={props.onChange}/>
           </Form>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <Table columns={2} striped>
+          <Table columns={2} compact='very' striped>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listSymbols()}</Table.Body>
           </Table>

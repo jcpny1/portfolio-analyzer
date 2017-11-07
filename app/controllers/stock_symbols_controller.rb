@@ -9,7 +9,7 @@ class StockSymbolsController < ApplicationController
       render json: StockSymbol.where("name = '%s'", value)
     else
       value = "%#{value.upcase}%"
-      render json: StockSymbol.where("upper(name) LIKE '%s' OR upper(long_name) LIKE '%s'", value, value).order(:name).limit(10)
+      render json: StockSymbol.where("upper(name) LIKE '%s' OR upper(long_name) LIKE '%s'", value, value).order(:name).limit(20)
     end
   end
 

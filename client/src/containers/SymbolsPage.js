@@ -31,7 +31,7 @@ export default class SymbolsPage extends Component {
         symbols.forEach(symbol => {
           symbolList.push({long_name: symbol.long_name, name: symbol.name});
         })
-        this.setState({results: symbolList.slice(0, 10)});
+        this.setState({results: symbolList.slice(0, 20)});
         });
       }
     }
@@ -45,6 +45,7 @@ export default class SymbolsPage extends Component {
     let {results, value} = this.state;
     return (
       <Modal
+        closeIcon
         closeOnDimmerClick={false}
         size='small'
         trigger={<Menu.Item onClick={this.handleOpen}>Symbol Lookup</Menu.Item>}

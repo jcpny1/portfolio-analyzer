@@ -58,8 +58,8 @@ export function refreshSymbols() {
 // params={field, value, exact}
 // Specify option 'exact' as true (for an exact match) or false (for a partial match).
 export function symbolSearch(params, cb) {
-  const exact = params.exact ? 'exact' : '';
-  return fetch(`/api/stock_symbols?v=${params.value}&${exact}`, {headers: {'Accept': 'application/json'}})
+  const exact = params.exact ? '&exact' : '';
+  return fetch(`/api/stock_symbols?v=${encodeURI(params.value)}${exact}`, {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
   .then(response => response.json())
   .then(cb)

@@ -21,6 +21,10 @@ const Help = (props) => {
         <li>Any prices displayed should be verfied through other sources.</li>
         <li>When the application is first opened, the position prices displayed are from the last time someone refreshed their portfolio containing those same symbols. Pressing refresh will update those prices from the market data feed, if it is available.</li>
       </ul>
+      <h3>Symbol Lookup</h3>
+      <ul>
+        <li>Accepts wildcard character '%'.</li>
+      </ul>
     </div>
   );
 }
