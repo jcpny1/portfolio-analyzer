@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
-import * as Position from './classes/Position';
+import Position from './classes/Position';
 import PositionEdit from '../components/PositionEdit';
 
 export default class PositionEditPage extends Component {
@@ -30,7 +30,7 @@ export default class PositionEditPage extends Component {
   }
 
   handleOpen = () => {
-    let stock_symbol_name = '';   // We need a stock_symbol_name property to interact with the modal form field for symbol name.
+    let stock_symbol_name = '';   // We need a stock_symbol_name property to interact with the symbol name modal form field.
     if ('name' in this.props.position.stock_symbol) {
       stock_symbol_name = this.props.position.stock_symbol.name;
     }

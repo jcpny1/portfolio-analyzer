@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import * as ActionUtils from './actionUtils';
-import * as Portfolio from '../containers/classes/Portfolio';
+import Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 import {loadPortfolios} from './portfolioActions';
 

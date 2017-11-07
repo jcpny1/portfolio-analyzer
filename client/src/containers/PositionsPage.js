@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as positionActions from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
+import Position  from './classes/Position';
 import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
@@ -12,17 +13,6 @@ class PositionsPage extends Component {
       portfolioId: parseInt(this.props.match.params.id, 10),
     };
   }
-
-  newPosition = () => {
-    return {
-      portfolio_id: this.state.portfolioId,
-      id: '',
-      stock_symbol: {},
-      quantity: '',
-      cost: '',
-      date_acquired: '',
-    }
-  };
 
   componentDidMount() {
     this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sortFn)
@@ -51,7 +41,7 @@ class PositionsPage extends Component {
     let portfolio = portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
     if (portfolio) {  // may be null until props.portfolios is loaded.
       const sortTerms = sortFn();
-      return (<Positions portfolio={portfolio} emptyPosition={this.newPosition()} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction}/>);
+      return (<Positions portfolio={portfolio} emptyPosition={Position.newPosition(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction}/>);
     } else {
       return null;
     }
