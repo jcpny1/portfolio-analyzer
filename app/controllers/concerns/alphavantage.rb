@@ -4,7 +4,9 @@ module Alphavantage extend ActiveSupport::Concern
   #
   # Make data request(s) for symbols and return results in trades.
   def fill_trades(symbols, trades)
-    # TODO put conn creation and api key in session variables to cut overhead?
+    api_key = ENV['ALPHA_VANTAGE_API_KEY']
+    fetch_time = DateTime.now
+
     begin
       conn = Faraday.new(url: 'https://www.alphavantage.co/query')
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -12,9 +14,6 @@ module Alphavantage extend ActiveSupport::Concern
       error_msg = "Faraday client error: #{e}"
       fetch_failure(symbols, trades, error_msg)
     end
-
-    api_key = ENV['ALPHA_VANTAGE_API_KEY']
-    fetch_time = DateTime.now
 
     symbols.each_with_index { |symbol, i|
       begin

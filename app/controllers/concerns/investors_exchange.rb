@@ -4,13 +4,14 @@ module InvestorsExchange extend ActiveSupport::Concern
   #
   # Make data request(s) for symbols and return results in trades.
   def fill_trades(symbols, trades)
+    fetch_time = DateTime.now
+    symbolList = symbols.join(',')
+    uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
+    uri.query_values = {types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbolList}
+
     begin
-      symbolList = symbols.join(',')
       logger.debug "IEX PRICE FETCH BEGIN for: #{symbolList}."
-      # TODO put conn creation in session variable to cut overhead?
-      conn = Faraday.new(url: 'https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate')
-      resp = conn.get '', {symbols: symbolList}
-      fetch_time = DateTime.now
+      resp = Faraday.get(uri)
       logger.debug "IEX PRICE FETCH END   for: #{symbolList}."
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.

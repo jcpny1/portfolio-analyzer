@@ -12,13 +12,12 @@ module Yahoo extend ActiveSupport::Concern
 
   # Make data request(s) for symbols and return results in trades.
   def fill_trades(symbols, trades)
+    fetch_time = DateTime.now
+    symbol_list = symbols.join('+')
     begin
-      symbol_list = symbols.join('+')
       logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
-      # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
       resp = conn.get '', {s: symbol_list, f: 'sl1d1t1c1'}
-      fetch_time = DateTime.now
       logger.debug "YAHOO PRICE FETCH END   for: #{symbol_list}."
       response = CSV.parse(resp.body)
       raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'

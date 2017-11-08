@@ -25,6 +25,7 @@ gem 'puma', '~> 3.10'             # HTTP 1.1 server for Ruby/Rack applications.
 
 # JCP added:
 gem 'active_model_serializers', '~> 0.10.0'   # JSON generators.
+gem 'addressable'             # URI encoder.
 gem 'dotenv-rails'            # Loads environment variables from `.env`.
 gem 'foreman', '~> 0.84.0'    # Process manager for applications with multiple components.
 gem 'faraday'                 # HTTP/REST API client library.
