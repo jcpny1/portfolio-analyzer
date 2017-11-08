@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Confirm, Icon} from 'semantic-ui-react'
+import {Confirm, Dropdown, Icon} from 'semantic-ui-react'
 
 export default class ConfirmDialog extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class ConfirmDialog extends Component {
 
   handleConfirm = () => {
     this.setState({open: false});
-    this.props.onClickRemove();
+    this.props.onClickConfirm();
   }
 
   show = () => {
@@ -23,11 +23,36 @@ export default class ConfirmDialog extends Component {
   }
 
   render() {
-    return (
-      <span>
-        <Icon name={this.props.name} title={this.props.title} link color={this.props.color} onClick={this.show}/>
-        <Confirm open={this.state.open} onCancel={this.handleCancel} onConfirm={this.handleConfirm}/>
-      </span>
-    )
+    if (this.props.triggerType === 'icon') {
+      return (
+        <span>
+          <Icon name={this.props.name} title={this.props.title} link color={this.props.color} onClick={this.show}/>
+          <Confirm
+            cancelButton='NO'
+            confirmButton='YES'
+            closeOnDimmerClick={false}
+            header={this.props.header}
+            open={this.state.open}
+            onCancel={this.handleCancel}
+            onConfirm={this.handleConfirm}
+          />
+        </span>
+      );
+    } else {
+      return (
+        <span>
+          <Dropdown.Item text={this.props.title} onClick={this.show}/>
+          <Confirm
+            cancelButton='NO'
+            confirmButton='YES'
+            closeOnDimmerClick={false}
+            header={this.props.header}
+            open={this.state.open}
+            onCancel={this.handleCancel}
+            onConfirm={this.handleConfirm}
+          />
+        </span>
+      );
+    }
   }
 }

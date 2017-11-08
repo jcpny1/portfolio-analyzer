@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Dropdown, Grid, Image, Menu, Table} from 'semantic-ui-react';
+import * as ActionUtils from './actions/actionUtils';
+import ConfirmDialog from './containers/ConfirmDialog';
 import HeadlinesPage from './containers/HeadlinesPage';
 import HelpPage from './containers/HelpPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
-import RefreshSymbolsPage from './containers/RefreshSymbolsPage';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
@@ -45,7 +46,13 @@ class App extends Component {
     return (
       <Dropdown item text='Settings'>
         <Dropdown.Menu>
-          <RefreshSymbolsPage/>
+          <Dropdown item text='Admin'>
+            <Dropdown.Menu>
+              <ConfirmDialog triggerType='dropdown' title='Refresh Symbols' header='Refresh symbol inventory from data feed' onClickConfirm={ActionUtils.refreshSymbols}/>
+              <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice every symbol from the data feed' onClickConfirm={ActionUtils.refreshPrices}/>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown.Item disabled text='Locale'/>
         </Dropdown.Menu>
       </Dropdown>
     );

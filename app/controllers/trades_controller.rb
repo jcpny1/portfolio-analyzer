@@ -37,6 +37,29 @@ class TradesController < ApplicationController
     render json: trades, each_serializer: TradeSerializer
   end
 
+  # Store latest price data for each symbol in the database.
+  def load_latest_prices_bulk
+    just_symbols_with_no_trades = false
+    if just_symbols_with_no_trades
+      whereClause = 'id not in (select distinct stock_symbol_id from trades)'
+    else
+      whereClause = ''
+    end
+    StockSymbol.select(:id,:name).where(whereClause).find_in_batches(batch_size:10) do |symbolGroup|
+      symbols = []
+      trades  = []
+      symbolGroup.each { |symbol|
+        symbols << symbol.name
+        trades  << Trade.new(stock_symbol: symbol)
+      }
+      live_trades = load_live_prices(symbols)
+      sleep 1
+      save_trades(live_trades, trades)
+      purge_old_trades(symbolGroup)
+    end
+    render json: {}, status: :ok
+  end
+
   private
 
   # Create a trade that signifies an error has occurred.
@@ -63,23 +86,35 @@ class TradesController < ApplicationController
     return Time.at(0).to_datetime
   end
 
+  # Delete all but the latest trade for each symbol.
+  def purge_old_trades(symbolGroup)
+    symbolGroup.each { |symbol|
+      latest_trade = Trade.select(:created_at).where('stock_symbol_id = ?', symbol.id).order('created_at DESC').first
+      if latest_trade
+        Trade.transaction do
+          Trade.where('stock_symbol_id = ? and created_at != ?', symbol.id, latest_trade.created_at).destroy_all
+        end
+      end
+    }
+  end
+
   # Save live_trades to the database and save in trades array.
   def save_trades(live_trades, trades)
     Trade.transaction do
-      live_trades.each_with_index { |live_trade, i|
+      live_trades.each { |live_trade|
+        trade_index = trades.index { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
         if !live_trade.trade_price.nil?
           begin
-            if((live_trade.trade_price != trades[i].trade_price) || (live_trade.trade_date > trades[i].trade_date))
+            if (live_trade.trade_price != trades[trade_index].trade_price) || (live_trade.trade_date > trades[trade_index].trade_date)
               live_trade.save!
-              trade_index = trades.index { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
               trades[trade_index] = live_trade if !trade_index.nil?
             end
           rescue ActiveRecord::ActiveRecordError => e
             logger.error "Error saving trade: #{trade.inspect}, #{e}"
-            trades[i].error = live_trade.error
+            trades[trade_index].error = live_trade.error
           end
         else
-          trades[i].error = live_trade.error
+          trades[trade_index].error = live_trade.error
         end
       }
     end

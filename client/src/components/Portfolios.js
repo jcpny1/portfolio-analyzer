@@ -28,7 +28,7 @@ const Portfolios = (props) => {
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio' onClickSubmit={props.onClickSubmit}/>}
-            {<ConfirmDialog name='remove' color='red' title='Delete portfolio' onClickRemove={props.onClickRemove(portfolio.id)}/>}
+            {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={props.onClickRemove(portfolio.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
           <Table.Cell><Fmt.currency value={portfolio.marketValue}/></Table.Cell>

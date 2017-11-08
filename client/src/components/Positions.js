@@ -31,7 +31,7 @@ const Positions = (props) => {
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
-            {<ConfirmDialog name='remove' color='red' title='Delete position' onClickRemove={props.onClickRemove(portfolio.id, position.id)}/>}
+            {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={props.onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left' title={position.stock_symbol.long_name}>{position.stock_symbol.name}</Table.Cell>
           <Table.Cell><Fmt.quantity value={position.quantity}/></Table.Cell>
