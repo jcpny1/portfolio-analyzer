@@ -23,7 +23,7 @@ StockSymbol.create(name: 'HD',    long_name: 'HOME DEPOT INC')
 StockSymbol.create(name: 'JNJ',   long_name: 'Johnson & Johnson')
 StockSymbol.create(name: 'SNY',   long_name: 'SANOFI')
 
-u = User.create!(name: 'guest', email: '')
+u = User.create!(name: 'guest', email: '', locale: 'en-US')
 
 p = Portfolio.create(user: u, name: 'Schwab 1')
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AMZN' ).first, quantity:  52, cost: 16058.29, date_acquired: Date.new(2013,11,12))

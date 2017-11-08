@@ -3,9 +3,10 @@ module Alphavantage extend ActiveSupport::Concern
   # See the bottom of this file for sample data.
   #
   # Make data request(s) for symbols and return results in trades.
-  def fill_trades(symbols, trades)
+  def latest_trades(symbols)
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
     fetch_time = DateTime.now
+    trades = Array.new(symbols.length)
 
     begin
       conn = Faraday.new(url: 'https://www.alphavantage.co/query')
@@ -57,6 +58,7 @@ module Alphavantage extend ActiveSupport::Concern
         end
       end
     }
+    trades
   end
 
   # Return the feed's list if valid symbols.

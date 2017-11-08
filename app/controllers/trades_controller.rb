@@ -14,48 +14,29 @@ class TradesController < ApplicationController
   #       Use trade.error to signal a failed price fetch.
   #       For feeds without a last trade datetime, use year 1492 to signal its absence.
   #
-  # TODO Combine symbols and trades arrays into a single object.
   def last_price
-    symbols = symbolsForUser(params['userId'])
-    trades  = Array.new(symbols.length)
+    symbols = symbolsForUser(params['userId'])  # Create symbol list.
+    trades = load_trades_from_database(symbols) # Get last trades from database.
 
-    # Load last saved prices from database.
-    symbols.each_with_index { |symbol, i|
-      stock_symbol = StockSymbol.find_by(name: symbol)
-      if !stock_symbol.nil?
-        trade = Trade.where('stock_symbol_id = ?', stock_symbol.id).order('trade_date DESC, created_at DESC').first
-        trades[i] = (!trade.nil?) ? trade : error_trade(symbol, 'No trades available.')
-      else
-        trades[i] = error_trade(symbol, 'Invalid symbol.')
-      end
-    }
-
+    # Update trades with live feed data. Save to database if updated.
     if params.key?('livePrices')
       live_trades = load_live_prices(symbols)
       save_trades(live_trades, trades)
     end
+
     render json: trades, each_serializer: TradeSerializer
   end
 
   # Store latest price data for each symbol in the database.
   def load_latest_prices_bulk
-    just_symbols_with_no_trades = false
-    if just_symbols_with_no_trades
-      whereClause = 'id not in (select distinct stock_symbol_id from trades)'
-    else
-      whereClause = ''
-    end
-    StockSymbol.select(:id,:name).where(whereClause).find_in_batches(batch_size:10) do |symbolGroup|
-      symbols = []
-      trades  = []
-      symbolGroup.each { |symbol|
-        symbols << symbol.name
-        trades  << Trade.new(stock_symbol: symbol)
-      }
-      live_trades = load_live_prices(symbols)
-      sleep 1
-      save_trades(live_trades, trades)
-      purge_old_trades(symbolGroup)
+    price_all = true    # Price all symbols? or just those without a price now. (For future use as a param.)
+    whereClause = (price_all) ? '' : 'id not in (select distinct stock_symbol_id from trades)'
+    StockSymbol.select(:id,:name).where(whereClause).find_in_batches(batch_size:50) do |symbolGroup|
+      symbols = symbolGroup.map { |symbol| symbol.name }  # Create symbols array.
+      trades = load_trades_from_database(symbols)         # Fetch database trades.
+      live_trades = load_live_prices(symbols)             # Fetch live feed trades.
+      sleep 2  # Do not slam our feed vendor and get throttled or blocked.
+      save_trades(live_trades, trades)                    # Update the database.
     end
     render json: {}, status: :ok
   end
@@ -76,9 +57,22 @@ class TradesController < ApplicationController
 
   # Call feed handler for the latest prices.
   def load_live_prices(symbols)
-    live_trades = Array.new(symbols.length)
-    fill_trades(symbols, live_trades);
-    return live_trades
+    latest_trades(symbols);
+  end
+
+  # Fetch database trades
+  def load_trades_from_database(symbols)
+    trades  = Array.new(symbols.length)
+    symbols.each_with_index { |symbol, i|
+      stock_symbol = StockSymbol.find_by(name: symbol)
+      if !stock_symbol.nil?
+        trades[i] = Trade.where('stock_symbol_id = ?', stock_symbol.id).first
+        trades[i] = Trade.new(stock_symbol: stock_symbol) if trades[i].nil?
+      else
+        trades[i] = error_trade(symbol, 'Invalid symbol.')
+      end
+    }
+    trades
   end
 
   # Feeds that don't have a trade_date should use this for the trade_date.
@@ -86,35 +80,27 @@ class TradesController < ApplicationController
     return Time.at(0).to_datetime
   end
 
-  # Delete all but the latest trade for each symbol.
-  def purge_old_trades(symbolGroup)
-    symbolGroup.each { |symbol|
-      latest_trade = Trade.select(:created_at).where('stock_symbol_id = ?', symbol.id).order('created_at DESC').first
-      if latest_trade
-        Trade.transaction do
-          Trade.where('stock_symbol_id = ? and created_at != ?', symbol.id, latest_trade.created_at).destroy_all
-        end
-      end
-    }
-  end
-
   # Save live_trades to the database and save in trades array.
   def save_trades(live_trades, trades)
     Trade.transaction do
       live_trades.each { |live_trade|
-        trade_index = trades.index { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
+        trade = trades.find { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
+        trade = Trade.new(stock_symbol: live_trade.stock_symbol) if trade.nil?
         if !live_trade.trade_price.nil?
           begin
-            if (live_trade.trade_price != trades[trade_index].trade_price) || (live_trade.trade_date > trades[trade_index].trade_date)
-              live_trade.save!
-              trades[trade_index] = live_trade if !trade_index.nil?
+            if (trade.trade_price.nil?) || (live_trade.trade_price != trade.trade_price) || (live_trade.trade_date > trade.trade_date)
+              trade.trade_date   = live_trade.trade_date
+              trade.trade_price  = live_trade.trade_price
+              trade.price_change = live_trade.price_change
+              trade.created_at   = live_trade.created_at
+              trade.save!
             end
           rescue ActiveRecord::ActiveRecordError => e
             logger.error "Error saving trade: #{trade.inspect}, #{e}"
-            trades[trade_index].error = live_trade.error
+            trade.error = live_trade.error
           end
         else
-          trades[trade_index].error = live_trade.error
+          trade.error = live_trade.error
         end
       }
     end

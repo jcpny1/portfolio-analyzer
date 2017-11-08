@@ -3,9 +3,10 @@ module InvestorsExchange extend ActiveSupport::Concern
   # See the bottom of this file for sample data.
   #
   # Make data request(s) for symbols and return results in trades.
-  def fill_trades(symbols, trades)
+  def latest_trades(symbols)
     fetch_time = DateTime.now
     symbolList = symbols.join(',')
+    trades = Array.new(symbols.length)
     uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
     uri.query_values = {types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbolList}
 
@@ -42,6 +43,7 @@ module InvestorsExchange extend ActiveSupport::Concern
         trades[i] = trade
       }
     end
+    trades
   end
 
   # Return the feed's list of valid symbols.

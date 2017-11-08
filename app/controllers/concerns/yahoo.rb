@@ -11,9 +11,10 @@ module Yahoo extend ActiveSupport::Concern
   DAY_CHANGE_COL       = 4
 
   # Make data request(s) for symbols and return results in trades.
-  def fill_trades(symbols, trades)
+  def latest_trades(symbols, trades)
     fetch_time = DateTime.now
     symbol_list = symbols.join('+')
+    trades = Array.new(symbols.length)
     begin
       logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
@@ -60,6 +61,7 @@ module Yahoo extend ActiveSupport::Concern
         trades[i] = trade
       }
     end
+    trades
   end
 
   # Return the feed's list if valid symbols.
