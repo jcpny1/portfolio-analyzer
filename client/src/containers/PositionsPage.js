@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as positionActions from '../actions/positionActions.js';
+import * as positionActions  from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import Position  from './classes/Position';
 import Positions from '../components/Positions';
@@ -23,8 +23,10 @@ class PositionsPage extends Component {
   }
 
   removePosition = (portfolioId, positionId) => {
-    if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePosition(portfolioId, positionId, this.props.sortFn);
+    const deleteFn = this.props.actions.deletePosition;
+    const sortFn   = this.props.sortFn;
+    return function() {
+      deleteFn(portfolioId, positionId, sortFn);
     }
   }
 

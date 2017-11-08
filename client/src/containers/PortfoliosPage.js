@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Portfolio from './classes/Portfolio';
 import * as actions from '../actions/portfolioActions.js';
+import Portfolio from './classes/Portfolio';
 import Portfolios from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
@@ -15,8 +15,9 @@ class PortfoliosPage extends Component {
   }
 
   removePortfolio = (portfolioId) => {
-    if (window.confirm('Are you sure?')) {
-      this.props.actions.deletePortfolio(portfolioId);
+    const deleteFn = this.props.actions.deletePortfolio;
+    return function() {
+      deleteFn(portfolioId);
     }
   }
 

@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Header, Icon, Table} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
-import PortfolioEditPage from '../containers/PortfolioEditPage';
+import {Button, Header, Table} from 'semantic-ui-react';
+import ConfirmDialog from '../containers/ConfirmDialog';
 import Fmt from './Formatters';
+import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 const Portfolios = (props) => {
   const {portfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
@@ -27,7 +28,7 @@ const Portfolios = (props) => {
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio' onClickSubmit={props.onClickSubmit}/>}
-            <Icon name='remove' title='Delete portfolio' link color='red' onClick={() => props.onClickRemove(portfolio.id)}/>
+            {<ConfirmDialog name='remove' color='red' title='Delete portfolio' onClickRemove={props.onClickRemove(portfolio.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
           <Table.Cell><Fmt.currency value={portfolio.marketValue}/></Table.Cell>

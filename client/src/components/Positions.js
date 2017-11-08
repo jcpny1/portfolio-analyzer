@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button, Header, Icon, Table} from 'semantic-ui-react';
+import {Button, Header, Table} from 'semantic-ui-react';
+import ConfirmDialog from '../containers/ConfirmDialog';
 import Fmt from './Formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
@@ -30,7 +31,7 @@ const Positions = (props) => {
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
-            <Icon name='remove' title='Delete position' link color='red' onClick={() => props.onClickRemove(portfolio.id, position.id)}/>
+            {<ConfirmDialog name='remove' color='red' title='Delete position' onClickRemove={props.onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left' title={position.stock_symbol.long_name}>{position.stock_symbol.name}</Table.Cell>
           <Table.Cell><Fmt.quantity value={position.quantity}/></Table.Cell>
