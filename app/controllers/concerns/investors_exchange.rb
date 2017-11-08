@@ -3,14 +3,14 @@ module InvestorsExchange extend ActiveSupport::Concern
   # See the bottom of this file for sample data.
   #
   # Make data request(s) for symbols and return results in trades.
-  def fillTrades(symbols, trades)
+  def fill_trades(symbols, trades)
     begin
       symbolList = symbols.join(',')
       logger.debug "IEX PRICE FETCH BEGIN for: #{symbolList}."
       # TODO put conn creation in session variable to cut overhead?
       conn = Faraday.new(url: 'https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate')
       resp = conn.get '', {symbols: symbolList}
-      fetchTime = DateTime.now
+      fetch_time = DateTime.now
       logger.debug "IEX PRICE FETCH END   for: #{symbolList}."
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -26,16 +26,16 @@ module InvestorsExchange extend ActiveSupport::Concern
       #   <no errors defined yet>
       #
       symbols.each_with_index { |symbol, i|
-        if (symbolTick = response[symbol]).nil? || (symbolQuote = symbolTick['quote']).nil?
+        if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
           trade = error_trade(symbol, 'Price is not available.')
         else
           # TODO Need proper timezone info.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
-            t.trade_date   = Time.at(symbolQuote['latestUpdate'].to_f/1000.0).round(4).to_datetime
-            t.trade_price  = symbolQuote['latestPrice'].to_f.round(4)
-            t.price_change = symbolQuote['change'].to_f.round(4)
-            t.created_at   = fetchTime
+            t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
+            t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
+            t.price_change = symbol_quote['change'].to_f.round(4)
+            t.created_at   = fetch_time
           end
         end
         trades[i] = trade

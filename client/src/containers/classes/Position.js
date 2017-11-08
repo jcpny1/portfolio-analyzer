@@ -14,6 +14,25 @@ export default class Position {
     });
   }
 
+  static processPrices(position, trades) {
+    const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
+    if (tradesIndex !== -1) {
+      position.lastTrade     = trades[tradesIndex].trade_price;
+      position.priceChange   = trades[tradesIndex].price_change;
+      position.lastUpdate    = trades[tradesIndex].created_at;
+      if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
+        position.lastTradeDate = trades[tradesIndex].trade_date;
+      }
+      if (position.lastTrade != null) {
+        position.marketValue = position.quantity * parseFloat(position.lastTrade);
+        position.gainLoss    = position.marketValue - parseFloat(position.cost);
+      }
+      if (position.priceChange != null) {
+        position.dayChange = position.quantity * parseFloat(position.priceChange);
+      }
+    }
+  }
+
   // If position is valid, returns null. Otherwise, returns error message.
   static validate(position, cb) {
     let errorReturn = null;

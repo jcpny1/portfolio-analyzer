@@ -31,48 +31,61 @@ class TradesController < ApplicationController
     }
 
     if params.key?('livePrices')
-      liveTrades = Array.new(symbols.length)
-      # Fetch live prices
-      fillTrades(symbols, liveTrades);
-      # Save new prices to database.
-      Trade.transaction do
-        liveTrades.each_with_index { |liveTrade, i|
-          if !liveTrade.trade_price.nil?
-            begin
-              if((liveTrade.trade_price != trades[i].trade_price) || (liveTrade.trade_date > trades[i].trade_date))
-                liveTrade.save!
-                trades[i] = liveTrade
-              end
-            rescue ActiveRecord::ActiveRecordError => e
-              logger.error "Error saving trade: #{trade.inspect}, #{e}"
-              trades[i].error = liveTrade.error
-            end
-          else
-            trades[i].error = liveTrade.error
-          end
-        }
-      end
+      live_trades = load_live_prices(symbols)
+      save_trades(live_trades, trades)
     end
     render json: trades, each_serializer: TradeSerializer
   end
 
   private
 
-  # TODO Consolidate these two functions into one place in common with yahoo.rb
+  # Create a trade that signifies an error has occurred.
   def error_trade(symbol, errorMsg)
     Trade.new(stock_symbol: StockSymbol.new(name: symbol), error: "#{symbol}: #{errorMsg}")
   end
 
+  # Create error trades for all symbols.
   def fetch_failure(symbols, trades, errorMsg)
     symbols.each_with_index { |symbol, i|
       trades[i] = error_trade(symbol, errorMsg)
     }
   end
 
+  # Call feed handler for the latest prices.
+  def load_live_prices(symbols)
+    live_trades = Array.new(symbols.length)
+    fill_trades(symbols, live_trades);
+    return live_trades
+  end
+
+  # Feeds that don't have a trade_date should use this for the trade_date.
   def missing_trade_date()
     return Time.at(0).to_datetime
   end
 
+  # Save live_trades to the database and save in trades array.
+  def save_trades(live_trades, trades)
+    Trade.transaction do
+      live_trades.each_with_index { |live_trade, i|
+        if !live_trade.trade_price.nil?
+          begin
+            if((live_trade.trade_price != trades[i].trade_price) || (live_trade.trade_date > trades[i].trade_date))
+              live_trade.save!
+              trade_index = trades.index { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
+              trades[trade_index] = live_trade if !trade_index.nil?
+            end
+          rescue ActiveRecord::ActiveRecordError => e
+            logger.error "Error saving trade: #{trade.inspect}, #{e}"
+            trades[i].error = live_trade.error
+          end
+        else
+          trades[i].error = live_trade.error
+        end
+      }
+    end
+  end
+
+  # Return a list of symbols used by this user_id.
   def symbolsForUser(user_id)
     symbols = []
     portfolios = Portfolio.where('user_id = ?', params['userId'])

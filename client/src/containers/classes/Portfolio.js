@@ -1,4 +1,5 @@
 import * as ActionUtils from '../../actions/actionUtils';
+import Position from './Position';
 // Using a class to organize Portfolio-related logic.
 // It doesn't seem worth the effort to instantiate any Portfolio objects, yet.
 export default class Portfolio {
@@ -45,22 +46,7 @@ export default class Portfolio {
   static processPrices(portfolios, trades) {
     portfolios.forEach(portfolio => {
       portfolio.positions.forEach(position => {
-        const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
-        if (tradesIndex !== -1) {
-          position.lastTrade     = trades[tradesIndex].trade_price;
-          position.priceChange   = trades[tradesIndex].price_change;
-          position.lastUpdate    = trades[tradesIndex].created_at;
-          if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
-            position.lastTradeDate = trades[tradesIndex].trade_date;
-          }
-          if (position.lastTrade != null) {
-            position.marketValue = position.quantity * parseFloat(position.lastTrade);
-            position.gainLoss    = position.marketValue - parseFloat(position.cost);
-          }
-          if (position.priceChange != null) {
-            position.dayChange = position.quantity * parseFloat(position.priceChange);
-          }
-        }
+        Position.processPrices(position, trades);
       });
     });
     Portfolio.updateSummaries(portfolios);
