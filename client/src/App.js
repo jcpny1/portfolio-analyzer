@@ -78,7 +78,7 @@ class App extends Component {
 
   pageBody() {
     return (
-      <Grid.Row>
+      <Grid.Row columns={2}>
         <Grid.Column width={11}>
           <Switch>
             <Route exact path="/"           component={PortfoliosPage}/>
@@ -97,7 +97,7 @@ class App extends Component {
 
   pageFooter() {
     return (
-      <Grid.Row>
+      <Grid.Row columns={1}>
         <Grid.Column>
           {this.infoRow()}
         </Grid.Column>
@@ -107,7 +107,7 @@ class App extends Component {
 
   pageHeader() {
     return (
-      <Grid.Row>
+      <Grid.Row columns={1}>
         <Grid.Column stretched>
           <Image src='/images/logo.jpg'/>
         </Grid.Column>
@@ -117,7 +117,7 @@ class App extends Component {
 
   pageMenu() {
     return (
-      <Grid.Row>
+      <Grid.Row columns={1}>
         <Grid.Column>
           <Menu>
             {this.menuLeft()}
