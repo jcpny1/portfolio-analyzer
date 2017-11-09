@@ -36,7 +36,7 @@ class TradesController < ApplicationController
       save_trades(live_trades, trades)                    # Update the database.
     end
     logger.info 'LAST PRICE BULK LOAD END.'
-    render json: {message:'Load complete.'}, status: :ok
+    head :ok
   end
 
   private

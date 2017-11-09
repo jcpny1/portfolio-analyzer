@@ -37,6 +37,6 @@ class StockSymbolsController < ApplicationController
       }
     end
     logger.info "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, errors: #{symbolsErrored})."
-    render json: {message:'Load complete.'}, status: :ok
+    head :ok
   end
 end
