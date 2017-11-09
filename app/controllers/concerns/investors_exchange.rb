@@ -11,9 +11,9 @@ module InvestorsExchange extend ActiveSupport::Concern
     uri.query_values = {types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbolList}
 
     begin
-      logger.debug "IEX PRICE FETCH BEGIN for: #{symbolList}."
+      logger.info "IEX PRICE FETCH BEGIN for: #{symbolList}."
       resp = Faraday.get(uri)
-      logger.debug "IEX PRICE FETCH END   for: #{symbolList}."
+      logger.info "IEX PRICE FETCH END   for: #{symbolList}."
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
       logger.error "IEX PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}."
@@ -50,9 +50,9 @@ module InvestorsExchange extend ActiveSupport::Concern
   def getSymbology()
     begin
       response = {}
-      logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
+      logger.info 'IEX SYMBOLOGY FETCH BEGIN.'
       resp = Faraday.get('https://api.iextrading.com/1.0/ref-data/symbols')
-      logger.debug 'IEX SYMBOLOGY FETCH END.'
+      logger.info 'IEX SYMBOLOGY FETCH END.'
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect.
       logger.error "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}."

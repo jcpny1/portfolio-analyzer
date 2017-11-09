@@ -16,10 +16,10 @@ module Yahoo extend ActiveSupport::Concern
     symbol_list = symbols.join('+')
     trades = Array.new(symbols.length)
     begin
-      logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
+      logger.info "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
       resp = conn.get '', {s: symbol_list, f: 'sl1d1t1c1'}
-      logger.debug "YAHOO PRICE FETCH END   for: #{symbol_list}."
+      logger.info "YAHOO PRICE FETCH END   for: #{symbol_list}."
       response = CSV.parse(resp.body)
       raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -51,7 +51,7 @@ module Yahoo extend ActiveSupport::Concern
             # TODO Replace 'EDT' with proper timezone info.
             trade = Trade.new do |t|
               t.stock_symbol = StockSymbol.find_by(name: symbol)
-              t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0).round(4).to_datetime
+              t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0.round(4).to_datetime
               t.trade_price  = response_row[LAST_TRADE_PRICE_COL].to_f.round(4)
               t.price_change = response_row[DAY_CHANGE_COL].to_f.round(4)
               t.created_at   = fetch_time
@@ -66,8 +66,8 @@ module Yahoo extend ActiveSupport::Concern
 
   # Return the feed's list if valid symbols.
   def getSymbology()
-    logger.debug 'YAHOO SYMBOLOGY FETCH BEGIN.'
-    logger.debug 'YAHOO SYMBOLOGY FETCH END.'
+    logger.info 'YAHOO SYMBOLOGY FETCH BEGIN.'
+    logger.info 'YAHOO SYMBOLOGY FETCH END.'
     return {}
   end
 end
