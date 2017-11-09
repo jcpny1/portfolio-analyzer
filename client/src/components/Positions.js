@@ -9,7 +9,7 @@ const Positions = (props) => {
 
   function columnTitles() {
     return (
-      <Table.Row textAlign='center' style={{'color':'darkorchid'}}>
+      <Table.Row textAlign='center'>
         <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>

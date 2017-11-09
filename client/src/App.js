@@ -11,25 +11,6 @@ import PositionsPage from './containers/PositionsPage';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
-  infoRow() {
-    return (
-      <Table celled compact striped style={{marginTop:0}}>
-        <Table.Header>
-          <Table.Row textAlign='center'>
-            <Table.HeaderCell>
-              <span style={{color:'grey', textAlign:'center'}}>
-                            &bull; Market data provided by <a href='https://iextrading.com' target='_blank' rel='noopener noreferrer'>IEX</a>
-                &emsp;&emsp;&bull; Headline news powered by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a>
-                &emsp;&emsp;&bull; The prices shown may not be the correct prices or the latest prices.
-                &emsp;&emsp;&bull; See the Help > Usage Notes page for more information.
-              </span>
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-      </Table>
-    );
-  }
-
   menuItemHelp() {
     return (
       <Dropdown item text='Help'>
@@ -99,9 +80,28 @@ class App extends Component {
     return (
       <Grid.Row columns={1}>
         <Grid.Column>
-          {this.infoRow()}
+          {this.pageFooterRow()}
         </Grid.Column>
       </Grid.Row>
+    );
+  }
+
+  pageFooterRow() {
+    return (
+      <Table celled compact striped style={{marginTop:0}}>
+        <Table.Header>
+          <Table.Row textAlign='center'>
+            <Table.HeaderCell>
+              <span style={{color:'grey', textAlign:'center'}}>
+                            &bull; Market data provided by <a href='https://iextrading.com' target='_blank' rel='noopener noreferrer'>IEX</a>
+                &emsp;&emsp;&bull; Headline news powered by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a>
+                &emsp;&emsp;&bull; The prices shown may not be the correct prices or the latest prices.
+                &emsp;&emsp;&bull; See the Help > Usage Notes page for more information.
+              </span>
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+      </Table>
     );
   }
 
@@ -131,7 +131,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Grid celled divided padded>
+        <Grid padded>
           {this.pageHeader()}
           {this.pageMenu()}
           {this.pageBody()}
