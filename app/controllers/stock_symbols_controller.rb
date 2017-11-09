@@ -18,7 +18,7 @@ class StockSymbolsController < ApplicationController
     symbolsAdded   = 0
     symbolsErrored = 0
     symbolsUpdated = 0
-    symbolHashArray = getSymbology();   # Call feed handler to retrieve symbology.
+    symbolHashArray = getSymbology()   # Call feed handler to retrieve symbology.
     StockSymbol.transaction do
       symbolHashArray.each { |symbol|
         begin
@@ -37,6 +37,6 @@ class StockSymbolsController < ApplicationController
       }
     end
     logger.info "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, errors: #{symbolsErrored})."
-    render json: {}, status: :ok
+    render json: {message:'Load complete.'}, status: :ok
   end
 end

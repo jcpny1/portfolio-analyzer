@@ -68,15 +68,18 @@ export function loadPortfolios(loadLivePrices, sortFn) {
         .then(ActionUtils.checkStatus)
         .then(response => response.json())
         .then(trades => {
-          // Validate trade data.
-          trades.forEach(trade => {
-            if (trade.error !== null) {
-              dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Prices for ', warning: trade.error}));
-            }
-          });
-          Portfolio.processPrices(portfolios, trades);
-          sortFn(portfolios, Portfolio.sort);
-          dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
+          if ('error' in trades) {
+            dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: trades}));
+          } else {
+            trades.forEach(trade => {    // Validate trade data.
+              if (trade.error !== null) {
+                dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Portfolios Prices for ', warning: trade.error}));
+              }
+            });
+            Portfolio.processPrices(portfolios, trades);
+            sortFn(portfolios, Portfolio.sort);
+            dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
+          }
         })
         .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Load Portfolios: ', error: error.message})))
       })

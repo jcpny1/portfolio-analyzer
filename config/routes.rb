@@ -5,8 +5,8 @@ Rails.application.routes.draw do
       resources :positions, only: [:create, :update, :destroy]
     end
     resources :stock_symbols, only: [:index]
-    get '/trades/refresh', to: 'trades#load_latest_prices_bulk'
+    get '/trades/refresh',        to: 'trades#last_price_bulk_load'
     get '/stock_symbols/refresh', to: 'stock_symbols#refresh_from_feed'
-    get '/headlines', to: 'application#headlines'
+    get '/headlines',             to: 'application#headlines'
   end
 end

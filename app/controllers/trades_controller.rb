@@ -1,44 +1,42 @@
 class TradesController < ApplicationController
-   include InvestorsExchange  # include Feed handler here.
+  include InvestorsExchange  # include Feed handler here.
 
-  # Retrieve the latest prices for the supplied symbols.
-  # from live feed if 'livePrices' is specified. Else, from database.
-  # To handle case of feed down not trashing client's existing prices,
-  # first load database latest prices, then overlay with whatever we
-  # can get from live feed.
-  # In a production environment, going to the database here would not
-  # be necessary. The latest prices (live or otherwise) would be in an
-  # in-memory cache.
-  #
-  # NOTE: Keep symbols array and trades array in sync by symbol name.
-  #       Use trade.error to signal a failed price fetch.
-  #       For feeds without a last trade datetime, use year 1492 to signal its absence.
-  #
+  BATCH_FETCH_SIZE = 50   # Limit on IEX feed is 100 symbols per request. Let's stay well under that for now.
+
+  # Retrieve the latest prices for the symbols used by the supplied user_id.
+  # Retrieve prices from database. If 'livePrices' is specified, overwrite
+  # database values with feed values. The database is acting like a ticker
+  # feed cache (that is only updated on user request).
   def last_price
-    symbols = symbolsForUser(params['userId'])  # Create symbol list.
-    trades = load_trades_from_database(symbols) # Get last trades from database.
-
-    # Update trades with live feed data. Save to database if updated.
-    if params.key?('livePrices')
-      live_trades = load_live_prices(symbols)
-      save_trades(live_trades, trades)
+    logger.info 'LAST PRICE FETCH BEGIN.'
+    all_trades = []
+    symbols = StockSymbol.select(:id,:name).joins(positions: :portfolio).where(portfolios: {user_id:params['userId']}).distinct.find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbolGroup|
+      symbols = symbolGroup.map { |symbol| symbol.name }  # Create symbols array.
+      trades = load_trades_from_database(symbols)         # Get last trades from database.
+      if params.key?('livePrices')
+        live_trades = load_live_prices(symbols)           # Update trades with live feed data.
+        save_trades(live_trades, trades)                  # Save updates to database.
+      end
+      all_trades.concat(trades)
     end
-
-    render json: trades, each_serializer: TradeSerializer
+    logger.info 'LAST PRICE FETCH END.'
+    render json: all_trades, each_serializer: TradeSerializer
   end
 
-  # Store latest price data for each symbol in the database.
-  def load_latest_prices_bulk
+  # Store last price data for every symbol in the database.
+  def last_price_bulk_load
+    logger.info 'LAST PRICE BULK LOAD BEGIN.'
     price_all = true    # Price all symbols? or just those without a price now. (For future use as a param.)
     whereClause = (price_all) ? '' : 'id not in (select distinct stock_symbol_id from trades)'
-    StockSymbol.select(:id,:name).where(whereClause).find_in_batches(batch_size:50) do |symbolGroup|
+    StockSymbol.select(:id,:name).where(whereClause).find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbolGroup|
       symbols = symbolGroup.map { |symbol| symbol.name }  # Create symbols array.
       trades = load_trades_from_database(symbols)         # Fetch database trades.
       live_trades = load_live_prices(symbols)             # Fetch live feed trades.
       sleep 2  # Do not slam our feed vendor and get throttled or blocked.
       save_trades(live_trades, trades)                    # Update the database.
     end
-    render json: {}, status: :ok
+    logger.info 'LAST PRICE BULK LOAD END.'
+    render json: {message:'Load complete.'}, status: :ok
   end
 
   private
@@ -57,7 +55,7 @@ class TradesController < ApplicationController
 
   # Call feed handler for the latest prices.
   def load_live_prices(symbols)
-    latest_trades(symbols);
+    latest_trades(symbols)
   end
 
   # Fetch database trades
@@ -104,17 +102,5 @@ class TradesController < ApplicationController
         end
       }
     end
-  end
-
-  # Return a list of symbols used by this user_id.
-  def symbolsForUser(user_id)
-    symbols = []
-    portfolios = Portfolio.where('user_id = ?', params['userId'])
-    portfolios.each { |portfolio|
-      portfolio.positions.each { |position|
-        symbols.push(position.stock_symbol.name)
-      }
-    }
-    symbols.uniq
   end
 end

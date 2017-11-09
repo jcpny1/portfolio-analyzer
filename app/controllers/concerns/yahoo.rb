@@ -16,10 +16,10 @@ module Yahoo extend ActiveSupport::Concern
     symbol_list = symbols.join('+')
     trades = Array.new(symbols.length)
     begin
-      logger.info "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
+      logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
       conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
       resp = conn.get '', {s: symbol_list, f: 'sl1d1t1c1'}
-      logger.info "YAHOO PRICE FETCH END   for: #{symbol_list}."
+      logger.debug "YAHOO PRICE FETCH END   for: #{symbol_list}."
       response = CSV.parse(resp.body)
       raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -32,7 +32,6 @@ module Yahoo extend ActiveSupport::Concern
       logger.error "YAHOO PRICE FETCH ERROR for: #{symbol_list}: #{e}."
       fetch_failure(symbols, trades, 'The feed is down.')
     else
-      # TODO If symbols.length != response.length, something went wrong.
       #
       # overall Fetch error example
       # resp.body: "<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry, Unable to process request at this time -- error 999.</body></html>"
@@ -66,8 +65,8 @@ module Yahoo extend ActiveSupport::Concern
 
   # Return the feed's list if valid symbols.
   def getSymbology()
-    logger.info 'YAHOO SYMBOLOGY FETCH BEGIN.'
-    logger.info 'YAHOO SYMBOLOGY FETCH END.'
+    logger.debug 'YAHOO SYMBOLOGY FETCH BEGIN.'
+    logger.debug 'YAHOO SYMBOLOGY FETCH END.'
     return {}
   end
 end

@@ -16,7 +16,7 @@ class PositionsController < ApplicationController
   def update
     position = @portfolio.positions.find(params[:id])
     if position.stock_symbol.name != params['stock_symbol_name'] # Then we're changing stock_symbols.
-      position.stock_symbol_id = nil;
+      position.stock_symbol_id = nil
       input_params = add_param_symbol_id
     else
       input_params = position_params
@@ -41,7 +41,7 @@ class PositionsController < ApplicationController
 
   # Derive stock_symbol_id from params stock_symbol_name.
   def add_param_symbol_id
-    result = position_params.clone;
+    result = position_params.clone
     stock_symbol = StockSymbol.find_by(name: params['stock_symbol_name'])
     if !stock_symbol.nil?
       result['stock_symbol_id'] = stock_symbol.id

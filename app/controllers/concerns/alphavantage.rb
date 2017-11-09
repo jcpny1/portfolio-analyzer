@@ -18,13 +18,13 @@ module Alphavantage extend ActiveSupport::Concern
 
     symbols.each_with_index { |symbol, i|
       begin
-        logger.info "AA PRICE FETCH BEGIN for: #{symbol}."
+        logger.debug "AA PRICE FETCH BEGIN for: #{symbol}."
         resp = conn.get do |req|
           req.params['function'] = 'TIME_SERIES_DAILY'
           req.params['symbol']   = symbol
           req.params['apikey']   = api_key
         end
-        logger.info "AA PRICE FETCH END   for: #{symbol}."
+        logger.debug "AA PRICE FETCH END   for: #{symbol}."
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e
         logger.error "AA PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}."
@@ -63,8 +63,8 @@ module Alphavantage extend ActiveSupport::Concern
 
   # Return the feed's list if valid symbols.
   def getSymbology()
-    logger.info 'AA SYMBOLOGY FETCH BEGIN.'
-    logger.info 'AA SYMBOLOGY FETCH END.'
+    logger.debug 'AA SYMBOLOGY FETCH BEGIN.'
+    logger.debug 'AA SYMBOLOGY FETCH END.'
     return {}
   end
 end
