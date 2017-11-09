@@ -1,23 +1,21 @@
 import React from 'react';
 
 // Returns a formatted currency string.
-// Specify prop plusSign for positive numbers to receive a plus sign.
+// Specify prop delta for positive numbers to receive a plus sign and to format positive numbers as grren.
+// TODO codify the zero test with a static function using a clearly defined constant.
 const currency = (props) => {
-  let result = '';
-  if (props.value) {
-    let formattedValue = parseFloat(props.value).toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 3});
-    if (formattedValue[0] === '-') {
-      result = <span style={{color:'red'}}>{formattedValue}</span>;
-    } else {
-      // TODO codify the zero test with a constant or a function based on significant fraction digits.
-      if ((props.delta) && (props.value > 0.00001)) {
-        result = <span style={{color:'green'}}>+{formattedValue}</span>;
-      } else {
-        result = <span style={{color:'black'}}>{formattedValue}</span>;
-      }
-    }
+  let value = parseFloat(props.value);
+  const valueIsNotZero = Math.abs(value) > 0.00001;
+  value = valueIsNotZero ? value : +0.0;  // We don't want to see a formatted 'negative zero'.
+  const formattedValue = value.toLocaleString(undefined, {style:'currency', currency:'USD', minimumFractionDigits: 2, maximumFractionDigits: 3});
+  let plus = '', color = 'black';
+  if (value < +0.0) {
+    color = 'red';
+  } else if (props.delta && valueIsNotZero) {
+    plus  = '+';
+    color = 'green';
   }
-  return result;
+  return (<span style={{color:color}}>{plus}{formattedValue}</span>);
 }
 
 const locale = 'en-US';
