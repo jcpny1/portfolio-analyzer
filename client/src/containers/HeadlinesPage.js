@@ -8,6 +8,7 @@ export default class HeadlinesPage extends Component {
     this.state = {
       articles: [],
       intervalId: -1,
+      refreshTime: new Date(),
     }
   }
 
@@ -30,12 +31,12 @@ export default class HeadlinesPage extends Component {
             article.fontWeight = 'normal';
           }
         });
-        this.setState({articles: headlines.articles});
+        this.setState({articles: headlines.articles, refreshTime: new Date()});
       }
     });
   }
 
   render() {
-    return (<Headlines articles={this.state.articles} refreshHeadlines={this.refreshHeadlines}/>);
+    return (<Headlines articles={this.state.articles} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines}/>);
   }
 }

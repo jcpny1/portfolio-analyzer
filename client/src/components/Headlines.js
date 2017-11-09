@@ -2,13 +2,11 @@ import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 
 const Headlines = (props) => {
-  const {articles} = props;
+  const {articles, refreshTime} = props;
 
   function listHeadlines() {
     if (articles) {
       return articles.map((article,index) => {
-        // <Grid.Row key={index} style={{margin: 0, padding: '3px'}}>
-        //   <Grid.Column>
         return (
           <Table.Row key={index}>
             <Table.Cell>
@@ -24,10 +22,13 @@ const Headlines = (props) => {
 
   return (
     <div>
-      <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
+      <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'3px'}}>
         Headline News
-        <span style={{float:'right'}}>
-          <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshHeadlines()}/>
+        <span disabled style={{color:'plum', float:'right', fontSize:'70%'}}>
+          <Button disabled content={refreshTime.toLocaleTimeString("en-US")} title='Refresh time' size='tiny' inverted compact style={{'color':'darkorchid', 'margin':'0', 'padding':'5px'}}/>
+          &emsp;&emsp;
+          &emsp;&emsp;
+          <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{'color':'darkorchid', 'paddingRight':'3px'}} onClick={() => props.refreshHeadlines()}/>
         </span>
       </Header>
       <Table celled compact sortable striped style={{marginTop:0}}>

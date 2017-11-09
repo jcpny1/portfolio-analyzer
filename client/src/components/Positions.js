@@ -71,7 +71,7 @@ const Positions = (props) => {
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
         {portfolio.name}
         <span style={{float:'right'}}>
-          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} size='tiny' inverted compact style={{'color':'darkorchid', 'paddingLeft':'5px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
+          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{'color':'darkorchid', 'paddingRight':'3px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
         </span>
       </Header>
       <Table celled compact sortable striped style={{marginTop:0}}>
