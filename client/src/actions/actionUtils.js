@@ -48,6 +48,15 @@ export function refreshHeadlines(cb) {
 }
 
 // Request the server to refresh the symbololgy database.
+export function refreshIndexes(cb) {
+  fetch('/api/lastIndex?symbols=DJIA', {headers: {'Accept': 'application/json'}})
+  .then(checkStatus)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(Fmt.serverError(error, 'Refresh Indexes: '));});
+}
+
+// Request the server to refresh the symbololgy database.
 export function refreshPrices() {
   console.log("Refresh prices intitiated.");
   fetch('/api/trades/refresh', {headers: {'Accept': 'application/json'}})

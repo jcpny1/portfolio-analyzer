@@ -3,10 +3,14 @@ import * as ActionUtils from '../actions/actionUtils';
 import Headlines from '../components/Headlines';
 
 export default class HeadlinesPage extends Component {
+
+  static HEADLINES_REFRESH_INTERVAL = 60 * 1000;
+
   constructor(props) {
     super(props);
     this.state = {
       articles: [],
+      djia: {price: '', change: ''},
       intervalId: -1,
       refreshTime: new Date(),
     }
@@ -14,7 +18,7 @@ export default class HeadlinesPage extends Component {
 
   componentDidMount() {
     this.refreshHeadlines();
-    this.setState({intervalID: window.setInterval(this.refreshHeadlines, 60000)});
+    this.setState({intervalID: window.setInterval(this.refreshHeadlines, HeadlinesPage.HEADLINES_REFRESH_INTERVAL)});
   }
 
   componentWillUnmount(){
@@ -34,9 +38,20 @@ export default class HeadlinesPage extends Component {
         this.setState({articles: headlines.articles, refreshTime: new Date()});
       }
     });
+    ActionUtils.refreshIndexes(indices => {
+      if (indices !== null) {
+        indices.some((indice,index) => {
+          let isDJIA = indice.stock_symbol.name === 'DJIA';
+          if (isDJIA) {
+            this.setState({djia: {price: indice.trade_price, change: indice.price_change}});
+          }
+          return isDJIA;
+        });
+      }
+    });
   }
 
   render() {
-    return (<Headlines articles={this.state.articles} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines}/>);
+    return (<Headlines articles={this.state.articles} djia={this.state.djia} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines}/>);
   }
 }
