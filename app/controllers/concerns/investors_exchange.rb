@@ -3,7 +3,7 @@ module InvestorsExchange extend ActiveSupport::Concern
   # See the bottom of this file for sample data.
   #
   # Make data request(s) for symbols and return results in trades.
-  def latest_trades(symbols)
+  def IEX_latest_trades(symbols)
     fetch_time = DateTime.now
     symbolList = symbols.join(',')
     trades = Array.new(symbols.length)
@@ -46,7 +46,7 @@ module InvestorsExchange extend ActiveSupport::Concern
   end
 
   # Return the feed's list of valid symbols.
-  def getSymbology()
+  def IEX_symbology()
     begin
       response = {}
       logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'

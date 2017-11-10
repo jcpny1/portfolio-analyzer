@@ -1,7 +1,15 @@
 class TradesController < ApplicationController
-  include InvestorsExchange  # include Feed handler here.
+  include AlphaVantage, InvestorsExchange  # include Feed handlers here.
 
   BATCH_FETCH_SIZE = 50   # Limit on IEX feed is 100 symbols per request. Let's stay well under that for now.
+
+  # Retrieve the latest index values for the symbols specified in params.
+  def last_index
+    logger.info 'LAST INDEX FETCH BEGIN.'
+    trades = load_live_indexes(params[:symbols].split(','))
+    logger.info 'LAST INDEX FETCH END.'
+    render json: trades, each_serializer: IndexSerializer
+  end
 
   # Retrieve the latest prices for the symbols used by the supplied user_id.
   # Retrieve prices from database. If 'livePrices' is specified, overwrite
@@ -53,9 +61,14 @@ class TradesController < ApplicationController
     }
   end
 
+  # Call feed handler for the latest indexes.
+  def load_live_indexes(symbols)
+    AA_latest_trades(symbols)
+  end
+
   # Call feed handler for the latest prices.
   def load_live_prices(symbols)
-    latest_trades(symbols)
+    IEX_latest_trades(symbols)
   end
 
   # Fetch database trades

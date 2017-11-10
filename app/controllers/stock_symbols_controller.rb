@@ -1,5 +1,5 @@
 class StockSymbolsController < ApplicationController
-  include InvestorsExchange  # include Feed handler here.
+  include InvestorsExchange  # include Feed handlers here.
 
   # Retrieve stock_symbols by specified column name and value.
   # Use param 'exact' for 'equals' condition. Leave off for 'like'.
@@ -18,7 +18,7 @@ class StockSymbolsController < ApplicationController
     symbolsAdded   = 0
     symbolsErrored = 0
     symbolsUpdated = 0
-    symbolHashArray = getSymbology()   # Call feed handler to retrieve symbology.
+    symbolHashArray = IEX_symbology()   # Call feed handler to retrieve symbology.
     StockSymbol.transaction do
       symbolHashArray.each { |symbol|
         begin

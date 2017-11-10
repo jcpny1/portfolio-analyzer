@@ -1,9 +1,9 @@
-module Alphavantage extend ActiveSupport::Concern
+module AlphaVantage extend ActiveSupport::Concern
   #
   # See the bottom of this file for sample data.
   #
   # Make data request(s) for symbols and return results in trades.
-  def latest_trades(symbols)
+  def AA_latest_trades(symbols)
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
     fetch_time = DateTime.now
     trades = Array.new(symbols.length)
@@ -49,6 +49,7 @@ module Alphavantage extend ActiveSupport::Concern
           # TODO Get timezone from Meta Data.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
+            t.stock_symbol = StockSymbol.new(name: symbol) if t.stock_symbol.nil?    # We don't keep index symbols in database, so make one up here.
             t.trade_date   = missing_trade_date
             t.trade_price  = current_trade_price
             t.price_change = (current_trade_price - prior_trade_price).round(4)
@@ -62,7 +63,7 @@ module Alphavantage extend ActiveSupport::Concern
   end
 
   # Return the feed's list if valid symbols.
-  def getSymbology()
+  def AA_symbology()
     logger.debug 'AA SYMBOLOGY FETCH BEGIN.'
     logger.debug 'AA SYMBOLOGY FETCH END.'
     return {}
