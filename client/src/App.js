@@ -88,7 +88,7 @@ class App extends Component {
 
   pageFooterRow() {
     return (
-      <Table celled compact striped style={{marginTop:0}}>
+      <Table compact striped style={{marginTop:0}}>
         <Table.Header>
           <Table.Row textAlign='center'>
             <Table.HeaderCell>
@@ -131,7 +131,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Grid celled padded stackable>
+        <Grid padded stackable>
           {this.pageHeader()}
           {this.pageMenu()}
           {this.pageBody()}

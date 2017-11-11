@@ -61,7 +61,7 @@ const Portfolios = (props) => {
           <Button content='Refresh' icon='refresh' title='Refresh portfolio' loading={updatingPortfolio} compact inverted size='tiny' style={{'color':'darkorchid', 'paddingRight':'3px'}} onClick={() => props.refreshPortfolios()}/>
         </span>
       </Header>
-      <Table celled compact sortable striped style={{marginTop:0}}>
+      <Table compact sortable striped style={{marginTop:0}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPortfolios()}</Table.Body>
         <Table.Footer>{sumPortfolios()}</Table.Footer>

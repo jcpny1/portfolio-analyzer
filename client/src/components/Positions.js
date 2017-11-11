@@ -14,7 +14,7 @@ const Positions = (props) => {
         <Table.HeaderCell sorted={sortColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => props.onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
-        <Table.HeaderCell sorted={sortColName === 'priceChange'   ? sortDirection : null} onClick={() => props.onClickColHeader('priceChange')}>Price Change</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'priceChange'   ? sortDirection : null} onClick={() => props.onClickColHeader('priceChange')}>Change</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'marketValue'   ? sortDirection : null} onClick={() => props.onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'dayChange'     ? sortDirection : null} onClick={() => props.onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'cost'          ? sortDirection : null} onClick={() => props.onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
@@ -74,7 +74,7 @@ const Positions = (props) => {
           <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{'color':'darkorchid', 'paddingRight':'3px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
         </span>
       </Header>
-      <Table celled compact sortable striped style={{marginTop:0}}>
+      <Table compact sortable striped style={{marginTop:0}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPositions()}</Table.Body>
         <Table.Footer>{sumPositions()}</Table.Footer>

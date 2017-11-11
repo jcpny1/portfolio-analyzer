@@ -41,7 +41,7 @@ const Headlines = (props) => {
           <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{'color':'darkorchid', 'paddingRight':'3px'}} onClick={() => props.refreshHeadlines()}/>
         </span>
       </Header>
-      <Table celled compact sortable striped style={{marginTop:0}}>
+      <Table compact sortable striped style={{marginTop:0}}>
         <Table.Body>{listHeadlines()}</Table.Body>
         </Table>
     </span>
