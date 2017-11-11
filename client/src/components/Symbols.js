@@ -35,7 +35,7 @@ const Symbols = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <Table columns={2} compact='very' striped>
+          <Table compact='very' striped>
             <Table.Header>{columnTitles()}</Table.Header>
             <Table.Body>{listSymbols()}</Table.Body>
           </Table>

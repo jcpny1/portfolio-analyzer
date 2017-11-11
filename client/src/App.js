@@ -60,7 +60,7 @@ class App extends Component {
   pageBody() {
     return (
       <Grid.Row columns={2}>
-        <Grid.Column width={11}>
+        <Grid.Column width={11} style={{paddingRight:'5px'}}>
           <Switch>
             <Route exact path="/"           component={PortfoliosPage}/>
             <Route path="/about"            component={PortfoliosPage}/>
@@ -69,7 +69,7 @@ class App extends Component {
             <Route path="/portfolios/:id"   component={PositionsPage}/>
           </Switch>
         </Grid.Column>
-        <Grid.Column width={5}>
+        <Grid.Column width={5} style={{paddingLeft:'5px'}}>
           <HeadlinesPage/>
         </Grid.Column>
       </Grid.Row>
@@ -131,7 +131,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Grid padded>
+        <Grid celled padded stackable>
           {this.pageHeader()}
           {this.pageMenu()}
           {this.pageBody()}
