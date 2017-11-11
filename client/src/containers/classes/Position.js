@@ -1,4 +1,4 @@
-import * as ActionUtils from '../../actions/actionUtils';
+import * as ActionUtils from '../../utils/actions';
 // Using a class to organize Position-related logic.
 // It doesn't seem worth the effort to instantiate any Position objects, yet.
 export default class Position {

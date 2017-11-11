@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
-import Fmt from '../components/Formatters';
+import Fmt from '../utils/formatters';
 
 const Headlines = (props) => {
   const {articles, djia, refreshTime} = props;
@@ -30,7 +30,7 @@ const Headlines = (props) => {
   }
 
   return (
-    <div>
+    <span>
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'3px'}}>
         Headline News
         <span disabled style={{color:'plum', float:'right', fontSize:'70%'}}>
@@ -44,7 +44,7 @@ const Headlines = (props) => {
       <Table celled compact sortable striped style={{marginTop:0}}>
         <Table.Body>{listHeadlines()}</Table.Body>
         </Table>
-    </div>
+    </span>
   );
 }
 

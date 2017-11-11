@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
-import Fmt from './Formatters';
+import Fmt from '../utils/formatters';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 const Portfolios = (props) => {

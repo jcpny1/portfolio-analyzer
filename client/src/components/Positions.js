@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
-import Fmt from './Formatters';
+import Fmt from '../utils/formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
 const Positions = (props) => {

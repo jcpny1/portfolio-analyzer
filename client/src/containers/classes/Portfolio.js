@@ -1,4 +1,4 @@
-import * as ActionUtils from '../../actions/actionUtils';
+import * as ActionUtils from '../../utils/actions';
 import Position from './Position';
 // Using a class to organize Portfolio-related logic.
 // It doesn't seem worth the effort to instantiate any Portfolio objects, yet.

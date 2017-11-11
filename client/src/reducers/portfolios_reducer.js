@@ -1,5 +1,5 @@
-import Fmt from '../components/Formatters';
-import * as ActionUtils from '../actions/actionUtils';
+import Fmt from '../utils/formatters';
+import * as ActionUtils from '../utils/actions';
 
 export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',

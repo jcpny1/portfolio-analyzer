@@ -1,4 +1,4 @@
-import Fmt from '../components/Formatters';
+import Fmt from '../utils/formatters';
 
 // Check a fetch response status.
 export function checkStatus(response) {

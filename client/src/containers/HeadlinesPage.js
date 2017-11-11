@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as ActionUtils from '../actions/actionUtils';
+import * as ActionUtils from '../utils/actions';
 import Headlines from '../components/Headlines';
 
 export default class HeadlinesPage extends Component {
