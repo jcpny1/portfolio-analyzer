@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as ActionUtils from '../utils/actions';
+import * as Actions from '../utils/actions';
 import Fmt from '../utils/formatters';
 import Headlines from '../components/Headlines';
 
@@ -27,26 +27,29 @@ export default class HeadlinesPage extends Component {
   }
 
   refreshHeadlines = () => {
-    ActionUtils.refreshHeadlines(headlines => {
+    Actions.refreshHeadlines(headlines => {
       if (headlines !== null) {
-        headlines.articles.forEach((article,index) => {
-          if ((index >= this.state.articles) || (article.title !== this.state.articles[index].title)) {
-            article.fontWeight = 'bold';
+
+let xxx = this.state.articles[30].title;
+
+        headlines.articles.forEach((headlinesArticle,index) => {
+          if ((index >= this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
+            headlinesArticle.fontWeight = 'bold';
           } else {
-            article.fontWeight = 'normal';
+            headlinesArticle.fontWeight = 'normal';
           }
         });
-        this.setState({articles: headlines.articles, refreshTime: new Date()});
+        this.setState({articles: headlines.articles});
       }
     });
-    ActionUtils.refreshIndexes(indices => {
+    Actions.refreshIndexes(indices => {
       if ('error' in indices) {
         alert(Fmt.serverError(indices.error, 'Refresh Indexes: '));
       } else {
         indices.some((indice,index) => {
           let isDJIA = indice.stock_symbol.name === 'DJIA';
           if (isDJIA) {
-            this.setState({djia: {price: indice.trade_price, change: indice.price_change}});
+            this.setState({djia: {price: indice.trade_price, change: indice.price_change, refreshTime: new Date()}});
           }
           return isDJIA;
         });

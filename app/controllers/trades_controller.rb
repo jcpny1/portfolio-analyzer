@@ -63,7 +63,7 @@ class TradesController < ApplicationController
 
   # Call feed handler for the latest indexes.
   def load_live_indexes(symbols)
-    AA_latest_trades(symbols)
+    AV_latest_trades(symbols)
   end
 
   # Call feed handler for the latest prices.

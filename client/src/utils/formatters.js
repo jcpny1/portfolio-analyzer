@@ -45,9 +45,10 @@ const quantity = (props) => {
 
 // Returns a formatted server error string.
 const serverError = (error, prefix) => {
-  return (error.status === 500) ?
+  const errorString = (error.status === 500) ?
     `${prefix} status: ${error.status} error: ${error.error}: ${error.exception}  @ ${error.traces['Application Trace'][0].trace}` :
     `${prefix}${error}`;
+  return `${errorString}\n\n\n${dateTime({value:Date.now()})}`;
 }
 
 const Fmt = {currency, dateTime, index, quantity, serverError};

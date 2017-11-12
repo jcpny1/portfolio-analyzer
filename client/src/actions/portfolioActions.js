@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import * as ActionUtils from '../utils/actions';
+import * as Actions from '../utils/actions';
 import Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 
@@ -14,7 +14,7 @@ export function addPortfolio(portfolio) {
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
         body:    JSON.stringify({user_id: GUEST_USER_ID, name: portfolio.name}),
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(newPortfolio => {
         if (!newPortfolio.id) {
@@ -36,7 +36,7 @@ export function deletePortfolio(portfolioId) {
         method:  'DELETE',
         headers: {'Accept': 'application/json'},
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(deletedPortfolio => {
         if (!deletedPortfolio.id) {
@@ -56,7 +56,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
       fetch('/api/portfolios', {
         headers: {'Accept': 'application/json'},
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(portfolios => {
         Portfolio.initPositionValues(portfolios)
@@ -65,7 +65,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
         fetch(`/api/portfolios/lastPrice?${livePrices}userId=${userId}`, {
           headers: {'Accept': 'application/json'},
         })
-        .then(ActionUtils.checkStatus)
+        .then(Actions.checkStatus)
         .then(response => response.json())
         .then(trades => {
           if ('error' in trades) {
@@ -106,7 +106,7 @@ export function updatePortfolio(portfolio) {
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
         body:    JSON.stringify({name: portfolio.name,}),
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {

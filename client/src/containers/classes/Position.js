@@ -1,4 +1,4 @@
-import * as ActionUtils from '../../utils/actions';
+import * as Actions from '../../utils/actions';
 // Using a class to organize Position-related logic.
 // It doesn't seem worth the effort to instantiate any Position objects, yet.
 export default class Position {
@@ -46,7 +46,7 @@ export default class Position {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
     }
     if (errorReturn === null) {
-      ActionUtils.symbolSearch({value: position.stock_symbol_name, exact:true}, symbols => {
+      Actions.symbolSearch({value: position.stock_symbol_name, exact:true}, symbols => {
         if (symbols.length !== 1) {
           errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
         }

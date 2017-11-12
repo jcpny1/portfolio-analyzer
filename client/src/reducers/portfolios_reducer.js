@@ -1,5 +1,5 @@
 import Fmt from '../utils/formatters';
-import * as ActionUtils from '../utils/actions';
+import * as Actions from '../utils/actions';
 
 export const portfolioActions = {
   ADD_PORTFOLIO     : 'ADD_PORTFOLIO',
@@ -19,7 +19,7 @@ export function updatePortfoliosAction(portfolios) {return {type: portfolioActio
 export function updatingPortfolioAction()          {return {type: portfolioActions.UPDATING_PORTFOLIO}}
 export function warnPortfolioAction(warning)       {return {type: portfolioActions.WARN_PORTFOLIOS,   payload: warning}}
 
-export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: ActionUtils.columnSorter('name', 'ascending', 'stock_symbol', 'ascending')}, action) {
+export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: Actions.columnSorter('name', 'ascending', 'stock_symbol', 'ascending')}, action) {
   switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {

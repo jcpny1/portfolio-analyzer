@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import * as ActionUtils from '../utils/actions';
+import * as Actions from '../utils/actions';
 import Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 import {loadPortfolios} from './portfolioActions';
@@ -13,7 +13,7 @@ export function addPosition(position, sortFn) {
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
         body:    JSON.stringify({stock_symbol_name: position.stock_symbol_name, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
@@ -35,7 +35,7 @@ export function deletePosition(portfolioId, positionId, sortFn) {
         method:  'DELETE',
         headers: {'Accept': 'application/json'},
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
@@ -67,7 +67,7 @@ export function updatePosition(position, sortFn) {
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
         body:    JSON.stringify({stock_symbol_name: position.stock_symbol_name, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
       })
-      .then(ActionUtils.checkStatus)
+      .then(Actions.checkStatus)
       .then(response => response.json())
       .then(updatedPortfolio => {
         if (!updatedPortfolio.id) {
