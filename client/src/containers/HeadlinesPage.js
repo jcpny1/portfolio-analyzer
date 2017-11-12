@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as ActionUtils from '../utils/actions';
+import Fmt from '../utils/formatters';
 import Headlines from '../components/Headlines';
 
 export default class HeadlinesPage extends Component {
@@ -39,7 +40,9 @@ export default class HeadlinesPage extends Component {
       }
     });
     ActionUtils.refreshIndexes(indices => {
-      if (indices !== null) {
+      if ('error' in indices) {
+        alert(Fmt.serverError(indices.error, 'Refresh Indexes: '));
+      } else {
         indices.some((indice,index) => {
           let isDJIA = indice.stock_symbol.name === 'DJIA';
           if (isDJIA) {
