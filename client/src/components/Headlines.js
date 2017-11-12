@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
-import '../semantic-ui/semantic.min.css';
 import Fmt from '../utils/formatters';
 
 const Headlines = (props) => {
