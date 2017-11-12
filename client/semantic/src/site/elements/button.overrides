@@ -1,6 +1,8 @@
 /*******************************
          Site Overrides
 *******************************/
-.ui.table tfoot th {
-  font-weight: @headerFontWeight;
+.ui.inverted.button {
+  color: @purple !important;
+  margin: 0em;
+  padding: 0px;
 }

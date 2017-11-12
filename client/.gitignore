@@ -11,6 +11,9 @@
 !/semantic/src/site/collections
 /semantic/src/site/collections/*
 !/semantic/src/site/collections/table.overrides
+!/semantic/src/site/elements
+/semantic/src/site/elements/*
+!/semantic/src/site/elements/button.overrides
 
 # testing
 /coverage

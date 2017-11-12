@@ -29,6 +29,15 @@ const dateTime = (props) => {
   return (props.value) ? dateFormat.format(new Date(props.value)).replace(',', '') : '';
 }
 
+// Returns a formatted market index string.
+function index(name, values) {
+  return (
+    <span>
+      {name}: <Fmt.currency value={values.price} color='darkorchid'/>&emsp;<Fmt.currency value={values.change} delta/>
+    </span>
+  );
+}
+
 // Returns a formatted quantity string.
 const quantity = (props) => {
   return (props.value) ? parseFloat(props.value).toLocaleString(undefined, {style:'decimal', minimumFractionDigits: 0, maximumFractionDigits: 5}) : '';
@@ -41,5 +50,5 @@ const serverError = (error, prefix) => {
     `${prefix}${error}`;
 }
 
-const Fmt = {currency, dateTime, quantity, serverError};
+const Fmt = {currency, dateTime, index, quantity, serverError};
 export default Fmt;

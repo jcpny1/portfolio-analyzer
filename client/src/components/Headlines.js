@@ -1,17 +1,10 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
+import '../semantic-ui/semantic.min.css';
 import Fmt from '../utils/formatters';
 
 const Headlines = (props) => {
   const {articles, djia, refreshTime} = props;
-
-  function formatIndex(name, values) {
-    return (
-      <span>
-        {name}: <Fmt.currency value={values.price} color='darkorchid'/>&emsp;<Fmt.currency value={values.change} delta/>
-      </span>
-    );
-  }
 
   function listHeadlines() {
     if (articles) {
@@ -33,12 +26,12 @@ const Headlines = (props) => {
     <span>
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'3px'}}>
         Headline News
-        <span disabled style={{color:'plum', float:'right', fontSize:'70%'}}>
-          <Button disabled content={formatIndex('DJIA', djia)} title='Dow Jones Industrial Average' size='tiny' inverted compact style={{'color':'darkorchid', 'margin':'0', 'padding':'5px'}}/>
+        <span disabled style={{float:'right', fontSize:'70%'}}>
+          <Button disabled content={Fmt.index('DJIA', djia)} title='Dow Jones Industrial Average' size='tiny' inverted compact/>
           &emsp;
-          <Button disabled content={refreshTime.toLocaleTimeString("en-US")} title='Refresh time' size='tiny' inverted compact style={{'color':'darkorchid', 'margin':'0', 'padding':'5px'}}/>
+          <Button disabled content={refreshTime.toLocaleTimeString("en-US")} title='Refresh time' size='tiny' inverted compact/>
           &emsp;
-          <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{'color':'darkorchid', 'paddingRight':'3px'}} onClick={() => props.refreshHeadlines()}/>
+          <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => props.refreshHeadlines()}/>
         </span>
       </Header>
       <Table compact sortable striped style={{marginTop:0}}>
