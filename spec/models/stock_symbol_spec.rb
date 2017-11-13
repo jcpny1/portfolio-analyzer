@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe StockSymbol, type: :model do
   before do
-    @stock_symbol = StockSymbol.create!(name: 'ABC', long_name: 'Acme Baking Company')
+    @stock_symbol = build(:stock_symbol, name: "ABC")
   end
 
   it "has a name" do

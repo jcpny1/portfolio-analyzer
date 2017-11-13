@@ -37,11 +37,14 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0' # Makes spring watch files using the listen gem.
 end
 
+group :test do
+  gem "factory_bot_rails"                               # Factory to Rails integration.
+  gem 'rspec-rails', '~> 3.6'                           # Rails testing framework.
+end
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]   # A Ruby debugger.
-  gem "factory_bot_rails"                               # Factory to Rails integration.
   gem 'pry'                                             # An IRB alternative runtime developer console.
-  gem 'rspec-rails', '~> 3.6'                           # Rails testing framework.
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
