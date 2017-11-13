@@ -11,11 +11,11 @@
 
 The Stock Analyzer App is a portfolio monitoring tool. You can enter your stock holdings and monitor their total and intra-day value change.
 
+![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-12%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
+
 It was created to meet the requirements of the [Flatiron School's](https://flatironschool.com/) React Redux portfolio project. It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI.
 
 This repository contains the front end code in the client folder. The remaining folders are primarily for the server code.
-
-![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-12%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
 
 ## History
 ```
