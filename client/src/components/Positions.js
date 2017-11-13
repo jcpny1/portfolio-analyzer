@@ -34,13 +34,13 @@ const Positions = (props) => {
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={props.onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left' title={position.stock_symbol.long_name}>{position.stock_symbol.name}</Table.Cell>
-          <Table.Cell><Fmt.quantity value={position.quantity}/></Table.Cell>
-          <Table.Cell><Fmt.currency value={position.lastTrade}/></Table.Cell>
-          <Table.Cell><Fmt.currency value={position.priceChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.currency value={position.marketValue}/></Table.Cell>
-          <Table.Cell><Fmt.currency value={position.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.currency value={position.cost}/></Table.Cell>
-          <Table.Cell><Fmt.currency value={position.gainLoss} delta/></Table.Cell>
+          <Table.Cell><Fmt.number type='quantity' value={position.quantity} quantity/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={position.lastTrade}/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={position.priceChange} delta/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={position.marketValue}/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={position.dayChange} delta/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={position.cost}/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={position.gainLoss} delta/></Table.Cell>
           <Table.Cell><Fmt.dateTime value={position.lastTradeDate}/></Table.Cell>
           <Table.Cell><Fmt.dateTime value={position.lastUpdate}/></Table.Cell>
         </Table.Row>
@@ -56,10 +56,10 @@ const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={portfolio.marketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={portfolio.dayChange} delta/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={portfolio.totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={portfolio.gainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.marketValue}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.dayChange} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.totalCost}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.gainLoss} delta/></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>

@@ -26,10 +26,10 @@ const Headlines = (props) => {
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'3px'}}>
         Headline News
         <span disabled style={{float:'right', fontSize:'70%'}}>
-          <Button disabled content={Fmt.index('DJIA', djia)} title='Dow Jones Industrial Average' size='tiny' inverted compact/>
-          &emsp;
-          <Button disabled content={refreshTime.toLocaleTimeString("en-US")} title='Refresh time' size='tiny' inverted compact/>
-          &emsp;
+          <Button content={Fmt.index('DJIA', djia)} title='Dow Jones Industrial Average' size='tiny' inverted compact/>
+          &emsp;&emsp;
+          <Button content={refreshTime.toLocaleTimeString("en-US")} title='Refresh time' size='tiny' inverted compact/>
+          &emsp;&emsp;
           <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => props.refreshHeadlines()}/>
         </span>
       </Header>

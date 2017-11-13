@@ -31,10 +31,10 @@ const Portfolios = (props) => {
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={props.onClickRemove(portfolio.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
-          <Table.Cell><Fmt.currency value={portfolio.marketValue}/></Table.Cell>
-          <Table.Cell><Fmt.currency value={portfolio.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.currency value={portfolio.totalCost}/></Table.Cell>
-          <Table.Cell><Fmt.currency value={portfolio.gainLoss} delta/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={portfolio.marketValue}/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={portfolio.dayChange} delta/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={portfolio.totalCost}/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={portfolio.gainLoss} delta/></Table.Cell>
         </Table.Row>
       );
     });
@@ -45,10 +45,10 @@ const Portfolios = (props) => {
       <Table.Row textAlign='right'>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='left'>Total</Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={totalMarketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={totalDayChange} delta/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.currency value={totalGainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={totalMarketValue}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={totalDayChange} delta/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={totalCost}/></Table.HeaderCell>
+        <Table.HeaderCell><Fmt.number type='currency' value={totalGainLoss} delta/></Table.HeaderCell>
       </Table.Row>
     );
   }
