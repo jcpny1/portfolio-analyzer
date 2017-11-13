@@ -30,16 +30,24 @@ Stock-Analyzer first release was developed using earlier versions of the followi
 * Clone the [Stock Analyzer Repository](https://github.com/jcpny1/stock-analyzer).
 * `cd` into the project directory.
 * `bundle install`
+
+### Setup the database
 * `rake db:migrate`
 * `rake db:seed`
 
+### Install npm packages
+* `cd client`
+* `npm install`
+
 ### Setup the data provider keys
-To receive market data, the server requires an internet connection and a few API keys.
+To receive market data, the server requires an internet connection and a few API keys:
 * Market data from [IEX](https://iextrading.com/) is currently free and does not require authentication.
+
 * Index data from [Alpha Vantage](https://www.alphavantage.co/) requires a key. Registration is required. There is no charge.
+
 * Headline news from [News API](https://newsapi.org/) requires a key. Registration is required. There is no charge.
 
-The keys should be placed in the app's home directory in a file called `.env` as in the following example:
+The keys should be placed in the project's home directory in a file called `.env`, as in the following example:
 ```
   ALPHA_VANTAGE_API_KEY: ABCDEFGHIJKLMNOP
   NEWSAPI_API_KEY: abcdefghijklmnopqrstuvwxyzabcdef
@@ -47,11 +55,11 @@ The keys should be placed in the app's home directory in a file called `.env` as
 
 ## Usage
 
-* From the project directory, type `rake start`
+* From the project home directory, type `rake start`
 * The server will start. When the server is ready, a new default browser tab will open at the Stock Analyzer home page.
 * When your positions are first loaded, they will be priced with the latest available information from the Stock Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
-* The latest news headlines and DJIA value are presently set to update on the initial page load, when the entire page is refreshed, and once per minute automatically.
-* The seed data includes just ten ticker symbols to work with. If you need more, there are Help menu options to download the full symbology and to download the latest prices from the market data vendor. Use the latest price load sparingly; It could lock up the database for quite some time.
+* The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per minute.
+* Database seed data includes just ten ticker symbols to work with. If you need more, there are Help menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols. Use the latest price download sparingly; It could lock up the database for quite some time.
 
 ## Warnings
 
@@ -61,7 +69,8 @@ The keys should be placed in the app's home directory in a file called `.env` as
 
 ## Testing
 
-To run the test suite,
+To run the test suite (from the project home directory):
+* `bundle exec rspec`.
 
 ## Deployment
 
