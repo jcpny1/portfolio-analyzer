@@ -1,11 +1,11 @@
 # STOCK ANALYZER
 
-[![Build Status](https://api.travis-ci.org/jcpny1/recipe-cat.svg?branch=master)](http://travis-ci.org/jcpny1/recipe-cat)
-[![Test Coverage](https://codeclimate.com/github/jcpny1/recipe-cat/badges/coverage.svg)](https://codeclimate.com/github/jcpny1/recipe-cat/coverage)
-[![Code Climate](https://codeclimate.com/github/jcpny1/recipe-cat/badges/gpa.svg)](https://codeclimate.com/github/jcpny1/recipe-cat)
-[![Issue Count](https://codeclimate.com/github/jcpny1/recipe-cat/badges/issue_count.svg)](https://codeclimate.com/github/jcpny1/recipe-cat)
-[![Dependency Status](https://gemnasium.com/badges/github.com/jcpny1/recipe-cat.svg)](https://gemnasium.com/github.com/jcpny1/recipe-cat)
-[![Inline docs](http://inch-ci.org/github/jcpny1/recipe-cat.svg)](http://inch-ci.org/github/jcpny1/recipe-cat)
+[![Build Status](https://api.travis-ci.org/jcpny1/stock-analyzer.svg?branch=master)](http://travis-ci.org/jcpny1/stock-analyzer)
+[![Test  Coverage](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/coverage.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer/coverage)
+[![Code Climate](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/gpa.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer)
+[![Issue Count](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/issue_count.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer)
+[![Dependency Status](https://gemnasium.com/badges/github.com/jcpny1/stock-analyzer.svg)](https://gemnasium.com/github.com/jcpny1/stock-analyzer)
+[![Inline docs](http://inch-ci.org/github/jcpny1/stock-analyzer.svg)](http://inch-ci.org/github/jcpny1/stock-analyzer)
 
 ## Overview
 
@@ -69,7 +69,7 @@ TBD
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jcpny1/recipe-cat. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jcpny1/stock-analyzer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
