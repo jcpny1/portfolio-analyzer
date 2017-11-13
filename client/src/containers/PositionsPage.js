@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as positionActions  from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import Position  from './classes/Position';
-import PositionsPanel from '../components/PositionsPanel';
+import Positions from '../components/Positions';
 
 class PositionsPage extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class PositionsPage extends Component {
     let portfolio = portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
     if (portfolio) {  // may be null until props.portfolios is loaded.
       const sortTerms = sortFn();
-      return (<PositionsPanel portfolio={portfolio} emptyPosition={Position.newPosition(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction}/>);
+      return (<Positions portfolio={portfolio} emptyPosition={Position.newPosition(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction}/>);
     } else {
       return null;
     }

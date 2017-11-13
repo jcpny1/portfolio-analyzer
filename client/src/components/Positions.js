@@ -4,13 +4,13 @@ import ConfirmDialog from '../containers/ConfirmDialog';
 import Fmt from '../utils/formatters';
 import PositionEditPage from '../containers/PositionEditPage';
 
-const PositionsTable = (props) => {
-  const {emptyPosition, ClickColHeader, onClickRemove, onClickSubmit, portfolio, sortColName, sortDirection} = props;
+const Positions = (props) => {
+  const {portfolio, sortColName, sortDirection, updatingPortfolio} = props;
 
   function columnTitles() {
     return (
       <Table.Row textAlign='center'>
-        <Table.HeaderCell>{<PositionEditPage position={emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PositionEditPage position={props.emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={props.onClickSubmit}/>}</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => props.onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => props.onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => props.onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
@@ -30,8 +30,8 @@ const PositionsTable = (props) => {
       return (
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
-            {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={onClickSubmit}/>}
-            {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={onClickRemove(portfolio.id, position.id)}/>}
+            {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={props.onClickSubmit}/>}
+            {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={props.onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left' title={position.stock_symbol.long_name}>{position.stock_symbol.name}</Table.Cell>
           <Table.Cell><Fmt.number type='quantity' value={position.quantity} quantity/></Table.Cell>
@@ -68,6 +68,12 @@ const PositionsTable = (props) => {
 
   return (
     <div>
+      <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
+        {portfolio.name}
+        <span style={{float:'right'}}>
+          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => props.refreshPortfolio(portfolio)}/>
+        </span>
+      </Header>
       <Table compact sortable striped style={{marginTop:0}}>
         <Table.Header>{columnTitles()}</Table.Header>
         <Table.Body>{listPositions()}</Table.Body>
@@ -77,4 +83,4 @@ const PositionsTable = (props) => {
   );
 }
 
-export default PositionsTable;
+export default Positions;
