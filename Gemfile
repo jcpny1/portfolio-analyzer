@@ -24,11 +24,11 @@ gem 'puma', '~> 3.10'             # HTTP 1.1 server for Ruby/Rack applications.
 # gem 'rack-cors'
 
 # JCP added:
-gem 'active_model_serializers', '~> 0.10.0'   # JSON generators.
-gem 'addressable'             # URI encoder.
-gem 'dotenv-rails'            # Loads environment variables from `.env`.
-gem 'foreman', '~> 0.84.0'    # Process manager for applications with multiple components.
-gem 'faraday'                 # HTTP/REST API client library.
+gem 'active_model_serializers', '~> 0.10.0' # JSON generators.
+gem 'addressable'                           # URI encoder.
+gem 'dotenv-rails'                          # Loads environment variables from `.env`.
+gem 'foreman', '~> 0.84.0'                  # Process manager for applications with multiple components.
+gem 'faraday'                               # HTTP/REST API client library.
 # end JCP added
 
 group :development do
@@ -39,7 +39,9 @@ end
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]   # A Ruby debugger.
-  gem 'pry'   # An IRB alternative runtime developer console.
+  gem "factory_bot_rails"                               # Factory to Rails integration.
+  gem 'pry'                                             # An IRB alternative runtime developer console.
+  gem 'rspec-rails', '~> 3.6'                           # Rails testing framework.
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

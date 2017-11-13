@@ -1,11 +1,11 @@
 # STOCK ANALYZER
 
-[![Build Status](https://api.travis-ci.org/jcpny1/stock-analyzer.svg?branch=master)](http://travis-ci.org/jcpny1/stock-analyzer)
-[![Test  Coverage](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/coverage.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer/coverage)
-[![Code Climate](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/gpa.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer)
-[![Issue Count](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/issue_count.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer)
-[![Dependency Status](https://gemnasium.com/badges/github.com/jcpny1/stock-analyzer.svg)](https://gemnasium.com/github.com/jcpny1/stock-analyzer)
-[![Inline docs](http://inch-ci.org/github/jcpny1/stock-analyzer.svg)](http://inch-ci.org/github/jcpny1/stock-analyzer)
+[![Build](https://api.travis-ci.org/jcpny1/stock-analyzer.svg?branch=master)](http://travis-ci.org/jcpny1/stock-analyzer)
+[![Coverage](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/coverage.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer/coverage)
+[![Maintainability](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/gpa.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer)
+[![Issues](https://codeclimate.com/github/jcpny1/stock-analyzer/badges/issue_count.svg)](https://codeclimate.com/github/jcpny1/stock-analyzer)
+[![Dependencies](https://gemnasium.com/badges/github.com/jcpny1/stock-analyzer.svg)](https://gemnasium.com/github.com/jcpny1/stock-analyzer)
+[![Inline Docs](http://inch-ci.org/github/jcpny1/stock-analyzer.svg)](http://inch-ci.org/github/jcpny1/stock-analyzer)
 
 ## Overview
 
