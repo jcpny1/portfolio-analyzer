@@ -46,7 +46,7 @@ export default class HeadlinesPage extends Component {
         indices.some((indice,index) => {
           let isDJIA = indice.stock_symbol.name === 'DJIA';
           if (isDJIA) {
-            this.setState({djia: {price: indice.trade_price, change: indice.price_change, refreshTime: new Date()}});
+            this.setState({djia: {price: indice.trade_price, change: indice.price_change}, refreshTime: new Date()});
           }
           return isDJIA;
         });
