@@ -11,7 +11,7 @@
 
 The Stock Analyzer App is a portfolio monitoring tool. You can enter your stock holdings and monitor their total and intra-day value change.
 
-![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-12%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
+![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
 
 It was created to meet the requirements of the [Flatiron School's](https://flatironschool.com/) React Redux portfolio project. It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI.
 
@@ -55,7 +55,7 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Usage
 
-* From the project home directory, type `rake start`
+* From the project home directory, type `rake start`.
 * The server will start. When the server is ready, a new default browser tab will open at the Stock Analyzer home page.
 * When your positions are first loaded, they will be priced with the latest available information from the Stock Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
 * The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per minute.
@@ -70,7 +70,7 @@ The keys should be placed in the project's home directory in a file called `.env
 ## Testing
 
 To run the test suite (from the project home directory):
-* `bundle exec rspec`.
+* `bundle exec rspec`
 
 ## Deployment
 
