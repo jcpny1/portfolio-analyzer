@@ -58,7 +58,6 @@ export function refreshIndexes(cb) {
 
 // Request the server to refresh the symbololgy database.
 export function refreshPrices() {
-  console.log("Refresh prices intitiated.");
   fetch('/api/trades/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Prices: '));});
@@ -66,7 +65,6 @@ export function refreshPrices() {
 
 // Request the server to refresh the symbololgy database.
 export function refreshSymbols() {
-  console.log("Refresh symbols intitiated.");
   fetch('/api/stock_symbols/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Symbols: '));});
