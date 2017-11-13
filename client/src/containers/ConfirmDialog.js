@@ -23,36 +23,23 @@ export default class ConfirmDialog extends Component {
   }
 
   render() {
-    if (this.props.triggerType === 'icon') {
-      return (
-        <span>
-          <Icon name={this.props.name} title={this.props.title} link color={this.props.color} onClick={this.show}/>
-          <Confirm
-            cancelButton='NO'
-            confirmButton='YES'
-            closeOnDimmerClick={false}
-            header={this.props.header}
-            open={this.state.open}
-            onCancel={this.handleCancel}
-            onConfirm={this.handleConfirm}
-          />
-        </span>
-      );
-    } else {
-      return (
-        <span>
-          <Dropdown.Item text={this.props.title} onClick={this.show}/>
-          <Confirm
-            cancelButton='NO'
-            confirmButton='YES'
-            closeOnDimmerClick={false}
-            header={this.props.header}
-            open={this.state.open}
-            onCancel={this.handleCancel}
-            onConfirm={this.handleConfirm}
-          />
-        </span>
-      );
-    }
+    return (
+      <span>
+        {
+          (this.props.triggerType === 'icon') ?
+            <Icon name={this.props.name} title={this.props.title} link color={this.props.color} onClick={this.show}/> :
+            <Dropdown.Item text={this.props.title} onClick={this.show}/>
+        }
+        <Confirm
+          cancelButton='NO'
+          confirmButton='YES'
+          closeOnDimmerClick={false}
+          header={this.props.header}
+          open={this.state.open}
+          onCancel={this.handleCancel}
+          onConfirm={this.handleConfirm}
+        />
+      </span>
+    );
   }
 }
