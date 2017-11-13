@@ -20,12 +20,14 @@ export function updatingPortfolioAction()          {return {type: portfolioActio
 export function warnPortfolioAction(warning)       {return {type: portfolioActions.WARN_PORTFOLIOS,   payload: warning}}
 
 export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: Actions.columnSorter('name', 'ascending', 'stock_symbol', 'ascending')}, action) {
+  let returnObject = {};
   switch (action.type) {
     // Add a Portfolio.
     case portfolioActions.ADD_PORTFOLIO: {
       const payloadPortfolio = action.payload;
       const portfolios = [payloadPortfolio, ...state.portfolios];
-      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
+      returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
+      break;
     }
 
     // Delete a Portfolio.
@@ -33,14 +35,16 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       const payloadPortfolioId = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolioId;});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), ...state.portfolios.slice(portfolioIndex+1)]
-      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
+      returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
+      break;
     }
 
     // Error on Portfolio action.
     case portfolioActions.ERROR_PORTFOLIOS: {
       const {error, prefix} = action.payload;
       alert(Fmt.serverError(error, prefix));
-      return Object.assign({}, state, {updatingPortfolio: false});
+      returnObject = Object.assign({}, state, {updatingPortfolio: false});
+      break;
     }
 
     // Update one Portfolio.
@@ -48,28 +52,34 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       const payloadPortfolio = action.payload;
       const portfolioIndex = state.portfolios.findIndex(portfolio => {return portfolio.id === payloadPortfolio.id});
       const portfolios = [...state.portfolios.slice(0,portfolioIndex), payloadPortfolio, ...state.portfolios.slice(portfolioIndex+1)];
-      return Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
+      returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
+      break;
     }
 
     // Update all Portfolios.
     case portfolioActions.UPDATE_PORTFOLIOS: {
       const payloadPortfolios = action.payload;
-      return Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
+      returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
+      break;
     }
 
     // Show that one or more Portfolios are being modified.
     case portfolioActions.UPDATING_PORTFOLIO:
-      return Object.assign({}, state, {updatingPortfolio: true});
+      returnObject = Object.assign({}, state, {updatingPortfolio: true});
+      break;
 
     // Warning on Portfolio action.
     case portfolioActions.WARN_PORTFOLIOS: {
       const {warning, prefix} = action.payload;
       alert(Fmt.serverError(warning, prefix));
-      return state;
+      returnObject = state;
+      break;
     }
 
     // Default action.
     default:
-      return state;
+      returnObject = state;
+      break;
   }
+  return returnObject;
 }
