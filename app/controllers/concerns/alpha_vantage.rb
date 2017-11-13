@@ -38,7 +38,7 @@ module AlphaVantage extend ActiveSupport::Concern
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
         #
         if response.key?('Error Message') || response.length == 0
-          logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}."
+          logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
           trade = error_trade(symbol, 'Price is not available.')
         else
           header = response['Meta Data']
@@ -55,8 +55,8 @@ module AlphaVantage extend ActiveSupport::Concern
             t.price_change = (current_trade_price - prior_trade_price).round(4)
             t.created_at   = fetch_time
           end
-          trades[i] = trade
         end
+        trades[i] = trade
       end
     }
     trades
