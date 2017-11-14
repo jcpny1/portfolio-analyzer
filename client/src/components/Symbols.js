@@ -1,8 +1,9 @@
 import React from 'react';
 import {Form, Grid, Table} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
-const Symbols = (props) => {
-  const {symbols, symbolName} = props;
+export const Symbols = (props) => {
+  const {onChange, symbols, symbolName} = props;
 
   function columnTitles() {
     return (
@@ -29,7 +30,7 @@ const Symbols = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='value' value={symbolName} onChange={props.onChange}/>
+            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='value' value={symbolName} onChange={onChange}/>
           </Form>
         </Grid.Column>
       </Grid.Row>
@@ -45,4 +46,8 @@ const Symbols = (props) => {
   );
 }
 
-export default Symbols;
+Symbols.propTypes = {
+  onChange: PropTypes.func,
+  symbols: PropTypes.arrayOf(PropTypes.object).isRequired,
+  symbolName: PropTypes.string.isRequired,
+}

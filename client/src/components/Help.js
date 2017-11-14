@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Help = (props) => {
+export const Help = () => {
   return (
     <div>
       <h3>No Investment Advice or Recommendations</h3>
@@ -32,5 +32,3 @@ const Help = (props) => {
     </div>
   );
 }
-
-export default Help;

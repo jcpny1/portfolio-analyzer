@@ -1,15 +1,19 @@
 import React from 'react';
 import {Form} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
-const PortfolioEdit = (props) => {
-  const {portfolio} = props;
+export const PortfolioEdit = (props) => {
+  const {onChange, portfolio} = props;
   return (
     <Form id='portfolioEditForm' onSubmit={props.onSubmit}>
       <Form.Group>
-        <Form.Input width={4} label='Name' placeholder='Name' name='name' value={portfolio.name} onChange={props.onChange} required/>
+        <Form.Input width={4} label='Name' placeholder='Name' name='name' value={portfolio.name} onChange={onChange} required/>
       </Form.Group>
     </Form>
   );
 }
 
-export default PortfolioEdit;
+PortfolioEdit.propTypes = {
+  portfolio: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+}

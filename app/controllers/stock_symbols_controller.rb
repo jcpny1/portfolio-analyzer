@@ -17,6 +17,7 @@ class StockSymbolsController < ApplicationController
   def refresh_from_feed
     symbolsAdded   = 0
     symbolsErrored = 0
+    symbolsSkipped = 0
     symbolsUpdated = 0
     symbolHashArray = IEX_symbology()   # Call feed handler to retrieve symbology.
     StockSymbol.transaction do
@@ -29,6 +30,8 @@ class StockSymbolsController < ApplicationController
           elsif symbol['name'].upcase != stockSymbol.long_name.upcase
             stockSymbol.update!(long_name: symbol['name'])
             symbolsUpdated += 1
+          else
+            symbolsSkipped += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
           logger.error "STOCK SYMBOL REFRESH: Error saving stock symbol: #{symbol.inspect}, #{e}"
@@ -36,7 +39,7 @@ class StockSymbolsController < ApplicationController
         end
       }
     end
-    logger.info "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, errors: #{symbolsErrored})."
+    logger.info "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, skipped: #{symbolsSkipped}, errors: #{symbolsErrored})."
     head :ok
   end
 end

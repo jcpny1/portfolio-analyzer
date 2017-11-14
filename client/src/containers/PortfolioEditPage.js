@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
-import PortfolioEdit from '../components/PortfolioEdit';
+import {PortfolioEdit} from '../components/PortfolioEdit';
 
 export default class PortfolioEditPage extends Component {
   componentWillMount() {

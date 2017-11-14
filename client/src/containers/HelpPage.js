@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Dropdown, Header, Modal} from 'semantic-ui-react';
-import Help from '../components/Help';
+import {Help} from '../components/Help';
 
 export default class HelpPage extends Component {
   render() {

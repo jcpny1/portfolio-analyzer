@@ -1,11 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Header, Table} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import ConfirmDialog from '../containers/ConfirmDialog';
 import Fmt from '../utils/formatters';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
-const Portfolios = (props) => {
+export const Portfolios = (props) => {
   const {portfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
 
   function columnTitles() {
@@ -70,4 +71,13 @@ const Portfolios = (props) => {
   );
 }
 
-export default Portfolios;
+Portfolios.propTypes = {
+  portfolios: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sortColName: PropTypes.string.isRequired,
+  sortDirection: PropTypes.string.isRequired,
+  totalCost: PropTypes.number.isRequired,
+  totalDayChange: PropTypes.number.isRequired,
+  totalGainLoss: PropTypes.number.isRequired,
+  totalMarketValue: PropTypes.number.isRequired,
+  updatingPortfolio: PropTypes.bool.isRequired,
+}

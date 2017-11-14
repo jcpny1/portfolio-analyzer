@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../actions/portfolioActions.js';
 import Portfolio from './classes/Portfolio';
-import Portfolios from '../components/Portfolios';
+import {Portfolios} from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
   componentDidMount() {

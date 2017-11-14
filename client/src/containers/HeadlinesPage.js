@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as Actions from '../utils/actions';
 import Fmt from '../utils/formatters';
-import Headlines from '../components/Headlines';
+import {Headlines} from '../components/Headlines';
 
 export default class HeadlinesPage extends Component {
 

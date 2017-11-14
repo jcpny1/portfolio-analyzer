@@ -1,8 +1,9 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import Fmt from '../utils/formatters';
 
-const Headlines = (props) => {
+export const Headlines = (props) => {
   const {articles, djia, refreshTime} = props;
 
   function listHeadlines() {
@@ -40,4 +41,11 @@ const Headlines = (props) => {
   );
 }
 
-export default Headlines;
+Headlines.propTypes = {
+  articles: PropTypes.arrayOf(PropTypes.object).isRequired,
+  djia: PropTypes.shape({
+    price: PropTypes.string.isRequired,
+    change: PropTypes.string.isRequired,
+  }),
+  refreshTime: PropTypes.instanceOf(Date).isRequired,
+}

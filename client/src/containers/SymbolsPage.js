@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
 import * as Actions from '../utils/actions';
-import Symbols from '../components/Symbols';
+import {Symbols} from '../components/Symbols';
 
 export default class SymbolsPage extends Component {
   componentWillMount() {
