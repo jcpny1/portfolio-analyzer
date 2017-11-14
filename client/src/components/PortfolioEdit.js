@@ -16,4 +16,5 @@ export const PortfolioEdit = (props) => {
 PortfolioEdit.propTypes = {
   portfolio: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }

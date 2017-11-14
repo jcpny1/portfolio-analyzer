@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import Position from './classes/Position';
 import {PositionEdit} from '../components/PositionEdit';
 
@@ -30,11 +31,12 @@ export default class PositionEditPage extends Component {
   }
 
   handleOpen = () => {
+    const {position} = this.props;
     let stock_symbol_name = '';   // We need a stock_symbol_name property to interact with the symbol name modal form field.
-    if ('name' in this.props.position.stock_symbol) {
-      stock_symbol_name = this.props.position.stock_symbol.name;
+    if ('name' in position.stock_symbol) {
+      stock_symbol_name = position.stock_symbol.name;
     }
-    this.setState({modalOpen: true, editedPosition: Object.assign({}, this.props.position, {stock_symbol_name: stock_symbol_name})});
+    this.setState({modalOpen: true, editedPosition: Object.assign({}, position, {stock_symbol_name: stock_symbol_name})});
   }
 
   handleSubmit = () => {
@@ -68,4 +70,12 @@ export default class PositionEditPage extends Component {
       </Modal>
     );
   }
+}
+
+PositionEditPage.propTypes = {
+  iconColor: PropTypes.string.isRequired,
+  iconName: PropTypes.string.isRequired,
+  onClickSubmit: PropTypes.func.isRequired,
+  position: PropTypes.object.isRequired,
+  tooltip: PropTypes.string.isRequired,
 }

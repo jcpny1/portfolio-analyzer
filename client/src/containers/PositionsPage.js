@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import * as positionActions  from '../actions/positionActions.js';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import Position  from './classes/Position';
@@ -48,6 +49,14 @@ class PositionsPage extends Component {
       return null;
     }
   }
+}
+
+PositionsPage.propTypes = {
+  actions: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  portfolios: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sortFn: PropTypes.func.isRequired,
+  updatingPortfolio: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {

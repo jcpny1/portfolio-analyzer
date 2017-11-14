@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as actions from '../actions/portfolioActions.js';
+import PropTypes from 'prop-types';
+import * as portfolioActions from '../actions/portfolioActions.js';
 import Portfolio from './classes/Portfolio';
 import {Portfolios} from '../components/Portfolios';
 
@@ -37,12 +38,19 @@ class PortfoliosPage extends Component {
   }
 }
 
+PortfoliosPage.propTypes = {
+  actions: PropTypes.object.isRequired,
+  portfolios: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sortFn: PropTypes.func.isRequired,
+  updatingPortfolio: PropTypes.bool.isRequired,
+}
+
 function mapStateToProps(state) {
   return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)};
+  return {actions: bindActionCreators(portfolioActions, dispatch)};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PortfoliosPage);

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import {PortfolioEdit} from '../components/PortfolioEdit';
 
 export default class PortfolioEditPage extends Component {
@@ -60,4 +61,12 @@ export default class PortfolioEditPage extends Component {
       </Modal>
     );
   }
+}
+
+PortfolioEditPage.propTypes = {
+  iconColor: PropTypes.string.isRequired,
+  iconName: PropTypes.string.isRequired,
+  onClickSubmit: PropTypes.func.isRequired,
+  portfolio: PropTypes.object.isRequired,
+  tooltip: PropTypes.string.isRequired,
 }

@@ -27,7 +27,15 @@ StockSymbol.create(name: 'SNY',   long_name: 'SANOFI')
 
 u = User.create!(name: 'guest', email: '', locale: 'en-US')
 
-p = Portfolio.create(user: u, name: 'Schwab 1')
+p = Portfolio.create(user: u, name: 'Schwab 5')
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AAPL').first, quantity: 156.4515, cost: 11273.96, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AMZN').first, quantity:   1,      cost:  1000.00, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'COF' ).first, quantity: 344,      cost: 23256.47, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'FBGX').first, quantity: 393,      cost: 38276.93, date_acquired: Date.new(2011,8,2))
+p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'HD'  ).first, quantity: 104,      cost:  8293.00, date_acquired: Date.new(2011,8,2))
+p.save!
+
+p = Portfolio.create(user: u, name: 'Schwab 8')
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AMZN' ).first, quantity:  52, cost: 16058.29, date_acquired: Date.new(2013,11,12))
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'BABA' ).first, quantity: 146, cost: 17046.96, date_acquired: Date.new(2013,11,12))
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'GOOG' ).first, quantity:   7, cost:  3022.70, date_acquired: Date.new(2013,11,12))
@@ -36,14 +44,6 @@ p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'GSK'  ).first, quan
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'INTC' ).first, quantity: 742, cost: 16749.15, date_acquired: Date.new(2013,11,12))
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'JNJ'  ).first, quantity: 425, cost: 39876.54, date_acquired: Date.new(2013,11,12))
 p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'SNY'  ).first, quantity: 450, cost: 21662.86, date_acquired: Date.new(2013,11,12))
-p.save!
-
-p = Portfolio.create(user: u, name: 'Schwab 2')
-p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AAPL').first, quantity: 156.4515, cost: 11273.96, date_acquired: Date.new(2011,8,2))
-p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'AMZN').first, quantity:   1,      cost:  1000.00, date_acquired: Date.new(2011,8,2))
-p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'COF' ).first, quantity: 344,      cost: 23256.47, date_acquired: Date.new(2011,8,2))
-p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'FBGX').first, quantity: 393,      cost: 38276.93, date_acquired: Date.new(2011,8,2))
-p.positions.new(stock_symbol: StockSymbol.where('name = ?', 'HD'  ).first, quantity: 104,      cost:  8293.00, date_acquired: Date.new(2011,8,2))
 p.save!
 
 Trade.create(stock_symbol: StockSymbol.where('name = ?', 'AAPL' ).first, trade_date: '2000-01-01 20:08:00.293', trade_price:  171.50, price_change:  4.39)

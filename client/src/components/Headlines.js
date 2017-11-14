@@ -46,6 +46,6 @@ Headlines.propTypes = {
   djia: PropTypes.shape({
     price: PropTypes.string.isRequired,
     change: PropTypes.string.isRequired,
-  }),
+  }).isRequired,
   refreshTime: PropTypes.instanceOf(Date).isRequired,
 }

@@ -47,7 +47,7 @@ export const Symbols = (props) => {
 }
 
 Symbols.propTypes = {
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   symbols: PropTypes.arrayOf(PropTypes.object).isRequired,
   symbolName: PropTypes.string.isRequired,
 }
