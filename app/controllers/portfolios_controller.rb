@@ -15,7 +15,7 @@ class PortfoliosController < ApplicationController
   def create
     portfolio = Portfolio.new(portfolio_params)
     if portfolio.save
-      render json: portfolio
+      render json: portfolio, status: :created
     else
       render json: portfolio.errors.full_messages, status: :unprocessable_entity
     end

@@ -6,7 +6,7 @@ RSpec.describe PortfoliosController, type: :controller do
   end
 
   describe "GET index" do
-    it "returns a portfolio" do
+    it "returns all portfolios" do
       request.accept = "application/json"
       get :index, :format => :json
       pr = JSON.parse(response.body)
@@ -15,4 +15,5 @@ RSpec.describe PortfoliosController, type: :controller do
       expect(pr[0]['name']).to eq("Portfolio 1")
     end
   end
+
 end
