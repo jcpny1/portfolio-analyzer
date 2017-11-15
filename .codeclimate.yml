@@ -4,6 +4,8 @@ engines:
     #checks:
     #  Rubocop/Metrics/ClassLength:
     #    enabled: false
+  bundler-audit:
+    enabled: true
   brakeman:
     enabled: true
   eslint:
@@ -25,3 +27,4 @@ ratings:
 exclude_paths:
 - spec/**/*
 - "**/vendor/**/*"
+- client/src/semantic-ui
