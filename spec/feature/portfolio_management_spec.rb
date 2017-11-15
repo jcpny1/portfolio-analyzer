@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Portfolio Management', js: true, :type => :feature do
   scenario 'User creates a portfolio' do
-    visit 'http://127.0.0.1:3000'
+    visit 'http://localhost:3000'
     page.first('#portfolioEdit').click
     fill_in "Name", :with => ' <do-not-use>'
     click_button 'Submit'
