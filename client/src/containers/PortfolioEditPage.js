@@ -47,7 +47,7 @@ export default class PortfolioEditPage extends Component {
     return (
       <Modal
         closeOnDimmerClick={false}
-        trigger={<Icon name={iconName} title={tooltip} link color={iconColor} onClick={this.handleOpen}/>}
+        trigger={<Icon name={iconName} title={tooltip} id='portfolioPlus' link color={iconColor} onClick={this.handleOpen}/>}
         open={modalOpen}
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}

@@ -23,13 +23,11 @@ gem 'sqlite3'                     # Used as the database for Active Record.
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-# JCP added:
 gem 'active_model_serializers', '~> 0.10.0' # JSON generators.
 gem 'addressable'                           # URI encoder.
 gem 'dotenv-rails'                          # Loads environment variables from `.env`.
 gem 'faraday'                               # HTTP/REST API client library.
 gem 'foreman', '~> 0.84.0'                  # Process manager for applications with multiple components.
-# end JCP added
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'       # File modification notifications.
@@ -38,9 +36,11 @@ group :development do
 end
 
 group :test do
+  gem 'capybara'              # Needed for RSpec feature tests.
+  gem "selenium-webdriver"    # Used by Capybara.
   gem 'factory_bot_rails'     # Factory to Rails integration.
   gem 'rspec-rails', '~> 3.6' # Rails testing framework.
-  gem 'simplecov'             # Ruby code coverage analysis
+  gem 'simplecov'             # Ruby code coverage analysis.
 end
 
 group :development, :test do
