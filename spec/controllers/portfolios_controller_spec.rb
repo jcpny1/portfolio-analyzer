@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe PortfoliosController, type: :controller do
-  before do
-    @portfolio = create(:portfolio, name: "Portfolio 1")
+  before(:each) do
+    @user = create(:user);
+    @portfolio = create(:portfolio, user: @user)
   end
 
   describe "GET index" do
@@ -12,7 +13,7 @@ RSpec.describe PortfoliosController, type: :controller do
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr.length).to be > 0
-      expect(pr[0]['name']).to eq("Portfolio 1")
+      expect(pr[0]['name']).to eq(@portfolio.name)
     end
   end
 
