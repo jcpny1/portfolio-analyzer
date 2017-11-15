@@ -16,7 +16,7 @@ module AlphaVantage extend ActiveSupport::Concern
       fetch_failure(symbols, trades, error_msg)
     end
 
-    symbols.each_with_index { |symbol, i|
+    symbols.each_with_index do |symbol, i|
       begin
         logger.debug "AV PRICE FETCH BEGIN for: #{symbol}."
         resp = conn.get do |req|
@@ -37,16 +37,16 @@ module AlphaVantage extend ActiveSupport::Concern
         # Error example:
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
         #
-        if response.key?('Error Message') || response.length == 0
+        if response.key?('Error Message') || response.empty?
           logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
           trade = error_trade(symbol, 'Price is not available.')
         else
-          header = response['Meta Data']
+          # header = response['Meta Data']
           ticks = response['Time Series (Daily)']
           current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
           prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
 
-          # TODO Get timezone from Meta Data.
+          # TODO: Get timezone from Meta Data.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
             t.stock_symbol = StockSymbol.new(name: symbol) if t.stock_symbol.nil?    # We don't keep index symbols in database, so make one up here.
@@ -58,15 +58,8 @@ module AlphaVantage extend ActiveSupport::Concern
         end
         trades[i] = trade
       end
-    }
+    end
     trades
-  end
-
-  # Return the feed's list if valid symbols.
-  def AV_symbology()
-    logger.debug 'AV SYMBOLOGY FETCH BEGIN.'
-    logger.debug 'AV SYMBOLOGY FETCH END.'
-    return {}
   end
 end
 

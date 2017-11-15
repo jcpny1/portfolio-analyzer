@@ -1,5 +1,5 @@
 class PortfoliosController < ApplicationController
-  before_action :get_portfolio, except: [:index, :create]
+  before_action :portfolio, except: [:index, :create]
 
   # Retrieve all portfolios.
   def index
@@ -42,7 +42,7 @@ class PortfoliosController < ApplicationController
   private
 
   # Load the portfolio identified in the route.
-  def get_portfolio
+  def portfolio
     @portfolio = Portfolio.find(params[:id])
   end
 

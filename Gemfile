@@ -2,13 +2,13 @@ source 'https://rubygems.org'
 
 # force use of https.
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
 gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
-gem 'sqlite3'                     # Using sqlite3 as the database for Active Record.
 gem 'puma', '~> 3.10'             # HTTP 1.1 server for Ruby/Rack applications.
+gem 'sqlite3'                     # Used as the database for Active Record.
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
@@ -27,8 +27,8 @@ gem 'puma', '~> 3.10'             # HTTP 1.1 server for Ruby/Rack applications.
 gem 'active_model_serializers', '~> 0.10.0' # JSON generators.
 gem 'addressable'                           # URI encoder.
 gem 'dotenv-rails'                          # Loads environment variables from `.env`.
-gem 'foreman', '~> 0.84.0'                  # Process manager for applications with multiple components.
 gem 'faraday'                               # HTTP/REST API client library.
+gem 'foreman', '~> 0.84.0'                  # Process manager for applications with multiple components.
 # end JCP added
 
 group :development do
@@ -38,9 +38,9 @@ group :development do
 end
 
 group :test do
-  gem "factory_bot_rails"     # Factory to Rails integration.
+  gem 'factory_bot_rails'     # Factory to Rails integration.
   gem 'rspec-rails', '~> 3.6' # Rails testing framework.
-  gem "simplecov"             # Ruby code coverage analysis
+  gem 'simplecov'             # Ruby code coverage analysis
 end
 
 group :development, :test do

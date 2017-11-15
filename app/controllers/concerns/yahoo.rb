@@ -17,7 +17,7 @@ module Yahoo extend ActiveSupport::Concern
     trades = Array.new(symbols.length)
     begin
       logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
-      conn = Faraday.new(url: "https://download.finance.yahoo.com/d/quotes.csv")
+      conn = Faraday.new(url: 'https://download.finance.yahoo.com/d/quotes.csv')
       resp = conn.get '', {s: symbol_list, f: 'sl1d1t1c1'}
       logger.debug "YAHOO PRICE FETCH END   for: #{symbol_list}."
       response = CSV.parse(resp.body)
@@ -37,7 +37,7 @@ module Yahoo extend ActiveSupport::Concern
       # resp.body: "<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry, Unable to process request at this time -- error 999.</body></html>"
       # => [["<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry", " Unable to process request at this time -- error 999.</body></html>"]]
       #
-      symbols.each_with_index { |symbol, i|
+      symbols.each_with_index do |symbol, i|
         response_index = response.index{ |row| row[SYMBOL_COL] == symbol}
         if response_index.nil?
           trade = error_trade(symbol, 'Price is not available.')
@@ -47,7 +47,7 @@ module Yahoo extend ActiveSupport::Concern
             # Error example: "AXXX","N/A","N/A","N/A","N/A"
             trade = error_trade(symbol, 'Price is not available.')
           else
-            # TODO Replace 'EDT' with proper timezone info.
+            # TODO: Replace 'EDT' with proper timezone info.
             trade = Trade.new do |t|
               t.stock_symbol = StockSymbol.find_by(name: symbol)
               t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0.round(4).to_datetime
@@ -58,16 +58,9 @@ module Yahoo extend ActiveSupport::Concern
           end
         end
         trades[i] = trade
-      }
+      end
     end
     trades
-  end
-
-  # Return the feed's list if valid symbols.
-  def getSymbology()
-    logger.debug 'YAHOO SYMBOLOGY FETCH BEGIN.'
-    logger.debug 'YAHOO SYMBOLOGY FETCH END.'
-    return {}
   end
 end
 

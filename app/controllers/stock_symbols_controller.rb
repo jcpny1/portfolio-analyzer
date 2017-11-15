@@ -5,7 +5,7 @@ class StockSymbolsController < ApplicationController
   # Use param 'exact' for 'equals' condition. Leave off for 'like'.
   def index
     value = params[:v]
-    if params.key?("exact")
+    if params.key?('exact')
       render json: StockSymbol.where("name = '%s'", value)
     else
       value = "%#{value.upcase}%"
@@ -15,31 +15,31 @@ class StockSymbolsController < ApplicationController
 
   # Refresh stock_symbols database table from feed symbology.
   def refresh_from_feed
-    symbolsAdded   = 0
-    symbolsErrored = 0
-    symbolsSkipped = 0
-    symbolsUpdated = 0
-    symbolHashArray = IEX_symbology()   # Call feed handler to retrieve symbology.
+    symbols_added   = 0
+    symbols_errored = 0
+    symbols_skipped = 0
+    symbols_updated = 0
+    symbol_hash_array = IEX_symbology()   # Call feed handler to retrieve symbology.
     StockSymbol.transaction do
-      symbolHashArray.each { |symbol|
+      symbol_hash_array.each do |symbol|
         begin
           stockSymbol = StockSymbol.where('name = ?', symbol['symbol']).first
           if stockSymbol.nil?
             StockSymbol.create!(name: symbol['symbol'], long_name: symbol['name'])
-            symbolsAdded += 1
+            symbols_added += 1
           elsif symbol['name'].upcase != stockSymbol.long_name.upcase
             stockSymbol.update!(long_name: symbol['name'])
-            symbolsUpdated += 1
+            symbols_updated += 1
           else
-            symbolsSkipped += 1
+            symbols_skipped += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
           logger.error "STOCK SYMBOL REFRESH: Error saving stock symbol: #{symbol.inspect}, #{e}"
-          symbolsErrored += 1
+          symbols_errored += 1
         end
-      }
+      end
     end
-    logger.info "STOCK SYMBOLS REFRESH (processed: #{symbolHashArray.length}, added: #{symbolsAdded}, updated: #{symbolsUpdated}, skipped: #{symbolsSkipped}, errors: #{symbolsErrored})."
+    logger.info "STOCK SYMBOLS REFRESH (processed: #{symbol_hash_array.length}, added: #{symbols_added}, updated: #{symbols_updated}, skipped: #{symbols_skipped}, errors: #{symbols_errored})."
     head :ok
   end
 end

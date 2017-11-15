@@ -27,4 +27,7 @@ ratings:
 exclude_paths:
 - spec/**/*
 - "**/vendor/**/*"
+- bin
 - client/src/semantic-ui
+- config
+- db

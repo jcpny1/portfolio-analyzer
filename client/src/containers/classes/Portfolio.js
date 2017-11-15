@@ -54,7 +54,7 @@ export default class Portfolio {
 
   // Sort Portfolios according to supplied arguments.
   static sort(portfolios, portfolioProperty, portfolioReverseSort, positionProperty, positionReverseSort) {
-    // TODO put column => handler list somewhere where it will not be forgotten when a new column is added.
+    // TODO: put column => handler list somewhere where it will not be forgotten when a new column is added.
     // Sort portfolios.
       switch (portfolioProperty) {
       case 'name':

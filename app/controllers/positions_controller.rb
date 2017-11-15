@@ -1,5 +1,5 @@
 class PositionsController < ApplicationController
-  before_action :get_portfolio, except: [:index]
+  before_action :portfolio, except: [:index]
 
   # Add a new open position to a portfolio and save it to the database.
   def create
@@ -43,14 +43,12 @@ class PositionsController < ApplicationController
   def add_param_symbol_id
     result = position_params.clone
     stock_symbol = StockSymbol.find_by(name: params['stock_symbol_name'])
-    if !stock_symbol.nil?
-      result['stock_symbol_id'] = stock_symbol.id
-    end
+    result['stock_symbol_id'] = stock_symbol.id unless stock_symbol.nil?
     result
   end
 
   # Load the portfolio identified in the route.
-  def get_portfolio
+  def portfolio
     @portfolio = Portfolio.find_by(id: params[:portfolio_id])
   end
 

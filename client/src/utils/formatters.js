@@ -22,7 +22,7 @@ const index = (name, values) => {
 //   Specify prop delta for positive numbers to receive a plus sign and green color.
 //   Specify prop color to force a particular color.
 //   Specify prop type to format for currency, decimal, index, or quantity.
-// TODO codify the zero test with a static function using a clearly defined constant.
+// TODO: codify the zero test with a static function using a clearly defined constant.
 const number = (props) => {
   // Determine if props.value is effectively zero or not.
   let value = parseFloat(props.value);

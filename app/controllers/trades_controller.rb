@@ -18,12 +18,12 @@ class TradesController < ApplicationController
   def last_price
     logger.info 'LAST PRICE FETCH BEGIN.'
     all_trades = []
-    symbols = StockSymbol.select(:id,:name).joins(positions: :portfolio).where(portfolios: {user_id:params['userId']}).distinct.find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbolGroup|
-      symbols = symbolGroup.map { |symbol| symbol.name }  # Create symbols array.
-      trades = load_trades_from_database(symbols)         # Get last trades from database.
+    symbols = StockSymbol.select(:id, :name).joins(positions: :portfolio).where(portfolios: {user_id: params['userId']}).distinct.find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
+      symbols = symbol_group.map(&:name)            # Create symbols array.
+      trades = load_trades_from_database(symbols)  # Get last trades from database.
       if params.key?('livePrices')
-        live_trades = load_live_prices(symbols)           # Update trades with live feed data.
-        save_trades(live_trades, trades)                  # Save updates to database.
+        live_trades = load_live_prices(symbols)    # Update trades with live feed data.
+        save_trades(live_trades, trades)           # Save updates to database.
       end
       all_trades.concat(trades)
     end
@@ -35,13 +35,13 @@ class TradesController < ApplicationController
   def last_price_bulk_load
     logger.info 'LAST PRICE BULK LOAD BEGIN.'
     price_all = true    # Price all symbols? or just those without a price now. (For future use as a param.)
-    whereClause = (price_all) ? '' : 'id not in (select distinct stock_symbol_id from trades)'
-    StockSymbol.select(:id,:name).where(whereClause).find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbolGroup|
-      symbols = symbolGroup.map { |symbol| symbol.name }  # Create symbols array.
-      trades = load_trades_from_database(symbols)         # Fetch database trades.
-      live_trades = load_live_prices(symbols)             # Fetch live feed trades.
+    whereClause = price_all ? '' : 'id not in (select distinct stock_symbol_id from trades)'
+    StockSymbol.select(:id, :name).where(whereClause).find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
+      symbols = symbol_group.map(&:name)             # Create symbols array.
+      trades = load_trades_from_database(symbols)   # Fetch database trades.
+      live_trades = load_live_prices(symbols)       # Fetch live feed trades.
       sleep 2  # Do not slam our feed vendor and get throttled or blocked.
-      save_trades(live_trades, trades)                    # Update the database.
+      save_trades(live_trades, trades)              # Update the database.
     end
     logger.info 'LAST PRICE BULK LOAD END.'
     head :ok
@@ -50,15 +50,15 @@ class TradesController < ApplicationController
   private
 
   # Create a trade that signifies an error has occurred.
-  def error_trade(symbol, errorMsg)
-    Trade.new(stock_symbol: StockSymbol.new(name: symbol), error: "#{symbol}: #{errorMsg}")
+  def error_trade(symbol, error_msg)
+    Trade.new(stock_symbol: StockSymbol.new(name: symbol), error: "#{symbol}: #{error_msg}")
   end
 
   # Create error trades for all symbols.
-  def fetch_failure(symbols, trades, errorMsg)
-    symbols.each_with_index { |symbol, i|
-      trades[i] = error_trade(symbol, errorMsg)
-    }
+  def fetch_failure(symbols, trades, error_msg)
+    symbols.each_with_index do |symbol, i|
+      trades[i] = error_trade(symbol, error_msg)
+    end
   end
 
   # Call feed handler for the latest indexes.
@@ -73,8 +73,8 @@ class TradesController < ApplicationController
 
   # Fetch database trades
   def load_trades_from_database(symbols)
-    trades  = Array.new(symbols.length)
-    symbols.each_with_index { |symbol, i|
+    trades = Array.new(symbols.length)
+    symbols.each_with_index do |symbol, i|
       stock_symbol = StockSymbol.find_by(name: symbol)
       if !stock_symbol.nil?
         trades[i] = Trade.where('stock_symbol_id = ?', stock_symbol.id).first
@@ -82,24 +82,24 @@ class TradesController < ApplicationController
       else
         trades[i] = error_trade(symbol, 'Invalid symbol.')
       end
-    }
+    end
     trades
   end
 
   # Feeds that don't have a trade_date should use this for the trade_date.
-  def missing_trade_date()
-    return Time.at(0).to_datetime
+  def missing_trade_date
+    Time.at(0).to_datetime
   end
 
   # Save live_trades to the database and save in trades array.
   def save_trades(live_trades, trades)
     Trade.transaction do
-      live_trades.each { |live_trade|
+      live_trades.each do |live_trade|
         trade = trades.find { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
         trade = Trade.new(stock_symbol: live_trade.stock_symbol) if trade.nil?
         if !live_trade.trade_price.nil?
           begin
-            if (trade.trade_price.nil?) || (live_trade.trade_price != trade.trade_price) || (live_trade.trade_date > trade.trade_date)
+            if trade.trade_price.nil? || (live_trade.trade_price != trade.trade_price) || (live_trade.trade_date > trade.trade_date)
               trade.trade_date   = live_trade.trade_date
               trade.trade_price  = live_trade.trade_price
               trade.price_change = live_trade.price_change
@@ -113,7 +113,7 @@ class TradesController < ApplicationController
         else
           trade.error = live_trade.error
         end
-      }
+      end
     end
   end
 end

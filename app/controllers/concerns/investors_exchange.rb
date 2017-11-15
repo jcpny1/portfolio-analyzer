@@ -5,32 +5,32 @@ module InvestorsExchange extend ActiveSupport::Concern
   # Make data request(s) for symbols and return results in trades.
   def IEX_latest_trades(symbols)
     fetch_time = DateTime.now
-    symbolList = symbols.join(',')
+    symbol_list = symbols.join(',')
     trades = Array.new(symbols.length)
     uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
-    uri.query_values = {types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbolList}
+    uri.query_values = {types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbol_list}
 
     begin
-      logger.debug "IEX PRICE FETCH BEGIN for: #{symbolList}."
+      logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
       resp = Faraday.get(uri)
-      logger.debug "IEX PRICE FETCH END   for: #{symbolList}."
+      logger.debug "IEX PRICE FETCH END   for: #{symbol_list}."
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-      logger.error "IEX PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}."
+      logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: Faraday client error: #{e}."
       fetch_failure(symbols, trades, 'The feed is down.')
     rescue JSON::ParserError => e  # JSON.parse error
-      logger.error "IEX PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}."
+      logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: JSON parse error: #{e}."
       fetch_failure(symbols, trades, 'The feed is down.')
     else
       #
       # Error example:
       #   <no errors defined yet>
       #
-      symbols.each_with_index { |symbol, i|
+      symbols.each_with_index do |symbol, i|
         if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
           trade = error_trade(symbol, 'Price is not available.')
         else
-          # TODO Need proper timezone info.
+          # TODO: Need proper timezone info.
           trade = Trade.new do |t|
             t.stock_symbol = StockSymbol.find_by(name: symbol)
             t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
@@ -40,13 +40,13 @@ module InvestorsExchange extend ActiveSupport::Concern
           end
         end
         trades[i] = trade
-      }
+      end
     end
     trades
   end
 
   # Return the feed's list of valid symbols.
-  def IEX_symbology()
+  def IEX_symbology
     begin
       response = {}
       logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
@@ -58,7 +58,7 @@ module InvestorsExchange extend ActiveSupport::Concern
     rescue JSON::ParserError => e  # JSON.parse error
       logger.error "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}."
     end
-    return response
+    response
   end
 end
 
