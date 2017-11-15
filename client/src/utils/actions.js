@@ -83,28 +83,44 @@ export function symbolSearch(params, cb) {
 }
 
 // A generic sort comparator function.
-// (makes nulls/NaN's less than not nulls/NaN's).
+// (considers nulls and NaN's to be less than not nulls and NaN's).
 export var sortBy = function(field, reverse = false, compareFn) {
   var key = function (x) {return compareFn ? compareFn(x[field]) : x[field]};
   return function (a,b) {
-    var A = key(a), B = key(b);
+    const A = key(a), B = key(b), reverseSort = [1,-1][+!!reverse];
     if ((typeof A === 'number') && (typeof B === 'number')) {
-      if (!isFinite(A) && !isFinite(B)) {
-        return 0;
-      } else if (!isFinite(A) && isFinite(B)) {
-        return -1 * [1,-1][+!!reverse];
-      } else if (isFinite(A) && !isFinite(B)) {
-        return 1 * [1,-1][+!!reverse];
-      }
-    } else {
-      if (!A && !B) {
-        return 0;
-      } else if (!A && B) {
-        return -1 * [1,-1][+!!reverse];
-      } else if (A && !B) {
-        return 1 * [1,-1][+!!reverse];
-      }
+      return sortByNumber(A, B, reverseSort);
     }
-    return ( (A < B) ? -1 : ( (A > B) ? 1 : 0 ) ) * [1,-1][+!!reverse];
+    return sortByOther(A, B, reverseSort);
   }
+}
+
+// Sort two numbers.
+// (considers nulls and NaN's to be less than not nulls and NaN's).
+function sortByNumber(A, B, reverseSort) {
+  if (!isFinite(A) || !isFinite(B)) {  // Special cases
+    if (!isFinite(A) && !isFinite(B)) {
+      return 0;
+    } else if (!isFinite(A) && isFinite(B)) {
+      return -1 * reverseSort;
+    } else if (isFinite(A) && !isFinite(B)) {
+      return 1 * reverseSort;
+    }
+  }
+  return ( (A < B) ? -1 : ( (A > B) ? 1 : 0 ) ) * reverseSort;
+}
+
+// Sort two non-numbers.
+// (considers nulls and NaN's to be less than not nulls and NaN's).
+function sortByOther(A, B, reverseSort) {
+  if (!A || !B) {  // Special cases
+    if (!A && !B) {
+      return 0;
+    } else if (!A && B) {
+      return -1 * reverseSort;
+    } else if (A && !B) {
+      return 1 * reverseSort;
+    }
+  }
+  return ( (A < B) ? -1 : ( (A > B) ? 1 : 0 ) ) * reverseSort;
 }
