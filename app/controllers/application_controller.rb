@@ -19,9 +19,9 @@ class ApplicationController < ActionController::API
       logger.debug 'NEWSAPI FETCH END.'
       response = JSON.parse(resp.body)
     rescue Faraday::ClientError => e  # Can't connect.
-      logger.error 'NEWSAPI FETCH ERROR: Faraday client error: #{e}.'
+      logger.error "NEWSAPI FETCH ERROR: Faraday client error: #{e}."
     rescue JSON::ParserError => e  # JSON.parse error
-      logger.error 'NEWSAPI FETCH ERROR: JSON parse error: #{e}.'
+      logger.error "NEWSAPI FETCH ERROR: JSON parse error: #{e}."
     end
     render json: response
   end

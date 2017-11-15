@@ -23,12 +23,12 @@ class StockSymbolsController < ApplicationController
     StockSymbol.transaction do
       symbol_hash_array.each do |symbol|
         begin
-          stockSymbol = StockSymbol.where('name = ?', symbol['symbol']).first
-          if stockSymbol.nil?
+          stock_symbol = StockSymbol.where('name = ?', symbol['symbol']).first
+          if stock_symbol.nil?
             StockSymbol.create!(name: symbol['symbol'], long_name: symbol['name'])
             symbols_added += 1
-          elsif symbol['name'].upcase != stockSymbol.long_name.upcase
-            stockSymbol.update!(long_name: symbol['name'])
+          elsif !symbol['name'].casecmp?(stock_symbol.long_name)
+            stock_symbol.update!(long_name: symbol['name'])
             symbols_updated += 1
           else
             symbols_skipped += 1

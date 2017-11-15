@@ -46,6 +46,7 @@ module InvestorsExchange extend ActiveSupport::Concern
   end
 
   # Return the feed's list of valid symbols.
+  # Response format: [{symbol; 'ABC', name: 'Acme Banana'}]
   def IEX_symbology
     begin
       response = {}

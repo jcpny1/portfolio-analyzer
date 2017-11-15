@@ -18,7 +18,7 @@ module Yahoo extend ActiveSupport::Concern
     begin
       logger.debug "YAHOO PRICE FETCH BEGIN for: #{symbol_list}."
       conn = Faraday.new(url: 'https://download.finance.yahoo.com/d/quotes.csv')
-      resp = conn.get '', {s: symbol_list, f: 'sl1d1t1c1'}
+      resp = conn.get '', { s: symbol_list, f: 'sl1d1t1c1' }
       logger.debug "YAHOO PRICE FETCH END   for: #{symbol_list}."
       response = CSV.parse(resp.body)
       raise LoadError, 'The feed is down.' if resp.body.include? '999 Unable to process request at this time'
@@ -38,7 +38,7 @@ module Yahoo extend ActiveSupport::Concern
       # => [["<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry", " Unable to process request at this time -- error 999.</body></html>"]]
       #
       symbols.each_with_index do |symbol, i|
-        response_index = response.index{ |row| row[SYMBOL_COL] == symbol}
+        response_index = response.index { |row| row[SYMBOL_COL] == symbol }
         if response_index.nil?
           trade = error_trade(symbol, 'Price is not available.')
         else
