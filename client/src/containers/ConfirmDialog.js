@@ -30,7 +30,7 @@ export default class ConfirmDialog extends Component {
       <span>
         {
           (triggerType === 'icon') ?
-            <Icon name={name} title={title} link color={color} onClick={this.show}/> :
+            <Icon name={name} title={title} id='portfolioDelete' link color={color} onClick={this.show}/> :
             <Dropdown.Item text={title} onClick={this.show}/>
         }
         <Confirm

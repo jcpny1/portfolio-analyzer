@@ -16,5 +16,4 @@ RSpec.describe PortfoliosController, type: :controller do
       expect(pr[0]['name']).to eq(@portfolio.name)
     end
   end
-
 end

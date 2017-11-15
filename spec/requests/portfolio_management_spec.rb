@@ -20,5 +20,4 @@ RSpec.describe "Portfolio Management", :type => :request do
     delete "/api/portfolios/#{@portfolio.id}"
     expect(response).to have_http_status(:success)
   end
-
 end
