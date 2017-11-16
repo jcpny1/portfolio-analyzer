@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Dropdown, Grid, Image, Menu, Table} from 'semantic-ui-react';
-import * as Actions from './utils/actions';
 import ConfirmDialog from './containers/ConfirmDialog';
 import HeadlinesPage from './containers/HeadlinesPage';
 import HelpPage from './containers/HelpPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
+import * as Request from './utils/request';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
@@ -29,8 +29,8 @@ class App extends Component {
         <Dropdown.Menu>
           <Dropdown item text='Admin'>
             <Dropdown.Menu>
-              <ConfirmDialog triggerType='dropdown' title='Refresh Symbols' header='Refresh symbol inventory from data feed' onClickConfirm={Actions.refreshInstruments}/>
-              <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice every symbol from the data feed' onClickConfirm={Actions.refreshPrices}/>
+              <ConfirmDialog triggerType='dropdown' title='Refresh Symbols' header='Refresh symbol inventory from data feed' onClickConfirm={Request.refreshInstruments}/>
+              <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice every symbol from the data feed' onClickConfirm={Request.refreshPrices}/>
             </Dropdown.Menu>
           </Dropdown>
           <Dropdown.Item disabled text='Locale'/>

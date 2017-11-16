@@ -1,12 +1,13 @@
-import * as Actions from '../../utils/actions';
+import * as Sort from '../../utils/sort';
 import Position from './Position';
 // Using a class to organize Portfolio-related logic.
 // It doesn't seem worth the effort to instantiate any Portfolio objects, yet.
 export default class Portfolio {
   // Return an empty Portfolio object.
-  static newPortfolio() {
+  static newPortfolio(userId) {
     return ({
       id:   '',
+      user_id: userId,
       name: '',
       positions: [],
     });
@@ -58,24 +59,24 @@ export default class Portfolio {
     // Sort portfolios.
       switch (portfolioProperty) {
       case 'name':
-        portfolios.sort(Actions.sortBy(portfolioProperty, portfolioReverseSort, function(a){return a.toUpperCase()}));
+        portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort, function(a){return a.toUpperCase()}));
         break;
       case 'dayChange':    // fall through
       case 'gainLoss':     // fall through
       case 'marketValue':  // fall through
       case 'totalCost':
-        portfolios.sort(Actions.sortBy(portfolioProperty, portfolioReverseSort, parseFloat));
+        portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort, parseFloat));
         break;
       default:
-        portfolios.sort(Actions.sortBy(portfolioProperty, portfolioReverseSort));
+        portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort));
         break;
     }
 
     // Sort positions within portfolios.
     portfolios.forEach(portfolio => {
       switch (positionProperty) {
-        case 'instrument':
-          portfolio.positions.sort(Actions.sortBy(positionProperty, positionReverseSort, function(a){return a.name}));
+        case 'symbol':
+          portfolio.positions.sort(Sort.sortBy('instrument', positionReverseSort, function(a){return a.symbol}));
           break;
         case 'cost':           // fall through
         case 'dayChange':      // fall through
@@ -84,12 +85,12 @@ export default class Portfolio {
         case 'marketValue':    // fall through
         case 'priceChange':    // fall through
         case 'quantity':
-          portfolio.positions.sort(Actions.sortBy(positionProperty, positionReverseSort, parseFloat));
+          portfolio.positions.sort(Sort.sortBy(positionProperty, positionReverseSort, parseFloat));
           break;
         case 'date_acquired':  // fall through
         case 'lastTradeDate':  // fall through
         default:
-          portfolio.positions.sort(Actions.sortBy(positionProperty, positionReverseSort));
+          portfolio.positions.sort(Sort.sortBy(positionProperty, positionReverseSort));
           break;
       }
     });

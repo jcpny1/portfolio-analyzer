@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Button, Header, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import ConfirmDialog from '../containers/ConfirmDialog';
-import Fmt from '../utils/formatters';
+import Fmt from '../utils/formatter';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 export const Portfolios = (props) => {

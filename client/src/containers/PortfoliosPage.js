@@ -7,6 +7,9 @@ import Portfolio from './classes/Portfolio';
 import {Portfolios} from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
+
+  static GUEST_USER_ID = 1;
+
   componentDidMount() {
     this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sortFn)
   }
@@ -34,7 +37,7 @@ class PortfoliosPage extends Component {
     const {portfolios, sortFn, updatingPortfolio} = this.props;
     const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = Portfolio.computeAccountSummaries(portfolios);
     const sortTerms = sortFn();
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={Portfolio.newPortfolio()} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={Portfolio.newPortfolio(PortfoliosPage.GUEST_USER_ID)} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction}/>);
   }
 }
 

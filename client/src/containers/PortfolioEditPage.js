@@ -31,7 +31,7 @@ export default class PortfolioEditPage extends Component {
   handleOpen = () => {
     const {portfolio} = this.props;
     if (portfolio) {
-      this.setState({editedPortfolio: {id: portfolio.id, name: portfolio.name}});
+      this.setState({editedPortfolio: {id: portfolio.id, user_id: portfolio.user_id, name: portfolio.name}});
     }
     this.setState({modalOpen: true});
   }

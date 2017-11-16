@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
 import PropTypes from 'prop-types';
-import Fmt from '../utils/formatters';
+import Fmt from '../utils/formatter';
 import PositionEditPage from '../containers/PositionEditPage';
 
 export const Positions = (props) => {
@@ -12,7 +12,7 @@ export const Positions = (props) => {
     return (
       <Table.Row textAlign='center'>
         <Table.HeaderCell>{<PositionEditPage position={emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={onClickSubmit}/>}</Table.HeaderCell>
-        <Table.HeaderCell sorted={sortColName === 'symbol'       ? sortDirection : null} textAlign='left' onClick={() => onClickColHeader('symbol')}>Symbol</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'symbol'        ? sortDirection : null} textAlign='left' onClick={() => onClickColHeader('symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'priceChange'   ? sortDirection : null} onClick={() => onClickColHeader('priceChange')}>Change</Table.HeaderCell>

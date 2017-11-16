@@ -1,4 +1,4 @@
-import * as Actions from '../../utils/actions';
+import * as Request from '../../utils/request';
 // Using a class to organize Position-related logic.
 // It doesn't seem worth the effort to instantiate any Position objects, yet.
 export default class Position {
@@ -46,7 +46,7 @@ export default class Position {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
     }
     if (errorReturn === null) {
-      Actions.instrumentSearch({value: position.instrument_symbol, exact:true}, instruments => {
+      Request.instrumentSearch({value: position.instrument_symbol, exact:true}, instruments => {
         if (instruments.length !== 1) {
           errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
         }

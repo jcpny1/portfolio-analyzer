@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import Fmt from '../utils/formatters';
+import Fmt from '../utils/formatter';
 
 export const Headlines = (props) => {
   const {articles, djia, refreshTime} = props;

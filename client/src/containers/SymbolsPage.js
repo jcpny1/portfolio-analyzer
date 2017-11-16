@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
-import * as Actions from '../utils/actions';
+import * as Request from '../utils/request';
 import {Symbols} from '../components/Symbols';
 
 export default class SymbolsPage extends Component {
@@ -26,7 +26,7 @@ export default class SymbolsPage extends Component {
       if (value.length === 0) {
         this.setState({searchResults: []});
       } else {
-        Actions.instrumentSearch({value: value, exact:false}, instruments => {
+        Request.instrumentSearch({value: value, exact:false}, instruments => {
         let instrumentList = [];
         instruments.forEach(instrument => {
           instrumentList.push({name: instrument.name, symbol: instrument.symbol});

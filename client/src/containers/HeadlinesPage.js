@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import * as Actions from '../utils/actions';
-import Fmt from '../utils/formatters';
+import Fmt from '../utils/formatter';
 import {Headlines} from '../components/Headlines';
+import * as Request from '../utils/request';
 
 export default class HeadlinesPage extends Component {
 
@@ -27,7 +27,7 @@ export default class HeadlinesPage extends Component {
   }
 
   refreshHeadlines = () => {
-    Actions.refreshHeadlines(headlines => {
+    Request.refreshHeadlines(headlines => {
       if (headlines !== null) {
         headlines.articles.forEach((headlinesArticle,index) => {
           if ((index >= this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
@@ -39,7 +39,7 @@ export default class HeadlinesPage extends Component {
         this.setState({articles: headlines.articles});
       }
     });
-    Actions.refreshIndexes(indices => {
+    Request.refreshIndexes(indices => {
       if ('error' in indices) {
         alert(Fmt.serverError(indices.error, 'Refresh Indexes: '));
       } else {
