@@ -25,18 +25,18 @@ export default class PositionEditPage extends Component {
     this.setState({
       editedPosition: {
           ...this.state.editedPosition,
-          [name]: (name === 'stock_symbol_name') ? value.toUpperCase() : value,
+          [name]: (name === 'instrument_symbol') ? value.toUpperCase() : value,
       },
     });
   }
 
   handleOpen = () => {
     const {position} = this.props;
-    let stock_symbol_name = '';   // We need a stock_symbol_name property to interact with the symbol name modal form field.
-    if ('name' in position.stock_symbol) {
-      stock_symbol_name = position.stock_symbol.name;
+    let instrument_symbol = '';   // We need an instrument_symbol property to interact with the instrument_symbol modal form field.
+    if ('symbol' in position.instrument) {
+      instrument_symbol = position.instrument.symbol;
     }
-    this.setState({modalOpen: true, editedPosition: Object.assign({}, position, {stock_symbol_name: stock_symbol_name})});
+    this.setState({modalOpen: true, editedPosition: Object.assign({}, position, {instrument_symbol: instrument_symbol})});
   }
 
   handleSubmit = () => {

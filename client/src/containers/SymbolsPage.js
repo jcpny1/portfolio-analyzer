@@ -11,8 +11,8 @@ export default class SymbolsPage extends Component {
   resetComponent = () => {
     this.setState({
       modalOpen: false,
-      results: [],
-      value: '',
+      searchResults: [],
+      searchValue: '',
     });
   }
 
@@ -22,16 +22,16 @@ export default class SymbolsPage extends Component {
 
   handleChange = (e, {name, value}) => {
     this.setState({[name]: value});
-    if (e.target.name === 'value') {
+    if (e.target.name === 'searchValue') {
       if (value.length === 0) {
-        this.setState({results: []});
+        this.setState({searchResults: []});
       } else {
-        Actions.symbolSearch({value: value, exact:false}, symbols => {
-        let symbolList = [];
-        symbols.forEach(symbol => {
-          symbolList.push({long_name: symbol.long_name, name: symbol.name});
+        Actions.instrumentSearch({value: value, exact:false}, instruments => {
+        let instrumentList = [];
+        instruments.forEach(instrument => {
+          instrumentList.push({name: instrument.name, symbol: instrument.symbol});
         })
-        this.setState({results: symbolList.slice(0, 20)});
+        this.setState({searchResults: instrumentList.slice(0, 20)});
         });
       }
     }
@@ -42,7 +42,7 @@ export default class SymbolsPage extends Component {
   }
 
   render() {
-    let {results, value} = this.state;
+    let {searchResults, searchValue} = this.state;
     return (
       <Modal
         closeIcon
@@ -53,7 +53,7 @@ export default class SymbolsPage extends Component {
         onClose={this.handleCancel}
       >
         <Modal.Header><Header content='Symbol Lookup' icon='search' size='small'/></Modal.Header>
-        <Modal.Content><Symbols symbolName={value} symbols={results} onChange={this.handleChange}/></Modal.Content>
+        <Modal.Content><Symbols searchValue={searchValue} instruments={searchResults} onChange={this.handleChange}/></Modal.Content>
         <Modal.Actions><Button color='green' onClick={this.handleCancel}>Done</Button></Modal.Actions>
       </Modal>
     );

@@ -10,7 +10,7 @@ module Yahoo extend ActiveSupport::Concern
   LAST_TRADE_TIME_COL  = 3
   DAY_CHANGE_COL       = 4
 
-  # Make data request(s) for symbols and return results in trades.
+  # Makes data request(s) for an array of symbols and returns results in trades.
   def latest_trades(symbols, trades)
     fetch_time = DateTime.now
     symbol_list = symbols.join('+')
@@ -49,7 +49,7 @@ module Yahoo extend ActiveSupport::Concern
           else
             # TODO: Replace 'EDT' with proper timezone info.
             trade = Trade.new do |t|
-              t.stock_symbol = StockSymbol.find_by(name: symbol)
+              t.instrument   = Instrument.find_by(symbol: symbol)
               t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0.round(4).to_datetime
               t.trade_price  = response_row[LAST_TRADE_PRICE_COL].to_f.round(4)
               t.price_change = response_row[DAY_CHANGE_COL].to_f.round(4)

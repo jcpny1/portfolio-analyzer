@@ -2,14 +2,14 @@
 
 one:
   portfolio: one
-  stock_symbol: one
+  instrument: one
   quantity: 9.99
   cost: 9.99
   date_acquired: 2017-09-29
 
 two:
   portfolio: two
-  stock_symbol: two
+  instrument: two
   quantity: 9.99
   cost: 9.99
   date_acquired: 2017-09-29

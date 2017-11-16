@@ -74,7 +74,7 @@ export default class Portfolio {
     // Sort positions within portfolios.
     portfolios.forEach(portfolio => {
       switch (positionProperty) {
-        case 'stock_symbol':
+        case 'instrument':
           portfolio.positions.sort(Actions.sortBy(positionProperty, positionReverseSort, function(a){return a.name}));
           break;
         case 'cost':           // fall through

@@ -11,7 +11,7 @@ export function addPosition(position, sortFn) {
       fetch(`/api/portfolios/${position.portfolio_id}/positions`, {
         method:  'POST',
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-        body:    JSON.stringify({stock_symbol_name: position.stock_symbol_name, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
+        body:    JSON.stringify({instrument_symbol: position.instrument_symbol, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
       })
       .then(Actions.checkStatus)
       .then(response => response.json())
@@ -65,7 +65,7 @@ export function updatePosition(position, sortFn) {
       fetch(`/api/portfolios/${position.portfolio_id}/positions/${position.id}`, {
         method:  'PATCH',
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-        body:    JSON.stringify({stock_symbol_name: position.stock_symbol_name, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
+        body:    JSON.stringify({instrument_symbol: position.instrument_symbol, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
       })
       .then(Actions.checkStatus)
       .then(response => response.json())

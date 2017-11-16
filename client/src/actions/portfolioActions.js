@@ -62,7 +62,7 @@ export function loadPortfolios(loadLivePrices, sortFn) {
         Portfolio.initPositionValues(portfolios)
         const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
         const userId = (portfolios.length > 0) ? portfolios[0].user.id : '';
-        fetch(`/api/portfolios/lastPrice?${livePrices}userId=${userId}`, {
+        fetch(`/api/portfolios/last-price?${livePrices}userId=${userId}`, {
           headers: {'Accept': 'application/json'},
         })
         .then(Actions.checkStatus)

@@ -38,6 +38,18 @@ export function columnSorter(initialPrimaryProperty, initialPrimaryDirection, in
   }
 }
 
+// Lookup instrument by value.
+// params={field, value, exact}
+// Specify option 'exact' as true (for an exact match) or false (for a partial match).
+export function instrumentSearch(params, cb) {
+  const exact = params.exact ? '&exact' : '';
+  return fetch(`/api/instruments?v=${encodeURI(params.value)}${exact}`, {headers: {'Accept': 'application/json'}})
+  .then(checkStatus)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(error.message)});
+}
+
 // Request the server to refresh the symbololgy database.
 export function refreshHeadlines(cb) {
   fetch('/api/headlines', {headers: {'Accept': 'application/json'}})
@@ -47,16 +59,16 @@ export function refreshHeadlines(cb) {
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Headlines: '));});
 }
 
-// Request the server to refresh the symbololgy database.
+// Request the server to refresh market indexes.
 export function refreshIndexes(cb) {
-  fetch('/api/lastIndex?symbols=DJIA', {headers: {'Accept': 'application/json'}})
+  fetch('/api/last-index?symbols=DJIA', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
   .then(response => response.json())
   .then(cb)
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Indexes: '));});
 }
 
-// Request the server to refresh the symbololgy database.
+// Request the server to refresh trade prices.
 export function refreshPrices() {
   fetch('/api/trades/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
@@ -64,22 +76,10 @@ export function refreshPrices() {
 }
 
 // Request the server to refresh the symbololgy database.
-export function refreshSymbols() {
-  fetch('/api/stock_symbols/refresh', {headers: {'Accept': 'application/json'}})
+export function refreshInstruments() {
+  fetch('/api/instruments/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
   .catch(error => {alert(Fmt.serverError(error, 'Refresh Symbols: '));});
-}
-
-// Lookup stock symbol field by value.
-// params={field, value, exact}
-// Specify option 'exact' as true (for an exact match) or false (for a partial match).
-export function symbolSearch(params, cb) {
-  const exact = params.exact ? '&exact' : '';
-  return fetch(`/api/stock_symbols?v=${encodeURI(params.value)}${exact}`, {headers: {'Accept': 'application/json'}})
-  .then(checkStatus)
-  .then(response => response.json())
-  .then(cb)
-  .catch(error => {alert(error.message)});
 }
 
 // A generic sort comparator function.

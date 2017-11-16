@@ -1,4 +1,4 @@
 class Trade < ApplicationRecord
-  belongs_to :stock_symbol
+  belongs_to :instrument
   attr_accessor :error
 end

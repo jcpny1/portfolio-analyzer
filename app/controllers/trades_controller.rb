@@ -1,5 +1,6 @@
 class TradesController < ApplicationController
   include AlphaVantage, InvestorsExchange  # include Feed handlers here.
+  # Feeds that don't have a trade_date should use #missing_trade_date below for the trade_date.
 
   BATCH_FETCH_SIZE = 50   # Limit on IEX feed is 100 symbols per request. Let's stay well under that for now.
 
@@ -18,8 +19,8 @@ class TradesController < ApplicationController
   def last_price
     logger.info 'LAST PRICE FETCH BEGIN.'
     all_trades = []
-    symbols = StockSymbol.select(:id, :name).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct.find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
-      symbols = symbol_group.map(&:name)            # Create symbols array.
+    symbols = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct.find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
+      symbols = symbol_group.map(&:symbol)         # Create symbols array.
       trades = load_trades_from_database(symbols)  # Get last trades from database.
       if params.key?('livePrices')
         live_trades = load_live_prices(symbols)    # Update trades with live feed data.
@@ -36,11 +37,11 @@ class TradesController < ApplicationController
     logger.info 'LAST PRICE BULK LOAD BEGIN.'
     price_all = true    # Price all symbols? or just those without a price now. (For future use as a param.)
     where_clause = price_all ? '' : 'id not in (select distinct stock_symbol_id from trades)'
-    StockSymbol.select(:id, :name).where(where_clause).find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
-      symbols = symbol_group.map(&:name)             # Create symbols array.
+    Instrument.select(:id, :symbol).where(where_clause).find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
+      symbols = symbol_group.map(&:symbol)          # Create symbols array.
       trades = load_trades_from_database(symbols)   # Fetch database trades.
       live_trades = load_live_prices(symbols)       # Fetch live feed trades.
-      sleep 2  # Do not slam our feed vendor and get throttled or blocked.
+      sleep 2                                       # Do not slam our feed vendor and get throttled or blocked.
       save_trades(live_trades, trades)              # Update the database.
     end
     logger.info 'LAST PRICE BULK LOAD END.'
@@ -51,7 +52,7 @@ class TradesController < ApplicationController
 
   # Create a trade that signifies an error has occurred.
   def error_trade(symbol, error_msg)
-    Trade.new(stock_symbol: StockSymbol.new(name: symbol), error: "#{symbol}: #{error_msg}")
+    Trade.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")
   end
 
   # Create error trades for all symbols.
@@ -75,10 +76,10 @@ class TradesController < ApplicationController
   def load_trades_from_database(symbols)
     trades = Array.new(symbols.length)
     symbols.each_with_index do |symbol, i|
-      stock_symbol = StockSymbol.find_by(name: symbol)
-      if !stock_symbol.nil?
-        trades[i] = Trade.where('stock_symbol_id = ?', stock_symbol.id).first
-        trades[i] = Trade.new(stock_symbol: stock_symbol) if trades[i].nil?
+      instrument = Instrument.find_by(symbol: symbol)
+      if !instrument.nil?
+        trades[i] = Trade.where('instrument_id = ?', instrument.id).first
+        trades[i] = Trade.new(instrument: instrument) if trades[i].nil?
       else
         trades[i] = error_trade(symbol, 'Invalid symbol.')
       end
@@ -95,8 +96,8 @@ class TradesController < ApplicationController
   def save_trades(live_trades, trades)
     Trade.transaction do
       live_trades.each do |live_trade|
-        trade = trades.find { |trade| trade.stock_symbol.name == live_trade.stock_symbol.name }
-        trade = Trade.new(stock_symbol: live_trade.stock_symbol) if trade.nil?
+        trade = trades.find { |trade| trade.instrument.symbol == live_trade.instrument.symbol }
+        trade = Trade.new(instrument: live_trade.instrument) if trade.nil?
         if !live_trade.trade_price.nil?
           begin
             if trade.trade_price.nil? || (live_trade.trade_price != trade.trade_price) || (live_trade.trade_date > trade.trade_date)

@@ -7,7 +7,7 @@ export default class Position {
     return ({
       portfolio_id: portfolioId,
       id: '',
-      stock_symbol: {},
+      instrument: {},
       quantity: '',
       cost: '',
       date_acquired: '',
@@ -15,7 +15,7 @@ export default class Position {
   }
 
   static processPrices(position, trades) {
-    const tradesIndex = trades.findIndex(trade => {return trade.stock_symbol_id === position.stock_symbol.id});
+    const tradesIndex = trades.findIndex(trade => {return trade.instrument_id === position.instrument.id});
     if (tradesIndex !== -1) {
       position.lastTrade     = trades[tradesIndex].trade_price;
       position.priceChange   = trades[tradesIndex].price_change;
@@ -36,8 +36,8 @@ export default class Position {
   // If position is valid, returns null. Otherwise, returns error message.
   static validate(position, cb) {
     let errorReturn = null;
-    if (!(/^[A-Z.*+-]+$/.test(position.stock_symbol_name))) {
-      errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
+    if (!(/^[A-Z.*+-]+$/.test(position.instrument_symbol))) {
+      errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
     } else if (!(parseFloat(position.quantity) >= 0)) {
       errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
     } else if (!(parseFloat(position.cost) >= 0)) {
@@ -46,9 +46,9 @@ export default class Position {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
     }
     if (errorReturn === null) {
-      Actions.symbolSearch({value: position.stock_symbol_name, exact:true}, symbols => {
-        if (symbols.length !== 1) {
-          errorReturn = {name: 'stock_symbol_name', message: 'Symbol is not valid.'};
+      Actions.instrumentSearch({value: position.instrument_symbol, exact:true}, instruments => {
+        if (instruments.length !== 1) {
+          errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
         }
         cb(errorReturn);
       });

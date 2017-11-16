@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DailyTradesControllerTest < ActionDispatch::IntegrationTest
+class TradeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

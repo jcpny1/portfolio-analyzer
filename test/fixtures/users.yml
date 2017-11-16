@@ -3,7 +3,9 @@
 one:
   name: MyString
   email: MyString
+  locale: MyString
 
 two:
   name: MyString
   email: MyString
+  locale: MyString

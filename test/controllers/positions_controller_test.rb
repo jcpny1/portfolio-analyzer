@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OpenPositionsControllerTest < ActionDispatch::IntegrationTest
+class PositionsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

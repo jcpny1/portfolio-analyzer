@@ -29,7 +29,7 @@ class App extends Component {
         <Dropdown.Menu>
           <Dropdown item text='Admin'>
             <Dropdown.Menu>
-              <ConfirmDialog triggerType='dropdown' title='Refresh Symbols' header='Refresh symbol inventory from data feed' onClickConfirm={Actions.refreshSymbols}/>
+              <ConfirmDialog triggerType='dropdown' title='Refresh Symbols' header='Refresh symbol inventory from data feed' onClickConfirm={Actions.refreshInstruments}/>
               <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice every symbol from the data feed' onClickConfirm={Actions.refreshPrices}/>
             </Dropdown.Menu>
           </Dropdown>

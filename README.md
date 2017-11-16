@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Stock Analyzer App is a portfolio monitoring tool. You can enter your stock holdings and monitor their total and intra-day value change.
+The Stock Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total and intra-day value change.
 
 ![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
 

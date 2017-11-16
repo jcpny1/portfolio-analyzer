@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StockSymbolTest < ActiveSupport::TestCase
+class InstrumentTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

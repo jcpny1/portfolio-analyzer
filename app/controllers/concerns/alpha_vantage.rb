@@ -2,7 +2,7 @@ module AlphaVantage extend ActiveSupport::Concern
   #
   # See the bottom of this file for sample data.
   #
-  # Make data request(s) for symbols and return results in trades.
+  # Makes data request(s) for an array of symbols and returns results in trades.
   def AV_latest_trades(symbols)
     api_key = ENV['ALPHA_VANTAGE_API_KEY']
     fetch_time = DateTime.now
@@ -27,10 +27,10 @@ module AlphaVantage extend ActiveSupport::Concern
         logger.debug "AV PRICE FETCH END   for: #{symbol}."
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e
-        logger.error "AV PRICE FETCH ERROR for: #{symbolList}: Faraday client error: #{e}."
+        logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
         fetch_failure(symbols, trades, 'The feed is down.')
       rescue JSON::ParserError => e
-        logger.error "AV PRICE FETCH ERROR for: #{symbolList}: JSON parse error: #{e}."
+        logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
         fetch_failure(symbols, trades, 'The feed is down.')
       else
         #
@@ -48,8 +48,8 @@ module AlphaVantage extend ActiveSupport::Concern
 
           # TODO: Get timezone from Meta Data.
           trade = Trade.new do |t|
-            t.stock_symbol = StockSymbol.find_by(name: symbol)
-            t.stock_symbol = StockSymbol.new(name: symbol) if t.stock_symbol.nil?    # We don't keep index symbols in database, so make one up here.
+            t.instrument = Instrument.find_by(symbol: symbol)
+            t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
             t.trade_date   = missing_trade_date
             t.trade_price  = current_trade_price
             t.price_change = (current_trade_price - prior_trade_price).round(4)

@@ -2,7 +2,7 @@ module InvestorsExchange extend ActiveSupport::Concern
   #
   # See the bottom of this file for sample data.
   #
-  # Make data request(s) for symbols and return results in trades.
+  # Makes data request(s) for an array of symbols and returns results in trades.
   def IEX_latest_trades(symbols)
     fetch_time = DateTime.now
     symbol_list = symbols.join(',')
@@ -32,7 +32,7 @@ module InvestorsExchange extend ActiveSupport::Concern
         else
           # TODO: Need proper timezone info.
           trade = Trade.new do |t|
-            t.stock_symbol = StockSymbol.find_by(name: symbol)
+            t.instrument   = Instrument.find_by(symbol: symbol)
             t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
             t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
             t.price_change = symbol_quote['change'].to_f.round(4)

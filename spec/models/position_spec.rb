@@ -5,7 +5,7 @@ RSpec.describe Position, type: :model do
     @position = build(:position)
   end
 
-  it "has a name" do
-    expect(@position.stock_symbol.name).to eq('ABC')
+  it "has a symbol" do
+    expect(@position.instrument.symbol).to eq('ABC')
   end
 end

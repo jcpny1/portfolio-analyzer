@@ -46,7 +46,7 @@ class PortfoliosController < ApplicationController
     @portfolio = Portfolio.find(params[:id])
   end
 
-  # Filter params for allowed elements only.
+  # Filter params for allowed attributes only.
   def portfolio_params
     params.require(:portfolio).permit(:user_id, :name)
   end

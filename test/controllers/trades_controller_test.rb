@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StockSymbolsControllerTest < ActionDispatch::IntegrationTest
+class TradesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

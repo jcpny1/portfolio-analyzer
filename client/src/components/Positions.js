@@ -12,7 +12,7 @@ export const Positions = (props) => {
     return (
       <Table.Row textAlign='center'>
         <Table.HeaderCell>{<PositionEditPage position={emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={onClickSubmit}/>}</Table.HeaderCell>
-        <Table.HeaderCell sorted={sortColName === 'stock_symbol'  ? sortDirection : null} textAlign='left' onClick={() => onClickColHeader('stock_symbol')}>Symbol</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'symbol'       ? sortDirection : null} textAlign='left' onClick={() => onClickColHeader('symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'priceChange'   ? sortDirection : null} onClick={() => onClickColHeader('priceChange')}>Change</Table.HeaderCell>
@@ -34,7 +34,7 @@ export const Positions = (props) => {
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={onClickSubmit}/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
-          <Table.Cell textAlign='left' title={position.stock_symbol.long_name}>{position.stock_symbol.name}</Table.Cell>
+          <Table.Cell textAlign='left' title={position.instrument.name}>{position.instrument.symbol}</Table.Cell>
           <Table.Cell><Fmt.number type='quantity' value={position.quantity} quantity/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.lastTrade}/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.priceChange} delta/></Table.Cell>

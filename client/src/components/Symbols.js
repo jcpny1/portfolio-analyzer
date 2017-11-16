@@ -3,7 +3,7 @@ import {Form, Grid, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 export const Symbols = (props) => {
-  const {onChange, symbols, symbolName} = props;
+  const {onChange, instruments, searchValue} = props;
 
   function columnTitles() {
     return (
@@ -14,12 +14,12 @@ export const Symbols = (props) => {
     );
   }
 
-  function listSymbols() {
-    return symbols.map((symbol,index) => {
+  function listInstruments() {
+    return instruments.map((instrument,index) => {
       return (
         <Table.Row key={index}>
-          <Table.Cell width={8}>{symbol.long_name}</Table.Cell>
-          <Table.Cell width={3}>{symbol.name}</Table.Cell>
+          <Table.Cell width={8}>{instrument.name}</Table.Cell>
+          <Table.Cell width={3}>{instrument.symbol}</Table.Cell>
         </Table.Row>
       );
     });
@@ -30,7 +30,7 @@ export const Symbols = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='value' value={symbolName} onChange={onChange}/>
+            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='searchValue' value={searchValue} onChange={onChange}/>
           </Form>
         </Grid.Column>
       </Grid.Row>
@@ -38,7 +38,7 @@ export const Symbols = (props) => {
         <Grid.Column>
           <Table compact='very' striped>
             <Table.Header>{columnTitles()}</Table.Header>
-            <Table.Body>{listSymbols()}</Table.Body>
+            <Table.Body>{listInstruments()}</Table.Body>
           </Table>
         </Grid.Column>
       </Grid.Row>
@@ -48,6 +48,6 @@ export const Symbols = (props) => {
 
 Symbols.propTypes = {
   onChange: PropTypes.func.isRequired,
-  symbols: PropTypes.arrayOf(PropTypes.object).isRequired,
-  symbolName: PropTypes.string.isRequired,
+  instruments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searchValue: PropTypes.string.isRequired,
 }
