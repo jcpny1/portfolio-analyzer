@@ -34,11 +34,11 @@ module AlphaVantage extend ActiveSupport::Concern
         fetch_failure(symbols, trades, 'The feed is down.')
       else
         #
-        # Error example:
+        # Error examples:
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
-        #
-        if response.key?('Error Message') || response.empty?
-          logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response['Error Message']}"
+        #   {"Information"=>"Please consider optimizing your API call frequency."}
+        if !response.key?('Time Series (Daily)')
+          logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
           trade = error_trade(symbol, 'Price is not available.')
         else
           # header = response['Meta Data']

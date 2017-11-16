@@ -19,7 +19,7 @@ class TradesController < ApplicationController
   def last_price
     logger.info 'LAST PRICE FETCH BEGIN.'
     all_trades = []
-    symbols = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct.find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
+    symbols = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct.find_in_batches(batch_size: BATCH_FETCH_SIZE) do |symbol_group|
       symbols = symbol_group.map(&:symbol)         # Create symbols array.
       trades = load_trades_from_database(symbols)  # Get last trades from database.
       if params.key?('livePrices')
@@ -37,7 +37,7 @@ class TradesController < ApplicationController
     logger.info 'LAST PRICE BULK LOAD BEGIN.'
     price_all = true    # Price all symbols? or just those without a price now. (For future use as a param.)
     where_clause = price_all ? '' : 'id not in (select distinct stock_symbol_id from trades)'
-    Instrument.select(:id, :symbol).where(where_clause).find_in_batches(batch_size:BATCH_FETCH_SIZE) do |symbol_group|
+    Instrument.select(:id, :symbol).where(where_clause).find_in_batches(batch_size: BATCH_FETCH_SIZE) do |symbol_group|
       symbols = symbol_group.map(&:symbol)          # Create symbols array.
       trades = load_trades_from_database(symbols)   # Fetch database trades.
       live_trades = load_live_prices(symbols)       # Fetch live feed trades.

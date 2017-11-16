@@ -22,20 +22,20 @@ class InstrumentsController < ApplicationController
     instruments_updated = 0
     symbology = IEX_symbology()   # Call feed handler to retrieve symbology.
     Instrument.transaction do
-      symbology.each do |symbolRecord|
+      symbology.each do |symbol_record|
         begin
-          instrument = Instrument.where('symbol = ?', symbolRecord['symbol']).first
+          instrument = Instrument.where('symbol = ?', symbol_record['symbol']).first
           if instrument.nil?
-            Instrument.create!(symbol: symbolRecord['symbol'], name: symbolRecord['name'])
+            Instrument.create!(symbol: symbol_record['symbol'], name: symbol_record['name'])
             instruments_added += 1
-          elsif !symbolRecord['name'].casecmp?(instrument.name)
-            instrument.update!(name: symbolRecord['name'])
+          elsif !symbol_record['name'].casecmp?(instrument.name)
+            instrument.update!(name: symbol_record['name'])
             instruments_updated += 1
           else
             instruments_skipped += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
-          logger.error "INSTRUMENT REFRESH: Error saving stock symbol: #{symbolRecord.inspect}, #{e}"
+          logger.error "INSTRUMENT REFRESH: Error saving stock symbol: #{symbol_record.inspect}, #{e}"
           instruments_errored += 1
         end
       end

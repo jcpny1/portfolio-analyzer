@@ -37,8 +37,8 @@ end
 
 group :test do
   gem 'capybara'              # Needed for RSpec feature tests.
-  gem "selenium-webdriver"    # Used by Capybara.
   gem 'factory_bot_rails'     # Factory to Rails integration.
+  gem "selenium-webdriver"    # Used by Capybara.
   gem 'rspec-rails', '~> 3.6' # Rails testing framework.
   gem 'simplecov'             # Ruby code coverage analysis.
 end
