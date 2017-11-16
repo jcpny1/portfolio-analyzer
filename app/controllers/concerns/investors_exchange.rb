@@ -8,7 +8,7 @@ module InvestorsExchange extend ActiveSupport::Concern
     symbol_list = symbols.join(',')
     trades = Array.new(symbols.length)
     uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
-    uri.query_values = {types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbol_list}
+    uri.query_values = { types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbol_list }
 
     begin
       logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
