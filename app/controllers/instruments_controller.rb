@@ -1,3 +1,4 @@
+# This controller handles requests for Instrument data.
 class InstrumentsController < ApplicationController
   include InvestorsExchange  # include Feed handlers here.
 

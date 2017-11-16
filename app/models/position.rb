@@ -1,3 +1,4 @@
+# A Position is an amount of an Instrument owned by Portfolio.
 class Position < ApplicationRecord
   belongs_to :portfolio, inverse_of: :positions
   belongs_to :instrument

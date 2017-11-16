@@ -1,3 +1,4 @@
+# This controller handles requests for Portfolio data.
 class PortfoliosController < ApplicationController
   before_action :portfolio, except: [:index, :create]
 

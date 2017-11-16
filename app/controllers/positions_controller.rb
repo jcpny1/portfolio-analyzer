@@ -1,3 +1,4 @@
+# This controller handles requests for Position data.
 class PositionsController < ApplicationController
   before_action :portfolio, except: [:index]
 

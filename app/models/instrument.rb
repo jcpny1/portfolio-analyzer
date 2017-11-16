@@ -1,3 +1,4 @@
+# An Instrument, in this application, is a tradable financial asset such as a stock. 
 class Instrument < ApplicationRecord
   has_many :trades
   has_many :positions

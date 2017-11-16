@@ -1,3 +1,5 @@
+# This is the Yahoo Finance API handler.
+# This API is defunct as of November 2017.
 module Yahoo extend ActiveSupport::Concern
   require 'csv'
   #

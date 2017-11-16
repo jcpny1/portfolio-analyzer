@@ -1,3 +1,4 @@
+# This controller handles requests for Trade data.
 class TradesController < ApplicationController
   include AlphaVantage, InvestorsExchange  # include Feed handlers here.
   # Feeds that don't have a trade_date should use #missing_trade_date below for the trade_date.

@@ -1,3 +1,4 @@
+# This is the Investors Exchange API handler.
 module InvestorsExchange extend ActiveSupport::Concern
   #
   # See the bottom of this file for sample data.

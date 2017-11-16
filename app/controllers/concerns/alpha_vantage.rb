@@ -1,3 +1,4 @@
+# This is the Alpha Vantage API handler.
 module AlphaVantage extend ActiveSupport::Concern
   #
   # See the bottom of this file for sample data.
@@ -37,7 +38,7 @@ module AlphaVantage extend ActiveSupport::Concern
         # Error examples:
         #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
         #   {"Information"=>"Please consider optimizing your API call frequency."}
-        if !response.key?('Time Series (Daily)')
+        if !response.key?('Time Series (Daily)') ||response.key?('Information') || response.empty?
           logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
           trade = error_trade(symbol, 'Price is not available.')
         else
