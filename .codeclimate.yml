@@ -1,9 +1,9 @@
 engines:
   rubocop:
     enabled: true
-    #checks:
-    #  Rubocop/Metrics/ClassLength:
-    #    enabled: false
+    checks:
+      Rubocop/Metrics/LineLength:
+        enabled: false
   bundler-audit:
     enabled: true
   brakeman:
