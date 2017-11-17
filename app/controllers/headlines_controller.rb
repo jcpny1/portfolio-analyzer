@@ -9,7 +9,6 @@ class HeadlinesController < ApplicationController
     rescue Faraday::ClientError => e  # Can't connect.
       logger.error "NEWSAPI FETCH ERROR: Faraday client error: #{e}."
     end
-
     begin
       logger.debug 'NEWSAPI FETCH BEGIN.'
       resp = conn.get do |req|
