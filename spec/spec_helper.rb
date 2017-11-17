@@ -25,11 +25,15 @@ RSpec.configure do |config|
     stub_request(:get, 'https://api.iextrading.com/1.0/ref-data/symbols').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200, body: "stubbed response goes here", headers: {})
+    # Request instrument prices for user.
+    stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=companyName,latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
+      to_return(status: 200, body: "", headers: {})
     # Request for DJIA index value.
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol%5B%5D=DJIA').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200, body: "", headers: {})
-    # Request for Bllomberg headline news.
+    # Request for Bloomberg headline news.
     stub_request(:get, 'https://newsapi.org/v1/articles?apikey&sortBy=top&source=bloomberg').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200, body: "", headers: {})
