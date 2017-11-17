@@ -28,7 +28,7 @@ module InvestorsExchange extend ActiveSupport::Concern
       #   <no errors defined yet>
       #
       symbols.each_with_index do |symbol, i|
-        trades[i] = AV_process_response(symbol, response)
+        trades[i] = IEX_process_response(symbol, response)
         trades[i].created_at = fetch_time
       end
     end
@@ -63,7 +63,6 @@ module InvestorsExchange extend ActiveSupport::Concern
         t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
         t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
         t.price_change = symbol_quote['change'].to_f.round(4)
-        t.created_at   = fetch_time
       end
     end
     trade

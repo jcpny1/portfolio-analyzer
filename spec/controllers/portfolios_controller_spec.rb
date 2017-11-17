@@ -9,7 +9,7 @@ RSpec.describe PortfoliosController, type: :controller do
   describe "GET index" do
     it "returns all portfolios" do
       request.accept = "application/json"
-      get :index, :format => :json
+      get :index, format: :json
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr.length).to be > 0
