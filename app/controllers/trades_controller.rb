@@ -49,7 +49,7 @@ class TradesController < ApplicationController
     head :ok
   end
 
-  private
+private
 
   # Create a trade that signifies an error has occurred.
   def error_trade(symbol, error_msg)
@@ -101,7 +101,7 @@ class TradesController < ApplicationController
         trade = Trade.new(instrument: live_trade.instrument) if trade.nil?
         if !live_trade.trade_price.nil?
           begin
-            if trade.trade_price.nil? || (live_trade.trade_price != trade.trade_price) || (live_trade.trade_date > trade.trade_date)
+            if trade.changed?(live_trade)
               trade.trade_date   = live_trade.trade_date
               trade.trade_price  = live_trade.trade_price
               trade.price_change = live_trade.price_change

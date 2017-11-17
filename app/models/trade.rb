@@ -4,4 +4,8 @@
 class Trade < ApplicationRecord
   belongs_to :instrument
   attr_accessor :error
+
+  def changed?(compare)
+    return (trade_price != compare.trade_price) || (trade_date < compare.trade_date)
+  end
 end

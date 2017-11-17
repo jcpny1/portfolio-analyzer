@@ -15,52 +15,59 @@ module AlphaVantage extend ActiveSupport::Concern
       logger.error "AV PRICE FETCH ERROR for: #{symbols.inspect}."
       error_msg = "Faraday client error: #{e}"
       fetch_failure(symbols, trades, error_msg)
-    end
-
-    symbols.each_with_index do |symbol, i|
-      begin
-        logger.debug "AV PRICE FETCH BEGIN for: #{symbol}."
-        resp = conn.get do |req|
-          req.params['function'] = 'TIME_SERIES_DAILY'
-          req.params['symbol']   = symbol
-          req.params['apikey']   = api_key
-        end
-        logger.debug "AV PRICE FETCH END   for: #{symbol}."
-        response = JSON.parse(resp.body)
-      rescue Faraday::ClientError => e
-        logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-        fetch_failure(symbols, trades, 'The feed is down.')
-      rescue JSON::ParserError => e
-        logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-        fetch_failure(symbols, trades, 'The feed is down.')
-      else
-        #
-        # Error examples:
-        #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
-        #   {"Information"=>"Please consider optimizing your API call frequency."}
-        if !response.key?('Time Series (Daily)') ||response.key?('Information') || response.empty?
-          logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
-          trade = error_trade(symbol, 'Price is not available.')
-        else
-          # header = response['Meta Data']
-          ticks = response['Time Series (Daily)']
-          current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
-          prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
-
-          # TODO: Get timezone from Meta Data.
-          trade = Trade.new do |t|
-            t.instrument = Instrument.find_by(symbol: symbol)
-            t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
-            t.trade_date   = missing_trade_date
-            t.trade_price  = current_trade_price
-            t.price_change = (current_trade_price - prior_trade_price).round(4)
-            t.created_at   = fetch_time
+    else
+      symbols.each_with_index do |symbol, i|
+        begin
+          logger.debug "AV PRICE FETCH BEGIN for: #{symbol}."
+          resp = conn.get do |req|
+            req.params['function'] = 'TIME_SERIES_DAILY'
+            req.params['symbol']   = symbol
+            req.params['apikey']   = api_key
           end
+          logger.debug "AV PRICE FETCH END   for: #{symbol}."
+          response = JSON.parse(resp.body)
+        rescue Faraday::ClientError => e
+          logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
+          fetch_failure(symbols, trades, 'The feed is down.')
+        rescue JSON::ParserError => e
+          logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
+          fetch_failure(symbols, trades, 'The feed is down.')
+        else
+          trades[i] = AV_process_response(symbol, response)
+          trades[i].created_at = fetch_time
         end
-        trades[i] = trade
       end
     end
     trades
+  end
+
+private
+
+  # Error examples:
+  #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
+  #   {"Information"=>"Please consider optimizing your API call frequency."}
+
+  # Extract trade data or an error from the response.
+  def AV_process_response(symbol, response)
+    if !response.key?('Time Series (Daily)')
+      logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
+      trade = error_trade(symbol, 'Price is not available.')
+    else
+      # header = response['Meta Data']
+      ticks = response['Time Series (Daily)']
+      current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
+      prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
+
+      # TODO: Get timezone from Meta Data.
+      trade = Trade.new do |t|
+        t.instrument = Instrument.find_by(symbol: symbol)
+        t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
+        t.trade_date   = missing_trade_date
+        t.trade_price  = current_trade_price
+        t.price_change = (current_trade_price - prior_trade_price).round(4)
+      end
+    end
+    trade
   end
 end
 

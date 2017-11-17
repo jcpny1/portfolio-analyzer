@@ -40,7 +40,7 @@ class PortfoliosController < ApplicationController
     end
   end
 
-  private
+private
 
   # Load the portfolio identified in the route.
   def portfolio

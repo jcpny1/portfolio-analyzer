@@ -28,19 +28,8 @@ module InvestorsExchange extend ActiveSupport::Concern
       #   <no errors defined yet>
       #
       symbols.each_with_index do |symbol, i|
-        if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
-          trade = error_trade(symbol, 'Price is not available.')
-        else
-          # TODO: Need proper timezone info.
-          trade = Trade.new do |t|
-            t.instrument   = Instrument.find_by(symbol: symbol)
-            t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
-            t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
-            t.price_change = symbol_quote['change'].to_f.round(4)
-            t.created_at   = fetch_time
-          end
-        end
-        trades[i] = trade
+        trades[i] = AV_process_response(symbol, response)
+        trades[i].created_at = fetch_time
       end
     end
     trades
@@ -61,6 +50,23 @@ module InvestorsExchange extend ActiveSupport::Concern
       logger.error "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}."
     end
     response
+  end
+
+  # Extract trade data or an error from the response.
+  def IEX_process_response(symbol, response)
+    if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
+      trade = error_trade(symbol, 'Price is not available.')
+    else
+      # TODO: Need proper timezone info.
+      trade = Trade.new do |t|
+        t.instrument   = Instrument.find_by(symbol: symbol)
+        t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
+        t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
+        t.price_change = symbol_quote['change'].to_f.round(4)
+        t.created_at   = fetch_time
+      end
+    end
+    trade
   end
 end
 

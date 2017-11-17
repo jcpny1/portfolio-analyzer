@@ -13,7 +13,7 @@ module Yahoo extend ActiveSupport::Concern
   DAY_CHANGE_COL       = 4
 
   # Makes data request(s) for an array of symbols and returns results in trades.
-  def latest_trades(symbols, trades)
+  def YAHOO_latest_trades(symbols, trades)
     fetch_time = DateTime.now
     symbol_list = symbols.join('+')
     trades = Array.new(symbols.length)
@@ -34,35 +34,42 @@ module Yahoo extend ActiveSupport::Concern
       logger.error "YAHOO PRICE FETCH ERROR for: #{symbol_list}: #{e}."
       fetch_failure(symbols, trades, 'The feed is down.')
     else
-      #
-      # overall Fetch error example
-      # resp.body: "<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry, Unable to process request at this time -- error 999.</body></html>"
-      # => [["<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry", " Unable to process request at this time -- error 999.</body></html>"]]
-      #
       symbols.each_with_index do |symbol, i|
-        response_index = response.index { |row| row[SYMBOL_COL] == symbol }
-        if response_index.nil?
-          trade = error_trade(symbol, 'Price is not available.')
-        else
-          response_row = response[response_index]
-          if response_row[LAST_TRADE_PRICE_COL] == 'N/A'
-            # Error example: "AXXX","N/A","N/A","N/A","N/A"
-            trade = error_trade(symbol, 'Price is not available.')
-          else
-            # TODO: Replace 'EDT' with proper timezone info.
-            trade = Trade.new do |t|
-              t.instrument   = Instrument.find_by(symbol: symbol)
-              t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0.round(4).to_datetime
-              t.trade_price  = response_row[LAST_TRADE_PRICE_COL].to_f.round(4)
-              t.price_change = response_row[DAY_CHANGE_COL].to_f.round(4)
-              t.created_at   = fetch_time
-            end
-          end
-        end
-        trades[i] = trade
+        trades[i] = YAHOO_process_response(symbol, response)
+        trades[i].created_at = fetch_time
       end
     end
     trades
+  end
+
+private
+
+  #
+  # overall Fetch error example
+  # resp.body: "<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry, Unable to process request at this time -- error 999.</body></html>"
+  # => [["<html><head><title>Yahoo! - 999 Unable to process request at this time -- error 999</title></head><body>Sorry", " Unable to process request at this time -- error 999.</body></html>"]]
+  #
+
+  # Extract trade data or an error from the response.
+  def YAHOO_process_response(symbol, response)
+    response_index = response.index { |row| row[SYMBOL_COL] == symbol }
+    if response_index.nil?
+      trade = error_trade(symbol, 'Price is not available.')
+    else
+      response_row = response[response_index]
+      if response_row[LAST_TRADE_PRICE_COL] == 'N/A'
+        # Error example: "AXXX","N/A","N/A","N/A","N/A"
+        trade = error_trade(symbol, 'Price is not available.')
+      else
+        # TODO: Replace 'EDT' with proper timezone info.
+        trade = Trade.new do |t|
+          t.instrument   = Instrument.find_by(symbol: symbol)
+          t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0.round(4).to_datetime
+          t.trade_price  = response_row[LAST_TRADE_PRICE_COL].to_f.round(4)
+          t.price_change = response_row[DAY_CHANGE_COL].to_f.round(4)
+      end
+    end
+    trade
   end
 end
 

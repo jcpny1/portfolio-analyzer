@@ -38,7 +38,7 @@ class PositionsController < ApplicationController
     end
   end
 
-  private
+private
 
   # Derive instrument_id from params instrument_name.
   def add_param_instrument_id
