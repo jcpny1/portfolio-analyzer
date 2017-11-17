@@ -27,7 +27,7 @@ Instrument.create(symbol: 'SNY',   name: 'SANOFI')
 
 u = User.create!(name: 'guest', email: '', locale: 'en-US')
 
-p = Portfolio.create(user: u, name: 'Schwab 5')
+p = Portfolio.create(user: u, name: 'Portfolio 5')
 p.positions.new(instrument: Instrument.where('symbol = ?', 'AAPL').first, quantity: 156.4515, cost: 11273.96, date_acquired: Date.new(2011,8,2))
 p.positions.new(instrument: Instrument.where('symbol = ?', 'AMZN').first, quantity:   1,      cost:  1000.00, date_acquired: Date.new(2011,8,2))
 p.positions.new(instrument: Instrument.where('symbol = ?', 'COF' ).first, quantity: 344,      cost: 23256.47, date_acquired: Date.new(2011,8,2))
@@ -35,7 +35,7 @@ p.positions.new(instrument: Instrument.where('symbol = ?', 'FBGX').first, quanti
 p.positions.new(instrument: Instrument.where('symbol = ?', 'HD'  ).first, quantity: 104,      cost:  8293.00, date_acquired: Date.new(2011,8,2))
 p.save!
 
-p = Portfolio.create(user: u, name: 'Schwab 8')
+p = Portfolio.create(user: u, name: "Crazy 8's")
 p.positions.new(instrument: Instrument.where('symbol = ?', 'AMZN' ).first, quantity:  52, cost: 16058.29, date_acquired: Date.new(2013,11,12))
 p.positions.new(instrument: Instrument.where('symbol = ?', 'BABA' ).first, quantity: 146, cost: 17046.96, date_acquired: Date.new(2013,11,12))
 p.positions.new(instrument: Instrument.where('symbol = ?', 'GOOG' ).first, quantity:   7, cost:  3022.70, date_acquired: Date.new(2013,11,12))
