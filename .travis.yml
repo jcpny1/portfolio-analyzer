@@ -9,7 +9,8 @@ before_script:
   - chmod +x ../cc-test-reporter
   - ../cc-test-reporter before-build
 script:
-  - rake db:seed
+  - bin/rails db:migrate RAILS_ENV=test
+  - bin/rails db:seed RAILS_ENV=test
   - bundle exec rspec
 after_script:
   - ../cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
