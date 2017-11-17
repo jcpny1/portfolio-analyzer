@@ -36,7 +36,7 @@ export default class PositionEditPage extends Component {
     if ('symbol' in position.instrument) {
       instrument_symbol = position.instrument.symbol;
     }
-    this.setState({modalOpen: true, editedPosition: Object.assign({}, position, {instrument_symbol: instrument_symbol})});
+    this.setState({modalOpen: true, editedPosition: {...position, instrument_symbol: instrument_symbol}});
   }
 
   handleSubmit = () => {

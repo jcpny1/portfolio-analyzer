@@ -189,7 +189,8 @@ export function updatePortfolio(dispatch, portfolio) {
       if (!updatedPortfolio.id) {
         throw new Error('Portfolio update failed!');
       }
-      dispatch(PortfolioReducerFunctions.updatePortfolioAction(updatedPortfolio));
+      portfolio.name = updatedPortfolio.name  // The returned portfolio does not have any of the calculated pricing information.
+      dispatch(PortfolioReducerFunctions.updatePortfolioAction(portfolio));
     })
     .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Portfolio: ', error: error.message})))
   );
