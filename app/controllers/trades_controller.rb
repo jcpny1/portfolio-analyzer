@@ -93,11 +93,22 @@ private
     Time.at(0).to_datetime
   end
 
+  # ActiveRecord::StatementInvalid (SQLite3::BusyException: database is locked: commit transaction):
+  # 08:25:31 api.1  | ActiveRecord::StatementInvalid (SQLite3::BusyException: database is locked: SELECT  "instruments"."id", "instruments"."symbol" FROM "instruments" WHERE ("instruments"."id" > 600) ORDER BY "instruments"."id" ASC LIMIT ?):
+  # 08:25:31 api.1  |
+  # 08:25:31 api.1  |
+  # 08:25:31 api.1  | app/controllers/trades_controller.rb:98:in `save_trades'
+  # (Line 98 was 'Trade.transaction do')
+  # sqlite timeout was increased from 5000ms to 10000ms in config/database.yml to try and avoid this.
+
   # Save live_trades to the database and save in trades array.
   def save_trades(live_trades, trades)
     Trade.transaction do
       live_trades.each do |live_trade|
         trade = trades.find { |trade| trade.instrument.symbol == live_trade.instrument.symbol }
+        # Leave #new in loop. Only hit on error condition that will likely never occur.
+        # It's the case where the feed returned an instrument that we didn't request.
+        # For a feed that drives what instruments we get back, you would not want to have a #new in a high frequency loop like this.
         trade = Trade.new(instrument: live_trade.instrument) if trade.nil?
         if !live_trade.trade_price.nil?
           begin

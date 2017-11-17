@@ -22,3 +22,7 @@ Metrics/CyclomaticComplexity:
 
 Metrics/LineLength:
   Max: 160
+
+Metrics/MethodLength:
+  CountComments: false  # count full line comments?
+  Max: 30
