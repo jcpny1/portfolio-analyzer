@@ -18,8 +18,10 @@ engines:
       languages:
       - ruby:
       - javascript:
-Method complexity:
-  Threshold: 5
+checks:
+  method-complexity:
+    config:
+      threshold: 5
 ratings:
   paths:
   - app/**
