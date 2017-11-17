@@ -5,7 +5,7 @@ module AlphaVantage extend ActiveSupport::Concern
   #
   # Makes data request(s) for an array of symbols and returns results in trades.
   def AV_latest_trades(symbols)
-    api_key = ENV['ALPHA_VANTAGE_API_KEY']
+    api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
     fetch_time = DateTime.now
     trades = Array.new(symbols.length)
 

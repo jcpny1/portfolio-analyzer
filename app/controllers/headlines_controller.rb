@@ -2,7 +2,7 @@
 class HeadlinesController < ApplicationController
   # Retrieve all general headlines.
   def headlines
-    api_key = ENV['NEWSAPI_API_KEY']
+    api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['NEWSAPI_API_KEY']
     response = {}
     begin
       conn = Faraday.new(url: 'https://newsapi.org/v1/articles')
