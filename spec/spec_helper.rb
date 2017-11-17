@@ -26,11 +26,11 @@ RSpec.configure do |config|
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200, body: "stubbed response goes here", headers: {})
     # Request for DJIA index value.
-    stub_request(:get, 'https://www.alphavantage.co/query?apikey=V7747PSBK9V0DL68&function=TIME_SERIES_DAILY&symbol%5B%5D=DJIA').
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol%5B%5D=DJIA').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200, body: "", headers: {})
     # Request for Bllomberg headline news.
-    stub_request(:get, 'https://newsapi.org/v1/articles?apikey=ea7fd4db0546426490a20b825fb3bde8&sortBy=top&source=bloomberg').
+    stub_request(:get, 'https://newsapi.org/v1/articles?apikey&sortBy=top&source=bloomberg').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200, body: "", headers: {})
   end
