@@ -30,6 +30,7 @@ ratings:
   - "**.go"
 exclude_paths:
 - spec/**/*
+- test/**/*
 - "**/vendor/**/*"
 - bin
 - client/src/semantic-ui

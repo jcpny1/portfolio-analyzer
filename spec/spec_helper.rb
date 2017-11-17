@@ -14,8 +14,27 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+
   require 'simplecov'
   SimpleCov.start
+
+  require 'webmock/rspec'
+  WebMock.disable_net_connect!(allow_localhost: true)
+  config.before(:each) do
+    # Request for data feed symbology.
+    stub_request(:get, 'https://api.iextrading.com/1.0/ref-data/symbols').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
+      to_return(status: 200, body: "stubbed response goes here", headers: {})
+    # Request for DJIA index value.
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey=V7747PSBK9V0DL68&function=TIME_SERIES_DAILY&symbol%5B%5D=DJIA').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
+      to_return(status: 200, body: "", headers: {})
+    # Request for Bllomberg headline news.
+    stub_request(:get, 'https://newsapi.org/v1/articles?apikey=ea7fd4db0546426490a20b825fb3bde8&sortBy=top&source=bloomberg').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
+      to_return(status: 200, body: "", headers: {})
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

@@ -41,6 +41,7 @@ group :test do
   gem 'rspec-rails', '~> 3.6' # Rails testing framework.
   gem 'selenium-webdriver'    # Used by Capybara.
   gem 'simplecov'             # Ruby code coverage analysis.
+  gem 'webmock'               # HTTP request stubbing.
 end
 
 group :development, :test do
