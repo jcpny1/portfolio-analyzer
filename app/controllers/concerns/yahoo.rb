@@ -67,6 +67,7 @@ private
           t.trade_date   = DateTime.strptime("#{response_row[LAST_TRADE_DATE_COL]} #{response[response_index][LAST_TRADE_TIME_COL]} EDT", '%m/%d/%Y %l:%M%P %Z').to_f/1000.0.round(4).to_datetime
           t.trade_price  = response_row[LAST_TRADE_PRICE_COL].to_f.round(4)
           t.price_change = response_row[DAY_CHANGE_COL].to_f.round(4)
+        end
       end
     end
     trade
