@@ -14,10 +14,19 @@ RSpec.describe PositionsController, type: :controller do
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr.length).to be > 0
-      # expect(pr[0]['name']).to eq(@portfolio.name)
+      expect(pr['positions'][0]['instrument']['symbol']).to eq(@instrument.symbol)
     end
   end
 
-
-
+  describe "POST update" do
+    it "updates an existing position" do
+      request.accept = "application/json"
+      @position = create(:position, portfolio: @portfolio, instrument: @instrument)
+      patch :update, { params: { id: @position.id, portfolio_id: @portfolio.id, instrument_symbol: @position.instrument.symbol, position: { instrument_id: @instrument.id, quantity:200, cost: 200, date_acquired: '2011-11-11' }}, format: :json }
+      pr = JSON.parse(response.body)
+      expect(response).to have_http_status(:success)
+      expect(pr.length).to be > 0
+      expect(pr['positions'][0]['instrument']['symbol']).to eq(@instrument.symbol)
+    end
+  end
 end
