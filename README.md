@@ -18,7 +18,7 @@ This repository contains the front end code in the client folder. The remaining 
 
 ## History
 ```
-12-Nov-17  0.1  Initial release.  
+12-Nov-17  0.1.0  Initial release.  
 ```
 
 ## Installation
