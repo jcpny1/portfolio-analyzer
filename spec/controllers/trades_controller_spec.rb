@@ -33,5 +33,10 @@ RSpec.describe TradesController, type: :controller do
       expect(pr[0]['instrument_id']).to eq(1)
       expect(pr[0]['trade_price']).to eq('170.15')
     end
+    it "bulk loads database prices" do
+      request.accept = "application/json"
+      get :last_price_bulk_load
+      expect(response).to have_http_status(:success)
+    end
   end
 end
