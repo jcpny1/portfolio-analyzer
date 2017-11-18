@@ -1,5 +1,6 @@
 # STOCK ANALYZER
 
+[![GitHub version](https://badge.fury.io/gh/jcpny1%2Fstock-analyzer.svg)](https://badge.fury.io/gh/jcpny1%2Fstock-analyzer)
 [![Build Status](https://travis-ci.org/jcpny1/stock-analyzer.svg?branch=master)](https://travis-ci.org/jcpny1/stock-analyzer)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/test_coverage)](https://codeclimate.com/github/jcpny1/stock-analyzer/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/maintainability)](https://codeclimate.com/github/jcpny1/stock-analyzer/maintainability)
