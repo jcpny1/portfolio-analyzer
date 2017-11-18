@@ -24,7 +24,7 @@ This repository contains the front end code in the client folder. The remaining 
 
 ## Installation
 
-Stock-Analyzer first release was developed using earlier versions of the following, but was released using Ruby 2.4.2, Rails 5.1.4, Node.js 8.9.1.
+Stock-Analyzer was developed using earlier versions of the following, but was released using Ruby 2.4.2, Rails 5.1.4, Node.js 8.9.1.
 
 ### Initialize the project
 * Clone the [Stock Analyzer Repository](https://github.com/jcpny1/stock-analyzer).
