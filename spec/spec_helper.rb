@@ -26,7 +26,7 @@ RSpec.configure do |config|
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(
         status: 200,
-        body: "HELLO",
+        body: '[{"symbol": "ABC", "name": "Acme Banana Company"}]',
         headers: {})
     # Request instrument prices for user.
     stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=companyName,latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").

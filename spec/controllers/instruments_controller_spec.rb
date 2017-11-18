@@ -7,7 +7,8 @@ RSpec.describe InstrumentsController, type: :controller do
       get :index, { :params => { v: 'INTC' }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      # expect(pr.length).to be > 0
+      expect(pr.length).to be > 0
+      expect(pr[0]['name']).to eq('Intel Corp')
     end
   end
 
