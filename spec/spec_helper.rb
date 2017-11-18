@@ -33,18 +33,32 @@ RSpec.configure do |config|
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(
         status: 200,
-        body: "{\"AAPL\":{\"quote\":{\"companyName\":\"Apple Inc.\",\"latestPrice\":170.15,\"change\":-0.95,\"latestUpdate\":1510952400327}}}",
+        body: '{"AAPL": {"quote": {"companyName": "Apple Inc.", "latestPrice": 170.15, "change": -0.95, "latestUpdate": 1510952400327}}}',
         headers: {})
     # Request for DJIA index value.
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol%5B%5D=DJIA').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200,
-        body: "{\"Time Series (Daily)\":{\"2017-11-02\":{\"4. close\":\"23358.24\"}, \"2017-11-01\":{\"4. close\":\"23458.36\"}}}",
+        body: '{"Time Series (Daily)": {"2017-11-02": {"4. close": "23358.24"}, "2017-11-01": {"4. close":"23458.36"}}}',
         headers: {})
     # Request for Bloomberg headline news.
     stub_request(:get, 'https://newsapi.org/v1/articles?apikey&sortBy=top&source=bloomberg').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
-      to_return(status: 200, body: "HELLO", headers: {})
+      to_return(
+        status: 200,
+        body: '{
+          "status": "ok",
+          "articles": [{
+            "source": {"id": "bloomberg", "name": "Bloomberg"},
+            "author": "Shannon Pettypiece",
+            "title": "Trump to Pay His Own Legal Bills, Set Up Fund to Cover Staff",
+            "description": "President Donald Trump has started paying his own legal bills related to the Russia probe, rather than charging them to his campaign or the Republican National Committee, and is finalizing a plan to use personal funds to help current and former White House staff with their legal costs.",
+            "url": "http://www.bloomberg.com/news/articles/2017-11-17/trump-to-pay-his-own-legal-bills-set-up-fund-to-cover-staff",
+            "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i5_F2CKD0NVI/v1/1200x675.jpg",
+            "publishedAt": "2017-11-17T16:51:29Z"
+          }]
+        }',
+        headers: {})
   end
 
   # rspec-expectations config goes here. You can use an alternate
