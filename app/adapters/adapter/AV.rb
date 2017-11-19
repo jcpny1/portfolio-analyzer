@@ -52,7 +52,7 @@ module Adapter
     def process_response(symbol, response)
       if !response.key?('Time Series (Daily)')
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
-        trade = error_trade(symbol, 'Price is not available.')
+        trade = Adapter::error_trade(symbol, 'Price is not available.')
       else
         # header = response['Meta Data']
         ticks = response['Time Series (Daily)']

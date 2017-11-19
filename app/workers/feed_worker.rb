@@ -1,6 +1,7 @@
 class FeedWorker
-  require 'controllers/concerns/investors_exchange'
   include Sidekiq::Worker
+
+  # Perform the specified task.
   # def perform(*args)
   def perform(name)
     case name

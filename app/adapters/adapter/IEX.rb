@@ -56,7 +56,7 @@ module Adapter
     # Extract trade data or an error from the response.
     def process_response(symbol, response)
       if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
-        trade = error_trade(symbol, 'Price is not available.')
+        trade = Adapter::error_trade(symbol, 'Price is not available.')
       else
         # TODO: Need proper timezone info.
         # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.
