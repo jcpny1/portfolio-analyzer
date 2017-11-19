@@ -1,6 +1,7 @@
 # This controller handles requests for Trade data.
 class TradesController < ApplicationController
-  include AlphaVantage, InvestorsExchange  # include Feed handlers here.
+
+  # NOTE: Feeds that don't have a trade_date should use `Time.at(0).to_datetime` for the trade_date.
 
   # Retrieve the latest index values for the symbols specified in params.
   def last_index
@@ -23,30 +24,18 @@ class TradesController < ApplicationController
   # Intended for admin user only.
   def last_price_bulk_load
     load_prices('', '', true, false)
-    head :ok
+    head :accepted
   end
 
 private
 
-# NOTE: Feeds that don't have a trade_date should use #missing_trade_date below for the trade_date.
-# NOTE: The limit on IEX feed is 100 symbols per request. Let's stay well under that for now.
+# NOTE: Some feeds have a per-request symbol limit. The limit on IEX is 100. Let's stay well under that for now.
 BATCH_FETCH_SIZE = 50
-
-  # Create a trade that signifies an error has occurred.
-  def error_trade(symbol, error_msg)
-    Trade.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")
-  end
-
-  # Create error trades for all symbols.
-  def fetch_failure(symbols, trades, error_msg)
-    symbols.each_with_index do |symbol, i|
-      trades[i] = error_trade(symbol, error_msg)
-    end
-  end
 
   # Call feed handler for the latest indexes.
   def load_live_indexes(symbols)
-    AV_latest_trades(symbols)
+    av_handler = Adapter::AV.new
+    av_handler.latest_trades(symbols)
   end
 
   # Retrieve prices from database. If 'livePrices' is specified, overwrite database values with feed values.
@@ -90,12 +79,8 @@ BATCH_FETCH_SIZE = 50
 
   # Call feed handler for the latest prices.
   def load_prices_from_feed(symbols)
-    IEX_latest_trades(symbols)
-  end
-
-  # Feeds that don't have a trade_date should use this for the trade_date.
-  def missing_trade_date
-    Time.at(0).to_datetime
+    iex_handler = Adapter::IEX.new
+    iex_handler.latest_trades(symbols)
   end
 
   # ActiveRecord::StatementInvalid (SQLite3::BusyException: database is locked: commit transaction):

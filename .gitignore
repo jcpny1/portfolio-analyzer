@@ -55,6 +55,9 @@ bower.json
 # Don't bother tracking coverage results.
 coverage
 
+# Don't bother tracking coverage redis dump files.
+dump.rdb
+
 # *.rbc
 # capybara-*.html
 # .rspec
