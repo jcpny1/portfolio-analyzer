@@ -30,7 +30,7 @@ export default class HeadlinesPage extends Component {
     Request.refreshHeadlines(headlines => {
       if (headlines !== null) {
         headlines.articles.forEach((headlinesArticle,index) => {
-          if ((index >= this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
+          if ((index > this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
             headlinesArticle.fontWeight = 'bold';
           } else {
             headlinesArticle.fontWeight = 'normal';
