@@ -1,3 +1,4 @@
+import fetch from 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
 import Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';

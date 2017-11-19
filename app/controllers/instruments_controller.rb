@@ -16,32 +16,34 @@ class InstrumentsController < ApplicationController
   end
 
   # Refresh instruments database table from feed symbology.
-  def refresh_from_feed
-    instruments_added   = 0
-    instruments_errored = 0
-    instruments_skipped = 0
-    instruments_updated = 0
-    symbology = IEX_symbology()   # Call feed handler to retrieve symbology.
+  # Intended for admin user only.
+  def instrument_bulk_load
+    logger.info 'INSTRUMENT BULK LOAD BEGIN.'
+    added   = 0
+    errored = 0
+    skipped = 0
+    updated = 0
+    feed_records = IEX_symbology()   # Call feed handler to retrieve symbology.
     Instrument.transaction do
-      symbology.each do |symbol_record|
+      feed_records.each do |feed_record|
         begin
-          instrument = Instrument.where('symbol = ?', symbol_record['symbol']).first
+          instrument = Instrument.where('symbol = ?', feed_record['symbol']).first
           if instrument.nil?
-            Instrument.create!(symbol: symbol_record['symbol'], name: symbol_record['name'])
-            instruments_added += 1
-          elsif !symbol_record['name'].casecmp?(instrument.name)
-            instrument.update!(name: symbol_record['name'])
-            instruments_updated += 1
+            Instrument.create!(symbol: feed_record['symbol'], name: feed_record['name'])
+            added += 1
+          elsif !feed_record['name'].casecmp?(instrument.name)
+            instrument.update!(name: feed_record['name'])
+            updated += 1
           else
-            instruments_skipped += 1
+            skipped += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
           logger.error "INSTRUMENT REFRESH: Error saving stock symbol: #{symbol_record.inspect}, #{e}"
-          instruments_errored += 1
+          errored += 1
         end
       end
     end
-    logger.info "INSTRUMENT REFRESH (processed: #{symbology.length}, added: #{instruments_added}, updated: #{instruments_updated}, skipped: #{instruments_skipped}, errors: #{instruments_errored})."
+    logger.info "INSTRUMENT BULK LOAD END (received: #{feed_records.length}, added: #{added}, updated: #{updated}, skipped: #{skipped}, errors: #{errored})."
     head :ok
   end
 end

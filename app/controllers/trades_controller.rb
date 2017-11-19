@@ -1,9 +1,6 @@
 # This controller handles requests for Trade data.
 class TradesController < ApplicationController
   include AlphaVantage, InvestorsExchange  # include Feed handlers here.
-  # Feeds that don't have a trade_date should use #missing_trade_date below for the trade_date.
-
-  BATCH_FETCH_SIZE = 50   # Limit on IEX feed is 100 symbols per request. Let's stay well under that for now.
 
   # Retrieve the latest index values for the symbols specified in params.
   def last_index
@@ -14,42 +11,26 @@ class TradesController < ApplicationController
   end
 
   # Retrieve the latest prices for the symbols used by the supplied user_id.
-  # Retrieve prices from database. If 'livePrices' is specified, overwrite
-  # database values with feed values. The database is acting like a ticker
-  # feed cache (that is only updated on user request).
+  # Specify param livePrices for database prices supplemented from data feed. OTherwise, only return database prices.
   def last_price
-    logger.info 'LAST PRICE FETCH BEGIN.'
-    all_trades = []
-    symbols = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct.find_in_batches(batch_size: BATCH_FETCH_SIZE) do |symbol_group|
-      symbols = symbol_group.map(&:symbol)         # Create symbols array.
-      trades = load_trades_from_database(symbols)  # Get last trades from database.
-      if params.key?('livePrices')
-        live_trades = load_live_prices(symbols)    # Update trades with live feed data.
-        save_trades(live_trades, trades)           # Save updates to database.
-      end
-      all_trades.concat(trades)
-    end
-    logger.info 'LAST PRICE FETCH END.'
-    render json: all_trades, each_serializer: TradeSerializer
+    joins_clause = "INNER JOIN positions ON positions.instrument_id = instruments.id INNER JOIN portfolios ON portfolios.id = positions.portfolio_id"
+    where_clause = "portfolios.user_id = #{params['userId']}"
+    trades = load_prices(where_clause, joins_clause, params.key?('livePrices'), true)
+    render json: trades, each_serializer: TradeSerializer
   end
 
-  # Store last price data for every symbol in the database.
+  # Store last price data for every instrument in the database.
+  # Intended for admin user only.
   def last_price_bulk_load
-    logger.info 'LAST PRICE BULK LOAD BEGIN.'
-    price_all = true    # Price all symbols? or just those without a price now. (For future use as a param.)
-    where_clause = price_all ? '' : 'id not in (select distinct stock_symbol_id from trades)'
-    Instrument.select(:id, :symbol).where(where_clause).find_in_batches(batch_size: BATCH_FETCH_SIZE) do |symbol_group|
-      symbols = symbol_group.map(&:symbol)          # Create symbols array.
-      trades = load_trades_from_database(symbols)   # Fetch database trades.
-      live_trades = load_live_prices(symbols)       # Fetch live feed trades.
-      sleep 2                                       # Do not slam our feed vendor and get throttled or blocked.
-      save_trades(live_trades, trades)              # Update the database.
-    end
-    logger.info 'LAST PRICE BULK LOAD END.'
+    load_prices('', '', true, false)
     head :ok
   end
 
 private
+
+# NOTE: Feeds that don't have a trade_date should use #missing_trade_date below for the trade_date.
+# NOTE: The limit on IEX feed is 100 symbols per request. Let's stay well under that for now.
+BATCH_FETCH_SIZE = 50
 
   # Create a trade that signifies an error has occurred.
   def error_trade(symbol, error_msg)
@@ -68,13 +49,32 @@ private
     AV_latest_trades(symbols)
   end
 
-  # Call feed handler for the latest prices.
-  def load_live_prices(symbols)
-    IEX_latest_trades(symbols)
+  # Retrieve prices from database. If 'livePrices' is specified, overwrite database values with feed values.
+  # The database is acting like a ticker feed cache (that is only updated on user request).
+  def load_prices(where_clause, joins_clause, live_prices, return_results)
+    logger.info 'LOAD PRICES BEGIN.'
+    fetched_ctr = 0
+    requested_ctr = 0
+    saved_ctr = 0
+    all_trades = []
+    symbols = Instrument.select(:id, :symbol).joins(joins_clause).where(where_clause).distinct.find_in_batches(batch_size: BATCH_FETCH_SIZE) do |instruments|
+      sleep 1 if requested_ctr.nonzero?               # Do not slam our feed vendor and get throttled or blocked.
+      symbols = instruments.map(&:symbol)             # Create symbols array.
+      requested_ctr += symbols.length                 # Update requested counter.
+      trades = load_prices_from_database(symbols)     # Get last trades from database.
+      fetched_ctr += trades.length                    # Update fetched counter.
+      if live_prices
+        live_trades = load_prices_from_feed(symbols)  # Update trades with live feed data.
+        saved_ctr = save_trades(live_trades, trades)  # Save updates to database.
+      end
+      all_trades.concat(trades) if return_results
+    end
+    logger.info "LOAD PRICES END (requested: #{requested_ctr}, fetched: #{fetched_ctr}, saved: #{saved_ctr}."
+    all_trades
   end
 
   # Fetch database trades
-  def load_trades_from_database(symbols)
+  def load_prices_from_database(symbols)
     trades = Array.new(symbols.length)
     symbols.each_with_index do |symbol, i|
       instrument = Instrument.find_by(symbol: symbol)
@@ -86,6 +86,11 @@ private
       end
     end
     trades
+  end
+
+  # Call feed handler for the latest prices.
+  def load_prices_from_feed(symbols)
+    IEX_latest_trades(symbols)
   end
 
   # Feeds that don't have a trade_date should use this for the trade_date.
@@ -102,7 +107,9 @@ private
   # sqlite timeout was increased from 5000ms to 10000ms in config/database.yml to try and avoid this.
 
   # Save live_trades to the database and save in trades array.
+  # Returns number of trades actually saved.
   def save_trades(live_trades, trades)
+    saved_trades_ctr = 0
     Trade.transaction do
       live_trades.each do |live_trade|
         trade = trades.find { |trade| trade.instrument.symbol == live_trade.instrument.symbol }
@@ -118,6 +125,7 @@ private
               trade.price_change = live_trade.price_change
               trade.created_at   = live_trade.created_at
               trade.save!
+              saved_trades_ctr += 1
             end
           rescue ActiveRecord::ActiveRecordError => e
             logger.error "Error saving trade: #{trade.inspect}, #{e}"
@@ -128,5 +136,6 @@ private
         end
       end
     end
+    saved_trades_ctr
   end
 end

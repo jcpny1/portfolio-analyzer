@@ -58,6 +58,8 @@ module InvestorsExchange extend ActiveSupport::Concern
       trade = error_trade(symbol, 'Price is not available.')
     else
       # TODO: Need proper timezone info.
+      # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.
+      #       On the other hand, then the caller would need to create or update a Trade object from this object.
       trade = Trade.new do |t|
         t.instrument   = Instrument.find_by(symbol: symbol)
         t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime

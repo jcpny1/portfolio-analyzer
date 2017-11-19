@@ -28,6 +28,7 @@ gem 'addressable'                           # URI encoder.
 gem 'dotenv-rails'                          # Loads environment variables from `.env`.
 gem 'faraday'                               # HTTP/REST API client library.
 gem 'foreman', '~> 0.84.0'                  # Process manager for applications with multiple components.
+gem 'sidekiq'                               # Background processing for Ruby.
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'       # File modification notifications.
@@ -40,6 +41,7 @@ group :test do
   gem 'factory_bot_rails'     # Factory to Rails integration.
   gem 'rspec-rails', '~> 3.6' # Rails testing framework.
   gem 'selenium-webdriver'    # Used by Capybara.
+  gem 'rspec-sidekiq'         # Sidekiq rspec testing.
   gem 'simplecov'             # Ruby code coverage analysis.
   gem 'webmock'               # HTTP request stubbing.
 end

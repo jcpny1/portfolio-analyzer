@@ -15,7 +15,7 @@ RSpec.describe InstrumentsController, type: :controller do
   describe "GET symbology" do
     it "populates database with all instruments" do
       request.accept = "application/json"
-      get :refresh_from_feed, :format => :json
+      get :instrument_bulk_load, :format => :json
       expect(response).to have_http_status(:success)
     end
   end
