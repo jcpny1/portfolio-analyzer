@@ -43,7 +43,7 @@ group :test do
   gem 'rspec-sidekiq'         # Sidekiq rspec testing.
   gem 'selenium-webdriver'    # Used by Capybara.
   gem 'simplecov'             # Ruby code coverage analysis.
-  gem 'webmock'               # HTTP request stubbing.
+  gem 'webmock', '~> 3.1'     # HTTP request stubbing.
 end
 
 group :development, :test do
