@@ -2,10 +2,10 @@
 class TradeCache
   # Retrieve the latest prices for the given instrument list.
   # Specify getLivePrices to retrieve feed data. Otherwise, just get prices from database.
-  def self.last_prices(instruments, getLivePrices)
+  def self.prices(instruments, getLivePrices)
     trades = []
     instruments.each_slice(DataCache::FEED_BATCH_SIZE) do |instrument_batch|
-      trade_batch = load_prices_from_database(instrument_batch)    # Get database prices as a baseline.
+      trade_batch = prices_from_database(instrument_batch)    # Get database prices as a baseline.
       if getLivePrices
         sleep DataCache::FEED_BATCH_DELAY if trades.length.nonzero? # Throttle request rate.
         Feed.load_prices(instrument_batch) do |live_trades|  # Get feed prices.
@@ -20,7 +20,7 @@ class TradeCache
   ### private ###
 
   # Fetch database trades
-  private_class_method def self.load_prices_from_database(instruments)
+  private_class_method def self.prices_from_database(instruments)
     trades = Array.new(instruments.length)
     instruments.each_with_index do |instrument, i|
       trades[i] = Trade.where('instrument_id = ?', instrument.id).first
@@ -39,7 +39,7 @@ class TradeCache
   # sqlite timeout was increased from 5000ms to 10000ms in config/database.yml in an attempt to avoid this.
 
   # Updates trades with live_trades data and saves to the database.
-  def self.save_trades(live_trades, trades)
+  private_class_method def self.save_trades(live_trades, trades)
     saved_trades_ctr = 0
     Trade.transaction do
       live_trades.each do |live_trade|

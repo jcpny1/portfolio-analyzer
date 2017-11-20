@@ -7,15 +7,8 @@ module Feed
   # NOTE: Feeds that don't have a trade_date will use `Time.at(0).to_datetime` for the trade_date.
 
   # Create a trade that signifies an error has occurred.
-  def self.error_trade(symbol, error_msg)
-    Trade.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")
-  end
-
-  # Create error trades for all symbols.
-  def self.fetch_failure(symbols, trades, error_msg)
-    symbols.each_with_index do |symbol, i|
-      trades[i] = error_trade(symbol, error_msg)
-    end
+  def self.symbology
+    Feed::IEX.symbology  # Call feed handler to retrieve symbology.
   end
 
   # Retrieve news headlines.
@@ -23,7 +16,7 @@ module Feed
     Feed::NewsAPI.headlines
   end
 
-# For each symbol, fetch live feed index values.
+  # For each symbol, fetch live feed index values.
   # Returns array of index values.
   def self.load_indexes(symbols)
     Rails.logger.debug 'FETCH INDEXES BEGIN.'
@@ -40,6 +33,20 @@ module Feed
     trades = Feed::IEX.latest_trades(symbols)  # Get the feed's price data.
     Rails.logger.debug "FETCH PRICES END (requested: #{symbols.length}, received: #{trades.length})."
     yield trades
+  end
+
+  ### for use by feed handlers  ###
+
+  # Create a trade that signifies an error has occurred.
+  def self.error_trade(symbol, error_msg)
+    Trade.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")
+  end
+
+  # Create error trades for all symbols.
+  def self.fetch_failure(symbols, trades, error_msg)
+    symbols.each_with_index do |symbol, i|
+      trades[i] = error_trade(symbol, error_msg)
+    end
   end
 
   # Feeds that don't have a trade_date should use `Time.at(0).to_datetime` for the trade_date.
