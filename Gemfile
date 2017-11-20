@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'puma', '~> 3.10'             # HTTP 1.1 server for Ruby/Rack applications.
+gem 'puma', '~> 3.11'             # HTTP 1.1 server for Ruby/Rack applications.
 gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
 gem 'sqlite3'                     # Used as the database for Active Record.
 
@@ -39,7 +39,7 @@ end
 group :test do
   gem 'capybara'              # Needed for RSpec feature tests.
   gem 'factory_bot_rails'     # Factory to Rails integration.
-  gem 'rspec-rails', '~> 3.6' # Rails testing framework.
+  gem 'rspec-rails', '~> 3.7' # Rails testing framework.
   gem 'rspec-sidekiq'         # Sidekiq rspec testing.
   gem 'selenium-webdriver'    # Used by Capybara.
   gem 'simplecov'             # Ruby code coverage analysis.

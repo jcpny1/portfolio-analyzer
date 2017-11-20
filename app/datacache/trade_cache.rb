@@ -13,7 +13,7 @@ class TradeCache
       trade_batch = load_prices_from_database(instrument_batch)    # Get database prices as a baseline.
       if getLivePrices
         sleep BATCH_DELAY if trades.length.nonzero? # Throttle request rate.
-        Feed::load_prices(instrument_batch) do |live_trades|  # Get feed prices.
+        Feed.load_prices(instrument_batch) do |live_trades|  # Get feed prices.
           save_trades(live_trades, trade_batch)  # Update database prices with feed prices.
         end
       end
