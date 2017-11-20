@@ -1,9 +1,9 @@
-# This class is responsible for interfacing the outside world with our financial data store.
+# This class is responsible for interfacing the outside world with the Instrument data store.
 class InstrumentCache
   # Update instrument cache from instrument_data records.
   # instrument_date: [{symbol name},...]
   def self.bulk_load(instrument_data)
-    Rails.logger.info 'INSTRUMENT BULK LOAD BEGIN.'
+    Rails.logger.debug 'INSTRUMENT BULK LOAD BEGIN.'
     added   = 0
     errored = 0
     skipped = 0
@@ -27,6 +27,6 @@ class InstrumentCache
         end
       end
     end
-    Rails.logger.info "INSTRUMENT BULK LOAD END (received: #{instrument_data.length}, added: #{added}, updated: #{updated}, skipped: #{skipped}, errors: #{errored})."
+    Rails.logger.debug "INSTRUMENT BULK LOAD END (received: #{instrument_data.length}, added: #{added}, updated: #{updated}, skipped: #{skipped}, errors: #{errored})."
   end
 end
