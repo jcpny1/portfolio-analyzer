@@ -12,27 +12,23 @@ class TradesController < ApplicationController
   # Specify param 'livePrices' to supplement database prices with feed prices. Otherwise, only return database prices.
   def last_price
     logger.info 'LAST PRICE LOAD BEGIN.'
-    instruments = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct  # Get instrument list.
-    trades = load_prices_from_database(instruments)  # Get database prices.
+    instruments = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).order(:symbol).distinct  # Get instrument list. Added .order for WebMock testing.
+    trades = load_prices_from_database(instruments)    # Get database prices as a baseline.
+    saved_ctr = 0
     if params.key?('livePrices')
-      live_trades = Feed::load_prices(instruments)   # Get feed prices.
-      saved_ctr = save_trades(live_trades, trades)   # Update database prices with feed prices.
+      Feed::load_prices(instruments) do |live_trades|  # Get feed prices.
+        saved_ctr = save_trades(live_trades, trades)   # Update database prices with feed prices.
+      end
     end
     logger.info "LAST PRICE LOAD END (new prices saved: #{saved_ctr})."
     render json: trades, each_serializer: TradeSerializer
   end
 
-  # Store last price data for every instrument in the database.
+  # Update last price data for every instrument in the database.
   # Intended for admin user only.
   def last_price_bulk_load
-    logger.info 'LAST PRICE BULK LOAD BEGIN.'
-    instruments = Instrument.select(:id, :symbol)  # Get instrument list.
-    live_trades = Feed::load_prices(instruments)   # Get feed prices.
-    saved_ctr = save_trades(live_trades, trades)   # Update database prices with feed prices.
-    logger.info "LAST PRICE BULK LOAD END (saved: #{saved_ctr})."
-    # logger.info 'PRICE BULK LOAD REQUESTED.'
-    # FeedWorker.perform_async('price_bulk_load')
-    # head :accepted
+    logger.info 'LAST PRICE BULK LOAD REQUESTED.'
+    FeedWorker.perform_async('last_price_bulk_load')
     head :accepted
   end
 

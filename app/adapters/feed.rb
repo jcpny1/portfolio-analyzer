@@ -19,6 +19,7 @@ module Feed
   end
 
   # For each trade record, fetch live feed price values.
+  # Yields result to caller.
   def self.load_prices(instruments)
     Rails.logger.info 'FETCH PRICES BEGIN.'
     received_ctr = 0
@@ -33,7 +34,7 @@ module Feed
       all_trades.concat(live_trades)
     end
     Rails.logger.info "FETCH PRICES END (requested: #{requested_ctr}, received: #{received_ctr})."
-    all_trades
+    yield all_trades
   end
 
   # Feeds that don't have a trade_date should use `Time.at(0).to_datetime` for the trade_date.
