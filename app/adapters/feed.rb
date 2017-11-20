@@ -1,5 +1,7 @@
+# This module handles external data feed processing.
+# At this time, it is expected that it will only be used by datacache classes to refresh cache data.
 module Feed
-  Dir[File.dirname(__FILE__) + '/feed/*.rb'].each {|file| require file }
+  Dir[File.dirname(__FILE__) + '/feed/*.rb'].each { |file| require file }
 
   # NOTE: Feeds that don't have a trade_date will use `Time.at(0).to_datetime` for the trade_date.
 

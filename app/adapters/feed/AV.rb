@@ -15,7 +15,7 @@ module Feed
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbols.inspect}."
         error_msg = "Faraday client error: #{e}"
-        Feed::fetch_failure(symbols, trades, error_msg)
+        Feed.fetch_failure(symbols, trades, error_msg)
       else
         symbols.each_with_index do |symbol, i|
           begin
@@ -29,10 +29,10 @@ module Feed
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-            Feed::fetch_failure(symbols, trades, 'The feed is down.')
+            Feed.fetch_failure(symbols, trades, 'The feed is down.')
           rescue JSON::ParserError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-            Feed::fetch_failure(symbols, trades, 'The feed is down.')
+            Feed.fetch_failure(symbols, trades, 'The feed is down.')
           else
             trades[i] = process_response(symbol, response)
             trades[i].created_at = fetch_time
@@ -42,17 +42,17 @@ module Feed
       trades
     end
 
-  private
+    ### private ###
 
     # Error examples:
     #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}
     #   {"Information"=>"Please consider optimizing your API call frequency."}
 
     # Extract trade data or an error from the response.
-    def self.process_response(symbol, response)
+    private_class_method def self.process_response(symbol, response)
       if !response.key?('Time Series (Daily)')
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
-        trade = Feed::error_trade(symbol, 'Price is not available.')
+        trade = Feed.error_trade(symbol, 'Price is not available.')
       else
         # header = response['Meta Data']
         ticks = response['Time Series (Daily)']
@@ -63,7 +63,7 @@ module Feed
         trade = Trade.new do |t|
           t.instrument = Instrument.find_by(symbol: symbol)
           t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
-          t.trade_date   = Feed::missing_trade_date
+          t.trade_date   = Feed.missing_trade_date
           t.trade_price  = current_trade_price
           t.price_change = (current_trade_price - prior_trade_price).round(4)
         end

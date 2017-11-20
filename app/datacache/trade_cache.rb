@@ -22,10 +22,10 @@ class TradeCache
     trades
   end
 
-private
+  ### private ###
 
   # Fetch database trades
-  def self.load_prices_from_database(instruments)
+  private_class_method def self.load_prices_from_database(instruments)
     trades = Array.new(instruments.length)
     instruments.each_with_index do |instrument, i|
       trades[i] = Trade.where('instrument_id = ?', instrument.id).first

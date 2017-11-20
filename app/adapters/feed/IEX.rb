@@ -18,10 +18,10 @@ module Feed
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: Faraday client error: #{e}."
-        Feed::fetch_failure(symbols, trades, 'The feed is down.')
+        Feed.fetch_failure(symbols, trades, 'The feed is down.')
       rescue JSON::ParserError => e  # JSON.parse error
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: JSON parse error: #{e}."
-        Feed::fetch_failure(symbols, trades, 'The feed is down.')
+        Feed.fetch_failure(symbols, trades, 'The feed is down.')
       else
         #
         # Error example:
@@ -55,7 +55,7 @@ module Feed
     # Extract trade data or an error from the response.
     def self.process_response(symbol, response)
       if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
-        trade = Feed::error_trade(symbol, 'Price is not available.')
+        trade = Feed.error_trade(symbol, 'Price is not available.')
       else
         # TODO: Need proper timezone info.
         # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.

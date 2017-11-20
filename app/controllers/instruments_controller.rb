@@ -1,6 +1,5 @@
 # This controller handles requests for Instrument data.
 class InstrumentsController < ApplicationController
-
   # Retrieve instruments by specified value.
   # Specify param 'exact' to use 'equals' on the symbol column in the WHERE clause.
   # Otherwise, 'like' will be used against the symbol and name columns.
