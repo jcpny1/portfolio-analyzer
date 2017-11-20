@@ -1,7 +1,7 @@
 # This class is responsible for interfacing the outside world with the Instrument data store.
 class InstrumentCache
   # Update instrument cache from instrument_data records.
-  # instrument_date: [{symbol name},...]
+  # instrument_data: [{symbol name},...]
   def self.bulk_load(instrument_data)
     Rails.logger.debug 'INSTRUMENT BULK LOAD BEGIN.'
     added   = 0

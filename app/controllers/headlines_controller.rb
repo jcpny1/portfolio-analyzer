@@ -1,7 +1,7 @@
 # This controller handles requests for headline news.
 class HeadlinesController < ApplicationController
-  # Retrieve all general headlines.
+  # Retrieve news headlines.
   def headlines
-    render json: Feed::NewsAPI.headlines
+    render json: Feed.headlines
   end
 end

@@ -3,9 +3,9 @@ class TradesController < ApplicationController
   # Retrieve the latest index values for the symbols specified in params.
   def last_index
     logger.info 'LAST INDEX LOAD BEGIN.'
-    trades = Feed::AV.latest_trades(params[:symbols].split(','))
+    indexes = DataCache.last_indexes(params[:symbols].split(','))
     logger.info 'LAST INDEX LOAD END.'
-    render json: trades, each_serializer: IndexSerializer
+    render json: indexes, each_serializer: IndexSerializer
   end
 
   # Retrieve the latest prices for the symbols used by the supplied user_id.
@@ -13,7 +13,7 @@ class TradesController < ApplicationController
   def last_price
     logger.info 'LAST PRICE LOAD BEGIN.'
     instruments = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).order(:symbol).distinct  # Get instrument list. Added .order for WebMock testing.
-    trades = TradeCache.last_prices(instruments, params.key?('livePrices'))
+    trades = DataCache.last_prices(instruments, params.key?('livePrices'))
     logger.info 'LAST PRICE LOAD END.'
     render json: trades, each_serializer: TradeSerializer
   end

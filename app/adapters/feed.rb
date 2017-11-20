@@ -1,5 +1,6 @@
 # This module handles external data feed processing.
 # At this time, it is expected that it will only be used by datacache classes to refresh cache data.
+# All requests for feed data should go through these methods.
 module Feed
   Dir[File.dirname(__FILE__) + '/feed/*.rb'].each { |file| require file }
 
@@ -15,6 +16,20 @@ module Feed
     symbols.each_with_index do |symbol, i|
       trades[i] = error_trade(symbol, error_msg)
     end
+  end
+
+  # Retrieve news headlines.
+  def self.headlines
+    Feed::NewsAPI.headlines
+  end
+
+# For each symbol, fetch live feed index values.
+  # Returns array of index values.
+  def self.load_indexes(symbols)
+    Rails.logger.debug 'FETCH INDEXES BEGIN.'
+    indexes = Feed::AV.latest_trades(symbols)  # Get the feed's value data.
+    Rails.logger.debug "FETCH INDEXES END (requested: #{symbols.length}, received: #{indexes.length})."
+    indexes
   end
 
   # For each trade record, fetch live feed price values.

@@ -6,10 +6,10 @@ class FeedWorker
     case name
     when 'instrument_bulk_load'
       feed_records = Feed::IEX.symbology  # Call feed handler to retrieve symbology.
-      InstrumentCache.bulk_load(feed_records)
+      DataCache.bulk_load(feed_records)
     when 'last_price_bulk_load'
       instruments = Instrument.select(:id, :symbol)  # Get instrument list.
-      TradeCache.last_prices(instruments, true)
+      DataCache.last_prices(instruments, true)
     else
       "FeedWorker Error: invalid request (#{name})"
     end
