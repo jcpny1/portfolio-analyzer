@@ -1,11 +1,11 @@
-module Adapter
+module Feed
   # This is the Alpha Vantage API handler.
   class AV
     #
     # See the bottom of this file for sample data.
     #
     # Makes data request(s) for an array of symbols and returns results in trades.
-    def latest_trades(symbols)
+    def self.latest_trades(symbols)
       api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
       fetch_time = DateTime.now
       trades = Array.new(symbols.length)
@@ -15,7 +15,7 @@ module Adapter
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbols.inspect}."
         error_msg = "Faraday client error: #{e}"
-        Adapter::fetch_failure(symbols, trades, error_msg)
+        Feed::fetch_failure(symbols, trades, error_msg)
       else
         symbols.each_with_index do |symbol, i|
           begin
@@ -29,10 +29,10 @@ module Adapter
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-            Adapter::fetch_failure(symbols, trades, 'The feed is down.')
+            Feed::fetch_failure(symbols, trades, 'The feed is down.')
           rescue JSON::ParserError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-            Adapter::fetch_failure(symbols, trades, 'The feed is down.')
+            Feed::fetch_failure(symbols, trades, 'The feed is down.')
           else
             trades[i] = process_response(symbol, response)
             trades[i].created_at = fetch_time
@@ -49,10 +49,10 @@ module Adapter
     #   {"Information"=>"Please consider optimizing your API call frequency."}
 
     # Extract trade data or an error from the response.
-    def process_response(symbol, response)
+    def self.process_response(symbol, response)
       if !response.key?('Time Series (Daily)')
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
-        trade = Adapter::error_trade(symbol, 'Price is not available.')
+        trade = Feed::error_trade(symbol, 'Price is not available.')
       else
         # header = response['Meta Data']
         ticks = response['Time Series (Daily)']
@@ -63,7 +63,7 @@ module Adapter
         trade = Trade.new do |t|
           t.instrument = Instrument.find_by(symbol: symbol)
           t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
-          t.trade_date   = Adapter::missing_trade_date
+          t.trade_date   = Feed::missing_trade_date
           t.trade_price  = current_trade_price
           t.price_change = (current_trade_price - prior_trade_price).round(4)
         end

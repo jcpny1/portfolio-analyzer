@@ -1,17 +1,16 @@
-module Adapter
+module Feed
   # This is the Investors Exchange API handler.
   class IEX
     #
     # See the bottom of this file for sample data.
     #
     # Makes data request(s) for an array of symbols and returns results in trades.
-    def latest_trades(symbols)
+    def self.latest_trades(symbols)
       fetch_time = DateTime.now
       symbol_list = symbols.join(',')
       trades = Array.new(symbols.length)
       uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
       uri.query_values = { types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbol_list }
-
       begin
         Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
         resp = Faraday.get(uri)
@@ -19,10 +18,10 @@ module Adapter
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: Faraday client error: #{e}."
-        Adapter::fetch_failure(symbols, trades, 'The feed is down.')
+        Feed::fetch_failure(symbols, trades, 'The feed is down.')
       rescue JSON::ParserError => e  # JSON.parse error
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: JSON parse error: #{e}."
-        Adapter::fetch_failure(symbols, trades, 'The feed is down.')
+        Feed::fetch_failure(symbols, trades, 'The feed is down.')
       else
         #
         # Error example:
@@ -38,7 +37,7 @@ module Adapter
 
     # Return the feed's list of valid symbols.
     # Response format: [{symbol; 'ABC', name: 'Acme Banana'}]
-    def symbology
+    def self.symbology
       begin
         response = {}
         Rails.logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
@@ -54,9 +53,9 @@ module Adapter
     end
 
     # Extract trade data or an error from the response.
-    def process_response(symbol, response)
+    def self.process_response(symbol, response)
       if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
-        trade = Adapter::error_trade(symbol, 'Price is not available.')
+        trade = Feed::error_trade(symbol, 'Price is not available.')
       else
         # TODO: Need proper timezone info.
         # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.

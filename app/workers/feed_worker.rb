@@ -5,13 +5,14 @@ class FeedWorker
   # def perform(*args)
   def perform(name)
     case name
+
     when 'instrument_bulk_load'
       logger.info 'INSTRUMENT BULK LOAD BEGIN.'
       added   = 0
       errored = 0
       skipped = 0
       updated = 0
-      feed_records = InvestorsExchange::IEX_symbology()   # Call feed handler to retrieve symbology.
+      feed_records = Feed::IEX.symbology  # Call feed handler to retrieve symbology.
       Instrument.transaction do
         feed_records.each do |feed_record|
           begin
@@ -32,8 +33,12 @@ class FeedWorker
         end
       end
       logger.info "INSTRUMENT BULK LOAD END (received: #{feed_records.length}, added: #{added}, updated: #{updated}, skipped: #{skipped}, errors: #{errored})."
+    when 'price_bulk_load'
+      logger.info 'PRICE BULK LOAD BEGIN.'
+
     else
       "FeedWorker Error: invalid request (#{name})"
     end
+    nil
   end
 end

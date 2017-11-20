@@ -1,8 +1,8 @@
-module Adapter
+module Feed
   # This controller handles requests for headline news.
   class NewsAPI
     # Retrieve all general headlines.
-    def headlines
+    def self.headlines
       api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['NEWSAPI_API_KEY']
       response = {}
       begin

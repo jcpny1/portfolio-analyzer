@@ -1,88 +1,54 @@
 # This controller handles requests for Trade data.
 class TradesController < ApplicationController
-
-  # NOTE: Feeds that don't have a trade_date should use `Time.at(0).to_datetime` for the trade_date.
-
   # Retrieve the latest index values for the symbols specified in params.
   def last_index
-    logger.info 'LAST INDEX FETCH BEGIN.'
-    trades = load_live_indexes(params[:symbols].split(','))
-    logger.info 'LAST INDEX FETCH END.'
+    logger.info 'LAST INDEX LOAD BEGIN.'
+    trades = Feed::AV.latest_trades(params[:symbols].split(','))
+    logger.info 'LAST INDEX LOAD END.'
     render json: trades, each_serializer: IndexSerializer
   end
 
   # Retrieve the latest prices for the symbols used by the supplied user_id.
-  # Specify param livePrices for database prices supplemented from data feed. OTherwise, only return database prices.
+  # Specify param 'livePrices' to supplement database prices with feed prices. Otherwise, only return database prices.
   def last_price
-    joins_clause = "INNER JOIN positions ON positions.instrument_id = instruments.id INNER JOIN portfolios ON portfolios.id = positions.portfolio_id"
-    where_clause = "portfolios.user_id = #{params['userId']}"
-    trades = load_prices(where_clause, joins_clause, params.key?('livePrices'), true)
+    logger.info 'LAST PRICE LOAD BEGIN.'
+    instruments = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: params['userId'] }).distinct  # Get instrument list.
+    trades = load_prices_from_database(instruments)  # Get database prices.
+    if params.key?('livePrices')
+      live_trades = Feed::load_prices(instruments)   # Get feed prices.
+      saved_ctr = save_trades(live_trades, trades)   # Update database prices with feed prices.
+    end
+    logger.info "LAST PRICE LOAD END (new prices saved: #{saved_ctr})."
     render json: trades, each_serializer: TradeSerializer
   end
 
   # Store last price data for every instrument in the database.
   # Intended for admin user only.
   def last_price_bulk_load
-    load_prices('', '', true, false)
+    logger.info 'LAST PRICE BULK LOAD BEGIN.'
+    instruments = Instrument.select(:id, :symbol)  # Get instrument list.
+    live_trades = Feed::load_prices(instruments)   # Get feed prices.
+    saved_ctr = save_trades(live_trades, trades)   # Update database prices with feed prices.
+    logger.info "LAST PRICE BULK LOAD END (saved: #{saved_ctr})."
+    # logger.info 'PRICE BULK LOAD REQUESTED.'
+    # FeedWorker.perform_async('price_bulk_load')
+    # head :accepted
     head :accepted
   end
 
 private
 
-# NOTE: Some feeds have a per-request symbol limit. The limit on IEX is 100. Let's stay well under that for now.
-BATCH_FETCH_SIZE = 50
-
-  # Call feed handler for the latest indexes.
-  def load_live_indexes(symbols)
-    av_handler = Adapter::AV.new
-    av_handler.latest_trades(symbols)
-  end
-
-  # Retrieve prices from database. If 'livePrices' is specified, overwrite database values with feed values.
-  # The database is acting like a ticker feed cache (that is only updated on user request).
-  def load_prices(where_clause, joins_clause, live_prices, return_results)
-    logger.info 'LOAD PRICES BEGIN.'
-    fetched_ctr = 0
-    requested_ctr = 0
-    saved_ctr = 0
-    all_trades = []
-    symbols = Instrument.select(:id, :symbol).joins(joins_clause).where(where_clause).distinct.find_in_batches(batch_size: BATCH_FETCH_SIZE) do |instruments|
-      sleep 1 if requested_ctr.nonzero?               # Do not slam our feed vendor and get throttled or blocked.
-      symbols = instruments.map(&:symbol)             # Create symbols array.
-      requested_ctr += symbols.length                 # Update requested counter.
-      trades = load_prices_from_database(symbols)     # Get last trades from database.
-      fetched_ctr += trades.length                    # Update fetched counter.
-      if live_prices
-        live_trades = load_prices_from_feed(symbols)  # Update trades with live feed data.
-        saved_ctr = save_trades(live_trades, trades)  # Save updates to database.
-      end
-      all_trades.concat(trades) if return_results
-    end
-    logger.info "LOAD PRICES END (requested: #{requested_ctr}, fetched: #{fetched_ctr}, saved: #{saved_ctr}."
-    all_trades
-  end
-
   # Fetch database trades
-  def load_prices_from_database(symbols)
-    trades = Array.new(symbols.length)
-    symbols.each_with_index do |symbol, i|
-      instrument = Instrument.find_by(symbol: symbol)
-      if !instrument.nil?
-        trades[i] = Trade.where('instrument_id = ?', instrument.id).first
-        trades[i] = Trade.new(instrument: instrument) if trades[i].nil?
-      else
-        trades[i] = error_trade(symbol, 'Invalid symbol.')
-      end
+  def load_prices_from_database(instruments)
+    trades = Array.new(instruments.length)
+    instruments.each_with_index do |instrument, i|
+      trades[i] = Trade.where('instrument_id = ?', instrument.id).first
+      trades[i] = Trade.new(instrument: instrument) if trades[i].nil?
     end
     trades
   end
 
-  # Call feed handler for the latest prices.
-  def load_prices_from_feed(symbols)
-    iex_handler = Adapter::IEX.new
-    iex_handler.latest_trades(symbols)
-  end
-
+  # During save_trades, encountered:
   # ActiveRecord::StatementInvalid (SQLite3::BusyException: database is locked: commit transaction):
   # 08:25:31 api.1  | ActiveRecord::StatementInvalid (SQLite3::BusyException: database is locked: SELECT  "instruments"."id", "instruments"."symbol" FROM "instruments" WHERE ("instruments"."id" > 600) ORDER BY "instruments"."id" ASC LIMIT ?):
   # 08:25:31 api.1  |
