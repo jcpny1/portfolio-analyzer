@@ -1,13 +1,23 @@
 # This class is responsible for interfacing the outside world with the Trade data store.
 class TradeCache
+  # Stay within feed vendor limits. Don't risk getting blacklisted or throttled.
+  # Also, don't lock up the Trade database table for too long.
+  BATCH_SIZE  = 50      # Number of records to process in one transaction.
+  BATCH_DELAY =  1.000  # Delay time between transactions (in seconds).
+
   # Retrieve the latest prices for the given instrument list.
   # Specify getLivePrices to retrieve feed data. Otherwise, just get prices from database.
   def self.last_prices(instruments, getLivePrices)
-    trades = load_prices_from_database(instruments)    # Get database prices as a baseline.
-    if getLivePrices
-      Feed::load_prices(instruments) do |live_trades|  # Get feed prices.
-        save_trades(live_trades, trades)  # Update database prices with feed prices.
+    trades = []
+    instruments.each_slice(BATCH_SIZE) do |instrument_batch|
+      trade_batch = load_prices_from_database(instrument_batch)    # Get database prices as a baseline.
+      if getLivePrices
+        sleep BATCH_DELAY if trades.length.nonzero? # Throttle request rate.
+        Feed::load_prices(instrument_batch) do |live_trades|  # Get feed prices.
+          save_trades(live_trades, trade_batch)  # Update database prices with feed prices.
+        end
       end
+      trades.concat(trade_batch)
     end
     trades
   end
