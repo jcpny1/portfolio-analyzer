@@ -2,8 +2,8 @@
 
 [![GitHub version](https://badge.fury.io/gh/jcpny1%2Fportfolio-analyzer.svg)](https://badge.fury.io/gh/jcpny1%2Fportfolio-analyzer)
 [![Build Status](https://travis-ci.org/jcpny1/portfolio-analyzer.svg?branch=master)](https://travis-ci.org/jcpny1/portfolio-analyzer)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/test_coverage)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/maintainability)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/7ca3b07d0b24fbcd472b/test_coverage)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7ca3b07d0b24fbcd472b/maintainability)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/maintainability)
 [![Dependency Status](https://beta.gemnasium.com/badges/github.com/jcpny1/portfolio-analyzer.svg)](https://beta.gemnasium.com/projects/github.com/jcpny1/portfolio-analyzer)
 [![Docs](http://inch-ci.org/github/jcpny1/portfolio-analyzer.svg)](http://inch-ci.org/github/jcpny1/portfolio-analyzer)
 
