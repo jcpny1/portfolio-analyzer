@@ -35,7 +35,7 @@ RSpec.describe TradesController, type: :controller do
     end
     it "bulk loads database prices" do
       request.accept = "application/json"
-      get :last_price_bulk_load
+      get :price_bulk_load
       expect(response).to have_http_status(:success)
     end
   end

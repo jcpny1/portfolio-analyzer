@@ -8,6 +8,6 @@ Rails.application.routes.draw do
     end
     resources :instruments, only: [:index]
     get '/instruments/refresh', to: 'instruments#instrument_bulk_load'
-    get '/trades/refresh',      to: 'trades#last_price_bulk_load'
+    get '/trades/refresh',      to: 'trades#price_bulk_load'
   end
 end

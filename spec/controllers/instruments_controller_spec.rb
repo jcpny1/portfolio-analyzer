@@ -19,4 +19,12 @@ RSpec.describe InstrumentsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "Run async worker" do
+    it "populates database with all instruments" do
+      Sidekiq::Testing.inline! do
+        FeedWorker.perform_async('instrument_bulk_load')
+      end
+    end
+  end
 end

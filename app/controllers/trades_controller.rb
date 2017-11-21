@@ -20,9 +20,9 @@ class TradesController < ApplicationController
 
   # Update last price data for every instrument in the database.
   # Intended for admin user only.
-  def last_price_bulk_load
-    logger.info 'LAST PRICE BULK LOAD REQUESTED.'
-    FeedWorker.perform_async('last_price_bulk_load')
+  def price_bulk_load
+    logger.info 'PRICE BULK LOAD REQUESTED.'
+    FeedWorker.perform_async('price_bulk_load')
     head :accepted
   end
 end
