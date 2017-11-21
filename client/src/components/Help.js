@@ -5,7 +5,7 @@ export const Help = () => {
     <div>
       <h3>No Investment Advice or Recommendations</h3>
       <ul>
-        <li>The content of the Stock-Analyzer app is for education and entertainment purposes only.</li>
+        <li>The content of the Portfolio-Analyzer app is for education and entertainment purposes only.</li>
         <li>No decisions should be based on this app.</li>
         <li>Any information contained herein should be verfied through other sources.</li>
       </ul>
