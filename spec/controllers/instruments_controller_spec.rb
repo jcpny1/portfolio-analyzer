@@ -25,6 +25,9 @@ RSpec.describe InstrumentsController, type: :controller do
       Sidekiq::Testing.inline! do
         FeedWorker.perform_async('instrument_bulk_load')
       end
+      Sidekiq::Testing.inline! do  # should execute 'skip' path since all instruments are already loaded.
+        FeedWorker.perform_async('instrument_bulk_load')
+      end
     end
   end
 end

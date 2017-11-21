@@ -7,7 +7,7 @@ RSpec.describe PositionsController, type: :controller do
     @instrument = create(:instrument)
   end
 
-  describe "POST new" do
+  describe "POST #create" do
     it "creates a new position" do
       request.accept = "application/json"
       post :create, { params: { portfolio_id: @portfolio.id, position: { instrument_id: @instrument.id, quantity:100, cost: 200, date_acquired: '2011-11-11' }}, format: :json }
@@ -18,7 +18,7 @@ RSpec.describe PositionsController, type: :controller do
     end
   end
 
-  describe "POST update" do
+  describe "PATCH #update" do
     it "updates an existing position" do
       request.accept = "application/json"
       @position = create(:position, portfolio: @portfolio, instrument: @instrument)
@@ -27,6 +27,17 @@ RSpec.describe PositionsController, type: :controller do
       expect(response).to have_http_status(:success)
       expect(pr.length).to be > 0
       expect(pr['positions'][0]['instrument']['symbol']).to eq(@instrument.symbol)
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "deletes an existing position" do
+      request.accept = "application/json"
+      @position = create(:position, portfolio: @portfolio, instrument: @instrument)
+      delete :destroy, { params: { id: @position.id, portfolio_id: @portfolio.id }, format: :json }
+      pr = JSON.parse(response.body)
+      expect(response).to have_http_status(:success)
+      expect(pr['name']).to eq(@portfolio.name)
     end
   end
 end

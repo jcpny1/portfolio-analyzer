@@ -25,7 +25,7 @@ module Feed
     indexes
   end
 
-  # For each trade record, fetch live feed price values.
+  # For each instrument, fetch live feed price values.
   # Yields result to caller.
   def self.load_prices(instruments)
     Rails.logger.debug 'FETCH PRICES BEGIN.'

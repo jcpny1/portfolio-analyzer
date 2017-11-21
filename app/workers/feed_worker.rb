@@ -8,7 +8,7 @@ class FeedWorker
       DataCache.instrument_bulk_load(feed_records)
     when 'price_bulk_load'
       instruments = Instrument.select(:id, :symbol)  # Get instrument list.
-      DataCache.last_prices(instruments, true)
+      DataCache.price_values(instruments, true)
     else
       "FeedWorker Error: invalid request (#{name})"
     end

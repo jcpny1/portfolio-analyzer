@@ -39,4 +39,12 @@ RSpec.describe TradesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "Run async worker" do
+    it "populates database with all prices" do
+      Sidekiq::Testing.inline! do
+        FeedWorker.perform_async('price_bulk_load')
+      end
+    end
+  end
 end
