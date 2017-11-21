@@ -1,3 +1,4 @@
+# This class is responsible for executing feed-related SideKiq jobs.
 class FeedWorker
   include Sidekiq::Worker
   # Perform the specified task (in a worker thread).

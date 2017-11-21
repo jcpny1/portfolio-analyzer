@@ -21,8 +21,8 @@ module DataCache
   end
 
   # Retrieve the latest prices for the given instrument list.
-  # Specify getLivePrices to retrieve feed data. Otherwise, just get prices from database.
-  def self.price_values(instruments, getLivePrices)
-    TradeCache.prices(instruments, getLivePrices)
+  # Specify get_live_prices to retrieve feed data. Otherwise, just get prices from database.
+  def self.price_values(instruments, get_live_prices)
+    TradeCache.prices(instruments, get_live_prices)
   end
 end

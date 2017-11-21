@@ -1,12 +1,12 @@
 # This class is responsible for interfacing the outside world with the Trade data store.
 class TradeCache
   # Retrieve the latest prices for the given instrument list.
-  # Specify getLivePrices to retrieve feed data. Otherwise, just get prices from database.
-  def self.prices(instruments, getLivePrices)
+  # Specify get_live_prices to retrieve feed data. Otherwise, just get prices from database.
+  def self.prices(instruments, get_live_prices)
     trades = []
     instruments.each_slice(DataCache::FEED_BATCH_SIZE) do |instrument_batch|
       trade_batch = prices_from_database(instrument_batch)    # Get database prices as a baseline.
-      if getLivePrices
+      if get_live_prices
         sleep DataCache::FEED_BATCH_DELAY if trades.length.nonzero? # Throttle request rate.
         Feed.load_prices(instrument_batch) do |live_trades|  # Get feed prices.
           save_trades(live_trades, trade_batch)  # Update database prices with feed prices.
