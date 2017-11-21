@@ -22,7 +22,7 @@ class InstrumentCache
             skipped += 1
           end
         rescue ActiveRecord::ActiveRecordError => e
-          Rails.logger.error "INSTRUMENT REFRESH: Error saving stock symbol: #{symbol_record.inspect}, #{e}"
+          Rails.logger.error "INSTRUMENT REFRESH: Error saving symbol: #{symbol_record.inspect}, #{e}"
           errored += 1
         end
       end
