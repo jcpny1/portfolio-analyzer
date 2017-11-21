@@ -22,6 +22,9 @@ checks:
   method-complexity:
     config:
       threshold: 10
+  method-lines:
+    config:
+      threshold: 100
 ratings:
   paths:
   - app/**
