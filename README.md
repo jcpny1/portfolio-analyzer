@@ -1,4 +1,4 @@
-# STOCK ANALYZER
+# PORTFOLIO ANALYZER
 
 [![GitHub version](https://badge.fury.io/gh/jcpny1%2Fstock-analyzer.svg)](https://badge.fury.io/gh/jcpny1%2Fstock-analyzer)
 [![Build Status](https://travis-ci.org/jcpny1/stock-analyzer.svg?branch=master)](https://travis-ci.org/jcpny1/stock-analyzer)
@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Stock Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total and intra-day value change.
+The Portfolio Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total and intra-day value change.
 
 ![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
 
@@ -24,7 +24,7 @@ This repository contains the front end code in the client folder. The remaining 
 
 ## Installation
 
-Stock-Analyzer was developed using earlier versions of the following, but was released using Ruby 2.4.2, Rails 5.1.4, Node.js 8.9.1.
+Portfolio-Analyzer was developed using earlier versions of the following, but was released using Ruby 2.4.2, Rails 5.1.4, Node.js 8.9.1.
 
 ### Initialize the project
 * Clone the [Stock Analyzer Repository](https://github.com/jcpny1/stock-analyzer).
@@ -67,8 +67,8 @@ The keys should be placed in the project's home directory in a file called `.env
 ## Usage
 
 * From the project home directory, type `rake start`.
-* The server will start. When the server is ready, a new default browser tab will open at the Stock Analyzer home page.
-* When your positions are first loaded, they will be priced with the latest available information from the Stock Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
+* The server will start. When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
+* When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
 * The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per minute.
 * Database seed data includes just ten ticker symbols to work with. If you need more, there are Help menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
 
