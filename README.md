@@ -1,17 +1,17 @@
 # PORTFOLIO ANALYZER
 
-[![GitHub version](https://badge.fury.io/gh/jcpny1%2Fstock-analyzer.svg)](https://badge.fury.io/gh/jcpny1%2Fstock-analyzer)
-[![Build Status](https://travis-ci.org/jcpny1/stock-analyzer.svg?branch=master)](https://travis-ci.org/jcpny1/stock-analyzer)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/test_coverage)](https://codeclimate.com/github/jcpny1/stock-analyzer/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/maintainability)](https://codeclimate.com/github/jcpny1/stock-analyzer/maintainability)
-[![Dependency Status](https://beta.gemnasium.com/badges/github.com/jcpny1/stock-analyzer.svg)](https://beta.gemnasium.com/projects/github.com/jcpny1/stock-analyzer)
-[![Docs](http://inch-ci.org/github/jcpny1/stock-analyzer.svg)](http://inch-ci.org/github/jcpny1/stock-analyzer)
+[![GitHub version](https://badge.fury.io/gh/jcpny1%2Fportfolio-analyzer.svg)](https://badge.fury.io/gh/jcpny1%2Fportfolio-analyzer)
+[![Build Status](https://travis-ci.org/jcpny1/portfolio-analyzer.svg?branch=master)](https://travis-ci.org/jcpny1/portfolio-analyzer)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/test_coverage)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/538214c12d1599ae33d3/maintainability)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/maintainability)
+[![Dependency Status](https://beta.gemnasium.com/badges/github.com/jcpny1/portfolio-analyzer.svg)](https://beta.gemnasium.com/projects/github.com/jcpny1/portfolio-analyzer)
+[![Docs](http://inch-ci.org/github/jcpny1/portfolio-analyzer.svg)](http://inch-ci.org/github/jcpny1/portfolio-analyzer)
 
 ## Overview
 
 The Portfolio Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total and intra-day value change.
 
-![Stock Analyzer Positions Page](https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true "Stock Analyzer Positions Page")
+![Portfolio Analyzer Positions Page](https://github.com/jcpny1/portfolio-analyzer/blob/master/Screenshot-2017-11-13%20PortfolioAnalyzer.png?raw=true "Portfolio Analyzer Positions Page")
 
 It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project. It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI.
 
@@ -27,7 +27,7 @@ This repository contains the front end code in the client folder. The remaining 
 Portfolio-Analyzer was developed using earlier versions of the following, but was released using Ruby 2.4.2, Rails 5.1.4, Node.js 8.9.1.
 
 ### Initialize the project
-* Clone the [Stock Analyzer Repository](https://github.com/jcpny1/stock-analyzer).
+* Clone the [Portfolio Analyzer Repository](https://github.com/jcpny1/portfolio-analyzer).
 * `cd` into the project directory.
 * `bundle install`
 
