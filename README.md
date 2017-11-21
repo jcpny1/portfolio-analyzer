@@ -48,7 +48,7 @@ fi
 
 ### Install npm packages
 * `cd client`
-* `npm install`
+* `npm install`  (the default responses are ok)
 
 ### Setup the data provider keys
 To receive market data, the server requires an internet connection and a few API keys:
