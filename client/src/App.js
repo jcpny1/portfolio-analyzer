@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
-import {Dropdown, Grid, Image, Menu, Table} from 'semantic-ui-react';
+import {Button, Dropdown, Grid, Image, Menu, Table} from 'semantic-ui-react';
 import ConfirmDialog from './containers/ConfirmDialog';
 import HeadlinesPage from './containers/HeadlinesPage';
 import HelpPage from './containers/HelpPage';
@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <Dropdown item text='Help'>
         <Dropdown.Menu>
-          <HelpPage/>
+          <HelpPage trigger={<Dropdown.Item>Usage Notes</Dropdown.Item>}/>
           <Dropdown.Divider/>
           <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
         </Dropdown.Menu>
@@ -96,7 +96,7 @@ class App extends Component {
                             &bull; Market data provided by <a href='https://iextrading.com' target='_blank' rel='noopener noreferrer'>IEX</a>
                 &emsp;&emsp;&bull; Headline news powered by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a>
                 &emsp;&emsp;&bull; The prices shown may not be the correct prices or the latest prices.
-                &emsp;&emsp;&bull; See the Help > Usage Notes page for more information.
+                &emsp;&emsp;&bull; See the <HelpPage trigger={<Button content='Help->Usage Notes' className='link' inverted size='small'/>}/> page for more information.
               </span>
             </Table.HeaderCell>
           </Table.Row>

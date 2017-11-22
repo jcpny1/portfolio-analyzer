@@ -6,3 +6,7 @@
   margin: 0em;
   padding: 0px;
 }
+
+.ui.inverted.button.link {
+  color: @blue !important;
+}
