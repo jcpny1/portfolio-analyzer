@@ -14,6 +14,12 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  require 'capybara/rspec'
+  Capybara.server = :puma
+  # Capybara.server = :puma, { Silent: true }
+  Capybara.app_host = 'http://localhost:3001'
+  Capybara.server_host = 'localhost'
+  Capybara.server_port = '3001'
 
   require 'simplecov'
   SimpleCov.start
@@ -21,11 +27,9 @@ RSpec.configure do |config|
   require 'webmock/rspec'
   WebMock.disable_net_connect!(allow_localhost: true)
   config.before(:each) do
-
     Sidekiq::Worker.clear_all  # Makes sure jobs don't linger between tests:
 
-    # WebMock Reponse Setups #
-
+    ## WebMock Reponse Setups ##
     # Request for data feed symbology.
     stub_request(:get, 'https://api.iextrading.com/1.0/ref-data/symbols').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
@@ -41,7 +45,7 @@ RSpec.configure do |config|
         body: '{"AAPL": {"quote": {"companyName": "Apple Inc.", "latestPrice": 170.15, "change": -0.95, "latestUpdate": 1510952400327}}}',
         headers: {})
     # Request for DJIA index value.
-    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol%5B%5D=DJIA').
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.13.1'}).
       to_return(status: 200,
         body: '{"Time Series (Daily)": {"2017-11-02": {"4. close": "23358.24"}, "2017-11-01": {"4. close":"23458.36"}}}',
