@@ -81,7 +81,7 @@ The keys should be placed in the project's home directory in a file called `.env
 ## Testing
 
 To run the test suite (from the project home directory):
-* `bundle exec rspec`
+* `RAILS_ENV=test bundle exec rspec`
 
 You may have to seed the test database:
 * `rake db:seed RAILS_ENV=test`
