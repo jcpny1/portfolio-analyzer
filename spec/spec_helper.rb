@@ -15,9 +15,11 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   require 'capybara/rspec'
+  require 'capybara/rails'
   Capybara.server = :puma
   # Capybara.server = :puma, { Silent: true }
-  Capybara.app_host = 'http://localhost:3001'
+  Capybara.current_driver = :selenium
+  Capybara.app_host = 'http://localhost:3300'
   Capybara.server_host = 'localhost'
   Capybara.server_port = '3001'
 

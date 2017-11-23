@@ -1,7 +1,7 @@
 env:
   global:
     - CC_TEST_REPORTER_ID=95325b4141034c059f27f080ce9f4bb9ac4837204fe4fd73bb289060ed0c5b2a
-language: ruby
+language: node_js
 rvm:
   - 2.4.2
 install:
@@ -9,7 +9,6 @@ install:
 before_script:
   - bundle exec rake db:migrate
   - bundle exec rake db:seed
-  - cd client && npm start && cd ..
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
   - chmod +x ../cc-test-reporter
   - ../cc-test-reporter before-build
