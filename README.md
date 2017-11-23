@@ -80,11 +80,11 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Testing
 
-To run the test suite (from the project home directory):
-* `RAILS_ENV=test bundle exec rspec`
+To run the test suite:
+* In one window, run `npm start` from the client directory.
+* On another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
 
-You may have to seed the test database:
-* `rake db:seed RAILS_ENV=test`
+You may have to migrate and seed the test database.
 
 ## Deployment
 
