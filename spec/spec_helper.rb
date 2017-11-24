@@ -15,7 +15,6 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   require 'capybara/rspec'
-  require 'capybara/rails'
   Capybara.server = :puma
   # Capybara.server = :puma, { Silent: true }
   Capybara.current_driver = :selenium
