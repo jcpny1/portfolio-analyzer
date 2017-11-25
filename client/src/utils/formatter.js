@@ -28,7 +28,6 @@ const number = (props) => {
   let value = parseFloat(props.value);
   const valueIsNotZero = Math.abs(value) > 0.00001;
   value = valueIsNotZero ? value : +0.0;  // We don't want to see a formatted 'negative zero'.
-
   // Set formatting options.
   let options = {};
   switch (props.type) {
@@ -72,5 +71,24 @@ const serverError = (error, prefix) => {
   return `${errorString}\n\n\n${Fmt.dateTime({value:Date.now()})}`;
 }
 
-const Fmt = {dateTime, index, number, serverError};
+// Returns a formatted symbol string.
+//   Specify prop color to force a particular color.
+// TODO: codify the zero test with a static function using a clearly defined constant.
+const symbol = (props) => {
+  // Determine if props.gl is effectively zero or not.
+  let gl = parseFloat(props.gl);
+  const glIsNotZero = Math.abs(gl) > 0.00001;
+  gl = glIsNotZero ? gl : +0.0;
+  // Format for color.
+  let color = props.color || 'black';
+  if (gl < +0.0) {
+    color = 'red';
+  } else if (gl > +0.0) {
+    color = 'green';
+  }
+
+  return (<span style={{color:color}}>{props.value}</span>);
+}
+
+const Fmt = {dateTime, index, number, serverError, symbol};
 export default Fmt;
