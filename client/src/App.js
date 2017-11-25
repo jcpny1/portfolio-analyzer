@@ -11,11 +11,14 @@ import * as Request from './utils/request';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
-  menuCenter() {
+  menuItemAdmin() {
     return (
-      <Header className='shadow' size='large' color='purple'>
-        Portfolio Analyzer
-      </Header>
+      <Dropdown item text='Admin'>
+        <Dropdown.Menu>
+          <ConfirmDialog triggerType='dropdown' title='Refresh Instruments' header='Refresh instrument inventory from data feed' onClickConfirm={Request.refreshInstruments}/>
+          <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice entire instrument inventory' onClickConfirm={Request.refreshPrices}/>
+        </Dropdown.Menu>
+      </Dropdown>
     );
   }
 
@@ -35,33 +38,9 @@ class App extends Component {
     return (
       <Dropdown item text='Settings'>
         <Dropdown.Menu>
-          <Dropdown item text='Admin'>
-            <Dropdown.Menu>
-              <ConfirmDialog triggerType='dropdown' title='Refresh Instruments' header='Refresh instrument inventory from data feed' onClickConfirm={Request.refreshInstruments}/>
-              <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice entire instrument inventory' onClickConfirm={Request.refreshPrices}/>
-            </Dropdown.Menu>
-          </Dropdown>
           <Dropdown.Item disabled text='Locale'/>
         </Dropdown.Menu>
       </Dropdown>
-    );
-  }
-
-  menuLeft() {
-    return (
-      <Menu.Menu position='left'>
-        <Menu.Item as={Link} to='/'>Portfolios</Menu.Item>
-        {<SymbolsPage/>}
-      </Menu.Menu>
-    );
-  }
-
-  menuRight() {
-    return (
-      <Menu.Menu position='right'>
-        {this.menuItemSettings()}
-        {this.menuItemHelp()}
-      </Menu.Menu>
     );
   }
 
@@ -128,12 +107,39 @@ class App extends Component {
       <Grid.Row columns={1}>
         <Grid.Column>
           <Menu>
-            {this.menuLeft()}
-            {this.menuCenter()}
-            {this.menuRight()}
+            {this.pageMenuLeft()}
+            {this.pageMenuCenter()}
+            {this.pageMenuRight()}
           </Menu>
         </Grid.Column>
       </Grid.Row>
+    );
+  }
+
+  pageMenuCenter() {
+    return (
+      <Header className='shadow' color='purple' size='large'>
+        Portfolio Analyzer
+      </Header>
+    );
+  }
+
+  pageMenuLeft() {
+    return (
+      <Menu.Menu position='left'>
+        <Menu.Item as={Link} to='/'>Portfolios</Menu.Item>
+        {<SymbolsPage/>}
+      </Menu.Menu>
+    );
+  }
+
+  pageMenuRight() {
+    return (
+      <Menu.Menu position='right'>
+        {this.menuItemSettings()}
+        {this.menuItemAdmin()}
+        {this.menuItemHelp()}
+      </Menu.Menu>
     );
   }
 
