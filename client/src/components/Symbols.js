@@ -3,7 +3,7 @@ import {Form, Grid, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 export const Symbols = (props) => {
-  const {onChange, instruments, searchValue} = props;
+  const {instruments, onChange, searchValue} = props;
 
   function columnTitles() {
     return (

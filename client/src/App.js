@@ -8,9 +8,13 @@ import HelpPage from './containers/HelpPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
 import * as Request from './utils/request';
+import SettingsEditPage from './containers/SettingsEditPage';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
+
+  static GUEST_USER_ID = 1;
+
   menuItemAdmin() {
     return (
       <Dropdown item text='Admin'>
@@ -26,19 +30,10 @@ class App extends Component {
     return (
       <Dropdown item text='Help'>
         <Dropdown.Menu>
+          <SettingsEditPage userId={App.GUEST_USER_ID}/>
           <HelpPage trigger={<Dropdown.Item>Usage Notes</Dropdown.Item>}/>
           <Dropdown.Divider/>
           <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    );
-  }
-
-  menuItemSettings() {
-    return (
-      <Dropdown item text='Settings'>
-        <Dropdown.Menu>
-          <Dropdown.Item disabled text='Locale'/>
         </Dropdown.Menu>
       </Dropdown>
     );
@@ -136,7 +131,6 @@ class App extends Component {
   pageMenuRight() {
     return (
       <Menu.Menu position='right'>
-        {this.menuItemSettings()}
         {this.menuItemAdmin()}
         {this.menuItemHelp()}
       </Menu.Menu>

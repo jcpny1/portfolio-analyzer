@@ -169,7 +169,7 @@ export function updatePortfolio(dispatch, portfolio) {
   fetch(`/api/portfolios/${portfolio.id}`, {
     method:  'PATCH',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({name: portfolio.name,}),
+    body:    JSON.stringify({name: portfolio.name}),
   })
   .then(checkStatus)
   .then(response => response.json())
@@ -199,4 +199,30 @@ export function updatePosition(dispatch, position, sortFn) {
     loadPortfolios(dispatch, false, sortFn);
   })
   .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Update Position: ', error: error.message})))
+}
+
+// Retrieve User.
+export function userFetch(userId, cb) {
+  return fetch(`/api/users/${userId}`, {headers: {'Accept': 'application/json'}})
+  .then(checkStatus)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(error.message)});
+}
+
+// Update an existing User.
+export function userSave(user) {
+  fetch(`/api/users/${user.id}`, {
+    method:  'PATCH',
+    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+    body:    JSON.stringify({locale: user.locale}),
+  })
+  .then(checkStatus)
+  .then(response => response.json())
+  .then(updatedUser => {
+    if (!updatedUser.id) {
+      throw new Error('User update failed!');
+    }
+  })
+  .catch(error => {alert(error.message)});
 }

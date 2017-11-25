@@ -43,7 +43,7 @@ export default class PortfolioEditPage extends Component {
 
   render() {
     const {iconColor, iconName, tooltip} = this.props;
-    const {modalOpen, editedPortfolio} = this.state;
+    const {editedPortfolio, modalOpen} = this.state;
     return (
       <Modal
         closeOnDimmerClick={false}

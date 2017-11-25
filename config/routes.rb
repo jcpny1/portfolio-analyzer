@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :positions, only: [:create, :update, :destroy]
     end
     resources :instruments, only: [:index]
+    resources :users, only: [:show, :update]
     get '/instruments/refresh', to: 'instruments#instrument_bulk_load'
     get '/trades/refresh',      to: 'trades#price_bulk_load'
   end

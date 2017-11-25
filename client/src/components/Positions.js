@@ -6,7 +6,7 @@ import Fmt from '../utils/formatter';
 import PositionEditPage from '../containers/PositionEditPage';
 
 export const Positions = (props) => {
-  const {emptyPosition, onClickColHeader, onClickSubmit, onClickRemove, portfolio, refreshPortfolio, sortColName, sortDirection, updatingPortfolio} = props;
+  const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, refreshPortfolio, sortColName, sortDirection, updatingPortfolio} = props;
 
   function columnTitles() {
     return (
