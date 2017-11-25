@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {Button, Dropdown, Header, Modal} from 'semantic-ui-react';
-import PropTypes from 'prop-types';
-import * as Request from '../utils/request';
 import {SettingsEdit} from '../components/SettingsEdit';
+import * as userActions from '../actions/userActions.js';
 
-export default class SettingsEditPage extends Component {
+class SettingsEditPage extends Component {
   componentWillMount() {
     this.resetComponent();
   }
 
+  componentDidMount() {
+    'id' in this.props.user || this.props.actions.userLoad()
+  }
+
   resetComponent = () => {
     this.setState({
+      editedUser: {},
       modalOpen: false,
-      editedSettings: {},
     });
   }
 
@@ -22,26 +27,28 @@ export default class SettingsEditPage extends Component {
 
   handleChange = (e, {name, value}) => {
     this.setState({
-      editedSettings: {
-        ...this.state.editedSettings,
+      editedUser: {
+        ...this.state.editedUser,
         [name]: value,
       },
     });
   }
 
   handleOpen = () => {
-    const {userId} = this.props;
-    Request.userFetch(userId, user => {
-      this.setState({editedSettings: {...user}, modalOpen: true});
-    });
+    const {user} = this.props;
+    if (user) {
+      this.setState({editedUser: {...user}});
+    }
+    this.setState({modalOpen: true});
   }
+
   handleSubmit = () => {
-    Request.userSave(this.state.editedSettings);
+    this.props.actions.userUpdate(this.state.editedUser);
     this.resetComponent();
   }
 
   render() {
-    const {editedSettings, modalOpen} = this.state;
+    const {editedUser, modalOpen} = this.state;
     return (
       <Modal
         closeOnDimmerClick={false}
@@ -51,7 +58,7 @@ export default class SettingsEditPage extends Component {
         style={{paddingBottom:'10px'}}
       >
         <Modal.Header><Header content='Settings Editor' icon='settings' size='small'/></Modal.Header>
-        <Modal.Content><SettingsEdit settings={editedSettings} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
+        <Modal.Content><SettingsEdit user={editedUser} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>
           <Button type='submit' floated='left' color='green' form='settingsEditForm'>Submit</Button>
@@ -61,6 +68,12 @@ export default class SettingsEditPage extends Component {
   }
 }
 
-SettingsEditPage.propTypes = {
-  userId: PropTypes.number.isRequired,
+function mapStateToProps(state) {
+  return {user: state.users.user, updatingUser: state.users.updatingUser};
 }
+
+function mapDispatchToProps(dispatch) {
+  return {actions: bindActionCreators(userActions, dispatch)};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsEditPage);

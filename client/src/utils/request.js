@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
 import Portfolio from '../containers/classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
+import * as UserReducerFunctions from '../reducers/users_reducer';
 
 // Add a new portfolio.
 export function addPortfolio(dispatch, portfolio) {
@@ -202,16 +203,18 @@ export function updatePosition(dispatch, position, sortFn) {
 }
 
 // Retrieve User.
-export function userFetch(userId, cb) {
+export function userFetch(dispatch, userId) {
   return fetch(`/api/users/${userId}`, {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
   .then(response => response.json())
-  .then(cb)
-  .catch(error => {alert(error.message)});
+  .then(user => {
+    dispatch(UserReducerFunctions.updateUserAction(user));
+  })
+  .catch(error => dispatch(UserReducerFunctions.errorUserAction({prefix: 'User Fetch: ', error: error.message})))
 }
 
 // Update an existing User.
-export function userSave(user) {
+export function userSave(dispatch, user) {
   fetch(`/api/users/${user.id}`, {
     method:  'PATCH',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
@@ -223,6 +226,7 @@ export function userSave(user) {
     if (!updatedUser.id) {
       throw new Error('User update failed!');
     }
+    dispatch(UserReducerFunctions.updateUserAction(user));
   })
   .catch(error => {alert(error.message)});
 }

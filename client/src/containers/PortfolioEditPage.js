@@ -10,8 +10,8 @@ export default class PortfolioEditPage extends Component {
 
   resetComponent = () => {
     this.setState({
-      modalOpen: false,
       editedPortfolio: {},
+      modalOpen: false,
     });
   }
 

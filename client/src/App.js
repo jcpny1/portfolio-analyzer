@@ -12,9 +12,6 @@ import SettingsEditPage from './containers/SettingsEditPage';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
-
-  static GUEST_USER_ID = 1;
-
   menuItemAdmin() {
     return (
       <Dropdown item text='Admin'>
@@ -30,7 +27,7 @@ class App extends Component {
     return (
       <Dropdown item text='Help'>
         <Dropdown.Menu>
-          <SettingsEditPage userId={App.GUEST_USER_ID}/>
+          <SettingsEditPage/>
           <HelpPage trigger={<Dropdown.Item>Usage Notes</Dropdown.Item>}/>
           <Dropdown.Divider/>
           <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
