@@ -22,12 +22,13 @@ const index = (name, values) => {
 //   Specify prop delta for positive numbers to receive a plus sign and green color.
 //   Specify prop color to force a particular color.
 //   Specify prop type to format for currency, decimal, index, or quantity.
-// TODO: codify the zero test with a static function using a clearly defined constant.
 const number = (props) => {
   // Determine if props.value is effectively zero or not.
   let value = parseFloat(props.value);
-  const valueIsNotZero = Math.abs(value) > 0.00001;
-  value = valueIsNotZero ? value : +0.0;  // We don't want to see a formatted 'negative zero'.
+  const valueSign = Math.sign(value);
+  if (valueSign == -0) {
+    value = +0.0;  // We don't want to see a formatted 'negative zero'.
+  }
   // Set formatting options.
   let options = {};
   switch (props.type) {
@@ -46,20 +47,22 @@ const number = (props) => {
     default:
       break;
   }
-
-  // Format the value.
-  const formattedValue = value.toLocaleString(undefined, options);
-
   // Format for plus sign and color.
+  let color = '';
   let plus = '';
-  let color = props.color || 'black';
-  if (value < +0.0) {
+  if (props.color) {
+    color = props.color;
+  } else if (valueSign == -1) {
     color = 'red';
-  } else if (props.delta && valueIsNotZero) {
+  } else if (props.delta && valueSign == 1) {
     plus  = '+';
     color = 'green';
+  } else {
+    color = 'black';
   }
-
+  // Format the value itself.
+  const formattedValue = value.toLocaleString(undefined, options);
+  // Return the formatted number string.
   return (<span style={{color:color}}>{plus}{formattedValue}</span>);
 }
 
@@ -72,21 +75,19 @@ const serverError = (error, prefix) => {
 }
 
 // Returns a formatted symbol string.
-//   Specify prop color to force a particular color.
-// TODO: codify the zero test with a static function using a clearly defined constant.
+//   Specify prop gainLoss to determine color.
 const symbol = (props) => {
   // Determine if props.gl is effectively zero or not.
-  let gl = parseFloat(props.gl);
-  const glIsNotZero = Math.abs(gl) > 0.00001;
-  gl = glIsNotZero ? gl : +0.0;
-  // Format for color.
-  let color = props.color || 'black';
-  if (gl < +0.0) {
-    color = 'red';
-  } else if (gl > +0.0) {
+  let gainLoss = parseFloat(props.gainLoss);
+  const gainLossSign = Math.sign(gainLoss);
+  let color = '';
+  if (gainLossSign == 1) {
     color = 'green';
+  } else if (gainLossSign == -1) {
+    color = 'red';
+  } else {
+    color = 'black';
   }
-
   return (<span style={{color:color}}>{props.value}</span>);
 }
 
