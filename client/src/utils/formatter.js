@@ -26,7 +26,7 @@ const number = (props) => {
   // Determine if props.value is effectively zero or not.
   let value = parseFloat(props.value);
   const valueSign = Math.sign(value);
-  if (valueSign == -0) {
+  if (valueSign === -0) {
     value = +0.0;  // We don't want to see a formatted 'negative zero'.
   }
   // Set formatting options.
@@ -52,9 +52,9 @@ const number = (props) => {
   let plus = '';
   if (props.color) {
     color = props.color;
-  } else if (valueSign == -1) {
+  } else if (valueSign === -1) {
     color = 'red';
-  } else if (props.delta && valueSign == 1) {
+  } else if (props.delta && valueSign === 1) {
     plus  = '+';
     color = 'green';
   } else {
@@ -81,9 +81,9 @@ const symbol = (props) => {
   let gainLoss = parseFloat(props.gainLoss);
   const gainLossSign = Math.sign(gainLoss);
   let color = '';
-  if (gainLossSign == 1) {
+  if (gainLossSign === 1) {
     color = 'green';
-  } else if (gainLossSign == -1) {
+  } else if (gainLossSign === -1) {
     color = 'red';
   } else {
     color = 'black';
