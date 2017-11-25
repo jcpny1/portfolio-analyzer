@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
-import {Button, Dropdown, Grid, Image, Menu, Table} from 'semantic-ui-react';
+import {Button, Dropdown, Grid, Header, Image, Menu, Table} from 'semantic-ui-react';
 import ConfirmDialog from './containers/ConfirmDialog';
 import HeadlinesPage from './containers/HeadlinesPage';
 import HelpPage from './containers/HelpPage';
@@ -11,6 +11,14 @@ import * as Request from './utils/request';
 import SymbolsPage from './containers/SymbolsPage';
 
 class App extends Component {
+  menuCenter() {
+    return (
+      <Header className='shadow' size='large' color='purple'>
+        Portfolio Analyzer
+      </Header>
+    );
+  }
+
   menuItemHelp() {
     return (
       <Dropdown item text='Help'>
@@ -121,6 +129,7 @@ class App extends Component {
         <Grid.Column>
           <Menu>
             {this.menuLeft()}
+            {this.menuCenter()}
             {this.menuRight()}
           </Menu>
         </Grid.Column>

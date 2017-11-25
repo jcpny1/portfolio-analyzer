@@ -12,7 +12,7 @@ export const Headlines = (props) => {
         return (
           <Table.Row key={index}>
             <Table.Cell>
-              <a class='news' href={article.url} title={article.description} target='_blank' rel='noopener noreferrer'><span style={{fontWeight:article.fontWeight}}>{article.title}.</span></a>
+              <a className='news' href={article.url} title={article.description} target='_blank' rel='noopener noreferrer'><span style={{fontWeight:article.fontWeight}}>{article.title}.</span></a>
             </Table.Cell>
           </Table.Row>
         );
