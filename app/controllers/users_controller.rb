@@ -20,7 +20,7 @@ private
 
     # Load the user identified in the route.
     def user
-      @user = User.find(params[:id])
+      @user = User.find(current_user.id)
     end
 
     # Filter params for allowed attributes only.

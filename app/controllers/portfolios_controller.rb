@@ -4,7 +4,7 @@ class PortfoliosController < ApplicationController
 
   # Retrieve all portfolios.
   def index
-    render json: Portfolio.order(:name)
+    render json: Portfolio.where('user_id = ?', current_user.id).order(:name)
   end
 
   # Retrieve a portfolio.
@@ -14,8 +14,8 @@ class PortfoliosController < ApplicationController
 
   # Create a new portfolio and save it to the database.
   def create
-    portfolio = Portfolio.new(portfolio_params)
-    if portfolio.save
+    portfolio = Portfolio.new(user_id: current_user.id)
+    if portfolio.update_attributes(portfolio_params)
       render json: portfolio, status: :created
     else
       render json: portfolio.errors.full_messages, status: :unprocessable_entity
@@ -49,6 +49,6 @@ private
 
   # Filter params for allowed attributes only.
   def portfolio_params
-    params.require(:portfolio).permit(:user_id, :name)
+    params.require(:portfolio).permit(:name)
   end
 end

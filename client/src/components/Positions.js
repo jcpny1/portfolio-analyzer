@@ -1,9 +1,11 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
+import Currency  from '../classes/Currency';
 import PropTypes from 'prop-types';
 import Fmt from '../utils/formatter';
 import PositionEditPage from '../containers/PositionEditPage';
+import Position  from '../classes/Position';
 
 export const Positions = (props) => {
   const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, refreshPortfolio, sortColName, sortDirection, updatingPortfolio} = props;
@@ -28,6 +30,9 @@ export const Positions = (props) => {
 
   function listPositions() {
     return portfolio.positions.map((position,index) => {
+
+let xPos = new Position(position.portfolio_id);
+xPos.marketValue = new Currency(position.marketValue);
       return (
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
@@ -38,7 +43,7 @@ export const Positions = (props) => {
           <Table.Cell><Fmt.number type='quantity' value={position.quantity} quantity/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.lastTrade}/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.priceChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={position.marketValue}/></Table.Cell>
+          <Table.Cell>{xPos.marketValue.toHtml()}</Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.dayChange} delta/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.cost}/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={position.gainLoss} delta/></Table.Cell>

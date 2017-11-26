@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
-import Portfolio from '../containers/classes/Portfolio';
+import Portfolio from '../classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 import * as UserReducerFunctions from '../reducers/users_reducer';
 
@@ -9,16 +9,16 @@ export function addPortfolio(dispatch, portfolio) {
   fetch('/api/portfolios/', {
     method:  'POST',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({user_id: portfolio.user_id, name: portfolio.name}),
+    body:    JSON.stringify({name: portfolio.name}),
   })
   .then(checkStatus)
   .then(response => response.json())
-  .then(newPortfolio => {
-    if (!newPortfolio.id) {
+  .then(loadedPortfolio => {
+    if (!loadedPortfolio.id) {
       throw new Error('Portfolio add failed!');
     }
-    Portfolio.initPositionValues([newPortfolio]);
-    dispatch(PortfolioReducerFunctions.addPortfolioAction(newPortfolio));
+    const portfolio = new Portfolio(loadedPortfolio.id, loadedPortfolio.name);
+    dispatch(PortfolioReducerFunctions.addPortfolioAction(portfolio));
   })
   .catch(error => dispatch(PortfolioReducerFunctions.errorPortfolioAction({prefix: 'Add Portfolio: ', error: error.message})))
 }
@@ -105,11 +105,13 @@ export function loadPortfolios(dispatch, loadLivePrices, sortFn) {
   })
   .then(checkStatus)
   .then(response => response.json())
-  .then(portfolios => {
-    Portfolio.initPositionValues(portfolios)
-    const livePrices = (loadLivePrices === true) ? 'livePrices&' : '';
-    const userId = (portfolios.length > 0) ? portfolios[0].user.id : '';
-    fetch(`/api/portfolios/last-price?${livePrices}userId=${userId}`, {
+  .then(loadedPortfolios => {
+    const portfolios = loadedPortfolios.map(loadedPortfolio => {
+      const portfolio = new Portfolio(loadedPortfolio.id, loadedPortfolio.name, loadedPortfolio.positions);
+      return portfolio;
+    });
+    const livePrices = (loadLivePrices === true) ? 'livePrices' : '';
+    fetch(`/api/portfolios/last-price?${livePrices}`, {
       headers: {'Accept': 'application/json'},
     })
     .then(checkStatus)
@@ -123,7 +125,7 @@ export function loadPortfolios(dispatch, loadLivePrices, sortFn) {
             dispatch(PortfolioReducerFunctions.warnPortfolioAction({prefix: 'Load Portfolios Prices for ', warning: trade.error}));
           }
         });
-        Portfolio.processPrices(portfolios, trades);
+        Portfolio.applyPrices(portfolios, trades);
         sortFn(portfolios, Portfolio.sort);
         dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios));
       }

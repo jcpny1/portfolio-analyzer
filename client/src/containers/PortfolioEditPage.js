@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import Portfolio from '../classes/Portfolio';
 import {PortfolioEdit} from '../components/PortfolioEdit';
 
 export default class PortfolioEditPage extends Component {
@@ -10,7 +11,7 @@ export default class PortfolioEditPage extends Component {
 
   resetComponent = () => {
     this.setState({
-      editedPortfolio: {},
+      editedPortfolio: new Portfolio(),
       modalOpen: false,
     });
   }

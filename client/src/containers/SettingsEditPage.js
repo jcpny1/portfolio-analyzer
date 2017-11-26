@@ -8,6 +8,7 @@ import * as userActions from '../actions/userActions.js';
 class SettingsEditPage extends Component {
   componentWillMount() {
     this.resetComponent();
+    this.props.actions.userLoad();
   }
 
   resetComponent = () => {

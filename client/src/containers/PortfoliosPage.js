@@ -3,11 +3,12 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as portfolioActions from '../actions/portfolioActions.js';
-import Portfolio from './classes/Portfolio';
+import Portfolio from '../classes/Portfolio';
 import {Portfolios} from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
   componentDidMount() {
+
     this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sortFn)
   }
 
@@ -31,10 +32,10 @@ class PortfoliosPage extends Component {
   }
 
   render() {
-    const {portfolios, sortFn, updatingPortfolio, userId} = this.props;
-    const {sumMarketValue, sumTotalCost, sumDayChange, sumGainLoss} = Portfolio.computeAccountSummaries(portfolios);
+    const {portfolios, sortFn, updatingPortfolio} = this.props;
+    const {sumMarketValue, sumCost, sumDayChange, sumGainLoss} = Portfolio.accountSummary(portfolios);
     const sortTerms = sortFn();
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={Portfolio.newPortfolio(userId)} updatingPortfolio={updatingPortfolio} totalCost={sumTotalCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={new Portfolio()} updatingPortfolio={updatingPortfolio} totalCost={sumCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction}/>);
   }
 }
 
@@ -46,7 +47,7 @@ PortfoliosPage.propTypes = {
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio, userId: state.users.user.id};
+  return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio};
 }
 
 function mapDispatchToProps(dispatch) {

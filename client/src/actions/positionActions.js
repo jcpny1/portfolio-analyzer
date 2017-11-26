@@ -1,4 +1,4 @@
-import Portfolio from '../containers/classes/Portfolio';
+import Portfolio from '../classes/Portfolio';
 import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
 import * as Request from '../utils/request.js';
 

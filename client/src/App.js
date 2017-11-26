@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Button, Dropdown, Grid, Header, Image, Menu, Table} from 'semantic-ui-react';
@@ -11,13 +10,8 @@ import PositionsPage from './containers/PositionsPage';
 import * as Request from './utils/request';
 import SettingsEditPage from './containers/SettingsEditPage';
 import SymbolsPage from './containers/SymbolsPage';
-import * as userActions from './actions/userActions.js';
 
 class App extends Component {
-  componentDidMount() {
-    this.props.actions.userLoad()
-  }
-
   menuItemAdmin() {
     return (
       <Dropdown item text='Admin'>
@@ -81,7 +75,7 @@ class App extends Component {
                             &bull; Market data provided by <a href='https://iextrading.com' target='_blank' rel='noopener noreferrer'>IEX</a>
                 &emsp;&emsp;&bull; Headline news powered by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a>
                 &emsp;&emsp;&bull; The prices shown may not be the correct prices or the latest prices.
-                &emsp;&emsp;&bull; See the <HelpPage trigger={<Button content='Help->Usage Notes' className='link' inverted size='small'/>}/> page for more information.
+                &emsp;&emsp;&bull; See the <HelpPage trigger={<Button content='Help->Usage Notes' className='link' inverted size='medium'/>}/> page for more information.
               </span>
             </Table.HeaderCell>
           </Table.Row>
@@ -158,8 +152,4 @@ function mapStateToProps(state) {
   return {state: state}
 }
 
-function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(userActions, dispatch)};
-}
-
-export const WrapperApp = connect(mapStateToProps, mapDispatchToProps)(App)
+export const WrapperApp = connect(mapStateToProps)(App)

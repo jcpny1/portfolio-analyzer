@@ -16,7 +16,7 @@ export const Portfolios = (props) => {
         <Table.HeaderCell sorted={sortColName === 'name'        ? sortDirection : null} onClick={() => onClickColHeader('name')} textAlign='left'>Portfolios</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'marketValue' ? sortDirection : null} onClick={() => onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'dayChange'   ? sortDirection : null} onClick={() => onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
-        <Table.HeaderCell sorted={sortColName === 'totalCost'   ? sortDirection : null} onClick={() => onClickColHeader('totalCost')}>Cost Basis</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'cost'        ? sortDirection : null} onClick={() => onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'gainLoss'    ? sortDirection : null} onClick={() => onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
       </Table.Row>
     );
@@ -34,7 +34,7 @@ export const Portfolios = (props) => {
           <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={portfolio.marketValue}/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={portfolio.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={portfolio.totalCost}/></Table.Cell>
+          <Table.Cell><Fmt.number type='currency' value={portfolio.cost}/></Table.Cell>
           <Table.Cell><Fmt.number type='currency' value={portfolio.gainLoss} delta/></Table.Cell>
         </Table.Row>
       );
