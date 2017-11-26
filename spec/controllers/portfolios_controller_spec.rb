@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe PortfoliosController, type: :controller do
   before(:each) do
-    @user = create(:user);
-    @portfolio = create(:portfolio, user: @user)
+    @portfolio = create(:portfolio)
   end
 
   describe "GET #index" do
@@ -13,25 +12,24 @@ RSpec.describe PortfoliosController, type: :controller do
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr.length).to be > 0
-      expect(pr[0]['name']).to eq(@portfolio.name)
     end
   end
 
   describe "GET #show" do
     it "returns one portfolio" do
       request.accept = "application/json"
-      get :show, { :params => { id: 1 }, format: :json }
+      get :show, { :params => { id: @portfolio.id }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr.length).to be > 0
-      expect(pr[0]['name']).to eq('Portfolio 5')
+      expect(pr[0]['name']).to eq(@portfolio.name)
     end
   end
 
   describe "POST #create" do
     it "creates a new portfolio" do
       request.accept = "application/json"
-      post :create, { params: { portfolio: { user_id: @user.id, name: 'waTSon' }, format: :json }}
+      post :create, { params: { portfolio: { name: 'waTSon' }, format: :json }}
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr['name']).to eq('waTSon')

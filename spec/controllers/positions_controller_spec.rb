@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe PositionsController, type: :controller do
   before(:each) do
-    @user = create(:user);
-    @portfolio = create(:portfolio, user: @user)
+    @portfolio = create(:portfolio)
     @instrument = create(:instrument)
   end
 
