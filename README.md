@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Portfolio Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total and intra-day value change.
+The Portfolio Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total value and intra-day value change.
 
 ![Portfolio Analyzer Positions Page](https://github.com/jcpny1/portfolio-analyzer/blob/master/Screenshot-2017-11-13%20PortfolioAnalyzer.png?raw=true "Portfolio Analyzer Positions Page")
 
