@@ -1,12 +1,11 @@
 import React from 'react';
 
-const locale = 'en-US';
-const options = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-const dateFormat = new Intl.DateTimeFormat(locale, options);
-
 // Returns a formatted DateTime string.
+//   Specify prop locale to to override the default locale.
 const dateTime = (props) => {
-  return (props.value) ? dateFormat.format(new Date(props.value)).replace(',', '') : '';
+  const locale = props.locale || 'en-US';
+  const options = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+  return (props.value) ? new Intl.DateTimeFormat(locale, options).format(new Date(props.value)).replace(',', '') : '';
 }
 
 // Returns a formatted market index string.
@@ -21,9 +20,12 @@ const index = (name, values) => {
 // Returns a formatted number string.
 //   Specify prop delta for positive numbers to receive a plus sign and green color.
 //   Specify prop color to force a particular color.
+//   Specify prop locale to to override the default locale.
 //   Specify prop type to format for currency, decimal, index, or quantity.
 const number = (props) => {
   // Determine if props.value is effectively zero or not.
+  const locale = props.locale || 'en-US';
+
   let value = parseFloat(props.value);
   const valueSign = Math.sign(value);
   if (valueSign === -0) {
@@ -61,7 +63,7 @@ const number = (props) => {
     color = 'black';
   }
   // Format the value itself.
-  const formattedValue = value.toLocaleString(undefined, options);
+  const formattedValue = value.toLocaleString(locale, options);
   // Return the formatted number string.
   return (<span style={{color:color}}>{plus}{formattedValue}</span>);
 }

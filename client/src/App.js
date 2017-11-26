@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Button, Dropdown, Grid, Header, Image, Menu, Table} from 'semantic-ui-react';
@@ -10,8 +11,13 @@ import PositionsPage from './containers/PositionsPage';
 import * as Request from './utils/request';
 import SettingsEditPage from './containers/SettingsEditPage';
 import SymbolsPage from './containers/SymbolsPage';
+import * as userActions from './actions/userActions.js';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.actions.userLoad()
+  }
+
   menuItemAdmin() {
     return (
       <Dropdown item text='Admin'>
@@ -152,4 +158,8 @@ function mapStateToProps(state) {
   return {state: state}
 }
 
-export const WrapperApp = connect(mapStateToProps)(App)
+function mapDispatchToProps(dispatch) {
+  return {actions: bindActionCreators(userActions, dispatch)};
+}
+
+export const WrapperApp = connect(mapStateToProps, mapDispatchToProps)(App)

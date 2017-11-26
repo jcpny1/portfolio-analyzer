@@ -10,10 +10,6 @@ class SettingsEditPage extends Component {
     this.resetComponent();
   }
 
-  componentDidMount() {
-    'id' in this.props.user || this.props.actions.userLoad()
-  }
-
   resetComponent = () => {
     this.setState({
       editedUser: {},
