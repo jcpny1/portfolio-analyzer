@@ -1,48 +1,40 @@
 import * as Request from '../utils/request';
+import Currency  from '../classes/Currency';
 
 export default class Position {
-  constructor(portfolio_id, id = '', instrument = {}, quantity = '', cost = '', date_acquired = '') {
+  constructor(portfolio_id, id = '', instrument = {}, quantity = 0.0, cost = 0.0, date_acquired = '') {
     // persisted
     this.portfolio_id  = portfolio_id;
     this.id            = id;
     this.instrument    = instrument;
-    this.quantity      = quantity;
-    this.cost          = cost;
+    this.quantity      = parseFloat(quantity);
+    this.cost          = new Currency(cost);
     this.date_acquired = date_acquired;
     // from market data
-    this.lastTrade     = null;
-    this.lastTradeDate = null;
-    this.priceChange   = null;
+    this.lastTrade     = new Currency(0.0);
+    this.lastTradeDate = '';
+    this.priceChange   = new Currency(0.0, 'delta');
     // derived
-    this.dayChange     = null;
-    this.gainLoss      = null;
-    this.marketValue   = null;
-  }
-
-  initDerivedValues() {
-    this.lastTrade     = null;
-    this.lastTradeDate = null;
-    this.priceChange   = null;
-    this.marketValue   = null;
-    this.dayChange     = null;
-    this.gainLoss      = null;
+    this.dayChange     = new Currency(0.0, 'delta');
+    this.gainLoss      = new Currency(0.0, 'delta');
+    this.marketValue   = new Currency(0.0);
   }
 
   reprice(trades) {
     const tradesIndex = trades.findIndex(trade => {return trade.instrument_id === this.instrument.id});
     if (tradesIndex !== -1) {
-      this.lastTrade     = trades[tradesIndex].trade_price;
-      this.priceChange   = trades[tradesIndex].price_change;
-      this.lastUpdate    = trades[tradesIndex].created_at;
+      this.lastTrade.value   = parseFloat(trades[tradesIndex].trade_price);
+      this.priceChange.value = parseFloat(trades[tradesIndex].price_change);
+      this.lastUpdate        = trades[tradesIndex].created_at;
       if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
         this.lastTradeDate = trades[tradesIndex].trade_date;
       }
       if (this.lastTrade != null) {
-        this.marketValue = this.quantity * parseFloat(this.lastTrade);
-        this.gainLoss    = this.marketValue - parseFloat(this.cost);
+        this.marketValue.value = this.quantity * this.lastTrade;
+        this.gainLoss.value    = this.marketValue - this.cost;
       }
       if (this.priceChange != null) {
-        this.dayChange = this.quantity * parseFloat(this.priceChange);
+        this.dayChange.value = this.quantity * this.priceChange;
       }
     }
   }
@@ -54,7 +46,7 @@ export default class Position {
       errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
     } else if (!(parseFloat(position.quantity) >= 0)) {
       errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
-    } else if (!(parseFloat(position.cost) >= 0)) {
+    } else if (position.cost < 0.0) {
       errorReturn = {name: 'cost', message: 'Cost must be greater than or equal to zero.'};
     } else if (isNaN(Date.parse(position.date_acquired))) {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};

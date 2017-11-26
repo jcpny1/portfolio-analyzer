@@ -32,10 +32,10 @@ class PortfoliosPage extends Component {
   }
 
   render() {
-    const {portfolios, sortFn, updatingPortfolio} = this.props;
+    const {portfolios, sortFn, updatingPortfolio, userLocale} = this.props;
     const {sumMarketValue, sumCost, sumDayChange, sumGainLoss} = Portfolio.accountSummary(portfolios);
     const sortTerms = sortFn();
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={new Portfolio()} updatingPortfolio={updatingPortfolio} totalCost={sumCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction}/>);
+    return (<Portfolios portfolios={portfolios} emptyPortfolio={new Portfolio()} updatingPortfolio={updatingPortfolio} totalCost={sumCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction} userLocale={userLocale}/>);
   }
 }
 
@@ -47,7 +47,7 @@ PortfoliosPage.propTypes = {
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio};
+  return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio, userLocale: state.users.user.locale};
 }
 
 function mapDispatchToProps(dispatch) {

@@ -7,7 +7,7 @@ import Fmt from '../utils/formatter';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 export const Portfolios = (props) => {
-  const {emptyPortfolio, onClickColHeader, onClickRemove, onClickSubmit, portfolios, refreshPortfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio} = props;
+  const {emptyPortfolio, onClickColHeader, onClickRemove, onClickSubmit, portfolios, refreshPortfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio, userLocale} = props;
 
   function columnTitles() {
     return (
@@ -24,18 +24,17 @@ export const Portfolios = (props) => {
 
   function listPortfolios() {
     return portfolios.map((portfolio,index) => {
-      const href = `/portfolios/${portfolio.id}`;
       return (
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio' onClickSubmit={onClickSubmit}/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
           </Table.Cell>
-          <Table.Cell textAlign='left'><Link to={href} title='View details'>{portfolio.name}</Link></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={portfolio.marketValue}/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={portfolio.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={portfolio.cost}/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={portfolio.gainLoss} delta/></Table.Cell>
+          <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.name}</Link></Table.Cell>
+          <Table.Cell>{portfolio.marketValue.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{portfolio.dayChange.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{portfolio.cost.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{portfolio.gainLoss.toHTML(userLocale)}</Table.Cell>
         </Table.Row>
       );
     });

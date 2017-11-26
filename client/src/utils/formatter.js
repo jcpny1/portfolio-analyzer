@@ -33,9 +33,6 @@ const number = (props) => {
   // Set formatting options.
   let options = {};
   switch (props.type) {
-    case 'currency':
-      options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
-      break;
     case 'decimal':
       options = {minimumFractionDigits:2, maximumFractionDigits:3};
       break;

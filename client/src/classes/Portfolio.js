@@ -1,4 +1,5 @@
 import * as Sort from '../utils/sort';
+import Currency  from '../classes/Currency';
 import Position from './Position';
 
 export default class Portfolio {
@@ -7,12 +8,12 @@ export default class Portfolio {
     this.id        = id;
     this.name      = name;
     this.positions = [];
-    loadedPositions.forEach(loadedPosition => this.addPosition(loadedPosition));
     // derived
-    this.cost        = 0.0;
-    this.dayChange   = 0.0;
-    this.gainLoss    = 0.0;
-    this.marketValue = 0.0;
+    this.cost        = new Currency(0.0);
+    this.dayChange   = new Currency(0.0, 'delta');
+    this.gainLoss    = new Currency(0.0, 'delta');
+    this.marketValue = new Currency(0.0);
+    loadedPositions.forEach(loadedPosition => this.addPosition(loadedPosition));
   }
 
   // Return summary values for given portoflios.
@@ -91,16 +92,16 @@ export default class Portfolio {
 
   // Calculate portfolio summary info.
   updateDerivedValues() {
-    this.cost        = 0.0;
-    this.dayChange   = 0.0;
-    this.gainLoss    = 0.0;
-    this.marketValue = 0.0;
+    this.cost.value        = 0.0;
+    this.dayChange.value   = 0.0;
+    this.gainLoss.value    = 0.0;
+    this.marketValue.value = 0.0;
     this.positions.forEach(position => {
       if (!isNaN(position.marketValue)) {
-        this.cost        += parseFloat(position.cost);
-        this.dayChange   += position.dayChange;
-        this.gainLoss    += position.gainLoss;
-        this.marketValue += position.marketValue;
+        this.cost.value        += position.cost;
+        this.dayChange.value   += position.dayChange;
+        this.gainLoss.value    += position.gainLoss;
+        this.marketValue.value += position.marketValue;
       }
     });
   }

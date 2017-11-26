@@ -40,11 +40,11 @@ class PositionsPage extends Component {
   }
 
   render() {
-    const {portfolios, sortFn, updatingPortfolio} = this.props;
+    const {portfolios, sortFn, updatingPortfolio, userLocale} = this.props;
     let portfolio = portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
     if (portfolio) {  // may be null until props.portfolios is loaded.
       const sortTerms = sortFn();
-      return (<Positions portfolio={portfolio} emptyPosition={new Position(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction}/>);
+      return (<Positions portfolio={portfolio} emptyPosition={new Position(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction} userLocale={userLocale}/>);
     } else {
       return null;
     }
@@ -60,7 +60,7 @@ PositionsPage.propTypes = {
 }
 
 function mapStateToProps(state) {
-  return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio};
+  return {portfolios: state.portfolios.portfolios, sortFn: state.portfolios.sortFn, updatingPortfolio: state.portfolios.updatingPortfolio, userLocale: state.users.user.locale};
 }
 
 function mapDispatchToProps(dispatch) {

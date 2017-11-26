@@ -1,14 +1,12 @@
 import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
-import Currency  from '../classes/Currency';
 import PropTypes from 'prop-types';
 import Fmt from '../utils/formatter';
 import PositionEditPage from '../containers/PositionEditPage';
-import Position  from '../classes/Position';
 
 export const Positions = (props) => {
-  const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, refreshPortfolio, sortColName, sortDirection, updatingPortfolio} = props;
+  const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, refreshPortfolio, sortColName, sortDirection, updatingPortfolio, userLocale} = props;
 
   function columnTitles() {
     return (
@@ -30,9 +28,6 @@ export const Positions = (props) => {
 
   function listPositions() {
     return portfolio.positions.map((position,index) => {
-
-let xPos = new Position(position.portfolio_id);
-xPos.marketValue = new Currency(position.marketValue);
       return (
         <Table.Row key={index} textAlign='right'>
           <Table.Cell textAlign='center'>
@@ -41,12 +36,12 @@ xPos.marketValue = new Currency(position.marketValue);
           </Table.Cell>
           <Table.Cell textAlign='left' title={position.instrument.name}><Fmt.symbol value={position.instrument.symbol} gainLoss={position.gainLoss}/></Table.Cell>
           <Table.Cell><Fmt.number type='quantity' value={position.quantity} quantity/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={position.lastTrade}/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={position.priceChange} delta/></Table.Cell>
-          <Table.Cell>{xPos.marketValue.toHtml()}</Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={position.dayChange} delta/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={position.cost}/></Table.Cell>
-          <Table.Cell><Fmt.number type='currency' value={position.gainLoss} delta/></Table.Cell>
+          <Table.Cell>{position.lastTrade.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.priceChange.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.marketValue.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.dayChange.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.cost.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.gainLoss.toHTML(userLocale)}</Table.Cell>
           <Table.Cell><Fmt.dateTime value={position.lastTradeDate}/></Table.Cell>
           <Table.Cell><Fmt.dateTime value={position.lastUpdate}/></Table.Cell>
         </Table.Row>
@@ -62,10 +57,10 @@ xPos.marketValue = new Currency(position.marketValue);
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.marketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.dayChange} delta/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={portfolio.gainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell>{portfolio.marketValue.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell>{portfolio.dayChange.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell>{portfolio.cost.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell>{portfolio.gainLoss.toHTML(userLocale)}</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
