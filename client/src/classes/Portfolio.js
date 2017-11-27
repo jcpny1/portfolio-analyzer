@@ -1,5 +1,5 @@
 import * as Sort from '../utils/sort';
-import Decimal  from '../classes/Decimal';
+import Decimal from '../classes/Decimal';
 import Position from './Position';
 
 export default class Portfolio {

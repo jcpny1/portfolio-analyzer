@@ -10,6 +10,7 @@ export default class Decimal {
     this._delta = delta;
   }
 
+  // Returns the formatted value string with HTML code.
   toHTML(locale = 'en-US', useColor = '' ) {
     const stringValue = this.toString(locale)
     let color = '';
@@ -39,7 +40,7 @@ export default class Decimal {
     return this._value;
   }
 
-  // Returns a formatted currency string.
+  // Returns a formatted value string.
   toString(locale = 'en-US') {
     let options = {};
     switch (this._type) {

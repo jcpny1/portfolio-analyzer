@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Decimal  from '../classes/Decimal';
+import Decimal from '../classes/Decimal';
 import Fmt from '../utils/formatter';
 import {Headlines} from '../components/Headlines';
 import * as Request from '../utils/request';

@@ -34,7 +34,7 @@ export const Positions = (props) => {
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={onClickSubmit}/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
-          <Table.Cell textAlign='left' title={position.instrument.name}><Fmt.symbol value={position.instrument.symbol} gainLoss={position.gainLoss}/></Table.Cell>
+          <Table.Cell textAlign='left' title={position.instrument.name}>{position.instrument.toHTML(position.gainLoss)}</Table.Cell>
           <Table.Cell>{position.quantity.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.lastTrade.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.priceChange.toHTML(userLocale)}</Table.Cell>
