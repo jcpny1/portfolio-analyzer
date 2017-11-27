@@ -1,5 +1,5 @@
 import * as Request from '../utils/request';
-import Currency  from '../classes/Currency';
+import Decimal  from '../classes/Decimal';
 
 export default class Position {
   constructor(portfolio_id, id = '', instrument = {}, quantity = 0.0, cost = 0.0, date_acquired = '') {
@@ -8,16 +8,16 @@ export default class Position {
     this.id            = id;
     this.instrument    = instrument;
     this.quantity      = parseFloat(quantity);
-    this.cost          = new Currency(cost);
+    this.cost          = new Decimal(cost);
     this.date_acquired = date_acquired;
     // from market data
-    this.lastTrade     = new Currency(0.0);
+    this.lastTrade     = new Decimal(0.0);
     this.lastTradeDate = '';
-    this.priceChange   = new Currency(0.0, 'delta');
+    this.priceChange   = new Decimal(0.0, 'delta');
     // derived
-    this.dayChange     = new Currency(0.0, 'delta');
-    this.gainLoss      = new Currency(0.0, 'delta');
-    this.marketValue   = new Currency(0.0);
+    this.dayChange     = new Decimal(0.0, 'delta');
+    this.gainLoss      = new Decimal(0.0, 'delta');
+    this.marketValue   = new Decimal(0.0);
   }
 
   reprice(trades) {

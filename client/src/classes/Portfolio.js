@@ -1,5 +1,5 @@
 import * as Sort from '../utils/sort';
-import Currency  from '../classes/Currency';
+import Decimal  from '../classes/Decimal';
 import Position from './Position';
 
 export default class Portfolio {
@@ -9,10 +9,10 @@ export default class Portfolio {
     this.name      = name;
     this.positions = [];
     // derived
-    this.cost        = new Currency(0.0);
-    this.dayChange   = new Currency(0.0, 'delta');
-    this.gainLoss    = new Currency(0.0, 'delta');
-    this.marketValue = new Currency(0.0);
+    this.cost        = new Decimal(0.0);
+    this.dayChange   = new Decimal(0.0, 'delta');
+    this.gainLoss    = new Decimal(0.0, 'delta');
+    this.marketValue = new Decimal(0.0);
     loadedPositions.forEach(loadedPosition => this.addPosition(loadedPosition));
   }
 

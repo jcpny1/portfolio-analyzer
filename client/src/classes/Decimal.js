@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Currency {
+export default class Decimal {
   constructor(value = 0.0, delta = '') {
     const inputValue = parseFloat(value);
     this._value  = Math.sign(inputValue) === -0 ? +0.0 : inputValue;  // We don't need or want -0 values.
