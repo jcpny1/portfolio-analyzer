@@ -8,7 +8,6 @@ import {Portfolios} from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
   componentDidMount() {
-
     this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sortFn)
   }
 

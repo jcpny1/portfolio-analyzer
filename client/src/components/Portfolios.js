@@ -57,7 +57,7 @@ export const Portfolios = (props) => {
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
         Account Summary
         <span style={{float:'right'}}>
-          <Button content='Refresh' icon='refresh' title='Refresh portfolio' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshPortfolios()}/>
+          <Button content='Refresh' icon='refresh' title='Refresh portfolios' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshPortfolios()}/>
         </span>
       </Header>
       <Table compact sortable striped style={{marginTop:0}}>

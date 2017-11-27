@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Decimal  from '../classes/Decimal';
 import Fmt from '../utils/formatter';
 import {Headlines} from '../components/Headlines';
 import * as Request from '../utils/request';
@@ -11,7 +12,8 @@ export default class HeadlinesPage extends Component {
     super(props);
     this.state = {
       articles: [],
-      djia: {price: '', change: ''},
+      djiaValue:  new Decimal(0.0, 'index'),
+      djiaChange: new Decimal(0.0, 'index', 'delta'),
       intervalId: -1,
       refreshTime: new Date(),
     }
@@ -46,7 +48,7 @@ export default class HeadlinesPage extends Component {
         indices.some((indice,index) => {
           const isDJIA = indice.instrument.symbol === 'DJIA';
           if (isDJIA) {
-            this.setState({djia: {price: indice.trade_price, change: indice.price_change}, refreshTime: new Date()});
+            this.setState({djiaValue: new Decimal(indice.trade_price, 'index'), djiaChange: new Decimal(indice.price_change, 'index', 'delta'), refreshTime: new Date()});
           }
           return isDJIA;
         });
@@ -55,6 +57,6 @@ export default class HeadlinesPage extends Component {
   }
 
   render() {
-    return (<Headlines articles={this.state.articles} djia={this.state.djia} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines}/>);
+    return (<Headlines articles={this.state.articles} djiaValue={this.state.djiaValue} djiaChange={this.state.djiaChange} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines}/>);
   }
 }
