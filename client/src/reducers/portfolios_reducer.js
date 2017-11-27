@@ -41,8 +41,8 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
 
     // Error on Portfolio action.
     case portfolioActions.ERROR_PORTFOLIOS: {
-      const {error, prefix} = action.payload;
-      alert(Fmt.serverError(error, prefix));
+      const {prefix, error} = action.payload;
+      alert(Fmt.serverError(prefix, error));
       returnObject = Object.assign({}, state, {updatingPortfolio: false});
       break;
     }
@@ -70,8 +70,8 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
 
     // Warning on Portfolio action.
     case portfolioActions.WARN_PORTFOLIOS: {
-      const {warning, prefix} = action.payload;
-      alert(Fmt.serverError(warning, prefix));
+      const {prefix, warning} = action.payload;
+      alert(Fmt.serverError(prefix, warning));
       returnObject = state;
       break;
     }

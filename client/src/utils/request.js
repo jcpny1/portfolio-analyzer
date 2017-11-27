@@ -141,7 +141,7 @@ export function refreshHeadlines(cb) {
   .then(checkStatus)
   .then(response => response.json())
   .then(cb)
-  .catch(error => {alert(Fmt.serverError(error, 'Refresh Headlines: '));});
+  .catch(error => {alert(Fmt.serverError('Refresh Headlines', error));});
 }
 
 // Request the server to refresh market indexes.
@@ -150,21 +150,21 @@ export function refreshIndexes(cb) {
   .then(checkStatus)
   .then(response => response.json())
   .then(cb)
-  .catch(error => {alert(Fmt.serverError(error, 'Refresh Indexes: '));});
+  .catch(error => {alert(Fmt.serverError('Refresh Indexes', error));});
 }
 
 // Request the server to refresh the symbololgy database.
 export function refreshInstruments() {
   fetch('/api/instruments/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
-  .catch(error => {alert(Fmt.serverError(error, 'Refresh Symbols: '));});
+  .catch(error => {alert(Fmt.serverError('Refresh Symbols', error));});
 }
 
 // Request the server to refresh trade prices.
 export function refreshPrices() {
   fetch('/api/trades/refresh', {headers: {'Accept': 'application/json'}})
   .then(checkStatus)
-  .catch(error => {alert(Fmt.serverError(error, 'Refresh Prices: '));});
+  .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
 // Update an existing portfolio.

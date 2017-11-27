@@ -43,7 +43,7 @@ export default class HeadlinesPage extends Component {
     });
     Request.refreshIndexes(indices => {
       if ('error' in indices) {
-        alert(Fmt.serverError(indices.error, 'Refresh Indexes: '));
+        alert(Fmt.serverError('Refresh Indexes', indices.error));
       } else {
         indices.some((indice,index) => {
           const isDJIA = indice.instrument.symbol === 'DJIA';

@@ -17,8 +17,8 @@ export function usersReducer(state = {updatingUser: false, user: {}}, action) {
   switch (action.type) {
     // Error on Portfolio action.
     case userActions.ERROR_USERS: {
-      const {error, prefix} = action.payload;
-      alert(Fmt.serverError(error, prefix));
+      const {prefix, error} = action.payload;
+      alert(Fmt.serverError(prefix, error));
       returnObject = Object.assign({}, state, {updatingUser: false});
       break;
     }
@@ -37,8 +37,8 @@ export function usersReducer(state = {updatingUser: false, user: {}}, action) {
 
     // Warning on User action.
     case userActions.WARN_USERS: {
-      const {warning, prefix} = action.payload;
-      alert(Fmt.serverError(warning, prefix));
+      const {prefix, warning} = action.payload;
+      alert(Fmt.serverError(prefix, warning));
       returnObject = state;
       break;
     }

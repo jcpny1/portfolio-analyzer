@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
 import PropTypes from 'prop-types';
-import Fmt from '../utils/formatter';
 import PositionEditPage from '../containers/PositionEditPage';
 
 export const Positions = (props) => {
@@ -42,8 +41,8 @@ export const Positions = (props) => {
           <Table.Cell>{position.dayChange.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.cost.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.gainLoss.toHTML(userLocale)}</Table.Cell>
-          <Table.Cell><Fmt.dateTime value={position.lastTradeDate}/></Table.Cell>
-          <Table.Cell><Fmt.dateTime value={position.lastUpdate}/></Table.Cell>
+          <Table.Cell>{position.lastTradeDate.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.lastUpdate.toHTML(userLocale)}</Table.Cell>
         </Table.Row>
       );
     });

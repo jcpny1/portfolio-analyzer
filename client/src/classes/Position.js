@@ -1,4 +1,5 @@
 import * as Request from '../utils/request';
+import DateTime from '../classes/DateTime';
 import Decimal from '../classes/Decimal';
 import Instrument from '../classes/Instrument';
 
@@ -10,11 +11,12 @@ export default class Position {
     this.instrument    = new Instrument(instrument.id, instrument.symbol, instrument.name);
     this.quantity      = new Decimal(quantity, 'quantity');
     this.cost          = new Decimal(cost, 'currency');
-    this.date_acquired = date_acquired;
+    this.date_acquired = new DateTime(date_acquired);
     // from market data
     this.lastTrade     = new Decimal(0.0, 'currency');
-    this.lastTradeDate = '';
+    this.lastTradeDate = new DateTime();
     this.priceChange   = new Decimal(0.0, 'currency', 'delta');
+    this.lastUpdate    = new DateTime();
     // derived
     this.dayChange     = new Decimal(0.0, 'currency', 'delta');
     this.gainLoss      = new Decimal(0.0, 'currency', 'delta');
@@ -26,9 +28,9 @@ export default class Position {
     if (tradesIndex !== -1) {
       this.lastTrade.value   = parseFloat(trades[tradesIndex].trade_price);
       this.priceChange.value = parseFloat(trades[tradesIndex].price_change);
-      this.lastUpdate        = trades[tradesIndex].created_at;
+      this.lastUpdate.value = trades[tradesIndex].created_at;
       if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
-        this.lastTradeDate = trades[tradesIndex].trade_date;
+        this.lastTradeDate.value = trades[tradesIndex].trade_date;
       }
       if (this.lastTrade != null) {
         this.marketValue.value = this.quantity * this.lastTrade;
