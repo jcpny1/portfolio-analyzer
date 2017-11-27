@@ -21,8 +21,8 @@ export default class DateTime {
     return (<span style={{color:color}}>{stringValue}</span>);
   }
 
-  get value() { return this._value; }
-  set value(newValue) { this._value = newValue; }
+  get value() { return this._value }
+  set value(newValue) { this._value = newValue }
 
   valueOf() { return this._value; }
 

@@ -28,13 +28,8 @@ export default class Decimal {
     return (<span style={{color:color}}>{plus}{stringValue}</span>);
   }
 
-  get value() {
-      return this._value;
-  }
-
-  set value(newValue) {
-      this._value = parseFloat(newValue);
-  }
+  get value() { return this._value }
+  set value(newValue) { this._value = parseFloat(newValue) }
 
   valueOf() {
     return this._value;
@@ -42,23 +37,27 @@ export default class Decimal {
 
   // Returns a formatted value string.
   toString(locale = 'en-US') {
-    let options = {};
-    switch (this._type) {
-      case 'currency':
-        options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
-        break;
-      case 'decimal':
-        options = {minimumFractionDigits:2, maximumFractionDigits:3};
-        break;
-      case 'index':
-        options = {minimumFractionDigits:0, maximumFractionDigits:2};
-        break;
-      case 'quantity':
-        options = {minimumFractionDigits:0, maximumFractionDigits:5};
-        break;
-      default:
-        break;
+    let formattedValue = '';
+    if (this._value) {
+      let options = {};
+      switch (this._type) {
+        case 'currency':
+          options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
+          break;
+        case 'decimal':
+          options = {minimumFractionDigits:2, maximumFractionDigits:3};
+          break;
+        case 'index':
+          options = {minimumFractionDigits:0, maximumFractionDigits:2};
+          break;
+        case 'quantity':
+          options = {minimumFractionDigits:0, maximumFractionDigits:5};
+          break;
+        default:
+          break;
+      }
+      formattedValue = this._value.toLocaleString(locale, options);
     }
-    return this._value.toLocaleString(locale, options);
+    return formattedValue;
   }
 }

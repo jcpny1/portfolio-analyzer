@@ -3,7 +3,7 @@ import {Button, Header, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 export const Headlines = (props) => {
-  const {articles, djiaValue, djiaChange, refreshTime} = props;
+  const {articles, djiaValue, djiaChange, refreshTime, userLocale} = props;
 
   function listHeadlines() {
     if (articles) {
@@ -27,7 +27,7 @@ export const Headlines = (props) => {
         Headline News
         <span disabled style={{float:'right', fontSize:'70%'}}>
           <Header as='span' title='Dow Jones Industrial Average' size='tiny' color='purple'>
-            {djiaValue.toHTML(undefined, 'purple')}&nbsp;{djiaChange.toHTML(undefined)}
+            {djiaValue.toHTML(userLocale, 'purple')}&nbsp;{djiaChange.toHTML(userLocale)}
           </Header>
           &emsp;&emsp;
           <Header as='span' content={refreshTime.toLocaleTimeString("en-US")} title='Last refresh time' size='tiny' color='purple'/>

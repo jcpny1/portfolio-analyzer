@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Decimal from '../classes/Decimal';
 import Fmt from '../utils/formatter';
 import {Headlines} from '../components/Headlines';
 import * as Request from '../utils/request';
 
-export default class HeadlinesPage extends Component {
+class HeadlinesPage extends Component {
 
   static HEADLINES_REFRESH_INTERVAL = 60 * 1000;
 
@@ -29,7 +30,7 @@ export default class HeadlinesPage extends Component {
   }
 
   refreshHeadlines = () => {
-    Request.refreshHeadlines(headlines => {
+    Request.headlinesRefresh(headlines => {
       if (headlines !== null) {
         headlines.articles.forEach((headlinesArticle,index) => {
           if ((index > this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
@@ -41,7 +42,7 @@ export default class HeadlinesPage extends Component {
         this.setState({articles: headlines.articles});
       }
     });
-    Request.refreshIndexes(indices => {
+    Request.indexesRefresh(indices => {
       if ('error' in indices) {
         alert(Fmt.serverError('Refresh Indexes', indices.error));
       } else {
@@ -57,6 +58,13 @@ export default class HeadlinesPage extends Component {
   }
 
   render() {
-    return (<Headlines articles={this.state.articles} djiaValue={this.state.djiaValue} djiaChange={this.state.djiaChange} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines}/>);
+    const {userLocale} = this.props;
+    return (<Headlines articles={this.state.articles} djiaValue={this.state.djiaValue} djiaChange={this.state.djiaChange} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines} userLocale={userLocale}/>);
   }
 }
+
+function mapStateToProps(state) {
+  return {userLocale: state.users.user.locale};
+}
+
+export default connect(mapStateToProps)(HeadlinesPage);

@@ -8,26 +8,26 @@ import {Portfolios} from '../components/Portfolios';
 
 class PortfoliosPage extends Component {
   componentDidMount() {
-    this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sortFn)
+    this.props.portfolios.length || this.props.actions.portfoliosLoad(false, this.props.sortFn)
   }
 
   refreshPortfolios = () => {
-    this.props.actions.loadPortfolios(true, this.props.sortFn);
+    this.props.actions.portfoliosLoad(true, this.props.sortFn);
   }
 
   removePortfolio = (portfolioId) => {
-    const deleteFn = this.props.actions.deletePortfolio;
+    const deleteFn = this.props.actions.portfolioDelete;
     return function() {
       deleteFn(portfolioId);
     }
   }
 
   sortPortfolios = (columnName) => {
-    this.props.actions.sortPortfolios(this.props.portfolios, columnName, this.props.sortFn);
+    this.props.actions.portfoliosSort(this.props.portfolios, columnName, this.props.sortFn);
   }
 
   submitPortfolio = (portfolio) => {
-    (portfolio.id === '') ? this.props.actions.addPortfolio(portfolio) : this.props.actions.updatePortfolio(portfolio);
+    (portfolio.id === '') ? this.props.actions.portfolioAdd(portfolio) : this.props.actions.portfolioUpdate(portfolio);
   }
 
   render() {

@@ -16,27 +16,27 @@ class PositionsPage extends Component {
   }
 
   componentDidMount() {
-    this.props.portfolios.length || this.props.actions.loadPortfolios(false, this.props.sortFn)
+    this.props.portfolios.length || this.props.actions.portfoliosLoad(false, this.props.sortFn)
   }
 
-  refreshPortfolio = (portfolio) => {
-    this.props.actions.loadPortfolios(true, this.props.sortFn);
+  portfolioRefresh = (portfolio) => {
+    this.props.actions.portfoliosLoad(true, this.props.sortFn);
   }
 
-  removePosition = (portfolioId, positionId) => {
-    const deleteFn = this.props.actions.deletePosition;
+  positionRemove = (portfolioId, positionId) => {
+    const deleteFn = this.props.actions.positionDelete;
     const sortFn   = this.props.sortFn;
     return function() {
       deleteFn(portfolioId, positionId, sortFn);
     }
   }
 
-  sortPositions = (columnName) => {
-    this.props.actions.sortPositions(this.props.portfolios, columnName, this.props.sortFn);
+  positionsSort = (columnName) => {
+    this.props.actions.positionsSort(this.props.portfolios, columnName, this.props.sortFn);
   }
 
-  submitPosition = (position) => {
-    (position.id === '') ? this.props.actions.addPosition(position, this.props.sortFn) : this.props.actions.updatePosition(position, this.props.sortFn);
+  positionSubmit = (position) => {
+    (position.id === '') ? this.props.actions.positionAdd(position, this.props.sortFn) : this.props.actions.positionUpdate(position, this.props.sortFn);
   }
 
   render() {
@@ -44,7 +44,7 @@ class PositionsPage extends Component {
     let portfolio = portfolios.find((portfolio) => {return portfolio.id === this.state.portfolioId});
     if (portfolio) {  // may be null until props.portfolios is loaded.
       const sortTerms = sortFn();
-      return (<Positions portfolio={portfolio} emptyPosition={new Position(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} refreshPortfolio={this.refreshPortfolio} onClickSubmit={this.submitPosition} onClickRemove={this.removePosition} onClickColHeader={this.sortPositions} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction} userLocale={userLocale}/>);
+      return (<Positions portfolio={portfolio} emptyPosition={new Position(this.state.portfolioId)} updatingPortfolio={updatingPortfolio} portfolioRefresh={this.portfolioRefresh} onClickSubmit={this.positionSubmit} onClickRemove={this.positionRemove} onClickColHeader={this.positionsSort} sortColName={sortTerms.secondary.property} sortDirection={sortTerms.secondary.direction} userLocale={userLocale}/>);
     } else {
       return null;
     }

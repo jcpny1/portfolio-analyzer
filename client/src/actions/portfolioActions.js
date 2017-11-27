@@ -1,44 +1,44 @@
 import Portfolio from '../classes/Portfolio';
-import * as PortfolioReducerFunctions from '../reducers/portfolios_reducer';
-import * as Request from '../utils/request.js';
+import * as PortfolioReducer from '../reducers/portfolios_reducer';
+import * as Request from './actionRequests.js';
 
 // Create a new portfolio.
-export function addPortfolio(portfolio) {
+export function portfolioAdd(portfolio) {
   return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    Request.addPortfolio(dispatch, portfolio);
+    dispatch(PortfolioReducer.updatingPortfolio());
+    Request.portfolioAdd(dispatch, portfolio);
   }
 }
 
 // Delete a portfolio.
-export function deletePortfolio(portfolioId) {
+export function portfolioDelete(portfolioId) {
   return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    Request.deletePortfolio(dispatch, portfolioId);
+    dispatch(PortfolioReducer.updatingPortfolio());
+    Request.portfolioDelete(dispatch, portfolioId);
   }
 }
 
 // Load all portfolios from server.
-export function loadPortfolios(loadLivePrices, sortFn) {
+export function portfoliosLoad(loadLivePrices, sortFn) {
   return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    Request.loadPortfolios(dispatch, loadLivePrices, sortFn);
+    dispatch(PortfolioReducer.updatingPortfolio());
+    Request.portfoliosLoad(dispatch, loadLivePrices, sortFn);
   }
 }
 
 // Process a click on the portfolios table column header.
-export function sortPortfolios(portfolios, property, sortFn) {
+export function portfoliosSort(portfolios, property, sortFn) {
   return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
+    dispatch(PortfolioReducer.updatingPortfolio());
     sortFn(portfolios, Portfolio.sort, property);
-    return (dispatch(PortfolioReducerFunctions.updatePortfoliosAction(portfolios: portfolios)));
+    return (dispatch(PortfolioReducer.updateAllPortfolio(portfolios: portfolios)));
   }
 }
 
 // Update an existing portfolio.
-export function updatePortfolio(portfolio) {
+export function portfolioUpdate(portfolio) {
   return function(dispatch) {
-    dispatch(PortfolioReducerFunctions.updatingPortfolioAction());
-    Request.updatePortfolio(dispatch, portfolio);
+    dispatch(PortfolioReducer.updatingPortfolio());
+    Request.portfolioUpdate(dispatch, portfolio);
   }
 }

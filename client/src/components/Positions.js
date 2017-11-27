@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import PositionEditPage from '../containers/PositionEditPage';
 
 export const Positions = (props) => {
-  const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, refreshPortfolio, sortColName, sortDirection, updatingPortfolio, userLocale} = props;
+  const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, portfolioRefresh, sortColName, sortDirection, updatingPortfolio, userLocale} = props;
 
   function columnTitles() {
     return (
@@ -71,7 +71,7 @@ export const Positions = (props) => {
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
         {portfolio.name}
         <span style={{float:'right'}}>
-          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshPortfolio(portfolio)}/>
+          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => portfolioRefresh(portfolio)}/>
         </span>
       </Header>
       <Table compact sortable striped style={{marginTop:0}}>
@@ -89,7 +89,7 @@ Positions.propTypes = {
   onClickSubmit: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
   portfolio: PropTypes.object.isRequired,
-  refreshPortfolio: PropTypes.func.isRequired,
+  portfolioRefresh: PropTypes.func.isRequired,
   sortColName: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   updatingPortfolio: PropTypes.bool.isRequired,

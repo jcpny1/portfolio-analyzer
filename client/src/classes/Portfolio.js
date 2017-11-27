@@ -58,9 +58,7 @@ export default class Portfolio {
       case 'dayChange':    // fall through
       case 'gainLoss':     // fall through
       case 'marketValue':  // fall through
-      case 'cost':
-        portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort, parseFloat));
-        break;
+      case 'cost':         // fall through
       default:
         portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort));
         break;
@@ -78,9 +76,7 @@ export default class Portfolio {
         case 'lastTrade':      // fall through
         case 'marketValue':    // fall through
         case 'priceChange':    // fall through
-        case 'quantity':
-          portfolio.positions.sort(Sort.sortBy(positionProperty, positionReverseSort, parseFloat));
-          break;
+        case 'quantity':       // fall through
         case 'date_acquired':  // fall through
         case 'lastTradeDate':  // fall through
         default:
