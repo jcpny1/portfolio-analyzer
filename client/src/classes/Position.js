@@ -7,17 +7,17 @@ export default class Position {
     this.portfolio_id  = portfolio_id;
     this.id            = id;
     this.instrument    = instrument;
-    this.quantity      = parseFloat(quantity);
-    this.cost          = new Decimal(cost);
+    this.quantity      = new Decimal(quantity, 'quantity');
+    this.cost          = new Decimal(cost, 'currency');
     this.date_acquired = date_acquired;
     // from market data
-    this.lastTrade     = new Decimal(0.0);
+    this.lastTrade     = new Decimal(0.0, 'currency');
     this.lastTradeDate = '';
-    this.priceChange   = new Decimal(0.0, 'delta');
+    this.priceChange   = new Decimal(0.0, 'currency', 'delta');
     // derived
-    this.dayChange     = new Decimal(0.0, 'delta');
-    this.gainLoss      = new Decimal(0.0, 'delta');
-    this.marketValue   = new Decimal(0.0);
+    this.dayChange     = new Decimal(0.0, 'currency', 'delta');
+    this.gainLoss      = new Decimal(0.0, 'currency', 'delta');
+    this.marketValue   = new Decimal(0.0, 'currency');
   }
 
   reprice(trades) {

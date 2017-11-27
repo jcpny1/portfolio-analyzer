@@ -1,10 +1,13 @@
 import React from 'react';
 
+// This class is used to hold and format numeric values.
 export default class Decimal {
-  constructor(value = 0.0, delta = '') {
+  // Valid types are currency, decimal, index, and quantity.
+  constructor(value = '+0.0', type = '', delta = '') {
     const inputValue = parseFloat(value);
-    this._value  = Math.sign(inputValue) === -0 ? +0.0 : inputValue;  // We don't need or want -0 values.
-    this._delta  = delta;
+    this._value = Math.sign(inputValue) === -0 ? +0.0 : inputValue;  // We don't need or want -0 values.
+    this._type  = type;
+    this._delta = delta;
   }
 
   toHTML(locale = 'en-US', useColor = '' ) {
@@ -38,7 +41,23 @@ export default class Decimal {
 
   // Returns a formatted currency string.
   toString(locale = 'en-US') {
-    const options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
+    let options = {};
+    switch (this._type) {
+      case 'currency':
+        options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
+        break;
+      case 'decimal':
+        options = {minimumFractionDigits:2, maximumFractionDigits:3};
+        break;
+      case 'index':
+        options = {minimumFractionDigits:0, maximumFractionDigits:2};
+        break;
+      case 'quantity':
+        options = {minimumFractionDigits:0, maximumFractionDigits:5};
+        break;
+      default:
+        break;
+    }
     return this._value.toLocaleString(locale, options);
   }
 }

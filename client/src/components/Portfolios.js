@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import {Button, Header, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import ConfirmDialog from '../containers/ConfirmDialog';
-import Fmt from '../utils/formatter';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 export const Portfolios = (props) => {
@@ -45,10 +44,10 @@ export const Portfolios = (props) => {
       <Table.Row textAlign='right'>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell textAlign='left'>Total</Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={totalMarketValue}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={totalDayChange} delta/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={totalCost}/></Table.HeaderCell>
-        <Table.HeaderCell><Fmt.number type='currency' value={totalGainLoss} delta/></Table.HeaderCell>
+        <Table.HeaderCell>{totalMarketValue.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell>{totalDayChange.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell>{totalCost.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell>{totalGainLoss.toHTML(userLocale)}</Table.HeaderCell>
       </Table.Row>
     );
   }
@@ -79,9 +78,9 @@ Portfolios.propTypes = {
   refreshPortfolios: PropTypes.func.isRequired,
   sortColName: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
-  totalCost: PropTypes.number.isRequired,
-  totalDayChange: PropTypes.number.isRequired,
-  totalGainLoss: PropTypes.number.isRequired,
-  totalMarketValue: PropTypes.number.isRequired,
+  totalCost: PropTypes.object.isRequired,
+  totalDayChange: PropTypes.object.isRequired,
+  totalGainLoss: PropTypes.object.isRequired,
+  totalMarketValue: PropTypes.object.isRequired,
   updatingPortfolio: PropTypes.bool.isRequired,
 }

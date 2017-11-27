@@ -9,22 +9,22 @@ export default class Portfolio {
     this.name      = name;
     this.positions = [];
     // derived
-    this.cost        = new Decimal(0.0);
-    this.dayChange   = new Decimal(0.0, 'delta');
-    this.gainLoss    = new Decimal(0.0, 'delta');
-    this.marketValue = new Decimal(0.0);
+    this.cost        = new Decimal(0.0, 'currency');
+    this.dayChange   = new Decimal(0.0, 'currency', 'delta');
+    this.gainLoss    = new Decimal(0.0, 'currency', 'delta');
+    this.marketValue = new Decimal(0.0, 'currency');
     loadedPositions.forEach(loadedPosition => this.addPosition(loadedPosition));
   }
 
   // Return summary values for given portoflios.
   static accountSummary(portfolios) {
-    let sumMarketValue = 0.0, sumCost = 0.0, sumDayChange = 0.0;
+    let sumMarketValue = new Decimal(0.0, 'currency'), sumCost = new Decimal(0.0, 'currency'), sumDayChange = new Decimal(0.0, 'currency', 'delta');
     portfolios.forEach(portfolio => {
-      sumMarketValue += portfolio.marketValue;
-      sumCost        += portfolio.cost;
-      sumDayChange   += portfolio.dayChange;
+      sumMarketValue.value += portfolio.marketValue;
+      sumCost.value        += portfolio.cost;
+      sumDayChange.value   += portfolio.dayChange;
     });
-    const sumGainLoss = sumMarketValue - sumCost;
+    const sumGainLoss = new Decimal(sumMarketValue - sumCost, 'currency', 'delta');
     return {sumMarketValue, sumCost, sumDayChange, sumGainLoss};
   }
 
