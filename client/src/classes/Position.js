@@ -4,7 +4,7 @@ import Decimal from '../classes/Decimal';
 import Instrument from '../classes/Instrument';
 
 export default class Position {
-  constructor(portfolio_id, id = '', instrument = {}, quantity = 0.0, cost = 0.0, date_acquired = '') {
+  constructor(portfolio_id, id = '', instrument = {id:'',symbol:'',name:''}, quantity = 0.0, cost = 0.0, date_acquired = '') {
     // persisted
     this.portfolio_id  = portfolio_id;
     this.id            = id;
