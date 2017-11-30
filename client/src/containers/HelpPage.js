@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Header, Modal} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import {Help} from '../components/Help';
 
 export default class HelpPage extends Component {
@@ -12,4 +13,8 @@ export default class HelpPage extends Component {
       </Modal>
     );
   }
+}
+
+HelpPage.propTypes = {
+  trigger: PropTypes.object.isRequired,
 }

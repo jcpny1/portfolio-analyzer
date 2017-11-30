@@ -68,7 +68,7 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
   .then(response => response.json())
   .then(loadedPortfolios => {
     const portfolios = loadedPortfolios.map(loadedPortfolio => {
-      const portfolio = new Portfolio(loadedPortfolio.id, loadedPortfolio.name, loadedPortfolio.positions, loadedPortfolio.user.locale);
+      const portfolio = new Portfolio(loadedPortfolio.id, loadedPortfolio.name, loadedPortfolio.positions);
       return portfolio;
     });
     const livePrices = (loadLivePrices === true) ? 'livePrices' : '';

@@ -23,7 +23,7 @@ export function positionsSort(portfolios, property, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
     sortFn(portfolios, Portfolio.sort, null, property);
-    return (dispatch(PortfolioReducer.updateAllPortfolio(portfolios: portfolios)));
+    return (dispatch(PortfolioReducer.updateAllPortfolio(portfolios)));
   }
 }
 

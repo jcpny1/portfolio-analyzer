@@ -57,6 +57,7 @@ PositionsPage.propTypes = {
   portfolios: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortFn: PropTypes.func.isRequired,
   updatingPortfolio: PropTypes.bool.isRequired,
+  userLocale: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {

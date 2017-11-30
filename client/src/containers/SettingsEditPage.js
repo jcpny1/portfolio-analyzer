@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Button, Dropdown, Header, Modal} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import {SettingsEdit} from '../components/SettingsEdit';
 import * as userActions from '../actions/userActions.js';
 
@@ -63,6 +64,10 @@ class SettingsEditPage extends Component {
       </Modal>
     );
   }
+}
+
+SettingsEditPage.propTypes = {
+  user: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

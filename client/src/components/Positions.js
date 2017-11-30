@@ -93,4 +93,5 @@ Positions.propTypes = {
   sortColName: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   updatingPortfolio: PropTypes.bool.isRequired,
+  userLocale: PropTypes.string.isRequired,
 }

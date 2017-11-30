@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import Decimal from '../classes/Decimal';
 import Fmt from '../utils/formatter';
 import {Headlines} from '../components/Headlines';
@@ -61,6 +62,10 @@ class HeadlinesPage extends Component {
     const {userLocale} = this.props;
     return (<Headlines articles={this.state.articles} djiaValue={this.state.djiaValue} djiaChange={this.state.djiaChange} refreshTime={this.state.refreshTime} refreshHeadlines={this.refreshHeadlines} userLocale={userLocale}/>);
   }
+}
+
+HeadlinesPage.propTypes = {
+  userLocale: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {

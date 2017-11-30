@@ -31,7 +31,7 @@ export function portfoliosSort(portfolios, property, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
     sortFn(portfolios, Portfolio.sort, property);
-    return (dispatch(PortfolioReducer.updateAllPortfolio(portfolios: portfolios)));
+    return (dispatch(PortfolioReducer.updateAllPortfolio(portfolios)));
   }
 }
 

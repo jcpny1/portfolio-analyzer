@@ -83,4 +83,5 @@ Portfolios.propTypes = {
   totalGainLoss: PropTypes.object.isRequired,
   totalMarketValue: PropTypes.object.isRequired,
   updatingPortfolio: PropTypes.bool.isRequired,
+  userLocale: PropTypes.string.isRequired,
 }
