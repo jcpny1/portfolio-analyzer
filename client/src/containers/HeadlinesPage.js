@@ -32,7 +32,9 @@ class HeadlinesPage extends Component {
 
   refreshHeadlines = () => {
     Request.headlinesRefresh(headlines => {
-      if (headlines !== null) {
+      if ('error' in headlines) {
+        alert(Fmt.serverError('Refresh Headlines', headlines.error));
+      } else {
         headlines.articles.forEach((headlinesArticle,index) => {
           if ((index > this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
             headlinesArticle.fontWeight = 'bold';
@@ -47,13 +49,10 @@ class HeadlinesPage extends Component {
       if ('error' in indices) {
         alert(Fmt.serverError('Refresh Indexes', indices.error));
       } else {
-        indices.some((indice,index) => {
-          const isDJIA = indice.instrument.symbol === 'DJIA';
-          if (isDJIA) {
-            this.setState({djiaValue: new Decimal(indice.trade_price, 'index'), djiaChange: new Decimal(indice.price_change, 'index', 'delta'), refreshTime: new Date()});
-          }
-          return isDJIA;
-        });
+        const djia = indices.find(indice => indice.instrument.symbol === 'DJIA');
+        if (djia) {
+          this.setState({djiaValue: new Decimal(djia.trade_price, 'index'), djiaChange: new Decimal(djia.price_change, 'index', 'delta'), refreshTime: new Date()});
+        }
       }
     });
   }

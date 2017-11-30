@@ -24,7 +24,7 @@ export default class Position {
   }
 
   reprice(trades) {
-    const tradesIndex = trades.findIndex(trade => {return trade.instrument_id === this.instrument.id});
+    const tradesIndex = trades.findIndex(trade => trade.instrument_id === this.instrument.id);
     if (tradesIndex !== -1) {
       this.lastTrade.value   = trades[tradesIndex].trade_price;
       this.priceChange.value = trades[tradesIndex].price_change;

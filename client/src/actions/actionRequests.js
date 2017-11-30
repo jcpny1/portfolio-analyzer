@@ -67,10 +67,7 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
   .then(statusCheck)
   .then(response => response.json())
   .then(loadedPortfolios => {
-    const portfolios = loadedPortfolios.map(loadedPortfolio => {
-      const portfolio = new Portfolio(loadedPortfolio.id, loadedPortfolio.name, loadedPortfolio.positions);
-      return portfolio;
-    });
+    const portfolios = loadedPortfolios.map(loadedPortfolio => new Portfolio(loadedPortfolio.id, loadedPortfolio.name, loadedPortfolio.positions));
     const livePrices = (loadLivePrices === true) ? 'livePrices' : '';
     fetch(`/api/portfolios/last-price?${livePrices}`, {
       headers: {'Accept': 'application/json'},
