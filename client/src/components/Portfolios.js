@@ -22,9 +22,9 @@ export const Portfolios = (props) => {
   }
 
   function listPortfolios() {
-    return portfolios.map((portfolio,index) => {
+    return portfolios.map(portfolio => {
       return (
-        <Table.Row key={index} textAlign='right'>
+        <Table.Row key={portfolio.id} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio' onClickSubmit={onClickSubmit}/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}

@@ -4,6 +4,9 @@ import * as Request from '../utils/request';
 import {Symbols} from '../components/Symbols';
 
 export default class SymbolsPage extends Component {
+
+  static DISPLAY_ROWS_MAX = 20;
+
   componentWillMount() {
     this.resetComponent();
   }
@@ -27,11 +30,7 @@ export default class SymbolsPage extends Component {
         this.setState({searchResults: []});
       } else {
         Request.instrumentSearch({value: value, exact:false}, instruments => {
-        let instrumentList = [];
-        instruments.forEach(instrument => {
-          instrumentList.push({name: instrument.name, symbol: instrument.symbol});
-        })
-        this.setState({searchResults: instrumentList.slice(0, 20)});
+          this.setState({searchResults: instruments.slice(0, this.DISPLAY_ROWS_MAX)});
         });
       }
     }

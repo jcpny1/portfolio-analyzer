@@ -26,9 +26,9 @@ export const Positions = (props) => {
   }
 
   function listPositions() {
-    return portfolio.positions.map((position,index) => {
+    return portfolio.positions.map(position => {
       return (
-        <Table.Row key={index} textAlign='right'>
+        <Table.Row key={position.id} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={onClickSubmit}/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={onClickRemove(portfolio.id, position.id)}/>}

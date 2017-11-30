@@ -15,9 +15,9 @@ export const Symbols = (props) => {
   }
 
   function listInstruments() {
-    return instruments.map((instrument,index) => {
+    return instruments.map(instrument => {
       return (
-        <Table.Row key={index}>
+        <Table.Row key={instrument.id}>
           <Table.Cell width={8}>{instrument.name}</Table.Cell>
           <Table.Cell width={3}>{instrument.symbol}</Table.Cell>
         </Table.Row>
