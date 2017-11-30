@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
 import Portfolio from '../classes/Portfolio';
 import * as PortfolioReducer from '../reducers/portfolios_reducer';
-import * as UserReducerFunctions from '../reducers/users_reducer';
+import * as UserReducer from '../reducers/users_reducer';
 
 // Add a new portfolio.
 export function portfolioAdd(dispatch, portfolio) {
@@ -173,9 +173,9 @@ export function userFetch(dispatch, userId) {
   .then(statusCheck)
   .then(response => response.json())
   .then(user => {
-    dispatch(UserReducerFunctions.updateUserAction(user));
+    dispatch(UserReducer.updateUser(user));
   })
-  .catch(error => dispatch(UserReducerFunctions.errorUserAction({prefix: 'User Fetch: ', error: error.message})))
+  .catch(error => dispatch(UserReducer.errorUser({prefix: 'User Fetch: ', error: error.message})))
 }
 
 // Update an existing User.
@@ -191,7 +191,7 @@ export function userSave(dispatch, user) {
     if (!updatedUser.id) {
       throw new Error('User update failed!');
     }
-    dispatch(UserReducerFunctions.updateUserAction(user));
+    dispatch(UserReducer.updateUser(user));
   })
   .catch(error => {alert(error.message)});
 }

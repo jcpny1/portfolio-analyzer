@@ -2,13 +2,13 @@ import Fmt from '../utils/formatter';
 import * as Sort from '../utils/sort';
 
 const portfolioAction = {
-  ADD        : 'PORTFOLIO_ADD',
-  DELETE     : 'PORTFOLIO_DELETE',
-  ERROR      : 'PORTFOLIOS_ERROR',
-  UPDATE     : 'PORTFOLIO_UPDATE',
-  UPDATE_ALL : 'PORTFOLIOS_UPDATE',
-  UPDATING   : 'PORTFOLIO_UPDATING',
-  WARN       : 'PORTFOLIOS_WARN',
+  ADD       : 'PORTFOLIO_ADD',
+  DELETE    : 'PORTFOLIO_DELETE',
+  ERROR     : 'PORTFOLIOS_ERROR',
+  UPDATE    : 'PORTFOLIO_UPDATE',
+  UPDATE_ALL: 'PORTFOLIOS_UPDATE',
+  UPDATING  : 'PORTFOLIO_UPDATING',
+  WARN      : 'PORTFOLIOS_WARN',
 };
 
 export function addPortfolio(portfolio)        {return {type: portfolioAction.ADD,        payload: portfolio}}
