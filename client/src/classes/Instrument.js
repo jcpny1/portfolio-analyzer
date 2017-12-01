@@ -8,6 +8,11 @@ export default class Instrument {
     this._name   = name;
   }
 
+  get id()     { return this._id }
+  get name()   { return this._name }
+  get symbol() { return this._symbol }
+  valueOf() { return this._symbol }
+
   // Returns the symbol string with HTML code.
   //   Specify gainLoss number to determine color.
   toHTML(gainLoss = +0.0) {
@@ -21,13 +26,5 @@ export default class Instrument {
       color = 'black';
     }
     return (<span style={{color:color}}>{this._symbol}</span>);
-  }
-
-  get id()     { return this._id }
-  get name()   { return this._name }
-  get symbol() { return this._symbol }
-
-  valueOf() {
-    return this._symbol;
   }
 }

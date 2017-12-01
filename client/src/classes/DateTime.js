@@ -9,22 +9,16 @@ export default class DateTime {
     this._value = value;
   }
 
+  get value() { return this._value }
+  set value(newValue) { this._value = newValue }
+  valueOf() { return this._value }
+
   // Returns the formatted value string with HTML code.
   toHTML(locale = 'en-US', useColor = '' ) {
     const stringValue = this.toString(locale)
-    let color = '';
-    if (useColor) {
-      color = useColor;
-    } else {
-      color = 'black';
-    }
+    let color = useColor ? useColor : 'black';
     return (<span style={{color:color}}>{stringValue}</span>);
   }
-
-  get value() { return this._value }
-  set value(newValue) { this._value = newValue }
-
-  valueOf() { return this._value; }
 
   // Returns a formatted value string.
   toString(locale = 'en-US') {

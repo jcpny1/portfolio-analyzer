@@ -43,7 +43,7 @@ export default class Position {
   }
 
   // If position is valid, returns null. Otherwise, returns error message.
-  static validate(position, cb) {
+  static validateStrings(position, cb) {
     let errorReturn = null;
     if (!(/^[A-Z.*+-]+$/.test(position.instrument_symbol))) {
       errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
