@@ -7,7 +7,7 @@ export const PositionEdit = (props) => {
   return (
     <Form id='positionEditForm' onSubmit={onSubmit} error={Object.keys(formError).length !== 0}>
       <Form.Group>
-        <Form.Input width={4} error={formError.name === 'instrument_symbol'} label='Symbol' placeholder='Symbol' name='instrument_symbol' value={position.instrument_symbol} onChange={onChange} required/>
+        <Form.Input width={4} error={formError.name === 'instrument_symbol'} label='Symbol' placeholder='Symbol' name='instrument_symbol' value={position.instrument_symbol} onChange={onChange} autoFocus required/>
         <Form.Input width={4} error={formError.name === 'quantity'} label='Quantity' placeholder='Quantity' name='quantity' value={position.quantity} onChange={onChange} required/>
         <Form.Input width={4} error={formError.name === 'cost'} label='Cost Basis' placeholder='Cost Basis' name='cost' value={position.cost} onChange={onChange} required/>
         <Form.Input width={4} error={formError.name === 'date_acquired'} label='Date Acquired' type='date' placeholder='YYYY-MM-DD' name='date_acquired' value={position.date_acquired} onChange={onChange} required/>

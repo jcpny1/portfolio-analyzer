@@ -7,7 +7,7 @@ export const PortfolioEdit = (props) => {
   return (
     <Form id='portfolioEditForm' onSubmit={onSubmit}>
       <Form.Group>
-        <Form.Input width={4} label='Name' placeholder='Name' name='name' value={portfolio.name} onChange={onChange} required/>
+        <Form.Input width={4} label='Name' placeholder='Name' name='name' value={portfolio.name} onChange={onChange} autoFocus required/>
       </Form.Group>
     </Form>
   );

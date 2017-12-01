@@ -30,7 +30,7 @@ export const Symbols = (props) => {
       <Grid.Row>
         <Grid.Column>
           <Form>
-            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='searchValue' value={searchValue} onChange={onChange}/>
+            <Form.Input width={8} className='icon' icon='search' placeholder='Description' name='searchValue' value={searchValue} onChange={onChange} autoFocus/>
           </Form>
         </Grid.Column>
       </Grid.Row>
