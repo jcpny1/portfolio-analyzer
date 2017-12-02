@@ -1,11 +1,11 @@
 # seeds.rb
 #
 # This seed file produces the following values:
-#   Users       :     1
-#   Portfolios  :     2
-#   Positions   :    13
-#   Instruments:    12
-#   Trades      :    12
+#   Users       :   1
+#   Portfolios  :   2
+#   Positions   :  13
+#   Instruments :  12
+#   Trades      :  12
 #   yielding account values of:
 #     MarketValue: 417448.422
 #     DayChange  :   2403.602

@@ -8,7 +8,7 @@ end
 
 gem 'puma', '~> 3.11'             # HTTP 1.1 server for Ruby/Rack applications.
 gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
-gem 'sqlite3'                     # Used as the database for Active Record.
+gem 'pg', '~> 0.21.0'             # Used as the database for Active Record.
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
