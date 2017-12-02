@@ -33,9 +33,7 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 
 ### Install redis server (if not installed yet)
 * `sudo apt-get install redis-server`
-
-### Disable THP for redis-server
-In /etc/rc.local, add:
+* In /etc/rc.local, add:
 ```
 if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
   echo never > /sys/kernel/mm/transparent_hugepage/enabled
