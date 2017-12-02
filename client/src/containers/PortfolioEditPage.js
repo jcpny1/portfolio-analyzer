@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import Portfolio from '../classes/Portfolio';
 import {PortfolioEdit} from '../components/PortfolioEdit';
 
+// This class handles the editing of Portfolio attributes.
+// Note: the Portfolio object is converted to an array of strings for
+// the purposes of form editing. The edited result is then converted
+// back to a Portfolio object for subsequent processing.
 export default class PortfolioEditPage extends Component {
   componentWillMount() {
     this.resetComponent();
@@ -11,7 +14,7 @@ export default class PortfolioEditPage extends Component {
 
   resetComponent = () => {
     this.setState({
-      editedPortfolio: new Portfolio(),
+      editedPortfolio: {},
       modalOpen: false,
     });
   }
@@ -32,13 +35,20 @@ export default class PortfolioEditPage extends Component {
   handleOpen = () => {
     const {portfolio} = this.props;
     if (portfolio) {
-      this.setState({editedPortfolio: {...portfolio}});
+      this.setState({
+        editedPortfolio: {
+          name: portfolio.name,
+        }});
     }
     this.setState({modalOpen: true});
   }
 
   handleSubmit = () => {
-    this.props.onClickSubmit(this.state.editedPortfolio);
+    const {portfolio} = this.props;
+    const {editedPortfolio} = this.state;
+    let newPortfolio = Object.assign({}, portfolio);
+    newPortfolio.name.value = editedPortfolio.name;
+    this.props.onClickSubmit(newPortfolio);
     this.resetComponent();
   }
 

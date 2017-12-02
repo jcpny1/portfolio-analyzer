@@ -11,7 +11,10 @@ export default class Decimal {
   }
 
   get value() { return this._value }
-  set value(newValue) { this._value = parseFloat(newValue) }
+  set value(valueStr = '+0.0') {
+    const inputValue = parseFloat(valueStr);
+    this._value = Math.sign(inputValue) === -0.0 ? +0.0 : inputValue;  // We don't need or want -0 values.
+  }
   valueOf() { return this._value }
 
   // Convert a local decimal string to the en-US allowed by javascript.

@@ -5,16 +5,27 @@ import Position from './Position';
 export default class Portfolio {
   constructor(id = '', name = '', loadedPositions = []) {
     // persisted
-    this.id        = id;
-    this.name      = name;
-    this.positions = [];
+    this._id        = id;
+    this._name      = name;
+    this._positions = [];
     // derived
-    this.cost        = new Decimal(0.0, 'currency');
-    this.dayChange   = new Decimal(0.0, 'currency', 'delta');
-    this.gainLoss    = new Decimal(0.0, 'currency', 'delta');
-    this.marketValue = new Decimal(0.0, 'currency');
+    this._cost        = new Decimal(0.0, 'currency');
+    this._dayChange   = new Decimal(0.0, 'currency', 'delta');
+    this._gainLoss    = new Decimal(0.0, 'currency', 'delta');
+    this._marketValue = new Decimal(0.0, 'currency');
+    // load positions into instance.
     loadedPositions.forEach(loadedPosition => this.addPosition(loadedPosition));
   }
+
+  get id()          { return this._id }
+  get cost()        { return this._cost }
+  get dayChange()   { return this._dayChange }
+  get gainLoss()    { return this._gainLoss }
+  get marketValue() { return this._marketValue }
+  get name()        { return this._name }
+  get positions()   { return this._positions }
+
+  set name(name) { this._name = name }
 
   // Return summary values for given portoflios.
   static accountSummary(portfolios) {
@@ -29,7 +40,7 @@ export default class Portfolio {
   }
 
   addPosition(loadedPosition) {
-    this.positions.push(new Position(loadedPosition.portfolio_id, loadedPosition.id, loadedPosition.instrument, loadedPosition.quantity, loadedPosition.cost, loadedPosition.date_acquired));
+    this._positions.push(new Position(loadedPosition.portfolio_id, loadedPosition.id, loadedPosition.instrument, loadedPosition.quantity, loadedPosition.cost, loadedPosition.date_acquired));
     this.updateDerivedValues();
   }
 
@@ -42,7 +53,7 @@ export default class Portfolio {
   }
 
   reprice(trades) {
-    this.positions.forEach(position => {
+    this._positions.forEach(position => {
       position.reprice(trades);
     });
   }
@@ -53,14 +64,14 @@ export default class Portfolio {
     // Sort portfolios.
       switch (portfolioProperty) {
       case 'name':
-        portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort, function(a){return a.toUpperCase()}));
+        portfolios.sort(Sort.sortBy(`_${portfolioProperty}`, portfolioReverseSort, function(a){return a.toUpperCase()}));
         break;
       case 'dayChange':    // fall through
       case 'gainLoss':     // fall through
       case 'marketValue':  // fall through
       case 'cost':         // fall through
       default:
-        portfolios.sort(Sort.sortBy(portfolioProperty, portfolioReverseSort));
+        portfolios.sort(Sort.sortBy(`_${portfolioProperty}`, portfolioReverseSort));
         break;
     }
 
@@ -68,7 +79,7 @@ export default class Portfolio {
     portfolios.forEach(portfolio => {
       switch (positionProperty) {
         case 'symbol':
-          portfolio.positions.sort(Sort.sortBy('instrument', positionReverseSort, function(a){return a.symbol}));
+          portfolio._positions.sort(Sort.sortBy('_instrument', positionReverseSort, function(a){return a.symbol}));
           break;
         case 'cost':           // fall through
         case 'dayChange':      // fall through
@@ -80,7 +91,7 @@ export default class Portfolio {
         case 'date_acquired':  // fall through
         case 'lastTradeDate':  // fall through
         default:
-          portfolio.positions.sort(Sort.sortBy(positionProperty, positionReverseSort));
+          portfolio.positions.sort(Sort.sortBy(`_${positionProperty}`, positionReverseSort));
           break;
       }
     });
@@ -88,16 +99,16 @@ export default class Portfolio {
 
   // Calculate portfolio summary info.
   updateDerivedValues() {
-    this.cost.value        = 0.0;
-    this.dayChange.value   = 0.0;
-    this.gainLoss.value    = 0.0;
-    this.marketValue.value = 0.0;
-    this.positions.forEach(position => {
+    this._cost.value        = 0.0;
+    this._dayChange.value   = 0.0;
+    this._gainLoss.value    = 0.0;
+    this._marketValue.value = 0.0;
+    this._positions.forEach(position => {
       if (!isNaN(position.marketValue)) {
-        this.cost.value        += position.cost;
-        this.dayChange.value   += position.dayChange;
-        this.gainLoss.value    += position.gainLoss;
-        this.marketValue.value += position.marketValue;
+        this._cost.value        += position.cost;
+        this._dayChange.value   += position.dayChange;
+        this._gainLoss.value    += position.gainLoss;
+        this._marketValue.value += position.marketValue;
       }
     });
   }

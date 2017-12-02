@@ -4,46 +4,62 @@ import Decimal from '../classes/Decimal';
 import Instrument from '../classes/Instrument';
 
 export default class Position {
-  constructor(portfolio_id, id = '', instrument = {id:'',symbol:'',name:''}, quantity = 0.0, cost = 0.0, date_acquired = '') {
+  constructor(portfolio_id, id = '', instrument = {id: '', symbol: '', name: ''}, quantity = 0.0, cost = 0.0, date_acquired = '') {
     // persisted
-    this.portfolio_id  = portfolio_id;
-    this.id            = id;
-    this.instrument    = new Instrument(instrument.id, instrument.symbol, instrument.name);
-    this.quantity      = new Decimal(quantity, 'quantity');
-    this.cost          = new Decimal(cost, 'currency');
-    this.date_acquired = new DateTime(date_acquired);
+    this._portfolio_id  = portfolio_id;
+    this._id            = id;
+    this._instrument    = new Instrument(instrument.id, instrument.symbol, instrument.name);
+    this._quantity      = new Decimal(quantity, 'quantity');
+    this._cost          = new Decimal(cost, 'currency');
+    this._date_acquired = new DateTime(date_acquired);
     // from market data
-    this.lastTrade     = new Decimal(0.0, 'currency');
-    this.lastTradeDate = new DateTime();
-    this.priceChange   = new Decimal(0.0, 'currency', 'delta');
-    this.lastUpdate    = new DateTime();
+    this._lastTrade     = new Decimal(0.0, 'currency');
+    this._lastTradeDate = new DateTime();
+    this._priceChange   = new Decimal(0.0, 'currency', 'delta');
+    this._lastUpdate    = new DateTime();
     // derived
-    this.dayChange     = new Decimal(0.0, 'currency', 'delta');
-    this.gainLoss      = new Decimal(0.0, 'currency', 'delta');
-    this.marketValue   = new Decimal(0.0, 'currency');
+    this._dayChange     = new Decimal(0.0, 'currency', 'delta');
+    this._gainLoss      = new Decimal(0.0, 'currency', 'delta');
+    this._marketValue   = new Decimal(0.0, 'currency');
   }
 
+  get cost()          { return this._cost }
+  get date_acquired() { return this._date_acquired }
+  get dayChange()     { return this._dayChange }
+  get gainLoss()      { return this._gainLoss }
+  get id()            { return this._id }
+  get instrument()    { return this._instrument }
+  get lastTrade()     { return this._lastTrade }
+  get lastUpdate()    { return this._lastUpdate }
+  get lastTradeDate() { return this._lastTradeDate }
+  get marketValue()   { return this._marketValue }
+  get portfolio_id()  { return this._portfolio_id }
+  get priceChange()   { return this._priceChange }
+  get quantity()      { return this._quantity }
+
+  // set name(name) { this._name = name }
+
   reprice(trades) {
-    const tradesIndex = trades.findIndex(trade => trade.instrument_id === this.instrument.id);
+    const tradesIndex = trades.findIndex(trade => trade.instrument_id === this._instrument.id);
     if (tradesIndex !== -1) {
-      this.lastTrade.value   = trades[tradesIndex].trade_price;
-      this.priceChange.value = trades[tradesIndex].price_change;
-      this.lastUpdate.value = trades[tradesIndex].created_at;
+      this._lastTrade.value   = trades[tradesIndex].trade_price;
+      this._priceChange.value = trades[tradesIndex].price_change;
+      this._lastUpdate.value = trades[tradesIndex].created_at;
       if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
-        this.lastTradeDate.value = trades[tradesIndex].trade_date;
+        this._lastTradeDate.value = trades[tradesIndex].trade_date;
       }
-      if (this.lastTrade != null) {
-        this.marketValue.value = this.quantity * this.lastTrade;
-        this.gainLoss.value    = this.marketValue - this.cost;
+      if (this._lastTrade != null) {
+        this._marketValue.value = this._quantity * this._lastTrade;
+        this._gainLoss.value    = this._marketValue - this._cost;
       }
-      if (this.priceChange != null) {
-        this.dayChange.value = this.quantity * this.priceChange;
+      if (this._priceChange != null) {
+        this._dayChange.value = this._quantity * this._priceChange;
       }
     }
   }
 
-  // If position is valid, returns null. Otherwise, returns error message.
-  static validateStrings(position, cb) {
+  // If position strings are valid, returns null. Otherwise, returns error message.
+  static validateStringInput(position, cb) {
     let errorReturn = null;
     if (!(/^[A-Z.*+-]+$/.test(position.instrument_symbol))) {
       errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
@@ -55,6 +71,7 @@ export default class Position {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
     }
     if (errorReturn === null) {
+      // async validations should always come last.
       Request.instrumentSearch({value: position.instrument_symbol, exact:true}, instruments => {
         if (instruments.length !== 1) {
           errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};

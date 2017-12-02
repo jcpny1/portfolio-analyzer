@@ -53,7 +53,7 @@ export function portfolioUpdate(dispatch, portfolio) {
     if (!updatedPortfolio.id) {
       throw new Error('Portfolio update failed!');
     }
-    portfolio.name = updatedPortfolio.name  // The returned portfolio does not have any of the calculated pricing information.
+    portfolio.name = updatedPortfolio.name  // Keep original portfolio. New one doesn't have the calculated pricing information.
     dispatch(PortfolioReducer.updatePortfolio(portfolio));
   })
   .catch(error => dispatch(PortfolioReducer.errorPortfolio({prefix: 'Update Portfolio: ', error: error.message})))
@@ -98,7 +98,7 @@ export function positionAdd(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions`, {
     method:  'POST',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument_symbol, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
+    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.value, cost: position.cost.value, date_acquired: position.date_acquired.value}),
   })
   .then(statusCheck)
   .then(response => response.json())
@@ -133,7 +133,7 @@ export function positionUpdate(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions/${position.id}`, {
     method:  'PATCH',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument_symbol, quantity: position.quantity, cost: position.cost, date_acquired: position.date_acquired}),
+    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.value, cost: position.cost.value, date_acquired: position.date_acquired.value}),
   })
   .then(statusCheck)
   .then(response => response.json())

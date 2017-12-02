@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import Position from '../classes/Position';
 import {PositionEdit} from '../components/PositionEdit';
 
+// This class handles the editing of a Position.
+// Note: the Position object is converted to an array of strings for
+// the purposes of form editing. The edited result is then converted
+// back to a Position object for subsequent processing.
 export default class PositionEditPage extends Component {
   componentWillMount() {
     this.resetComponent();
   }
 
   resetComponent = () => {
-    this.setState({     // Do not reset symbolOptions. Keep it cached.
+    this.setState({
       editedPosition: {},
       formError: {},
       modalOpen: false,
@@ -32,19 +36,26 @@ export default class PositionEditPage extends Component {
 
   handleOpen = () => {
     const {position} = this.props;
-    let instrument_symbol = '';   // We need an instrument_symbol property to interact with the instrument_symbol modal form field.
-    if ('symbol' in position.instrument) {
-      instrument_symbol = position.instrument.symbol;
-    }
-    this.setState({modalOpen: true, editedPosition: {...position, instrument_symbol: instrument_symbol}});
+    this.setState({
+      editedPosition: {
+        quantity:          position.quantity.value,
+        instrument_symbol: position.instrument.symbol,
+        cost:              position.cost.value,
+        date_acquired:     position.date_acquired.value
+      },
+      modalOpen: true,
+    });
   }
 
   handleSubmit = () => {
-    Position.validateStrings(this.state.editedPosition, error => {
+    const {position} = this.props;
+    const {editedPosition} = this.state;
+    Position.validateStringInput(editedPosition, error => {
       if (error) {
         this.setState({formError: error});
       } else {
-        this.props.onClickSubmit(this.state.editedPosition);
+        const instrument = {id: '', symbol: editedPosition.instrument_symbol, name: ''};
+        this.props.onClickSubmit(new Position(position.portfolio_id, position.id, instrument, editedPosition.quantity, editedPosition.cost, editedPosition.date_acquired));
         this.resetComponent();
       }
     });
