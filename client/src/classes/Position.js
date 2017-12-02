@@ -40,13 +40,13 @@ export default class Position {
   // set name(name) { this._name = name }
 
   reprice(trades) {
-    const tradesIndex = trades.findIndex(trade => trade.instrument_id === this._instrument.id);
-    if (tradesIndex !== -1) {
-      this._lastTrade.value   = trades[tradesIndex].trade_price;
-      this._priceChange.value = trades[tradesIndex].price_change;
-      this._lastUpdate.value = trades[tradesIndex].created_at;
-      if (new Date(trades[tradesIndex].trade_date).getTime() !== 0) {
-        this._lastTradeDate.value = trades[tradesIndex].trade_date;
+    const trade = trades.find(trade => trade.instrument_id === this._instrument.id);
+    if (trade) {
+      this._lastTrade.value   = trade.trade_price;
+      this._priceChange.value = trade.price_change;
+      this._lastUpdate.value = trade.created_at;
+      if (new Date(trade.trade_date).getTime() !== 0) {
+        this._lastTradeDate.value = trade.trade_date;
       }
       if (this._lastTrade != null) {
         this._marketValue.value = this._quantity * this._lastTrade;
