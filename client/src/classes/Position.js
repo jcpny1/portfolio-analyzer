@@ -37,8 +37,6 @@ export default class Position {
   get priceChange()   { return this._priceChange }
   get quantity()      { return this._quantity }
 
-  // set name(name) { this._name = name }
-
   reprice(trades) {
     const trade = trades.find(trade => trade.instrument_id === this._instrument.id);
     if (trade) {
