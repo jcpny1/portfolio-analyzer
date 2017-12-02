@@ -61,11 +61,11 @@ export default class Position {
     let errorReturn = null;
     if (!(/^[A-Z.*+-]+$/.test(position.instrument_symbol))) {
       errorReturn = {name: 'instrument_symbol', message: 'Symbol is not valid.'};
-    } else if (!(parseFloat(position.quantity) >= 0)) {
+    } else if (!(Number.parseFloat(position.quantity) >= 0)) {
       errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
     } else if (position.cost < 0.0) {
       errorReturn = {name: 'cost', message: 'Cost must be greater than or equal to zero.'};
-    } else if (isNaN(Date.parse(position.date_acquired))) {
+    } else if (Number.isNaN(Date.parse(position.date_acquired))) {
       errorReturn = {name: 'date_acquired', message: 'Date Acquired is not valid.'};
     }
     if (errorReturn === null) {

@@ -2,20 +2,20 @@ import React from 'react';
 
 // This class is used to hold and format numeric values.
 export default class Decimal {
+  // Inputted value can be a string or a number.
   // Valid types are currency, decimal, index, and quantity.
-  constructor(valueStr = '+0.0', type = '', delta = '') {
-    const inputValue = parseFloat(valueStr);
-    this._value = Math.sign(inputValue) === -0.0 ? +0.0 : inputValue;  // We don't need or want -0 values.
+  constructor(value = +0.0, type = '', delta = '') {
+    this.value  = value;
     this._type  = type;
     this._delta = delta;
   }
 
-  get value() { return this._value }
-  set value(valueStr = '+0.0') {
-    const inputValue = parseFloat(valueStr);
-    this._value = Math.sign(inputValue) === -0.0 ? +0.0 : inputValue;  // We don't need or want -0 values.
+  get value() {return this._value}
+  set value(value = +0.0) {
+    const inputValue = Number.parseFloat(value);
+    this._value = (Math.sign(inputValue) === -0.0) ? +0.0 : inputValue;  // We don't need or want -0 values.
   }
-  valueOf() { return this._value }
+  valueOf() {return this._value}
 
   // Convert a local decimal string to the en-US allowed by javascript.
   //   Remove thousands group character. Swap out decimal character.

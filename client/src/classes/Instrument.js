@@ -8,15 +8,15 @@ export default class Instrument {
     this._name   = name;
   }
 
-  get id()     { return this._id }
-  get name()   { return this._name }
-  get symbol() { return this._symbol }
-  valueOf()    { return this._symbol }
+  get id()     {return this._id}
+  get name()   {return this._name}
+  get symbol() {return this._symbol}
+  valueOf()    {return this._symbol}
 
   // Returns the symbol string with HTML code.
   //   Specify gainLoss number to determine color.
   toHTML(gainLoss = +0.0) {
-    const gainLossSign = Math.sign(parseFloat(gainLoss));
+    const gainLossSign = Math.sign(Number.parseFloat(gainLoss));
     let color = '';
     if (gainLossSign === 1) {
       color = 'green';

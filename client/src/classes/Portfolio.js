@@ -6,7 +6,7 @@ export default class Portfolio {
   constructor(id = '', name = '', loadedPositions = []) {
     // persisted
     this._id        = id;
-    this._name      = name;
+    this.name       = name;
     this._positions = [];
     // derived
     this._cost        = new Decimal(0.0, 'currency');
@@ -25,7 +25,7 @@ export default class Portfolio {
   get name()        { return this._name }
   get positions()   { return this._positions }
 
-  set name(name) { this._name = name }
+  set name(name) {this._name = name}
 
   // Return summary values for given portoflios.
   static accountSummary(portfolios) {
@@ -104,7 +104,7 @@ export default class Portfolio {
     this._gainLoss.value    = 0.0;
     this._marketValue.value = 0.0;
     this._positions.forEach(position => {
-      if (!isNaN(position.marketValue)) {
+      if (!Number.isNaN(position.marketValue)) {
         this._cost.value        += position.cost;
         this._dayChange.value   += position.dayChange;
         this._gainLoss.value    += position.gainLoss;

@@ -5,13 +5,15 @@ export default class DateTime {
   static dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
 
   // Valid types are currency, decimal, index, and quantity.
-  constructor(value = '') {
-    this._value = value;
+  constructor(valueStr = '') {
+    this.value = valueStr;
   }
 
-  get value() { return this._value }
-  set value(newValue) { this._value = newValue }
-  valueOf() { return this._value }
+  get value() {return this._value}
+  set value(valueStr = '') {
+    this._value = new Date(valueStr);
+  }
+  valueOf() {return this._value}
 
   // Returns the formatted value string with HTML code.
   toHTML(locale = 'en-US', useColor = '' ) {
@@ -23,6 +25,6 @@ export default class DateTime {
   // Returns a formatted value string.
   toString(locale = 'en-US') {
     const dateFormat = new Intl.DateTimeFormat(locale, DateTime.dateOptions);
-    return (this._value) ? dateFormat.format(new Date(this._value)).replace(',', '') : '';
+    return this._value ? dateFormat.format(this._value).replace(',', '') : '';
   }
 }
