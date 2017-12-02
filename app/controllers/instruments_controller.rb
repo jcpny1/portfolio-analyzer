@@ -9,7 +9,7 @@ class InstrumentsController < ApplicationController
       render json: Instrument.where("symbol = '%s'", value)
     else
       value = "%#{value.upcase}%"
-      render json: Instrument.where("upper(symbol) LIKE '%s' OR upper(name) LIKE '%s'", value, value).order(:name).limit(20)
+      render json: Instrument.where("upper(symbol) LIKE '%s' OR upper(name) LIKE '%s'", value, value).order(:name, :symbol).limit(20)
     end
   end
 
