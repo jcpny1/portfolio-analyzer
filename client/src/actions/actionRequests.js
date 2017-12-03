@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
 import Portfolio from '../classes/Portfolio';
+import {statusCheck} from '../utils/request.js';
 import * as PortfolioReducer from '../reducers/portfolios_reducer';
 import * as UserReducer from '../reducers/users_reducer';
 
@@ -151,17 +152,6 @@ export function pricesRefresh() {
   fetch('/api/trades/refresh', {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
-}
-
-// Check a fetch response status.
-function statusCheck(response) {
-  if (response.status < 200 || response.status >= 300) {
-    const error = new Error(`HTTP Error ${response.statusText}`);
-    error.status = response.status;
-    error.response = response;
-    console.log(error);
-  }
-  return response;
 }
 
 // Retrieve User.

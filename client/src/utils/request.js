@@ -46,7 +46,7 @@ export function pricesRefresh() {
 }
 
 // Check a fetch response status.
-function statusCheck(response) {
+export function statusCheck(response) {
   if (response.status < 200 || response.status >= 300) {
     const error = new Error(`HTTP Error ${response.statusText}`);
     error.status = response.status;
