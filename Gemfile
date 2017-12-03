@@ -6,7 +6,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '~>2.4.2'                    # Programming language version.
+ruby '~>2.4.2'                    # Programming language version. This entry is for Heroku.
+gem 'json', '~> 2.1.0'            # JSON Ruby extension. An older version is included with Ruby. This entry suppresses startup warnings.
 gem 'puma', '~> 3.11'             # HTTP 1.1 server for Ruby/Rack applications.
 gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
 gem 'pg', '~> 0.21.0'             # Used as the database for Active Record.
