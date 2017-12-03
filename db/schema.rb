@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20170929135938) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "instruments", force: :cascade do |t|
     t.string "symbol", null: false
     t.string "name", null: false
@@ -20,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170929135938) do
   end
 
   create_table "portfolios", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -29,8 +32,8 @@ ActiveRecord::Schema.define(version: 20170929135938) do
   end
 
   create_table "positions", force: :cascade do |t|
-    t.integer "portfolio_id", null: false
-    t.integer "instrument_id", null: false
+    t.bigint "portfolio_id", null: false
+    t.bigint "instrument_id", null: false
     t.decimal "quantity", null: false
     t.decimal "cost", null: false
     t.date "date_acquired", null: false
@@ -41,7 +44,7 @@ ActiveRecord::Schema.define(version: 20170929135938) do
   end
 
   create_table "trades", force: :cascade do |t|
-    t.integer "instrument_id", null: false
+    t.bigint "instrument_id", null: false
     t.datetime "trade_date", null: false
     t.decimal "trade_price", null: false
     t.decimal "price_change", null: false
@@ -59,4 +62,8 @@ ActiveRecord::Schema.define(version: 20170929135938) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "portfolios", "users"
+  add_foreign_key "positions", "instruments"
+  add_foreign_key "positions", "portfolios"
+  add_foreign_key "trades", "instruments"
 end
