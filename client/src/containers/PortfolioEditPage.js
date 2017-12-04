@@ -47,7 +47,7 @@ export default class PortfolioEditPage extends Component {
     const {portfolio} = this.props;
     const {editedPortfolio} = this.state;
     let newPortfolio = Object.assign({}, portfolio);
-    newPortfolio.name.value = editedPortfolio.name;
+    newPortfolio.name = editedPortfolio.name;
     this.props.onClickSubmit(newPortfolio);
     this.resetComponent();
   }
