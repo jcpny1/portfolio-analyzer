@@ -24,6 +24,6 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "prop-types": "^15.6.0",
-    "semantic-ui": "^2.2.13",
+    "semantic-ui": "^2.2.13"
   }
 }
