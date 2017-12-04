@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import Portfolio from '../classes/Portfolio';
 import {PortfolioEdit} from '../components/PortfolioEdit';
 
 // This class handles the editing of Portfolio attributes.
@@ -46,9 +47,7 @@ export default class PortfolioEditPage extends Component {
   handleSubmit = () => {
     const {portfolio} = this.props;
     const {editedPortfolio} = this.state;
-    let newPortfolio = Object.assign({}, portfolio);
-    newPortfolio.name = editedPortfolio.name;
-    this.props.onClickSubmit(newPortfolio);
+    this.props.onClickSubmit(new Portfolio(portfolio.id, editedPortfolio.name));
     this.resetComponent();
   }
 

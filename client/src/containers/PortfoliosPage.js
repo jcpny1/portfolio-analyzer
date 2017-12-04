@@ -27,7 +27,7 @@ class PortfoliosPage extends Component {
   }
 
   submitPortfolio = (portfolio) => {
-    (portfolio.id === '') ? this.props.actions.portfolioAdd(portfolio) : this.props.actions.portfolioUpdate(portfolio);
+    portfolio.id ? this.props.actions.portfolioUpdate(portfolio) : this.props.actions.portfolioAdd(portfolio);
   }
 
   render() {

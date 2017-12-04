@@ -36,7 +36,7 @@ class PositionsPage extends Component {
   }
 
   positionSubmit = (position) => {
-    (position.id === '') ? this.props.actions.positionAdd(position, this.props.sortFn) : this.props.actions.positionUpdate(position, this.props.sortFn);
+    position.id ? this.props.actions.positionUpdate(position, this.props.sortFn) : this.props.actions.positionAdd(position, this.props.sortFn);
   }
 
   render() {
