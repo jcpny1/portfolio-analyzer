@@ -29,7 +29,6 @@ gem 'active_model_serializers', '~> 0.10.0' # JSON generators.
 gem 'addressable'                           # URI encoder.
 gem 'dotenv-rails'                          # Loads environment variables from `.env`.
 gem 'faraday'                               # HTTP/REST API client library.
-gem 'foreman', '~> 0.84.0'                  # Process manager for applications with multiple components.
 gem 'sidekiq'                               # Background processing for Ruby.
 
 group :development do
@@ -41,6 +40,7 @@ end
 group :test do
   gem 'capybara'              # Needed for RSpec feature tests.
   gem 'factory_bot_rails'     # Factory to Rails integration.
+  gem 'foreman', '~> 0.84.0'  # Process manager for applications with multiple components.
   gem 'rspec-rails', '~> 3.7' # Rails testing framework.
   gem 'rspec-sidekiq'         # Sidekiq rspec testing.
   gem 'selenium-webdriver'    # Used by Capybara.

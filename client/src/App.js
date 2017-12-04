@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+// import logo from './logo.svg';
+// import './App.css';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Button, Dropdown, Grid, Header, Image, Menu, Table} from 'semantic-ui-react';

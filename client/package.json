@@ -1,6 +1,7 @@
 {
-  "name": "client",
+  "name": "portfolio-analyzer",
   "version": "0.1.0",
+  "description": "A portfolio monitoring tool.",
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
@@ -14,7 +15,7 @@
     "redux-thunk": "^2.2.0"
   },
   "scripts": {
-    "start": "PORT=3300 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
