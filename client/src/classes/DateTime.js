@@ -10,11 +10,6 @@ export default class DateTime {
   }
 
   valueOf() {return this._value}
-  // get value() {return this._value}
-  // set value(valueStr = '') {
-  //   this._value = new Date(valueStr);
-  // }
-  // valueOf() {return this._value.toISOString().substring(0, 10)}
 
   // Returns a date string formatted for Form input.
   toForm(dateValue) {

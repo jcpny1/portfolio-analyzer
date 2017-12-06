@@ -13,12 +13,6 @@ export default class Decimal {
   }
 
   valueOf() {return this._value}
-  //
-  // get value() {return this._value}
-  // set value(value = +0.0) {
-  //   const inputValue = Number.parseFloat(value);
-  //   this._value = (Math.sign(inputValue) === -0.0) ? +0.0 : inputValue;  // We don't need or want -0 values.
-  // }
 
   // Convert a locale-style decimal string to the en-US allowed by javascript.
   //   Remove thousands group character. Swap out decimal character.

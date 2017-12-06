@@ -40,19 +40,6 @@ export default class Position {
   set instrument(instrument)     {this._instrument    = new Instrument(instrument.id, instrument.symbol, instrument.name)}
   set quantity(quantity)         {this._quantity      = new Decimal(quantity, 'quantity')}
 
-  //
-  // set cost(cost)                   {this._cost          = cost}
-  // set costString(cost)             {this._cost          = }
-  //
-  // set dateAcquired(dateAcquired) {this._dateAcquired = dateAcquired}
-  // set dateAcquired_string(dateAcquired) {this._dateAcquired = }
-  //
-  // set instrument(instrument)       {this._instrument    = instrument}
-  // set instrumentString(instrument) {this._instrument    = }
-  //
-  // set quantity(quantity)           {this._quantity      = quantity}
-  // set quantityString(quantity)     {this._quantity      = }
-
   reprice(trades) {
     const trade = trades.find(trade => trade.instrument_id === this._instrument.id);
     if (trade) {
