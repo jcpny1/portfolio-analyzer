@@ -5,7 +5,10 @@ language: ruby
 rvm:
   - 2.4.2
 install:
+  - . $HOME/.nvm/nvm.sh
   - cd client
+  - nvm install stable
+  - nvm use stable
   - npm install
   - cd ..
 before_script:
