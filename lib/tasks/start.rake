@@ -10,4 +10,4 @@ namespace :start do
 end
 
 desc 'Start development server'
-task :start => 'start:development'
+task start: 'start:development'
