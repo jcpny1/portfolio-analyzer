@@ -3,15 +3,16 @@ import {Link} from 'react-router-dom';
 import {Button, Header, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import ConfirmDialog from '../containers/ConfirmDialog';
+import Portfolio from '../classes/Portfolio';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 export const Portfolios = (props) => {
-  const {emptyPortfolio, onClickColHeader, onClickRemove, onClickSubmit, portfolios, refreshPortfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio, userLocale} = props;
+  const {onClickColHeader, onClickRemove, portfolios, refreshPortfolios, sortColName, sortDirection, totalCost, totalDayChange, totalGainLoss, totalMarketValue, updatingPortfolio, userLocale} = props;
 
   function columnTitles() {
     return (
       <Table.Row textAlign='center'>
-        <Table.HeaderCell>{<PortfolioEditPage portfolio={emptyPortfolio} iconName='add' iconColor='blue' tooltip='Add a portfolio' onClickSubmit={onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PortfolioEditPage portfolio={new Portfolio()} iconName='add' iconColor='blue' tooltip='Add a portfolio'/>}</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'name'        ? sortDirection : null} onClick={() => onClickColHeader('name')} textAlign='left'>Portfolios</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'marketValue' ? sortDirection : null} onClick={() => onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'dayChange'   ? sortDirection : null} onClick={() => onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
@@ -26,7 +27,7 @@ export const Portfolios = (props) => {
       return (
         <Table.Row key={portfolio.id} textAlign='right'>
           <Table.Cell textAlign='center'>
-            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio' onClickSubmit={onClickSubmit}/>}
+            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio'/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.name}</Link></Table.Cell>
@@ -70,10 +71,8 @@ export const Portfolios = (props) => {
 }
 
 Portfolios.propTypes = {
-  emptyPortfolio: PropTypes.object.isRequired,
   onClickColHeader: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
-  onClickSubmit: PropTypes.func.isRequired,
   portfolios: PropTypes.arrayOf(PropTypes.object).isRequired,
   refreshPortfolios: PropTypes.func.isRequired,
   sortColName: PropTypes.string.isRequired,

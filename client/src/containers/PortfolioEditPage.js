@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import {Button, Header, Icon, Modal} from 'semantic-ui-react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import _cloneDeep from 'lodash.clonedeep';
+import * as portfolioActions from '../actions/portfolioActions.js';
 import PropTypes from 'prop-types';
-import Portfolio from '../classes/Portfolio';
+import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import {PortfolioEdit} from '../components/PortfolioEdit';
 
 // This class handles the editing of Portfolio attributes.
-// Note: the Portfolio object is converted to an array of strings for
-// the purposes of form editing. The edited result is then converted
-// back to a Portfolio object for subsequent processing.
-export default class PortfolioEditPage extends Component {
+class PortfolioEditPage extends Component {
   componentWillMount() {
     this.resetComponent();
   }
@@ -25,29 +25,21 @@ export default class PortfolioEditPage extends Component {
   }
 
   handleChange = (e, {name, value}) => {
-    this.setState({
-      editedPortfolio: {
-        ...this.state.editedPortfolio,
-        [name]: value,
-      },
-    });
+    const {editedPortfolio} = this.state;
+    let newPortfolio = _cloneDeep(editedPortfolio);
+    newPortfolio[name] = value;
+    this.setState({editedPortfolio: newPortfolio});
   }
 
   handleOpen = () => {
     const {portfolio} = this.props;
-    if (portfolio) {
-      this.setState({
-        editedPortfolio: {
-          name: portfolio.name,
-        }});
-    }
-    this.setState({modalOpen: true});
+    this.setState({editedPortfolio: _cloneDeep(portfolio), modalOpen: true});
   }
 
   handleSubmit = () => {
-    const {portfolio} = this.props;
+    const {actions} = this.props;
     const {editedPortfolio} = this.state;
-    this.props.onClickSubmit(new Portfolio(portfolio.id, editedPortfolio.name));
+    editedPortfolio.id ? actions.portfolioUpdate(editedPortfolio) : actions.portfolioAdd(editedPortfolio);
     this.resetComponent();
   }
 
@@ -76,7 +68,12 @@ export default class PortfolioEditPage extends Component {
 PortfolioEditPage.propTypes = {
   iconColor: PropTypes.string.isRequired,
   iconName: PropTypes.string.isRequired,
-  onClickSubmit: PropTypes.func.isRequired,
   portfolio: PropTypes.object.isRequired,
   tooltip: PropTypes.string.isRequired,
 }
+
+function mapDispatchToProps(dispatch) {
+  return {actions: bindActionCreators(portfolioActions, dispatch)};
+}
+
+export default connect(undefined, mapDispatchToProps)(PortfolioEditPage);

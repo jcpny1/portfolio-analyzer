@@ -2,15 +2,16 @@ import React from 'react';
 import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
 import PropTypes from 'prop-types';
+import Position  from '../classes/Position';
 import PositionEditPage from '../containers/PositionEditPage';
 
 export const Positions = (props) => {
-  const {emptyPosition, onClickColHeader, onClickRemove, onClickSubmit, portfolio, portfolioRefresh, sortColName, sortDirection, updatingPortfolio, userLocale} = props;
+  const {onClickColHeader, onClickRemove, portfolio, portfolioRefresh, sortColName, sortDirection, updatingPortfolio, userLocale} = props;
 
   function columnTitles() {
     return (
       <Table.Row textAlign='center'>
-        <Table.HeaderCell>{<PositionEditPage position={emptyPosition} iconName='add' iconColor='blue' tooltip='Add a position' onClickSubmit={onClickSubmit}/>}</Table.HeaderCell>
+        <Table.HeaderCell>{<PositionEditPage position={new Position(portfolio.id)} iconName='add' iconColor='blue' tooltip='Add a position'/>}</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'symbol'        ? sortDirection : null} textAlign='left' onClick={() => onClickColHeader('symbol')}>Symbol</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'quantity'      ? sortDirection : null} onClick={() => onClickColHeader('quantity')}>Quantity</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
@@ -30,7 +31,7 @@ export const Positions = (props) => {
       return (
         <Table.Row key={position.id} textAlign='right'>
           <Table.Cell textAlign='center'>
-            {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position' onClickSubmit={onClickSubmit}/>}
+            {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position'/>}
             {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete position' header='Delete Position' onClickConfirm={onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
           <Table.Cell textAlign='left' title={position.instrument.name}>{position.instrument.toHTML(position.gainLoss)}</Table.Cell>
@@ -84,9 +85,7 @@ export const Positions = (props) => {
 }
 
 Positions.propTypes = {
-  emptyPosition: PropTypes.object.isRequired,
   onClickColHeader: PropTypes.func.isRequired,
-  onClickSubmit: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
   portfolio: PropTypes.object.isRequired,
   portfolioRefresh: PropTypes.func.isRequired,

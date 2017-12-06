@@ -2,27 +2,30 @@ import React from 'react';
 
 // This class is used to hold and format numeric values.
 export default class Decimal {
-  // Inputted value can be a string or a number.
+  // Value can be a string or a number.
   // Valid types are currency, decimal, index, and quantity.
-  constructor(value = +0.0, type = '', delta = '') {
-    this.value  = value;
+  // Specifying delta will affect the color of the displayed value.
+  constructor(value = '', type = 'decimal', delta = '') {
+    const floatValue = Number.parseFloat(value);
+    this._value = (Math.sign(floatValue) === -0.0) ? +0.0 : floatValue;  // We don't need or want -0 values.
     this._type  = type;
     this._delta = delta;
   }
 
-  get value() {return this._value}
-  set value(value = +0.0) {
-    const inputValue = Number.parseFloat(value);
-    this._value = (Math.sign(inputValue) === -0.0) ? +0.0 : inputValue;  // We don't need or want -0 values.
-  }
   valueOf() {return this._value}
+  //
+  // get value() {return this._value}
+  // set value(value = +0.0) {
+  //   const inputValue = Number.parseFloat(value);
+  //   this._value = (Math.sign(inputValue) === -0.0) ? +0.0 : inputValue;  // We don't need or want -0 values.
+  // }
 
-  // Convert a local decimal string to the en-US allowed by javascript.
+  // Convert a locale-style decimal string to the en-US allowed by javascript.
   //   Remove thousands group character. Swap out decimal character.
   //   Some of this logic can be replaced with Intl.NumberFormat.prototype.formatToParts(number), when it becomes available.
   static fromLocale = (stringValue, locale) => {
     const testString = new Intl.NumberFormat(locale).format(1000.1); // => e.g. '1.000,1'
-    const groupChar = testString[1];
+    const groupChar   = testString[1];
     const decimalChar = testString[5]
     const re = new RegExp(`(d+)([${groupChar}${decimalChar}])`, 'g');
     return stringValue.replace(re, function(match, p1, p2) {
@@ -32,7 +35,7 @@ export default class Decimal {
   }
 
   // Returns the formatted value string with HTML code.
-  toHTML(locale = 'en-US', useColor = '' ) {
+  toHTML(locale, useColor = '' ) {
     const stringValue = this.toString(locale)
     let color = '';
     let sign  = '';
@@ -50,28 +53,36 @@ export default class Decimal {
   }
 
   // Returns a formatted value string.
-  toString(locale = 'en-US') {
+  toString(locale) {
     let formattedValue = '';
     if (this._value) {
-      let options = {};
-      switch (this._type) {
-        case 'currency':
-          options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
-          break;
-        case 'decimal':
-          options = {minimumFractionDigits:2, maximumFractionDigits:3};
-          break;
-        case 'index':
-          options = {minimumFractionDigits:0, maximumFractionDigits:2};
-          break;
-        case 'quantity':
-          options = {minimumFractionDigits:0, maximumFractionDigits:5};
-          break;
-        default:
-          break;
+      if (locale) {
+        formattedValue = this.toStringFormatted(locale);
+      } else {
+        formattedValue = this._value.toString();
       }
-      formattedValue = this._value.toLocaleString(locale, options);
     }
     return formattedValue;
+  }
+
+  toStringFormatted(locale) {
+    let options = {};
+    switch (this._type) {
+      case 'currency':
+        options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
+        break;
+      case 'decimal':
+        options = {minimumFractionDigits:2, maximumFractionDigits:3};
+        break;
+      case 'index':
+        options = {minimumFractionDigits:0, maximumFractionDigits:2};
+        break;
+      case 'quantity':
+        options = {minimumFractionDigits:0, maximumFractionDigits:5};
+        break;
+      default:
+        break;
+    }
+    return this._value.toLocaleString(locale, options);
   }
 }

@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import _cloneDeep from 'lodash.clonedeep';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Position from '../classes/Position';
+import * as positionActions  from '../actions/positionActions.js';
 import {PositionEdit} from '../components/PositionEdit';
 
 // This class handles the editing of a Position.
-// Note: the Position object is converted to an array of strings for
-// the purposes of form editing. The edited result is then converted
-// back to a Position object for subsequent processing.
-export default class PositionEditPage extends Component {
+// Note: This component is injecting instrument_symbol into the object instance.
+//       This is because we don't have an instrument to work with at this point; Just a symbol.
+//       We will convert this symbol to an instrument at the server.
+
+// TODO: add real instrument in validation?
+
+class PositionEditPage extends Component {
   componentWillMount() {
     this.resetComponent();
   }
@@ -26,36 +33,26 @@ export default class PositionEditPage extends Component {
   }
 
   handleChange = (e, {name, value}) => {
-    this.setState({
-      editedPosition: {
-          ...this.state.editedPosition,
-          [name]: (name === 'instrument_symbol') ? value.toUpperCase() : value,
-      },
-    });
+    const {editedPosition} = this.state;
+    let newPosition = _cloneDeep(editedPosition);
+    const newValue = (name === 'instrument') ? {id: '', symbol: value.toUpperCase(), name: ''} : value;
+    newPosition[name] = newValue;
+    this.setState({editedPosition: newPosition});
   }
 
   handleOpen = () => {
     const {position} = this.props;
-    this.setState({
-      editedPosition: {
-        quantity:          position.quantity.value,
-        instrument_symbol: position.instrument.symbol,
-        cost:              position.cost.value,
-        date_acquired:     position.date_acquired.value
-      },
-      modalOpen: true,
-    });
+    this.setState({editedPosition: _cloneDeep(position), modalOpen: true});
   }
 
   handleSubmit = () => {
-    const {position} = this.props;
+    const {actions, sortFn} = this.props;
     const {editedPosition} = this.state;
     Position.validateStringInput(editedPosition, error => {
       if (error) {
         this.setState({formError: error});
       } else {
-        const instrument = {id: '', symbol: editedPosition.instrument_symbol, name: ''};
-        this.props.onClickSubmit(new Position(position.portfolio_id, position.id, instrument, editedPosition.quantity, editedPosition.cost, editedPosition.date_acquired));
+        editedPosition.id ? actions.positionUpdate(editedPosition, sortFn) : actions.positionAdd(editedPosition, sortFn);
         this.resetComponent();
       }
     });
@@ -86,7 +83,12 @@ export default class PositionEditPage extends Component {
 PositionEditPage.propTypes = {
   iconColor: PropTypes.string.isRequired,
   iconName: PropTypes.string.isRequired,
-  onClickSubmit: PropTypes.func.isRequired,
   position: PropTypes.object.isRequired,
   tooltip: PropTypes.string.isRequired,
 }
+
+function mapDispatchToProps(dispatch) {
+  return {actions: bindActionCreators(positionActions, dispatch)};
+}
+
+export default connect(undefined, mapDispatchToProps)(PositionEditPage);

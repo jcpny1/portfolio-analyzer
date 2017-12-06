@@ -62,13 +62,11 @@ export function portfolioUpdate(dispatch, portfolio) {
 
 // Load all portfolios from server.
 export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
-  fetch('/api/portfolios', {
-    headers: {'Accept': 'application/json'},
-  })
+  fetch('/api/portfolios', {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .then(response => response.json())
-  .then(loadedPortfolios => {
-    const portfolios = loadedPortfolios.map(loadedPortfolio => new Portfolio(loadedPortfolio.id, loadedPortfolio.name, loadedPortfolio.positions));
+  .then(serverPortfolios => {
+    const portfolios = serverPortfolios.map(serverPortfolio => new Portfolio(serverPortfolio.id, serverPortfolio.name, serverPortfolio.positions));
     const livePrices = (loadLivePrices === true) ? 'livePrices' : '';
     fetch(`/api/portfolios/last-price?${livePrices}`, {
       headers: {'Accept': 'application/json'},
@@ -99,7 +97,7 @@ export function positionAdd(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions`, {
     method:  'POST',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.value, cost: position.cost.value, date_acquired: position.date_acquired.value}),
+    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), date_acquired: position.dateAcquired.toForm()}),
   })
   .then(statusCheck)
   .then(response => response.json())
@@ -134,7 +132,7 @@ export function positionUpdate(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions/${position.id}`, {
     method:  'PATCH',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.value, cost: position.cost.value, date_acquired: position.date_acquired.value}),
+    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.value, cost: position.cost.value, dateAcquired: position.dateAcquired.value}),
   })
   .then(statusCheck)
   .then(response => response.json())

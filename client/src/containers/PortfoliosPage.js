@@ -26,15 +26,11 @@ class PortfoliosPage extends Component {
     this.props.actions.portfoliosSort(this.props.portfolios, columnName, this.props.sortFn);
   }
 
-  submitPortfolio = (portfolio) => {
-    portfolio.id ? this.props.actions.portfolioUpdate(portfolio) : this.props.actions.portfolioAdd(portfolio);
-  }
-
   render() {
     const {portfolios, sortFn, updatingPortfolio, userLocale} = this.props;
-    const {sumMarketValue, sumCost, sumDayChange, sumGainLoss} = Portfolio.accountSummary(portfolios);
+    const {sumCost, sumDayChange, sumGainLoss, sumMarketValue} = Portfolio.accountSummary(portfolios);
     const sortTerms = sortFn();
-    return (<Portfolios portfolios={portfolios} emptyPortfolio={new Portfolio()} updatingPortfolio={updatingPortfolio} totalCost={sumCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickSubmit={this.submitPortfolio} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction} userLocale={userLocale}/>);
+    return (<Portfolios portfolios={portfolios} updatingPortfolio={updatingPortfolio} totalCost={sumCost} totalDayChange={sumDayChange} totalGainLoss={sumGainLoss} totalMarketValue={sumMarketValue} refreshPortfolios={this.refreshPortfolios} onClickRemove={this.removePortfolio} onClickColHeader={this.sortPortfolios} sortColName={sortTerms.primary.property} sortDirection={sortTerms.primary.direction} userLocale={userLocale}/>);
   }
 }
 
