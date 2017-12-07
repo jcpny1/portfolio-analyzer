@@ -9,7 +9,7 @@ install:
   - cd client
   - nvm install stable
   - nvm use stable
-  - npm install
+  - npm install <<<'Y'
   - cd ..
 before_script:
   - bundle exec rake db:setup
