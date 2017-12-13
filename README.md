@@ -9,13 +9,16 @@
 
 ## Overview
 
-The Portfolio Analyzer App is a portfolio monitoring tool. You can enter your investment holdings and monitor their total value and intra-day value change.
+The Portfolio Analyzer App is a portfolio monitoring tool.
+You can enter your investment holdings and monitor their total value and intra-day value change.
 
 ![Portfolio Analyzer Positions Page](https://github.com/jcpny1/portfolio-analyzer/blob/master/Screenshot-2017-11-13%20PortfolioAnalyzer.png?raw=true "Portfolio Analyzer Positions Page")
 
-It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project. It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI-React.
+It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project.
+It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI-React.
 
-This repository contains the front end code in the client folder. The remaining folders are primarily for the server code.
+This repository contains the front end code in the client folder.
+The remaining folders are primarily for the server code.
 
 ## History
 ```
@@ -90,7 +93,8 @@ TBD
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jcpny1/portfolio-analyzer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jcpny1/portfolio-analyzer.
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
