@@ -13,7 +13,7 @@ The Portfolio Analyzer App is a portfolio monitoring tool. You can enter your in
 
 ![Portfolio Analyzer Positions Page](https://github.com/jcpny1/portfolio-analyzer/blob/master/Screenshot-2017-11-13%20PortfolioAnalyzer.png?raw=true "Portfolio Analyzer Positions Page")
 
-It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project. It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI.
+It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project. It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI-React.
 
 This repository contains the front end code in the client folder. The remaining folders are primarily for the server code.
 
