@@ -9,8 +9,8 @@ export function columnSorter(initialPrimaryProperty, initialPrimaryDirection, in
   var lastSecondaryReverseSort = (lastSecondaryDirection === 'ascending') ? false : true;   // convert asc|desc to false|true.
   return function(objectArray, sortFn, primaryProperty, secondaryProperty) {
     if (typeof objectArray === 'undefined') {
-      var lastPrimaryDirection    = lastPrimaryReverseSort   ? 'descending' : 'ascending';
-      var lastSecondaryDirection  = lastSecondaryReverseSort ? 'descending' : 'ascending';
+      var lastPrimaryDirection   = lastPrimaryReverseSort   ? 'descending' : 'ascending';
+      var lastSecondaryDirection = lastSecondaryReverseSort ? 'descending' : 'ascending';
       return {primary: {property: lastPrimaryProperty, direction: lastPrimaryDirection}, secondary: {property: lastSecondaryProperty, direction: lastSecondaryDirection}};
     }
     if (primaryProperty) {
