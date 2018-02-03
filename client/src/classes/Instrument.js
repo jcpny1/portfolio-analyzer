@@ -9,6 +9,7 @@ export default class Instrument {
   }
 
   get id()     {return this._id}
+  get name()   {return this._name}
   get symbol() {return this._symbol}
 
   // Returns the symbol string with HTML code.
