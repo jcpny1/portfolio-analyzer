@@ -32,8 +32,8 @@ class HeadlinesPage extends Component {
 
   refreshHeadlines = () => {
     Request.headlinesRefresh(headlines => {
-      if ('error' in headlines) {
-        alert(Fmt.serverError('Refresh Headlines', headlines.error));
+      if (headlines.status === 'error') {
+        alert(Fmt.serverError('Refresh Headlines', headlines.message));
       } else {
         headlines.articles.forEach((headlinesArticle,index) => {
           if ((index > this.state.articles.length-1) || (headlinesArticle.title !== this.state.articles[index].title)) {
