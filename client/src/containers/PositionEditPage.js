@@ -87,8 +87,12 @@ PositionEditPage.propTypes = {
   tooltip: PropTypes.string.isRequired,
 }
 
+function mapStateToProps(state) {
+  return {sortFn: state.portfolios.sortFn};
+}
+
 function mapDispatchToProps(dispatch) {
   return {actions: bindActionCreators(positionActions, dispatch)};
 }
 
-export default connect(undefined, mapDispatchToProps)(PositionEditPage);
+export default connect(mapStateToProps, mapDispatchToProps)(PositionEditPage);
