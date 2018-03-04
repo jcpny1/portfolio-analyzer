@@ -32,7 +32,7 @@ export const Headlines = (props) => {
           &emsp;&emsp;
           <Header as='span' content={refreshTime.toLocaleTimeString("en-US")} title='Last refresh time' size='tiny' color='purple'/>
           &emsp;&emsp;
-          <Button disabled content='Refresh: 1 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshHeadlines()}/>
+          <Button disabled content='Refresh: 2 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshHeadlines()}/>
         </span>
       </Header>
       <Table compact sortable striped style={{marginTop:0}}>
