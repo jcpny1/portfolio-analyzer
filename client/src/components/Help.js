@@ -14,6 +14,10 @@ export const Help = () => {
         <li>The application is currently configured such that all users share the same public account.</li>
         <li>Any data you enter is viewable and changeable by any other user at any time.</li>
       </ul>
+      <h3>Index Data</h3>
+      <ul>
+        <li>Index data (specifically, the DJIA) is provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
+      </ul>
       <h3>Market Data</h3>
       <ul>
         <li>Data provided for free by <a href='https://iextrading.com/developer' target='_blank' rel='noopener noreferrer'>IEX</a>. <a href='https://iextrading.com/api-exhibit-a' target="_blank" rel='noopener noreferrer'>(IEX Terms Of Service)</a></li>

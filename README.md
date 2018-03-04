@@ -70,7 +70,7 @@ The keys should be placed in the project's home directory in a file called `.env
 * From the project home directory, type `rake start`.
 * The server will start. When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
 * When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
-* The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per minute.
+* The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per two minutes.
 * Database seed data includes just ten ticker symbols to work with. If you need more, there are Help menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
 
 ## Warnings
