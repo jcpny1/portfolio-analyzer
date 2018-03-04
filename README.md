@@ -22,7 +22,8 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-12-Nov-17  0.1.0  Initial release.  
+03-Mar-18  0.2.0  Updates for changes to NewsApi.org's API. Fixed bug where a new position could not be added to a portfolio.
+12-Nov-17  0.1.0  Initial release.
 ```
 
 ## Installation
