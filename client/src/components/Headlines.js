@@ -27,11 +27,11 @@ export const Headlines = (props) => {
         Headline News
         <span disabled style={{float:'right', fontSize:'70%'}}>
           <Header as='span' title='Dow Jones Industrial Average' size='tiny' color='purple'>
-            {djiaValue.toHTML(userLocale, 'purple')}&nbsp;{djiaChange.toHTML(userLocale)}
+            DJIA&nbsp;&nbsp;{djiaValue.toHTML(userLocale, 'purple')}&nbsp;&nbsp;{djiaChange.toHTML(userLocale)}
           </Header>
-          &emsp;&emsp;
-          <Header as='span' content={refreshTime.toLocaleTimeString("en-US")} title='Last refresh time' size='tiny' color='purple'/>
-          &emsp;&emsp;
+          &emsp;&emsp;&emsp;
+          Time&nbsp;<Header as='span' content={refreshTime.toLocaleTimeString("en-US")} title='Last refresh time' size='tiny' color='purple'/>
+          &emsp;&emsp;&emsp;
           <Button disabled content='Refresh: 2 min' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshHeadlines()}/>
         </span>
       </Header>
