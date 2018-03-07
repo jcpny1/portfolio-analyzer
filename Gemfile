@@ -6,11 +6,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '~>2.4.2'                    # Programming language version. This entry is for Heroku.
-gem 'json', '~> 2.1.0'            # JSON Ruby extension. An older version is included with Ruby. This entry suppresses startup warnings.
-gem 'pg', '~> 0.21.0'             # Used as the database for Active Record.
-gem 'puma', '~> 3.11'             # HTTP 1.1 server for Ruby/Rack applications.
-gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
+ruby '~>2.4.2'            # Programming language version. This entry is for Heroku.
+gem 'json',  '~> 2.1'      # JSON Ruby extension. An older version is included with Ruby. This entry suppresses startup warnings.
+gem 'pg',    '~> 1.0'        # Used as the database for Active Record.
+gem 'puma',  '~> 3.11'     # HTTP 1.1 server for Ruby/Rack applications.
+gem 'rails', '~> 5.1'     # Full-stack web framework.
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
@@ -28,8 +28,8 @@ gem 'rails', '~> 5.1', '>= 5.1.4' # Full-stack web framework.
 gem 'active_model_serializers', '~> 0.10.0' # JSON generators.
 gem 'addressable'                           # URI encoder.
 gem 'dotenv-rails'                          # Loads environment variables from `.env`.
-gem 'faraday'                               # HTTP/REST API client library.
-gem 'sidekiq'                               # Background processing for Ruby.
+gem 'faraday', '~>0.13'                     # HTTP/REST API client library.
+gem 'sidekiq', '~> 5.1'                     # Background processing for Ruby.
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'       # File modification notifications.
@@ -38,14 +38,14 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'              # Needed for RSpec feature tests.
-  gem 'factory_bot_rails'     # Factory to Rails integration.
-  gem 'foreman', '~> 0.84.0'  # Process manager for applications with multiple components.
-  gem 'rspec-rails', '~> 3.7' # Rails testing framework.
-  gem 'rspec-sidekiq'         # Sidekiq rspec testing.
-  gem 'selenium-webdriver'    # Used by Capybara.
-  gem 'simplecov'             # Ruby code coverage analysis.
-  gem 'webmock', '~> 3.1'     # HTTP request stubbing.
+  gem 'capybara'                      # Needed for RSpec feature tests.
+  gem 'factory_bot_rails'             # Factory to Rails integration.
+  gem 'foreman', '~> 0.84.0'          # Process manager for applications with multiple components.
+  gem 'rspec-rails', '~> 3.7'         # Rails testing framework.
+  gem 'rspec-sidekiq'                 # Sidekiq rspec testing.
+  gem 'selenium-webdriver', '~> 3.8'  # Used by Capybara.
+  gem 'simplecov'                     # Ruby code coverage analysis.
+  gem 'webmock', '~> 3.1'             # HTTP request stubbing.
 end
 
 group :development, :test do
