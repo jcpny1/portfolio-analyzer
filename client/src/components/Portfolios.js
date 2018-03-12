@@ -4,6 +4,7 @@ import {Button, Header, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import ConfirmDialog from '../containers/ConfirmDialog';
 import Portfolio from '../classes/Portfolio';
+import PortfolioChartPage from '../containers/PortfolioChartPage';
 import PortfolioEditPage from '../containers/PortfolioEditPage';
 
 export const Portfolios = (props) => {
@@ -28,7 +29,8 @@ export const Portfolios = (props) => {
         <Table.Row key={portfolio.id} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio'/>}
-            {<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
+            &emsp;{<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
+            &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.name}</Link></Table.Cell>
           <Table.Cell>{portfolio.marketValue.toHTML(userLocale)}</Table.Cell>
