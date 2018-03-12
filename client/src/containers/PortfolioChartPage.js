@@ -5,7 +5,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import PropTypes from 'prop-types';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
-import {PortfolioEdit} from '../components/PortfolioEdit';
+import PortfolioChart from '../components/PortfolioChart';
 
 // This class handles the editing of Portfolio attributes.
 class PortfolioChartPage extends Component {
@@ -43,9 +43,6 @@ class PortfolioChartPage extends Component {
     this.resetComponent();
   }
 
-  // <Modal.Content><PortfolioEdit portfolio={editedPortfolio} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
-  // <Button type='submit' floated='left' color='green' form='portfolioEditForm'>Submit</Button>
-
   render() {
     const {iconColor, iconName, tooltip} = this.props;
     const {editedPortfolio, modalOpen} = this.state;
@@ -57,9 +54,10 @@ class PortfolioChartPage extends Component {
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header content='Portfolio Performance' icon='chart line' size='small'/></Modal.Header>
+        <Modal.Header><Header content='Portfolio Graph' icon='chart line' size='small'/></Modal.Header>
+        <Modal.Content><PortfolioChart /></Modal.Content>
         <Modal.Actions>
-          <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>
+          <Button floated='left'color='red' onClick={this.handleCancel}>Close</Button>
         </Modal.Actions>
       </Modal>
     );
