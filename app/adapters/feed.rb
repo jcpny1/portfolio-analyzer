@@ -35,7 +35,7 @@ module Feed
   def self.load_series(symbols)
     Rails.logger.debug 'FETCH SERIES BEGIN.'
     series = Feed::AV.monthly_series(symbols)  # Get the feed's series data.
-    Rails.logger.debug "FETCH SERIES END (requested: #{symbols.length}, received: #{indexes.length})."
+    Rails.logger.debug "FETCH SERIES END (requested: #{symbols.length}, received: #{series.length})."
     series
   end
 

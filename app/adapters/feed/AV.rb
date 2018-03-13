@@ -34,7 +34,7 @@ module Feed
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
             Feed.fetch_failure(symbols, trades, 'The feed is down.')
           else
-            trades[i] = process_response(symbol, response)
+            trades[i] = process_price_response(symbol, response)
             trades[i].created_at = fetch_time
           end
         end
@@ -72,13 +72,12 @@ module Feed
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
             Feed.fetch_failure(symbols, trades, 'The feed is down.')
           else
-            trades[i] = process_response(symbol, response)
+            trades[i] = process_series_response(symbol, response)
             trades[i].created_at = fetch_time
           end
         end
       end
       trades
-binding.pry
     end
 
     ### private ###
@@ -88,13 +87,36 @@ binding.pry
     #   {"Information"=>"Please consider optimizing your API call frequency."}
 
     # Extract trade data or an error from the response.
-    private_class_method def self.process_response(symbol, response)
+    private_class_method def self.process_price_response(symbol, response)
       if !response.key?('Time Series (Daily)')
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: #{response.first}"
         trade = Feed.error_trade(symbol, 'Price is not available.')
       else
         # header = response['Meta Data']
         ticks = response['Time Series (Daily)']
+        current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
+        prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
+
+        # TODO: Get timezone from Meta Data.
+        trade = Trade.new do |t|
+          t.instrument = Instrument.find_by(symbol: symbol)
+          t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
+          t.trade_date   = Feed.missing_trade_date
+          t.trade_price  = current_trade_price
+          t.price_change = (current_trade_price - prior_trade_price).round(4)
+        end
+      end
+      trade
+    end
+
+    # Extract series data or an error from the response.
+    private_class_method def self.process_series_response(symbol, response)
+      if !response.key?('Monthly Adjusted Time Series')
+        Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: #{response.first}"
+        trade = Feed.error_trade(symbol, 'Price is not available.')
+      else
+        # header = response['Meta Data']
+        ticks = response['Monthly Adjusted Time Series']
         current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
         prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
 
