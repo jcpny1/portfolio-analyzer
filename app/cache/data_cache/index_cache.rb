@@ -4,7 +4,7 @@ class IndexCache
   def self.indexes(symbols)
     indexes = []
     symbols.each_slice(DataCache::FEED_BATCH_SIZE) do |symbol_batch|
-      sleep DataCache::FEED_BATCH_DELAY if indexes.length.nonzero?         # Throttle request rate.
+      sleep DataCache::FEED_BATCH_DELAY if indexes.length.nonzero?    # Throttle request rate after first request.
       index_batch = Feed.load_indexes(symbol_batch)
       indexes.concat(index_batch)
     end

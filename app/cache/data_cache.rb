@@ -20,6 +20,11 @@ module DataCache
     IndexCache.indexes(symbols)
   end
 
+  # Retrieve the latest monthly series values for the given array of symbols.
+  def self.monthly_series(symbols)
+    IndexCache.indexes(symbols)
+  end
+
   # Retrieve the latest prices for the given instrument list.
   # Specify get_live_prices to retrieve feed data. Otherwise, just get prices from database.
   def self.price_values(instruments, get_live_prices)

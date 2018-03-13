@@ -6,11 +6,6 @@ module Feed
 
   # NOTE: Feeds that don't have a trade_date will use `Time.at(0).to_datetime` for the trade_date.
 
-  # Create a trade that signifies an error has occurred.
-  def self.symbology
-    Feed::IEX.symbology  # Call feed handler to retrieve symbology.
-  end
-
   # Retrieve news headlines.
   def self.headlines
     Feed::NewsAPI.headlines
@@ -33,6 +28,20 @@ module Feed
     trades = Feed::IEX.latest_trades(symbols)  # Get the feed's price data.
     Rails.logger.debug "FETCH PRICES END (requested: #{symbols.length}, received: #{trades.length})."
     yield trades
+  end
+
+  # For each symbol, fetch live feed series values.
+  # Returns array of series values.
+  def self.load_series(symbols)
+    Rails.logger.debug 'FETCH SERIES BEGIN.'
+    series = Feed::AV.monthly_series(symbols)  # Get the feed's series data.
+    Rails.logger.debug "FETCH SERIES END (requested: #{symbols.length}, received: #{indexes.length})."
+    series
+  end
+
+  # Return the feed handler's symbology.
+  def self.symbology
+    Feed::IEX.symbology  # Call feed handler to retrieve symbology.
   end
 
   ### for use by feed handlers  ###

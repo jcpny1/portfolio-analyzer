@@ -42,6 +42,45 @@ module Feed
       trades
     end
 
+    # Makes data request(s) for an array of symbols and returns results in an augmented trades array.
+    def self.monthly_series(symbols)
+      api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
+      fetch_time = DateTime.now
+      trades = Array.new(symbols.length)
+
+      begin
+        conn = Faraday.new(url: 'https://www.alphavantage.co/query')
+      rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
+        Rails.logger.error "AV SERIES FETCH ERROR for: #{symbols.inspect}."
+        error_msg = "Faraday client error: #{e}"
+        Feed.fetch_failure(symbols, trades, error_msg)
+      else
+        symbols.each_with_index do |symbol, i|
+          begin
+            Rails.logger.debug "AV SERIES FETCH BEGIN for: #{symbol}."
+            resp = conn.get do |req|
+              req.params['function'] = 'TIME_SERIES_MONTHLY_ADJUSTED'
+              req.params['symbol']   = symbol
+              req.params['apikey']   = api_key
+            end
+            Rails.logger.debug "AV SERIES FETCH END   for: #{symbol}."
+            response = JSON.parse(resp.body)
+          rescue Faraday::ClientError => e
+            Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
+            Feed.fetch_failure(symbols, trades, 'The feed is down.')
+          rescue JSON::ParserError => e
+            Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
+            Feed.fetch_failure(symbols, trades, 'The feed is down.')
+          else
+            trades[i] = process_response(symbol, response)
+            trades[i].created_at = fetch_time
+          end
+        end
+      end
+      trades
+binding.pry
+    end
+
     ### private ###
 
     # Error examples:
@@ -143,6 +182,41 @@ module Feed
     #     .
     #     .
     #     .
+    #   }
+    # }
+    #
+    # MONTHLY ADJUSTED:
+    # https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=MSFT&apikey=demo
+    # {
+    #   "Meta Data":
+    #   {
+    #    "1. Information": "Monthly Adjusted Prices and Volumes",
+    #    "2. Symbol": "MSFT",
+    #    "3. Last Refreshed": "2018-03-13 10:41:45",
+    #    "4. Time Zone": "US/Eastern"
+    #   },
+    #   "Monthly Adjusted Time Series": {
+    #     "2018-03-13": {
+    #       "1. open": "93.9900",
+    #       "2. high": "97.2400",
+    #       "3. low": "90.8600",
+    #       "4. close": "95.3350",
+    #       "5. adjusted close": "95.3350",
+    #       "6. volume": "213852001",
+    #       "7. dividend amount": "0.0000"
+    #     },
+    #     "2018-02-28": {
+    #       "1. open": "94.7900",
+    #       "2. high": "96.0700",
+    #       "3. low": "83.8300",
+    #       "4. close": "93.7700",
+    #       "5. adjusted close": "93.7700",
+    #       "6. volume": "690287596",
+    #       "7. dividend amount": "0.4200"
+    #     },
+    #      .
+    #      .
+    #      .
     #   }
     # }
   end
