@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   scope '/api' do
     get '/headlines',             to: 'headlines#index'
     get '/last-index',            to: 'trades#last_index'
-    get '/monthly-series',        to: 'trades#monthly_series'
+    get '/monthly-series',        to: 'series#monthly_series'
     get '/portfolios/last-price', to: 'trades#last_price'
     resources :portfolios do
       resources :positions, only: [:create, :update, :destroy]

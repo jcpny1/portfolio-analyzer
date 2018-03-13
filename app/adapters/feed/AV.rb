@@ -45,8 +45,8 @@ module Feed
     # Makes data request(s) for an array of symbols and returns results in an augmented trades array.
     def self.monthly_series(symbols)
       api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
-      fetch_time = DateTime.now
-      trades = Array.new(symbols.length)
+      # fetch_time = DateTime.now
+      series = Array.new(symbols.length)
 
       begin
         conn = Faraday.new(url: 'https://www.alphavantage.co/query')
@@ -72,12 +72,12 @@ module Feed
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
             Feed.fetch_failure(symbols, trades, 'The feed is down.')
           else
-            trades[i] = process_series_response(symbol, response)
-            trades[i].created_at = fetch_time
+            series[i] = process_series_response(symbol, response)
+            # trades[i].created_at = fetch_time
           end
         end
       end
-      trades
+      series
     end
 
     ### private ###
@@ -109,27 +109,36 @@ module Feed
       trade
     end
 
+
     # Extract series data or an error from the response.
     private_class_method def self.process_series_response(symbol, response)
+      series = []
       if !response.key?('Monthly Adjusted Time Series')
         Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: #{response.first}"
-        trade = Feed.error_trade(symbol, 'Price is not available.')
+        series << Feed.error_series(symbol, 'Price is not available.')
       else
+        fetch_time = DateTime.now
         # header = response['Meta Data']
         ticks = response['Monthly Adjusted Time Series']
-        current_trade_price = ticks.values[0]['4. close'].to_f.round(4)
-        prior_trade_price = ticks.values[1]['4. close'].to_f.round(4)
-
-        # TODO: Get timezone from Meta Data.
-        trade = Trade.new do |t|
-          t.instrument = Instrument.find_by(symbol: symbol)
-          t.instrument = Instrument.new(symbol: symbol) if t.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
-          t.trade_date   = Feed.missing_trade_date
-          t.trade_price  = current_trade_price
-          t.price_change = (current_trade_price - prior_trade_price).round(4)
+        ticks.each do |key, value|
+          # TODO: Get timezone from Meta Data.
+          series << Series.new do |s|
+            s.instrument  = Instrument.find_by(symbol: symbol)
+            s.instrument  = Instrument.new(symbol: symbol) if s.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
+            s.time_interval = 'MA'
+            s.series_date  = key
+            s.open_price = value['1. open'].to_f.round(4)
+            s.high_price = value['2. high'].to_f.round(4)
+            s.low_price = value['3. low'].to_f.round(4)
+            s.close_price = value['4. close'].to_f.round(4)
+            s.adjusted_close_price = value['5. adjusted close'].to_f.round(4)
+            s.volume = value['6. volume'].to_f.round(4)
+            s.dividend_amount = value['7. dividend amount'].to_f.round(4)
+            s.created_at = fetch_time
+          end
         end
       end
-      trade
+      series
     end
 
     ###################

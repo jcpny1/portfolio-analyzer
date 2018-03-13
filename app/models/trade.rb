@@ -5,6 +5,7 @@ class Trade < ApplicationRecord
   belongs_to :instrument
   attr_accessor :error
 
+  # Compare two trades for differences.
   def changed?(compare)
     (trade_price != compare.trade_price) || (trade_date < compare.trade_date)
   end

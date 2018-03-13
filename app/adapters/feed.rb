@@ -46,6 +46,11 @@ module Feed
 
   ### for use by feed handlers  ###
 
+  # Create a series that signifies an error has occurred.
+  def self.error_series(symbol, error_msg)
+    Series.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")
+  end
+
   # Create a trade that signifies an error has occurred.
   def self.error_trade(symbol, error_msg)
     Trade.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")

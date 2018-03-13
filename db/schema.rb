@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170929135938) do
+ActiveRecord::Schema.define(version: 20180313194331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,23 @@ ActiveRecord::Schema.define(version: 20170929135938) do
     t.index ["portfolio_id"], name: "index_positions_on_portfolio_id"
   end
 
+  create_table "series", force: :cascade do |t|
+    t.bigint "instrument_id", null: false
+    t.string "time_interval", null: false
+    t.datetime "series_date", null: false
+    t.decimal "open_price", null: false
+    t.decimal "high_price", null: false
+    t.decimal "low_price", null: false
+    t.decimal "close_price", null: false
+    t.decimal "adjusted_close_price", null: false
+    t.decimal "volume", null: false
+    t.decimal "dividend_amount", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["instrument_id", "time_interval", "series_date"], name: "index_series_on_instrument_id_and_time_interval_and_series_date", unique: true
+    t.index ["instrument_id"], name: "index_series_on_instrument_id"
+  end
+
   create_table "trades", force: :cascade do |t|
     t.bigint "instrument_id", null: false
     t.datetime "trade_date", null: false
@@ -65,5 +82,6 @@ ActiveRecord::Schema.define(version: 20170929135938) do
   add_foreign_key "portfolios", "users"
   add_foreign_key "positions", "instruments"
   add_foreign_key "positions", "portfolios"
+  add_foreign_key "series", "instruments"
   add_foreign_key "trades", "instruments"
 end

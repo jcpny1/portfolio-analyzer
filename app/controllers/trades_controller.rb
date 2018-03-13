@@ -18,14 +18,6 @@ class TradesController < ApplicationController
     render json: trades, each_serializer: TradeSerializer
   end
 
-  # Retrieve the monthly series values for the symbols specified in params.
-  def monthly_series
-    logger.info 'MONTHLY SERIES LOAD BEGIN.'
-    series = DataCache.monthly_series(params[:symbols].split(','))
-    logger.info 'MONTHLY SERIES LOAD END.'
-    render json: series, each_serializer: SeriesSerializer
-  end
-
   # Update last price data for every instrument in the database.
   # Intended for admin user only.
   def price_bulk_load

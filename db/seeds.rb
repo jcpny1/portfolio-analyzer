@@ -46,6 +46,9 @@ p.positions.new(instrument: Instrument.where('symbol = ?', 'JNJ'  ).first, quant
 p.positions.new(instrument: Instrument.where('symbol = ?', 'SNY'  ).first, quantity: 450, cost: 21662.86, date_acquired: Date.new(2013,11,12))
 p.save!
 
+Series.create(instrument: Instrument.where('symbol = ?', 'AAPL' ).first, time_interval: "MA", series_date: "2017-12-31", open_price: 123.450, high_price: 133.450, low_price: 113.450, close_price: 128.450, adjusted_close_price: 128.450, volume: 112561, dividend_amount: 1.48)
+Series.create(instrument: Instrument.where('symbol = ?', 'AAPL' ).first, time_interval: "MA", series_date: "2018-01-31", open_price: 128.650, high_price: 143.450, low_price: 123.450, close_price: 138.450, adjusted_close_price: 138.450, volume: 162561, dividend_amount: 0.0)
+
 Trade.create(instrument: Instrument.where('symbol = ?', 'AAPL' ).first, trade_date: '2000-01-01 20:08:00.293', trade_price:  171.50, price_change:  4.39)
 Trade.create(instrument: Instrument.where('symbol = ?', 'AMZN' ).first, trade_date: '2000-01-01 20:04:00.001', trade_price: 1110.60, price_change: 17.38)
 Trade.create(instrument: Instrument.where('symbol = ?', 'BABA' ).first, trade_date: '2000-12-31 20:01:24.201', trade_price:  182.21, price_change: -1.60)
