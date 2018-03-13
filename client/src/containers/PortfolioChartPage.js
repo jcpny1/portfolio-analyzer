@@ -54,8 +54,8 @@ class PortfolioChartPage extends Component {
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header content='Portfolio Graph' icon='chart line' size='small'/></Modal.Header>
-        <Modal.Content><PortfolioChart /></Modal.Content>
+        <Modal.Header><Header content='Portfolio Chart' icon='chart line' size='small'/></Modal.Header>
+        <Modal.Content><PortfolioChart portfolio={editedPortfolio}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Close</Button>
         </Modal.Actions>
