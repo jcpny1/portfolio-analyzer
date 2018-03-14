@@ -47,7 +47,7 @@ export function pricesRefresh() {
 
 // Request the server to refresh series data.
 export function seriesRefresh(cb) {
-  fetch('/api/monthly-series?symbols=SPY', {headers: {'Accept': 'application/json'}})
+  fetch('/api/monthly-series?symbols=DIA,SPY,URTH', {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .then(response => response.json())
   .then(cb)
