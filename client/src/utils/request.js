@@ -45,6 +45,15 @@ export function pricesRefresh() {
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
+// Request the server to refresh series data.
+export function seriesRefresh(cb) {
+  fetch('/api/monthly-series?symbols=SPY', {headers: {'Accept': 'application/json'}})
+  .then(statusCheck)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(Fmt.serverError('Refresh Series', error));});
+}
+
 // Check a fetch response status.
 export function statusCheck(response) {
   if (response.status < 200 || response.status >= 300) {

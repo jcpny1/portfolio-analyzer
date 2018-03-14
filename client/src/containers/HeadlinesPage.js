@@ -8,7 +8,7 @@ import * as Request from '../utils/request';
 
 class HeadlinesPage extends Component {
 
-  static HEADLINES_REFRESH_INTERVAL = 120 * 1000;
+  static HEADLINES_REFRESH_INTERVAL = 120 * 1000;  // in milliseconds.
 
   constructor(props) {
     super(props);

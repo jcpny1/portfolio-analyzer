@@ -5,6 +5,6 @@ class SeriesController < ApplicationController
     logger.info 'MONTHLY SERIES LOAD BEGIN.'
     series = DataCache.monthly_series(params[:symbols].split(','))
     logger.info 'MONTHLY SERIES LOAD END.'
-    render json: series.to_json, each_serializer: SeriesSerializer
+    render json: series, each_serializer: SeriesSerializer
   end
 end
