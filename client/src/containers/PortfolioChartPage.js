@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import _cloneDeep from 'lodash.clonedeep';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import PropTypes from 'prop-types';
 import Fmt from '../utils/formatter';
@@ -26,12 +25,8 @@ class PortfolioChartPage extends Component {
     this.resetComponent();
   }
 
-  componentDidMount() {
-    this.refreshData();
-  }
-
   refreshData = () => {
-    Request.seriesRefresh(series => {
+    Request.seriesRefresh('DIA,SPY,URTH', series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
@@ -77,7 +72,6 @@ class PortfolioChartPage extends Component {
     return plotPoints;
   }
 
-
   resetComponent = () => {
     this.setState({
       modalOpen: false,
@@ -88,38 +82,24 @@ class PortfolioChartPage extends Component {
     this.resetComponent();
   }
 
-  handleChange = (e, {name, value}) => {
-    const {editedPortfolio} = this.state;
-    let newPortfolio = _cloneDeep(editedPortfolio);
-    newPortfolio[name] = value;
-    this.setState({editedPortfolio: newPortfolio});
-  }
-
   handleOpen = () => {
-    const {portfolio} = this.props;
-    this.setState({editedPortfolio: _cloneDeep(portfolio), modalOpen: true});
-  }
-
-  handleSubmit = () => {
-    const {actions} = this.props;
-    const {editedPortfolio} = this.state;
-    editedPortfolio.id ? actions.portfolioUpdate(editedPortfolio) : actions.portfolioAdd(editedPortfolio);
-    this.resetComponent();
+    this.refreshData();
+    this.setState({modalOpen: true});
   }
 
   render() {
-    const {iconColor, iconName, tooltip} = this.props;
-    const {diaData, editedPortfolio, modalOpen, spyData, urthData} = this.state;
+    const {iconColor, iconName, portfolio, tooltip} = this.props;
+    const {diaData, modalOpen, spyData, urthData} = this.state;
     return (
       <Modal
         closeOnDimmerClick={false}
-        trigger={<Icon name={iconName} title={tooltip} id='portfolioEdit' link color={iconColor} onClick={this.handleOpen}/>}
+        trigger={<Icon name={iconName} title={tooltip} id='portfolioChart' link color={iconColor} onClick={this.handleOpen}/>}
         open={modalOpen}
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
         <Modal.Header><Header content='Portfolio Chart' icon='chart line' size='small'/></Modal.Header>
-        <Modal.Content><PortfolioChart portfolio={editedPortfolio} diaData={diaData} spyData={spyData} urthData={urthData}/></Modal.Content>
+        <Modal.Content><PortfolioChart portfolio={portfolio} diaData={diaData} spyData={spyData} urthData={urthData}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Close</Button>
         </Modal.Actions>
