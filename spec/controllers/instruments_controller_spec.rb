@@ -8,7 +8,7 @@ RSpec.describe InstrumentsController, type: :controller do
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr['data'].length).to be > 0
-      expect(pr['data'][0]['attributes']['name']).to eq('Intel Corp')
+      expect(pr['data'][0]['attributes']['name']).to eq('Intel Corporation')
     end
   end
 
