@@ -30,7 +30,7 @@ export default class SymbolsPage extends Component {
         this.setState({searchResults: []});
       } else {
         Request.instrumentSearch({value: value, exact:false}, instruments => {
-          this.setState({searchResults: instruments.slice(0, this.DISPLAY_ROWS_MAX)});
+          this.setState({searchResults: instruments.data.slice(0, this.DISPLAY_ROWS_MAX)});
         });
       }
     }
@@ -41,7 +41,7 @@ export default class SymbolsPage extends Component {
   }
 
   render() {
-    let {searchResults, searchValue} = this.state;
+    const {searchResults, searchValue} = this.state;
     return (
       <Modal
         closeIcon
@@ -52,7 +52,7 @@ export default class SymbolsPage extends Component {
         onClose={this.handleCancel}
       >
         <Modal.Header><Header content='Symbol Lookup' icon='search' size='small'/></Modal.Header>
-        <Modal.Content><Symbols searchValue={searchValue} instruments={searchResults} onChange={this.handleChange}/></Modal.Content>
+        <Modal.Content><Symbols searchValue={searchValue} serverInstruments={searchResults} onChange={this.handleChange}/></Modal.Content>
         <Modal.Actions><Button color='green' onClick={this.handleCancel}>Done</Button></Modal.Actions>
       </Modal>
     );

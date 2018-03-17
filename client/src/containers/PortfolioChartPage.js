@@ -15,9 +15,7 @@ class PortfolioChartPage extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      diaData: [],
-      spyData: [],
-      urthData: [],
+      refData: [],
     }
   }
 
@@ -26,22 +24,38 @@ class PortfolioChartPage extends Component {
   }
 
   refreshData = () => {
-    Request.seriesRefresh('DIA,SPY,URTH', series => {
+    Request.seriesRefresh('SPY', series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
-        const diaData = series.filter(s => s.instrument.symbol === 'DIA');
-        if (diaData) {
-          this.setState({diaData: this.convertToPlotPoints(diaData)});
-        }
-        const spyData = series.filter(s => s.instrument.symbol === 'SPY');
-        if (spyData) {
-          this.setState({spyData: this.convertToPlotPoints(spyData)});
-        }
-        const urthData = series.filter(s => s.instrument.symbol === 'URTH');
-        if (urthData) {
-          this.setState({urthData: this.convertToPlotPoints(urthData)});
-        }
+// for each instrument in included,
+//   for each data point with this instruments
+//     push to array
+//   push array to refData
+
+        const chartData = [];
+
+// TODO we're making a pass over all instruments' data points for every instrument. Better to do in one pass.
+
+        series.included.forEach(si => {
+          const instrumentId = si.id;
+          const instrumentSymbol = si.attributes.symbol;
+          const instrumentName = si.attributes.name;
+          const instrumentData = []
+          let shares = [];
+          for (let i = series.data.length-1; i >= 0; --i) {
+            const sd = series.data[i];
+            if (sd.relationships.instrument.data.id === instrumentId) {
+              const plotPoint = this.convertToPlotPoint(sd.attributes, shares)
+              if (plotPoint !== null) {
+                instrumentData.push(plotPoint);
+              }
+            }
+          };
+          chartData.push({'instrumentId': instrumentId, 'instrumentSymbol': instrumentSymbol, 'instrumentName': instrumentName, 'instrumentData': instrumentData});
+        });
+
+        this.setState({refData: chartData});
       }
     });
   }
@@ -49,27 +63,23 @@ class PortfolioChartPage extends Component {
   static START_YEAR  = 2008;
   static START_VALUE = 10000.0;
 
-  // Convert monthly series data to chart plot points, beginning at START_YEAR, for now.
-  convertToPlotPoints = (dataPoints) => {
-    let plotPoints = [];
-    let shares = null;
-    for (let i = dataPoints.length-1; i >= 0; --i) {
-      let pointYear = parseInt(dataPoints[i].series_date.substring(0,4), 10);
-      if (pointYear < PortfolioChartPage.START_YEAR) {   // advance to start year.
-        continue;
-      }
-      let millis = Date.parse(dataPoints[i].series_date);
-      let close_price = parseFloat(dataPoints[i].adjusted_close_price);
-      if (shares === null) {
-        shares = PortfolioChartPage.START_VALUE / close_price;
-      }
-// console.log('date: ' + dataPoints[i].series_date + ' close: ' + close_price + ' shares: ' + shares.toFixed(4) + ' div: ' + dataPoints[i].dividend_amount + ' total: ' + (shares*close_price).toFixed(4));
-      if (dataPoints[i].dividend_amount > 0.0) {
-        shares += (dataPoints[i].dividend_amount * shares) / close_price;
-      }
-      plotPoints.push([millis, shares * close_price]);
+  // Convert monthly series data point to a chart plot point, beginning at START_YEAR, for now.
+  // Side effect: updates shares.
+  convertToPlotPoint = (dataPoint, shares) => {
+    const pointYear = parseInt(dataPoint['series-date'].substring(0,4), 10);
+    if (pointYear < PortfolioChartPage.START_YEAR) {   // advance to start year.
+      return null;
     }
-    return plotPoints;
+    const millis = Date.parse(dataPoint['series-date']);
+    const close_price = parseFloat(dataPoint['adjusted-close-price']);
+    if (shares.length === 0) {
+      shares.push(PortfolioChartPage.START_VALUE / close_price);
+    }
+    const dividendAmount = parseFloat(dataPoint['dividend-amount']);
+    if (dividendAmount > 0.0) {
+      shares[0] += (dividendAmount * shares[0]) / close_price;
+    }
+    return [millis, shares[0] * close_price];
   }
 
   resetComponent = () => {
@@ -89,7 +99,7 @@ class PortfolioChartPage extends Component {
 
   render() {
     const {iconColor, iconName, portfolio, tooltip} = this.props;
-    const {diaData, modalOpen, spyData, urthData} = this.state;
+    const {refData, modalOpen} = this.state;
     return (
       <Modal
         closeOnDimmerClick={false}
@@ -99,7 +109,7 @@ class PortfolioChartPage extends Component {
         style={{paddingBottom:'10px'}}
       >
         <Modal.Header><Header content='Portfolio Chart' icon='chart line' size='small'/></Modal.Header>
-        <Modal.Content><PortfolioChart portfolio={portfolio} diaData={diaData} spyData={spyData} urthData={urthData}/></Modal.Content>
+        <Modal.Content><PortfolioChart portfolio={portfolio} refData={refData}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Close</Button>
         </Modal.Actions>

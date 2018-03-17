@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import _cloneDeep from 'lodash.clonedeep';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import Instrument from '../classes/Instrument';
 import Position from '../classes/Position';
 import * as positionActions  from '../actions/positionActions.js';
 import {PositionEdit} from '../components/PositionEdit';
@@ -35,7 +36,7 @@ class PositionEditPage extends Component {
   handleChange = (e, {name, value}) => {
     const {editedPosition} = this.state;
     let newPosition = _cloneDeep(editedPosition);
-    const newValue = (name === 'instrument') ? {id: '', symbol: value.toUpperCase(), name: ''} : value;
+    const newValue = (name === 'instrument') ? new Instrument('', value.toUpperCase(), '') : value;
     newPosition[name] = newValue;
     this.setState({editedPosition: newPosition});
   }

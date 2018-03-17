@@ -10,7 +10,7 @@ class PositionsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      portfolioId: Number.parseInt(this.props.match.params.id, 10),
+      portfolioId: this.props.match.params.id,
     };
   }
 

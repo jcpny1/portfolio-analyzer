@@ -1,13 +1,20 @@
 import React from 'react';
 import Highcharts from 'highcharts';
-import { HighchartsChart, Chart, withHighcharts, XAxis, YAxis, Title, Subtitle, Legend, LineSeries } from 'react-jsx-highcharts';
+import {HighchartsChart, Chart, withHighcharts, XAxis, YAxis, Title, Subtitle, Legend, LineSeries} from 'react-jsx-highcharts';
 
 const plotOptions = {
   series: { type: 'line' },
 };
 
 const PortfolioChart = (props) => {
-  const {diaData, portfolio, spyData, urthData} = props;
+  const {portfolio, refData} = props;
+
+  function plotInstruments() {
+    return refData.map(series => {
+      return <LineSeries key={series.instrumentId} id={series.instrumentId} name={`${series.instrumentName} (${series.instrumentSymbol})`} data={series.instrumentData} />;
+    });
+  }
+
   return (
     <div className="app">
       <HighchartsChart plotOptions={plotOptions}>
@@ -20,9 +27,7 @@ const PortfolioChart = (props) => {
         </XAxis>
         <YAxis id="number">
           <YAxis.Title>Value</YAxis.Title>
-          <LineSeries id='dia'  name='DJIA (DIA)'        data={diaData}  />
-          <LineSeries id='spy'  name='S&P 500 (SPY)'     data={spyData}  />
-          <LineSeries id='urth' name='MSCI World (URTH)' data={urthData} />
+          {plotInstruments()}
         </YAxis>
       </HighchartsChart>
     </div>

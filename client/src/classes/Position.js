@@ -4,11 +4,11 @@ import Instrument from '../classes/Instrument';
 import * as Request from '../utils/request';
 
 export default class Position {
-  constructor(portfolioId, id = '', instrument = {id: '', symbol: '', name: ''}, quantity = '', cost = '', dateAcquired = '') {
+  constructor(portfolioId, id = '', quantity = '', cost = '', dateAcquired = '') {
     // persisted
     this._portfolio_id  = portfolioId;
     this._id            = id;
-    this.instrument     = instrument;
+    this.instrument     = new Instrument();
     this.quantity       = quantity;
     this.cost           = cost;
     this._dateAcquired  = new DateTime(dateAcquired);
@@ -37,16 +37,16 @@ export default class Position {
 
   set cost(cost)                 {this._cost          = new Decimal(cost, 'currency')}
   set dateAcquired(dateAcquired) {this._dateAcquired  = new DateTime(dateAcquired)}
-  set instrument(instrument)     {this._instrument    = new Instrument(instrument.id, instrument.symbol, instrument.name)}
+  set instrument(instrument)     {this._instrument    = instrument}
   set quantity(quantity)         {this._quantity      = new Decimal(quantity, 'quantity')}
 
-  reprice(trades) {
-    const trade = trades.find(trade => trade.instrument_id === this._instrument.id);
-    if (trade) {
-      this._lastTrade     = new Decimal(trade.trade_price, 'currency');
-      this._priceChange   = new Decimal(trade.price_change, 'currency', 'delta');
-      this._lastUpdate    = new DateTime(trade.created_at);
-      this._lastTradeDate = new DateTime(trade.trade_date);
+  reprice(serverTrades) {
+    const serverTrade = serverTrades.find(serverTrade => serverTrade.attributes['instrument-id'].toString() === this._instrument.id);
+    if (serverTrade) {
+      this._lastTrade     = new Decimal(serverTrade.attributes['trade-price'],  'currency');
+      this._priceChange   = new Decimal(serverTrade.attributes['price-change'], 'currency', 'delta');
+      this._lastUpdate    = new DateTime(serverTrade.attributes['created-at']);
+      this._lastTradeDate = new DateTime(serverTrade.attributes['trade-date']);
       this.updateDerivedValues();
     }
   }
@@ -73,7 +73,7 @@ export default class Position {
     if (errorReturn === null) {
       // async validations should always come last.
       Request.instrumentSearch({value: position.instrument.symbol, exact:true}, instruments => {
-        if (instruments.length !== 1) {
+        if (instruments.data.length !== 1) {
           errorReturn = {name: 'instrument', message: 'Symbol is not valid.'};
         }
         cb(errorReturn);

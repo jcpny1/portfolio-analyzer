@@ -26,7 +26,7 @@ export function usersReducer(state = {updatingUser: false, user: {locale: 'en-US
     // Update one User.
     case userActions.UPDATE: {
       const payloadUser = action.payload;
-      returnObject = Object.assign({}, state, {updatingUser: false, user: payloadUser});
+      returnObject = Object.assign({}, state, {updatingUser: false, user: payloadUser.data.attributes});
       break;
     }
 

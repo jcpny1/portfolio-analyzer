@@ -49,9 +49,9 @@ class HeadlinesPage extends Component {
       if ('error' in indices) {
         alert(Fmt.serverError('Refresh Indexes', indices.error));
       } else {
-        const djia = indices.find(indice => indice.instrument.symbol === 'DJIA');
+        const djia = indices.data.find(indice => indice.attributes.instrument.symbol === 'DJIA');
         if (djia) {
-          this.setState({djiaValue: new Decimal(djia.trade_price, 'index'), djiaChange: new Decimal(djia.price_change, 'index', 'delta'), refreshTime: new Date()});
+          this.setState({djiaValue: new Decimal(djia.attributes['trade-price'], 'index'), djiaChange: new Decimal(djia.attributes['price-change'], 'index', 'delta'), refreshTime: new Date()});
         }
       }
     });

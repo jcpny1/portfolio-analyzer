@@ -1,14 +1,13 @@
 import * as Sort from '../utils/sort';
 import Decimal from '../classes/Decimal';
-import Position from './Position';
 
 export default class Portfolio {
-  constructor(id = '', name = '', positions = []) {
+  constructor(id = '', name = '') {
     // persisted
     this._id   = id;
     this._name = name;
-    // from position data
-    this._positions = positions.map(position => new Position(this._id, position.id, {id: position.instrument.id, symbol: position.instrument.symbol, name: position.instrument.name}, position.quantity, position.cost, position.date_acquired));
+    // populated from position data
+    this._positions = [];
     // derived
     this.updateDerivedValues();
   }
@@ -40,16 +39,16 @@ export default class Portfolio {
   }
 
   // Update portfolios with the given trade prices.
-  static applyPrices(portfolios, trades) {
+  static applyPrices(portfolios, serverTrades) {
     portfolios.forEach(portfolio => {
-      portfolio.reprice(trades);
+      portfolio.reprice(serverTrades);
       portfolio.updateDerivedValues();
     });
   }
 
-  reprice(trades) {
+  reprice(serverTrades) {
     this._positions.forEach(position => {
-      position.reprice(trades);
+      position.reprice(serverTrades);
     });
   }
 

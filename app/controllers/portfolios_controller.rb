@@ -4,7 +4,7 @@ class PortfoliosController < ApplicationController
 
   # Retrieve all portfolios.
   def index
-    render json: Portfolio.where('user_id = ?', current_user.id).order(:name)
+    render json: Portfolio.where('user_id = ?', current_user.id).order(:name), each_serializer: PortfolioSerializer, include: 'positions.*'
   end
 
   # Retrieve a portfolio.

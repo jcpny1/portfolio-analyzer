@@ -45,10 +45,7 @@ module Feed
     # Makes data request(s) for an array of symbols and returns results in an augmented trades array.
     def self.monthly_series(symbols)
       api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
-      # series = Array.new(symbols.length)
-
-series = []
-
+      series = []
       begin
         conn = Faraday.new(url: 'https://www.alphavantage.co/query')
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -73,7 +70,6 @@ series = []
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
             Feed.fetch_failure(symbols, trades, 'The feed is down.')
           else
-            # series[i] = process_series_response(symbol, response)
             series.concat(process_series_response(symbol, response))
           end
         end
@@ -109,7 +105,6 @@ series = []
       end
       trade
     end
-
 
     # Extract series data or an error from the response.
     private_class_method def self.process_series_response(symbol, response)

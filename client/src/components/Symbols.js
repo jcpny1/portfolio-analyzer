@@ -3,7 +3,7 @@ import {Form, Grid, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 export const Symbols = (props) => {
-  const {instruments, onChange, searchValue} = props;
+  const {serverInstruments, onChange, searchValue} = props;
 
   function columnTitles() {
     return (
@@ -15,11 +15,11 @@ export const Symbols = (props) => {
   }
 
   function listInstruments() {
-    return instruments.map(instrument => {
+    return serverInstruments.map(serverInstrument => {
       return (
-        <Table.Row key={instrument.id}>
-          <Table.Cell width={8}>{instrument.name}</Table.Cell>
-          <Table.Cell width={3}>{instrument.symbol}</Table.Cell>
+        <Table.Row key={serverInstrument.id}>
+          <Table.Cell width={8}>{serverInstrument.attributes.name}</Table.Cell>
+          <Table.Cell width={3}>{serverInstrument.attributes.symbol}</Table.Cell>
         </Table.Row>
       );
     });
@@ -48,6 +48,6 @@ export const Symbols = (props) => {
 
 Symbols.propTypes = {
   onChange: PropTypes.func.isRequired,
-  instruments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  serverInstruments: PropTypes.arrayOf(PropTypes.object).isRequired,
   searchValue: PropTypes.string.isRequired,
 }
