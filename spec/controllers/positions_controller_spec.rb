@@ -12,8 +12,9 @@ RSpec.describe PositionsController, type: :controller do
       post :create, { params: { portfolio_id: @portfolio.id, position: { instrument_id: @instrument.id, quantity:100, cost: 200, date_acquired: '2011-11-11' }}, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr.length).to be > 0
-      expect(pr['positions'][0]['instrument']['symbol']).to eq(@instrument.symbol)
+      expect(pr['data'].length).to be > 0
+      expect(pr['data']['attributes']['name']).to eq(@portfolio.name)
+      expect(pr['data']['relationships']['positions']['data'].length).to be > 0
     end
   end
 
@@ -24,8 +25,9 @@ RSpec.describe PositionsController, type: :controller do
       patch :update, { params: { id: @position.id, portfolio_id: @portfolio.id, instrument_symbol: @position.instrument.symbol, position: { instrument_id: @instrument.id, quantity:200, cost: 200, date_acquired: '2011-11-11' }}, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr.length).to be > 0
-      expect(pr['positions'][0]['instrument']['symbol']).to eq(@instrument.symbol)
+      expect(pr['data'].length).to be > 0
+      expect(pr['data']['attributes']['name']).to eq(@portfolio.name)
+      expect(pr['data']['relationships']['positions']['data'].length).to be > 0
     end
   end
 
@@ -36,7 +38,9 @@ RSpec.describe PositionsController, type: :controller do
       delete :destroy, { params: { id: @position.id, portfolio_id: @portfolio.id }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr['name']).to eq(@portfolio.name)
+      expect(pr['data'].length).to be > 0
+      expect(pr['data']['attributes']['name']).to eq(@portfolio.name)
+      expect(pr['data']['relationships']['positions']['data'].length).to be 0
     end
   end
 end

@@ -8,10 +8,10 @@ RSpec.describe PortfoliosController, type: :controller do
   describe "GET #index" do
     it "returns all portfolios" do
       request.accept = "application/json"
-      get :index, format: :json
+      get :index, :format => :json
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr.length).to be > 0
+      expect(pr['data'].length).to be > 0
     end
   end
 
@@ -21,8 +21,8 @@ RSpec.describe PortfoliosController, type: :controller do
       get :show, { :params => { id: @portfolio.id }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr.length).to be > 0
-      expect(pr[0]['name']).to eq(@portfolio.name)
+      expect(pr['data'].length).to be > 0
+      expect(pr['data'][0]['attributes']['name']).to eq(@portfolio.name)
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe PortfoliosController, type: :controller do
       post :create, { params: { portfolio: { name: 'waTSon' }, format: :json }}
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr['name']).to eq('waTSon')
+      expect(pr['data']['attributes']['name']).to eq('waTSon')
     end
   end
 
@@ -42,7 +42,7 @@ RSpec.describe PortfoliosController, type: :controller do
       patch :update, { params: { id: @portfolio.id, portfolio: { name: 'XYZee' }}, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr['name']).to eq('XYZee')
+      expect(pr['data']['attributes']['name']).to eq('XYZee')
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe PortfoliosController, type: :controller do
       delete :destroy, { params: { id: @portfolio.id }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr['name']).to eq(@portfolio.name)
+      expect(pr['data']['attributes']['name']).to eq(@portfolio.name)
     end
   end
 end

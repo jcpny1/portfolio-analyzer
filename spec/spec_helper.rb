@@ -43,7 +43,25 @@ RSpec.configure do |config|
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
       to_return(
         status: 200,
-        body: '{"AAPL": {"quote": {"companyName": "Apple Inc.", "latestPrice": 170.15, "change": -0.95, "latestUpdate": 1510952400327}}}',
+        body: '',
+        headers: {})
+    # Request instrument prices for all instruments.
+    stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=companyName,latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body: '[{"AAPL"=>{"quote"=>{"companyName"=>"Apple Inc.", "latestPrice"=>178.02, "change"=>-0.63, "latestUpdate"=>1521230400638}},
+         "AMZN"=>{"quote"=>{"companyName"=>"Amazon.com Inc.", "latestPrice"=>1571.68, "change"=>-10.64, "latestUpdate"=>1521230400206}},
+         "BABA"=>{"quote"=>{"companyName"=>"Alibaba Group Holding Limited", "latestPrice"=>200.28, "change"=>1.22, "latestUpdate"=>1521230675642}},
+         "COF"=>{"quote"=>{"companyName"=>"Capital One Financial Corporation", "latestPrice"=>99.36, "change"=>1.31, "latestUpdate"=>1521230559217}},
+         "FBGX"=>{"quote"=>{"companyName"=>"UBS AG FI Enhanced Large Cap Growth ETN", "latestPrice"=>253.39, "change"=>0.4, "latestUpdate"=>1521230400157}},
+         "GOOG"=>{"quote"=>{"companyName"=>"Alphabet Inc.", "latestPrice"=>1135.73, "change"=>-13.85, "latestUpdate"=>1521230400284}},
+         "GOOGL"=>{"quote"=>{"companyName"=>"Alphabet Inc.", "latestPrice"=>1134.42, "change"=>-16.19, "latestUpdate"=>1521230400295}},
+         "GSK"=>{"quote"=>{"companyName"=>"GlaxoSmithKline PLC", "latestPrice"=>37.28, "change"=>0.36, "latestUpdate"=>1521230522904}},
+         "HD"=>{"quote"=>{"companyName"=>"Home Depot Inc. (The)", "latestPrice"=>178.96, "change"=>0.89, "latestUpdate"=>1521230542965}},
+         "INTC"=>{"quote"=>{"companyName"=>"Intel Corporation", "latestPrice"=>51.17, "change"=>0.29, "latestUpdate"=>1521230400554}},
+         "JNJ"=>{"quote"=>{"companyName"=>"Johnson & Johnson", "latestPrice"=>133.68, "change"=>0.62, "latestUpdate"=>1521230539446}},
+         "SNY"=>{"quote"=>{"companyName"=>"Sanofi American Depositary Shares (Each repstg one-half of one)", "latestPrice"=>40.96, "change"=>0.41, "latestUpdate"=>1521230716817}}}]',
         headers: {})
     # Request for DJIA index value.
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
