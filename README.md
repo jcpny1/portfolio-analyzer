@@ -22,7 +22,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-  -Mar-18  0.3.0  Switch from the default json serializer adapter to the standard json_api adapter.
+17-Mar-18  0.3.0  Switched from the default json serializer adapter to the more standard json_api serializer adapter.
 03-Mar-18  0.2.0  Updates for changes to NewsApi.org's API. Fixed bug where a new position could not be added to a portfolio.
 12-Nov-17  0.1.0  Initial release.
 ```
