@@ -12,7 +12,7 @@ RSpec.describe "Portfolio Management", :type => :request do
     expect(response.content_type).to eq("application/json")
     expect(response).to have_http_status(:created)
     @new_portfolio = JSON.parse(response.body)
-    expect(@new_portfolio['name']).to eq(@portfolio.name)
+    expect(@new_portfolio['data']['attributes']['name']).to eq(@portfolio.name)
   end
 
   it "destroys a Portfolio" do
