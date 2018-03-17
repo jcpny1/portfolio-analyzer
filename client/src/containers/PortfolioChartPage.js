@@ -24,25 +24,20 @@ class PortfolioChartPage extends Component {
   }
 
   refreshData = () => {
-    Request.seriesRefresh('SPY', series => {
+    Request.seriesRefresh('DIA,IWM,QQQ,SPY,URTH', series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
-// for each instrument in included,
-//   for each data point with this instruments
-//     push to array
-//   push array to refData
-
         const chartData = [];
-
-// TODO we're making a pass over all instruments' data points for every instrument. Better to do in one pass.
-
+        // TODO we're making a pass over all instruments' data points for every instrument. Better to do in one pass.
+        // for each instrument
         series.included.forEach(si => {
           const instrumentId = si.id;
           const instrumentSymbol = si.attributes.symbol;
           const instrumentName = si.attributes.name;
           const instrumentData = []
           let shares = [];
+          // for each data point for this instrument
           for (let i = series.data.length-1; i >= 0; --i) {
             const sd = series.data[i];
             if (sd.relationships.instrument.data.id === instrumentId) {
@@ -102,10 +97,12 @@ class PortfolioChartPage extends Component {
     const {refData, modalOpen} = this.state;
     return (
       <Modal
+        closeIcon
         closeOnDimmerClick={false}
         trigger={<Icon name={iconName} title={tooltip} id='portfolioChart' link color={iconColor} onClick={this.handleOpen}/>}
         open={modalOpen}
         onClose={this.handleCancel}
+        size={'large'}
         style={{paddingBottom:'10px'}}
       >
         <Modal.Header><Header content='Portfolio Chart' icon='chart line' size='small'/></Modal.Header>
