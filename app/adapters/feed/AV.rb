@@ -106,6 +106,8 @@ module Feed
       trade
     end
 
+    START_YEAR = 2013
+
     # Extract series data or an error from the response.
     private_class_method def self.process_series_response(symbol, response)
       series = []
@@ -116,15 +118,15 @@ module Feed
         fetch_time = DateTime.now
         # header = response['Meta Data']
         ticks = response['Monthly Adjusted Time Series']
-        instrument = nil
+        instrument  = Instrument.find_by(symbol: symbol) if instrument.nil?
+        instrument  = Instrument.new(symbol: symbol) if instrument.nil?    # We don't keep index instruments in the database, so make one up here.
         ticks.each do |key, value|
+          next if key[0..3].to_i < START_YEAR
           # TODO: Get timezone from Meta Data.
           series << Series.new do |s|
-            instrument  = Instrument.find_by(symbol: symbol) if instrument.nil?
-            instrument  = Instrument.new(symbol: symbol) if instrument.nil?    # We don't keep index instruments in the database, so make one up here.
-            s.instrument  = instrument
+            s.instrument = instrument
             s.time_interval = 'MA'
-            s.series_date  = key
+            s.series_date = key
             # s.open_price = value['1. open'].to_f.round(4)
             # s.high_price = value['2. high'].to_f.round(4)
             # s.low_price = value['3. low'].to_f.round(4)
