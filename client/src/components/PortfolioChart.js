@@ -23,7 +23,7 @@ const PortfolioChart = (props) => {
         <Subtitle>$10,000 Investment Comparison</Subtitle>
         <Legend layout='horizontal' align='center' verticalAlign='bottom' />
         <XAxis type='datetime'></XAxis>
-        <YAxis id='yAxis' format='{value} km'><YAxis.Title>Value</YAxis.Title>{plotInstruments()}</YAxis>
+        <YAxis id='yAxis' labels={{format: '${value}K'}}>{plotInstruments()}</YAxis>
       </HighchartsChart>
     </div>
   );

@@ -39,7 +39,7 @@ const seriesDataToChartData = (series) => {
 // Side effect: updates shares.
 function convertToPlotPoint(dataPoint, shares) {
   const START_YEAR  = 2013;
-  const START_VALUE = 10000.0;
+  const START_VALUE = 10.0;  // in thousands
 
   const pointYear = parseInt(dataPoint['series-date'].substring(0,4), 10);
   if (pointYear < START_YEAR) {   // advance to start year.
