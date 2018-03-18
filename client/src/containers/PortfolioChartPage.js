@@ -24,7 +24,7 @@ class PortfolioChartPage extends Component {
   }
 
   refreshData = () => {
-    Request.seriesRefresh('DIA,IWM,QQQ,SPY,URTH', series => {
+    Request.seriesRefresh('URTH,IWM,QQQ,DIA,SPY', series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {

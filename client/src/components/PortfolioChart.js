@@ -1,9 +1,8 @@
 import React from 'react';
 import Highcharts from 'highcharts';
-import {HighchartsChart, Chart, withHighcharts, XAxis, YAxis, Title, Subtitle, Legend, LineSeries} from 'react-jsx-highcharts';
+import {Chart, HighchartsChart, Legend, LineSeries, Subtitle, Title, Tooltip, withHighcharts, XAxis, YAxis} from 'react-jsx-highcharts';
 
 const plotOptions = {
-  series: { type: 'line' },
 };
 
 const PortfolioChart = (props) => {
@@ -11,19 +10,35 @@ const PortfolioChart = (props) => {
 
   function plotInstruments() {
     return refData.map(series => {
-      return <LineSeries key={series.instrumentId} id={series.instrumentName} name={`${series.instrumentName} (${series.instrumentSymbol})`} data={series.instrumentData} />;
+      return (
+        <LineSeries
+          key={series.instrumentSymbol}
+          id={series.instrumentName}
+          marker={{enabled: false}}
+          name={`${series.instrumentName} (${series.instrumentSymbol})`}
+          data={series.instrumentData}
+        />
+      );
     });
   }
 
   return (
     <div className='app'>
       <HighchartsChart plotOptions={plotOptions}>
-        <Chart />
+        <Chart type='spline'/>
         <Title>{portfolio.name}</Title>
         <Subtitle>$10,000 Investment Comparison</Subtitle>
-        <Legend layout='horizontal' align='center' verticalAlign='bottom' />
-        <XAxis type='datetime'></XAxis>
-        <YAxis id='yAxis' labels={{format: '${value}K'}}>{plotInstruments()}</YAxis>
+        <Legend />
+        <Tooltip
+          shared='true'
+          useHTML='true'
+          valueDecimals='3'
+          headerFormat='<small>{point.key}</small><table>'
+          pointFormat='<tr><td style="color: {series.color}">{series.name}: </td><td style="text-align: right"><b>&dollar;{point.y}K</b></td></tr>'
+          footerFormat='</table>'
+        />
+        <XAxis type='datetime' crosshair='true'/>
+        <YAxis id='yAxis' labels={{format: '$\u0000{value}K'}}>{plotInstruments()}</YAxis>
       </HighchartsChart>
     </div>
   );
