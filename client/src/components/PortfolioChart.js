@@ -11,7 +11,7 @@ const PortfolioChart = (props) => {
 
   function plotInstruments() {
     return refData.map(series => {
-      return <LineSeries key={series.instrumentId} id={series.instrumentId} name={`${series.instrumentName} (${series.instrumentSymbol})`} data={series.instrumentData} />;
+      return <LineSeries key={series.instrumentId} id={series.instrumentName} name={`${series.instrumentName} (${series.instrumentSymbol})`} data={series.instrumentData} />;
     });
   }
 
@@ -21,14 +21,9 @@ const PortfolioChart = (props) => {
         <Chart />
         <Title>{portfolio.name}</Title>
         <Subtitle>$10,000 Investment Comparison</Subtitle>
-        <Legend layout='vertical' align='center' verticalAlign='bottom' />
-        <XAxis type='datetime'>
-          <XAxis.Title>Date</XAxis.Title>
-        </XAxis>
-        <YAxis id='number'>
-          <YAxis.Title>Value</YAxis.Title>
-          {plotInstruments()}
-        </YAxis>
+        <Legend layout='horizontal' align='center' verticalAlign='bottom' />
+        <XAxis type='datetime'></XAxis>
+        <YAxis id='yAxis' format='{value} km'><YAxis.Title>Value</YAxis.Title>{plotInstruments()}</YAxis>
       </HighchartsChart>
     </div>
   );

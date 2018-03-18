@@ -28,53 +28,9 @@ class PortfolioChartPage extends Component {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
-        const chartData = [];
-        // TODO we're making a pass over all instruments' data points for every instrument. Better to do in one pass.
-        // for each instrument
-        series.included.forEach(si => {
-          const instrumentId = si.id;
-          const instrumentSymbol = si.attributes.symbol;
-          const instrumentName = si.attributes.name;
-          const instrumentData = []
-          let shares = [];
-          // for each data point for this instrument
-          for (let i = series.data.length-1; i >= 0; --i) {
-            const sd = series.data[i];
-            if (sd.relationships.instrument.data.id === instrumentId) {
-              const plotPoint = this.convertToPlotPoint(sd.attributes, shares)
-              if (plotPoint !== null) {
-                instrumentData.push(plotPoint);
-              }
-            }
-          };
-          chartData.push({'instrumentId': instrumentId, 'instrumentSymbol': instrumentSymbol, 'instrumentName': instrumentName, 'instrumentData': instrumentData});
-        });
-
-        this.setState({refData: chartData});
+        this.setState({refData: Fmt.seriesDataToChartData(series)});
       }
     });
-  }
-
-  static START_YEAR  = 2008;
-  static START_VALUE = 10000.0;
-
-  // Convert monthly series data point to a chart plot point, beginning at START_YEAR, for now.
-  // Side effect: updates shares.
-  convertToPlotPoint = (dataPoint, shares) => {
-    const pointYear = parseInt(dataPoint['series-date'].substring(0,4), 10);
-    if (pointYear < PortfolioChartPage.START_YEAR) {   // advance to start year.
-      return null;
-    }
-    const millis = Date.parse(dataPoint['series-date']);
-    const close_price = parseFloat(dataPoint['adjusted-close-price']);
-    if (shares.length === 0) {
-      shares.push(PortfolioChartPage.START_VALUE / close_price);
-    }
-    const dividendAmount = parseFloat(dataPoint['dividend-amount']);
-    if (dividendAmount > 0.0) {
-      shares[0] += (dividendAmount * shares[0]) / close_price;
-    }
-    return [millis, shares[0] * close_price];
   }
 
   resetComponent = () => {

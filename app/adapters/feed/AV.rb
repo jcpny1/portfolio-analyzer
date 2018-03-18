@@ -116,19 +116,21 @@ module Feed
         fetch_time = DateTime.now
         # header = response['Meta Data']
         ticks = response['Monthly Adjusted Time Series']
+        instrument = nil
         ticks.each do |key, value|
           # TODO: Get timezone from Meta Data.
           series << Series.new do |s|
-            s.instrument  = Instrument.find_by(symbol: symbol)
-            s.instrument  = Instrument.new(symbol: symbol) if s.instrument.nil?    # We don't keep index instruments in the database, so make one up here.
+            instrument  = Instrument.find_by(symbol: symbol) if instrument.nil?
+            instrument  = Instrument.new(symbol: symbol) if instrument.nil?    # We don't keep index instruments in the database, so make one up here.
+            s.instrument  = instrument
             s.time_interval = 'MA'
             s.series_date  = key
-            s.open_price = value['1. open'].to_f.round(4)
-            s.high_price = value['2. high'].to_f.round(4)
-            s.low_price = value['3. low'].to_f.round(4)
-            s.close_price = value['4. close'].to_f.round(4)
+            # s.open_price = value['1. open'].to_f.round(4)
+            # s.high_price = value['2. high'].to_f.round(4)
+            # s.low_price = value['3. low'].to_f.round(4)
+            # s.close_price = value['4. close'].to_f.round(4)
             s.adjusted_close_price = value['5. adjusted close'].to_f.round(4)
-            s.volume = value['6. volume'].to_f.round(4)
+            # s.volume = value['6. volume'].to_f.round(4)
             s.dividend_amount = value['7. dividend amount'].to_f.round(4)
             s.created_at = fetch_time
           end
