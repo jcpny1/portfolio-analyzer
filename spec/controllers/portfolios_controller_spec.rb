@@ -12,6 +12,7 @@ RSpec.describe PortfoliosController, type: :controller do
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr['data'].length).to be > 0
+      expect(pr['data'][0]['attributes']['name']).to eq("Crazy 8's")
     end
   end
 

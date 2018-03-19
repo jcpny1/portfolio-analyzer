@@ -28,7 +28,7 @@ module Feed
         #   <no errors defined yet>
         #
         symbols.each_with_index do |symbol, i|
-          trades[i] = process_response(symbol, response)
+          trades[i] = process_price_response(symbol, response)
           trades[i].created_at = fetch_time
         end
       end
@@ -52,8 +52,10 @@ module Feed
       response
     end
 
+    ### private ###
+
     # Extract trade data or an error from the response.
-    def self.process_response(symbol, response)
+    private_class_method def self.process_price_response(symbol, response)
       if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
         trade = Feed.error_trade(symbol, 'Price is not available.')
       else

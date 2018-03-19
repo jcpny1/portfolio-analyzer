@@ -9,8 +9,8 @@ RSpec.describe TradesController, type: :controller do
       expect(response).to have_http_status(:success)
       expect(pr['data'].length).to be > 0
       expect(pr['data'][0]['attributes']['instrument']['symbol']).to eq('DJIA')
-      expect(pr['data'][0]['attributes']['trade-price']).to eq('23358.24')
-      expect(pr['data'][0]['attributes']['price-change']).to eq('-100.12')
+      expect(pr['data'][0]['attributes']['trade-price']).to eq('24686.0898')
+      expect(pr['data'][0]['attributes']['price-change']).to eq('-260.42')
     end
   end
 
@@ -29,9 +29,9 @@ RSpec.describe TradesController, type: :controller do
       get :last_price, { :params => { userId: 1, livePrices: '' }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
-      expect(pr['data'].length).to be > 0
+      expect(pr['data'].length).to eq(12)
       expect(pr['data'][0]['attributes']['instrument-id']).to eq(1)
-      expect(pr['data'][0]['attributes']['trade-price']).to eq('171.5')
+      expect(pr['data'][0]['attributes']['trade-price']).to eq('175.42')
     end
     it "bulk loads database prices" do
       request.accept = "application/json"
