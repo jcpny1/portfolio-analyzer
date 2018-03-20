@@ -73,7 +73,7 @@ class PositionEditPage extends Component {
         <Modal.Header><Header content='Position Editor' icon='edit' size='small'/></Modal.Header>
         <Modal.Content><PositionEdit position={editedPosition} formError={formError} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
-          <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>
+          <Button floated='left' color='red' onClick={this.handleCancel}>Cancel</Button>
           <Button type='submit' floated='left' color='green' form='positionEditForm'>Submit</Button>
         </Modal.Actions>
       </Modal>

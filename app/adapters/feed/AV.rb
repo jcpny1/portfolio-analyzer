@@ -15,7 +15,7 @@ module Feed
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "AV PRICE FETCH ERROR for: #{symbols.inspect}."
         error_msg = "Faraday client error: #{e}"
-        Feed.fetch_failure(symbols, trades, error_msg)
+        Feed.fetch_trade_failure(symbols, trades, error_msg)
       else
         symbols.each_with_index do |symbol, i|
           begin
@@ -29,10 +29,10 @@ module Feed
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-            Feed.fetch_failure(symbols, trades, 'The feed is down.')
+            Feed.fetch_trade_failure(symbols, trades, 'The feed is down.')
           rescue JSON::ParserError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-            Feed.fetch_failure(symbols, trades, 'The feed is down.')
+            Feed.fetch_trade_failure(symbols, trades, 'The feed is down.')
           else
             trades[i] = process_price_response(symbol, response)
             trades[i].created_at = fetch_time
@@ -51,7 +51,7 @@ module Feed
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "AV SERIES FETCH ERROR for: #{symbols.inspect}."
         error_msg = "Faraday client error: #{e}"
-        Feed.fetch_failure(symbols, trades, error_msg)
+        Feed.fetch_series_failure(symbols, series, error_msg)
       else
         symbols.each_with_index do |symbol, i|
           begin
@@ -65,10 +65,10 @@ module Feed
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-            Feed.fetch_failure(symbols, trades, 'The feed is down.')
+            Feed.fetch_series_failure(symbols, series, 'The feed is down.')
           rescue JSON::ParserError => e
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-            Feed.fetch_failure(symbols, trades, 'The feed is down.')
+            Feed.fetch_series_failure(symbols, series, 'The feed is down.')
           else
             series.concat(process_series_response(symbol, response))
           end
@@ -127,12 +127,12 @@ module Feed
             s.instrument = instrument
             s.time_interval = 'MA'
             s.series_date = key
-            # s.open_price = value['1. open'].to_f.round(4)
-            # s.high_price = value['2. high'].to_f.round(4)
-            # s.low_price = value['3. low'].to_f.round(4)
-            # s.close_price = value['4. close'].to_f.round(4)
+            s.open_price = value['1. open'].to_f.round(4)
+            s.high_price = value['2. high'].to_f.round(4)
+            s.low_price = value['3. low'].to_f.round(4)
+            s.close_price = value['4. close'].to_f.round(4)
             s.adjusted_close_price = value['5. adjusted close'].to_f.round(4)
-            # s.volume = value['6. volume'].to_f.round(4)
+            s.volume = value['6. volume'].to_f.round(4)
             s.dividend_amount = value['7. dividend amount'].to_f.round(4)
             s.created_at = fetch_time
           end

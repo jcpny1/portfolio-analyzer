@@ -36,7 +36,7 @@ module Feed
     Rails.logger.debug 'FETCH SERIES BEGIN.'
     series = Feed::AV.monthly_series(symbols)  # Get the feed's series data.
     Rails.logger.debug "FETCH SERIES END (requested: #{symbols.length}, received: #{series.length})."
-    series
+    yield series
   end
 
   # Return the feed handler's symbology.
@@ -44,7 +44,7 @@ module Feed
     Feed::IEX.symbology  # Call feed handler to retrieve symbology.
   end
 
-  ### for use by feed handlers  ###
+  ### FOR USE BY FEED HANDLERS ###
 
   # Create a series that signifies an error has occurred.
   def self.error_series(symbol, error_msg)
@@ -56,8 +56,15 @@ module Feed
     Trade.new(instrument: Instrument.new(symbol: symbol), error: "#{symbol}: #{error_msg}")
   end
 
+  # Create error series for all symbols.
+  def self.fetch_series_failure(symbols, series, error_msg)
+    symbols.each_with_index do |symbol, i|
+      series[i] = error_series(symbol, error_msg)
+    end
+  end
+
   # Create error trades for all symbols.
-  def self.fetch_failure(symbols, trades, error_msg)
+  def self.fetch_trade_failure(symbols, trades, error_msg)
     symbols.each_with_index do |symbol, i|
       trades[i] = error_trade(symbol, error_msg)
     end

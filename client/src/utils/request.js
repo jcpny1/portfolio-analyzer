@@ -45,14 +45,20 @@ export function pricesRefresh() {
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
-// Request the server to refresh series data.
-// Supply symbols as a comma-separated string.
-export function seriesRefresh(symbols, cb) {
+// Get series data for given symbols.
+export function seriesFetch(symbols, cb) {
   fetch(`/api/monthly-series?symbols=${symbols}`, {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .then(response => response.json())
   .then(cb)
   .catch(error => {alert(Fmt.serverError('Refresh Series', error));});
+}
+
+// Request the server to refresh series prices.
+export function seriesRefresh() {
+  fetch('/api/series/refresh', {headers: {'Accept': 'application/json'}})
+  .then(statusCheck)
+  .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
 // Check a fetch response status.
