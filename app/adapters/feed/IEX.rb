@@ -18,10 +18,10 @@ module Feed
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: Faraday client error: #{e}."
-        Feed.fetch_failure(symbols, trades, 'The feed is down.')
+        Feed.fetch_trade_failure(symbols, trades, 'The feed is down.')
       rescue JSON::ParserError => e  # JSON.parse error
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: JSON parse error: #{e}."
-        Feed.fetch_failure(symbols, trades, 'The feed is down.')
+        Feed.fetch_trade_failure(symbols, trades, 'The feed is down.')
       else
         #
         # Error example:

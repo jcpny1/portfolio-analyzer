@@ -29,7 +29,7 @@ class PortfolioChartPage extends Component {
     const {portfolio} = this.props;
     const symbols_array = portfolio.positions.map(position => position.instrument.symbol).concat(PortfolioChartPage.ETF_SYMBOLS);
     const symbols = [...new Set(symbols_array)].join(',');  // uniquify symbol list and turn into comma-separated string.
-    Request.seriesRefresh(symbols, series => {
+    Request.seriesFetch(symbols, series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
@@ -70,7 +70,7 @@ class PortfolioChartPage extends Component {
         <Modal.Header><Header content='Portfolio Chart' icon='chart line' size='small'/></Modal.Header>
         <Modal.Content><PortfolioChart refData={refData} etfSymbols={PortfolioChartPage.ETF_SYMBOLS}/></Modal.Content>
         <Modal.Actions>
-          <Button floated='left'color='red' onClick={this.handleCancel}>Close</Button>
+          <Button floated='left' color='red' onClick={this.handleCancel}>Close</Button>
         </Modal.Actions>
       </Modal>
     );

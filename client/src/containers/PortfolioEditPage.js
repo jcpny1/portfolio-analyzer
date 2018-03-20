@@ -57,7 +57,7 @@ class PortfolioEditPage extends Component {
         <Modal.Header><Header content='Portfolio Editor' icon='edit' size='small'/></Modal.Header>
         <Modal.Content><PortfolioEdit portfolio={editedPortfolio} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
-          <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>
+          <Button floated='left' color='red' onClick={this.handleCancel}>Cancel</Button>
           <Button type='submit' floated='left' color='green' form='portfolioEditForm'>Submit</Button>
         </Modal.Actions>
       </Modal>

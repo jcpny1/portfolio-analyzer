@@ -16,8 +16,9 @@ class App extends Component {
     return (
       <Dropdown item text='Admin'>
         <Dropdown.Menu>
-          <ConfirmDialog triggerType='dropdown' title='Refresh Instruments' header='Refresh instrument inventory from data feed' onClickConfirm={Request.instrumentsRefresh}/>
-          <ConfirmDialog triggerType='dropdown' title='Refresh Prices'  header='Reprice entire instrument inventory' onClickConfirm={Request.pricesRefresh}/>
+          <ConfirmDialog triggerType='dropdown' title='Refresh Instruments...' header='Refresh instrument inventory from data feed' onClickConfirm={Request.instrumentsRefresh}/>
+          <ConfirmDialog triggerType='dropdown' title='Refresh Prices...'  header='Reprice entire instrument inventory' onClickConfirm={Request.pricesRefresh}/>
+          <ConfirmDialog triggerType='dropdown' title='Refresh Series...'  header='Refresh all monthly prices' onClickConfirm={Request.seriesRefresh}/>
         </Dropdown.Menu>
       </Dropdown>
     );
