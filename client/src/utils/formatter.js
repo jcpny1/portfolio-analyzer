@@ -20,16 +20,14 @@ const seriesDataToChartData = (series) => {
     const instrumentName = si.attributes.name;
     const instrumentData = []
     let shares = [];
-    // for each data point for this instrument
-    for (let i = series.data.length-1; i >= 0; --i) {
-      const sd = series.data[i];
+    series.data.forEach(sd => {
       if (sd.relationships.instrument.data.id === instrumentId) {
         const plotPoint = convertToPlotPoint(sd.attributes, shares)
         if (plotPoint !== null) {
           instrumentData.push(plotPoint);
         }
       }
-    };
+    });
     chartData.push({'instrumentId': instrumentId, 'instrumentSymbol': instrumentSymbol, 'instrumentName': instrumentName, 'instrumentData': instrumentData});
   });
   return chartData;
