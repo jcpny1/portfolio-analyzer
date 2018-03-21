@@ -4,8 +4,8 @@ class SeriesCache
   def self.bulk_load(instruments)
     Rails.logger.debug 'SERIES BULK LOAD BEGIN.'
     processed = 0
-    instruments.each_slice(DataCache::FEED_BATCH_SIZE) do |instrument_batch|
-      sleep DataCache::FEED_BATCH_DELAY if !processed.zero?  # Throttle request rate.
+    instruments.each_slice(DataCache::SERIES_BATCH_SIZE) do |instrument_batch|
+      sleep DataCache::SERIES_BATCH_DELAY if !processed.zero?  # Throttle request rate.
       processed += instrument_batch.length
       symbols = instrument_batch.map(&:symbol)
       series_batch = series_from_database(symbols)  # Get database series as a baseline.
@@ -56,6 +56,6 @@ class SeriesCache
 
   # Fetch database series by symbol.
   private_class_method def self.series_from_database(symbols)
-    Series.select('series.*, instruments.symbol').joins(:instrument).where(instruments: {symbol: symbols}).distinct.order('instruments.symbol')  # Added .order for WebMock testing.
+    Series.joins(:instrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
   end
 end
