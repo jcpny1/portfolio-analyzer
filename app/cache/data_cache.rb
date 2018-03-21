@@ -5,9 +5,11 @@ module DataCache
 
   ### for use by cache handlers ###
   # Stay within feed vendor limits. Don't risk getting blacklisted or throttled.
-  # Also, don't lock up the Trade database table for too long.
-  FEED_BATCH_SIZE  = 50      # Number of records to process in one transaction.
-  FEED_BATCH_DELAY =  1.000  # Delay time between transactions (in seconds).
+  # Also, don't hit the database too hard.
+  FEED_BATCH_SIZE    = 50      # Number of records in one feed request.
+  FEED_BATCH_DELAY   =  1.000  # Delay time between requests (in seconds).
+  SERIES_BATCH_SIZE  =  1      # Number of series records in one series request.
+  SERIES_BATCH_DELAY =  1.000  # Delay time between series requests (in seconds).
 
   # Update instrument cache from instrument_data records.
   # instrument_data: [{symbol name},...]
