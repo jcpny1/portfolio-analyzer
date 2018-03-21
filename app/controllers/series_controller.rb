@@ -12,7 +12,8 @@ class SeriesController < ApplicationController
   # Intended for admin user only.
   def series_bulk_load
     logger.info 'SERIES BULK LOAD REQUESTED.'
-    FeedWorker.perform_async('series_bulk_load')
+    fn_name = params.key?('allSeries') ? 'series_bulk_load_all' : 'series_bulk_load_new'
+    FeedWorker.perform_async(fn_name)
     head :accepted
   end
 end

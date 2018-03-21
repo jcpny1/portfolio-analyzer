@@ -55,10 +55,21 @@ export function seriesFetch(symbols, cb) {
 }
 
 // Request the server to refresh series prices.
-export function seriesRefresh() {
-  fetch('/api/series/refresh', {headers: {'Accept': 'application/json'}})
+export function seriesRefresh(allSeries) {
+  const all = allSeries ? '&allSeries' : '';
+  fetch(`/api/series/refresh?${all}`, {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
+}
+
+// Request the server to refresh all series prices.
+export function seriesRefreshAll() {
+  seriesRefresh(true);
+}
+
+// Request the server to create series prices for instruments that are not in Series.
+export function seriesRefreshNew() {
+  seriesRefresh(false);
 }
 
 // Check a fetch response status.
