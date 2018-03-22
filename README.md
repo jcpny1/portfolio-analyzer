@@ -22,6 +22,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
+21-Mar-18  0.3.0  Monthly series data is now bulk loaded into the database on demand. Chart app now pulls data from database.
 17-Mar-18  0.3.0  Switched from the default json serializer adapter to the more standard json_api serializer adapter.
 03-Mar-18  0.2.0  Updates for changes to NewsApi.org's API. Fixed bug where a new position could not be added to a portfolio.
 12-Nov-17  0.1.0  Initial release.
