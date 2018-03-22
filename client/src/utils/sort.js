@@ -1,16 +1,16 @@
 // Manage the sort status of an object array's properties.
 // Calling with no arguments, returns current sorting info.
 export function columnSorter(initialPrimaryProperty, initialPrimaryDirection, initialSecondaryProperty, initialSecondaryDirection) {
-  var lastPrimaryProperty    = initialPrimaryProperty;     // which property was last sorted.
-  var lastPrimaryDirection   = initialPrimaryDirection;
-  var lastSecondaryProperty  = initialSecondaryProperty;   // which property was last sorted.
-  var lastSecondaryDirection = initialSecondaryDirection;
-  var lastPrimaryReverseSort   = (lastPrimaryDirection   === 'ascending') ? false : true;   // convert asc|desc to false|true.
-  var lastSecondaryReverseSort = (lastSecondaryDirection === 'ascending') ? false : true;   // convert asc|desc to false|true.
+  let lastPrimaryProperty    = initialPrimaryProperty;     // which property was last sorted.
+  let lastPrimaryDirection   = initialPrimaryDirection;
+  let lastSecondaryProperty  = initialSecondaryProperty;   // which property was last sorted.
+  let lastSecondaryDirection = initialSecondaryDirection;
+  let lastPrimaryReverseSort   = (lastPrimaryDirection   === 'ascending') ? false : true;   // convert asc|desc to false|true.
+  let lastSecondaryReverseSort = (lastSecondaryDirection === 'ascending') ? false : true;   // convert asc|desc to false|true.
   return function(objectArray, sortFn, primaryProperty, secondaryProperty) {
     if (typeof objectArray === 'undefined') {
-      var lastPrimaryDirection   = lastPrimaryReverseSort   ? 'descending' : 'ascending';
-      var lastSecondaryDirection = lastSecondaryReverseSort ? 'descending' : 'ascending';
+      let lastPrimaryDirection   = lastPrimaryReverseSort   ? 'descending' : 'ascending';
+      let lastSecondaryDirection = lastSecondaryReverseSort ? 'descending' : 'ascending';
       return {primary: {property: lastPrimaryProperty, direction: lastPrimaryDirection}, secondary: {property: lastSecondaryProperty, direction: lastSecondaryDirection}};
     }
     if (primaryProperty) {
@@ -26,8 +26,8 @@ export function columnSorter(initialPrimaryProperty, initialPrimaryDirection, in
 }
 
 // A generic sort comparator function.
-export var sortBy = function(field, reverse = false, compareFn) {
-  var key = function (x) {
+export const sortBy = function(field, reverse = false, compareFn) {
+  const key = function (x) {
     return compareFn ? compareFn(x[field]) : x[field]
   };
   return function (a,b) {

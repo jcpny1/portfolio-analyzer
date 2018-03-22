@@ -20,7 +20,7 @@ export default class DateTime {
   // Returns the formatted value string with HTML code.
   toHTML(locale, useColor = '' ) {
     const stringValue = this.toString(locale)
-    let color = useColor ? useColor : 'black';
+    const color = useColor ? useColor : 'black';
     return (<span style={{color:color}}>{stringValue}</span>);
   }
 

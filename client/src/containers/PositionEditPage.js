@@ -35,7 +35,7 @@ class PositionEditPage extends Component {
 
   handleChange = (e, {name, value}) => {
     const {editedPosition} = this.state;
-    let newPosition = _cloneDeep(editedPosition);
+    const newPosition = _cloneDeep(editedPosition);
     const newValue = (name === 'instrument') ? new Instrument('', value.toUpperCase(), '') : value;
     newPosition[name] = newValue;
     this.setState({editedPosition: newPosition});

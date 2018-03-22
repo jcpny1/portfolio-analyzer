@@ -70,8 +70,8 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
   .then(serverPortfolios => {
     // Parse json into Portfolio, Position, and Instrument objects.
     const portfolios = serverPortfolios.data.map(serverPortfolio => new Portfolio(serverPortfolio.id, serverPortfolio.attributes.name));
-    let instruments = [];
-    let positions   = [];
+    const instruments = [];
+    const positions   = [];
     serverPortfolios.included.forEach(relation => {
       switch(relation.type) {
         case 'instruments':

@@ -26,7 +26,7 @@ class PortfolioEditPage extends Component {
 
   handleChange = (e, {name, value}) => {
     const {editedPortfolio} = this.state;
-    let newPortfolio = _cloneDeep(editedPortfolio);
+    const newPortfolio = _cloneDeep(editedPortfolio);
     newPortfolio[name] = value;
     this.setState({editedPortfolio: newPortfolio});
   }
