@@ -11,10 +11,10 @@ class FeedWorker
       instruments = Instrument.select(:id, :symbol)  # Get instrument list.
       DataCache.price_values(instruments, true)
     when 'series_bulk_load_all'
-      instruments = Instrument.select(:id, :symbol)  # Get full instrument list.
+      instruments = Instrument.select(:id, :symbol)  # Get series data for all instruments.
       DataCache.series_bulk_load(instruments)
     when 'series_bulk_load_new'
-      instruments = Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id'))  # Get only instruments not in Series table already.
+      instruments = Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id').distinct)  # Get series data for instruments not yet in Series table.
       DataCache.series_bulk_load(instruments)
     else
       "FeedWorker Error: invalid request (#{name})"

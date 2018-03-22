@@ -60,19 +60,25 @@ export default class Decimal {
   }
 
   toStringFormatted(locale) {
-    let options = {};
+    const options = {};
     switch (this._type) {
       case 'currency':
-        options = {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:3};
+        options.style ='currency';
+        options.currency = 'USD';
+        options.minimumFractionDigits = 2;
+        options.maximumFractionDigits = 3;
         break;
       case 'decimal':
-        options = {minimumFractionDigits:2, maximumFractionDigits:3};
+        options.minimumFractionDigits = 2;
+        options.maximumFractionDigits = 3;
         break;
       case 'index':
-        options = {minimumFractionDigits:0, maximumFractionDigits:2};
+        options.minimumFractionDigits = 0;
+        options.maximumFractionDigits = 2;
         break;
       case 'quantity':
-        options = {minimumFractionDigits:0, maximumFractionDigits:5};
+        options.minimumFractionDigits = 0;
+        options.maximumFractionDigits = 5;
         break;
       default:
         break;

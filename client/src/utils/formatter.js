@@ -19,10 +19,10 @@ const seriesDataToChartData = (series) => {
     const instrumentSymbol = si.attributes.symbol;
     const instrumentName = si.attributes.name;
     const instrumentData = []
-    let shares = [];
+    const sharesHeld = [];
     series.data.forEach(sd => {
       if (sd.relationships.instrument.data.id === instrumentId) {
-        const plotPoint = convertToPlotPoint(sd.attributes, shares)
+        const plotPoint = convertToPlotPoint(sd.attributes, sharesHeld)
         if (plotPoint !== null) {
           instrumentData.push(plotPoint);
         }
@@ -34,8 +34,8 @@ const seriesDataToChartData = (series) => {
 };
 
 // Convert monthly series data point to a chart plot point, beginning at START_YEAR, for now.
-// Side effect: updates shares.
-function convertToPlotPoint(dataPoint, shares) {
+// Side effect: updates sharesHeld.
+function convertToPlotPoint(dataPoint, sharesHeld) {
   const START_YEAR  = 2013;
   const START_VALUE = 10.0;  // in thousands
 
@@ -46,15 +46,15 @@ function convertToPlotPoint(dataPoint, shares) {
   const millis = Date.parse(dataPoint['series-date']);
 
   const close_price = parseFloat(dataPoint['adjusted-close-price']);
-  if (shares.length === 0) {
-    shares.push(START_VALUE / close_price);
+  if (sharesHeld.length === 0) {
+    sharesHeld.push(START_VALUE / close_price);
   }
 
   const dividendAmount = parseFloat(dataPoint['dividend-amount']);
   if (dividendAmount > 0.0) {
-    shares[0] += (dividendAmount * shares[0]) / close_price;
+    sharesHeld[0] += (dividendAmount * sharesHeld[0]) / close_price;
   }
-  return [millis, shares[0] * close_price];
+  return [millis, sharesHeld[0] * close_price];
 }
 
 const Fmt = {seriesDataToChartData, serverError};

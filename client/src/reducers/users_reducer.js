@@ -13,7 +13,7 @@ export function updatingUser()    {return {type: userActions.UPDATING}}
 export function warnUser(warning) {return {type: userActions.WARN,   payload: warning}}
 
 export function usersReducer(state = {updatingUser: false, user: {locale: 'en-US'}}, action) {
-  let returnObject = {};
+  let returnObject = null;
   switch (action.type) {
     // Error on Portfolio action.
     case userActions.ERROR: {
@@ -22,19 +22,16 @@ export function usersReducer(state = {updatingUser: false, user: {locale: 'en-US
       returnObject = Object.assign({}, state, {updatingUser: false});
       break;
     }
-
     // Update one User.
     case userActions.UPDATE: {
       const payloadUser = action.payload;
       returnObject = Object.assign({}, state, {updatingUser: false, user: payloadUser.data.attributes});
       break;
     }
-
     // Show that User is being modified.
     case userActions.UPDATING:
       returnObject = Object.assign({}, state, {updatingUser: true});
       break;
-
     // Warning on User action.
     case userActions.WARN: {
       const {prefix, warning} = action.payload;
@@ -42,7 +39,6 @@ export function usersReducer(state = {updatingUser: false, user: {locale: 'en-US
       returnObject = state;
       break;
     }
-
     // Default action.
     default:
       returnObject = state;

@@ -20,7 +20,7 @@ export function updatingPortfolio()            {return {type: portfolioAction.UP
 export function warnPortfolio(warning)         {return {type: portfolioAction.WARN,       payload: warning}}
 
 export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: Sort.columnSorter('name', 'ascending', 'symbol', 'ascending')}, action) {
-  let returnObject = {};
+  let returnObject = null;
   switch (action.type) {
     // Add a Portfolio.
     case portfolioAction.ADD: {
@@ -29,7 +29,6 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
       break;
     }
-
     // Delete a Portfolio.
     case portfolioAction.DELETE: {
       const payloadPortfolioId = action.payload;
@@ -38,7 +37,6 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
       break;
     }
-
     // Error on Portfolio action.
     case portfolioAction.ERROR: {
       const {prefix, error} = action.payload;
@@ -46,7 +44,6 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       returnObject = Object.assign({}, state, {updatingPortfolio: false});
       break;
     }
-
     // Update one Portfolio.
     case portfolioAction.UPDATE: {
       const payloadPortfolio = action.payload;
@@ -55,19 +52,16 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: portfolios});
       break;
     }
-
     // Update all Portfolios.
     case portfolioAction.UPDATE_ALL: {
       const payloadPortfolios = action.payload;
       returnObject = Object.assign({}, state, {updatingPortfolio: false, portfolios: payloadPortfolios});
       break;
     }
-
     // Show that one or more Portfolios are being modified.
     case portfolioAction.UPDATING:
       returnObject = Object.assign({}, state, {updatingPortfolio: true});
       break;
-
     // Warning on Portfolio action.
     case portfolioAction.WARN: {
       const {prefix, warning} = action.payload;
@@ -75,7 +69,6 @@ export function portfoliosReducer(state = {updatingPortfolio: false, portfolios:
       returnObject = state;
       break;
     }
-
     // Default action.
     default:
       returnObject = state;
