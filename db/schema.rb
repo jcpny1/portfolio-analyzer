@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180313194331) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["symbol"], name: "instruments_by_symbol", unique: true
   end
 
   create_table "portfolios", force: :cascade do |t|
