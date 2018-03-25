@@ -12,5 +12,10 @@ RSpec.describe SeriesController, type: :controller do
       expect(pr['included'].length).to be > 0
       expect(pr['included'][0]['attributes']['symbol']).to eq('AAPL')
     end
+    it "bulk loads database series" do
+      request.accept = "application/json"
+      get :series_bulk_load
+      expect(response).to have_http_status(:success)
+    end
   end
 end

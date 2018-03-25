@@ -8,7 +8,8 @@ import * as Request from '../utils/request';
 
 class HeadlinesPage extends Component {
 
-  static HEADLINES_REFRESH_INTERVAL = 120 * 1000;  // in milliseconds.
+  static HEADLINES_REFRESH_INTERVAL = 300 * 1000;  // in milliseconds.
+  static INDEXES_REFRESH_INTERVAL   =  60 * 1000;  // in milliseconds.
 
   constructor(props) {
     super(props);
@@ -16,18 +17,21 @@ class HeadlinesPage extends Component {
       articles: [],
       djiaValue:  new Decimal(0.0, 'index'),
       djiaChange: new Decimal(0.0, 'index', 'delta'),
-      intervalId: -1,
+      headlinesIntervalId: -1,
+      indexesIntervalId: -1,
       refreshTime: new Date(),
     }
   }
 
   componentDidMount() {
     this.refreshHeadlines();
-    this.setState({intervalID: window.setInterval(this.refreshHeadlines, HeadlinesPage.HEADLINES_REFRESH_INTERVAL)});
+    this.setState({headlinesIntervalId: window.setInterval(this.refreshHeadlines, HeadlinesPage.HEADLINES_REFRESH_INTERVAL)});
+    this.setState({indexesIntervalId: window.setInterval(this.refreshIndexes,   HeadlinesPage.INDEXES_REFRESH_INTERVAL)});
   }
 
   componentWillUnmount(){
-    window.clearInterval(this.state.intervalId);
+    window.clearInterval(this.state.headlinesIntervalId);
+    window.clearInterval(this.state.indexesIntervalId);
   }
 
   refreshHeadlines = () => {
@@ -45,6 +49,9 @@ class HeadlinesPage extends Component {
         this.setState({articles: headlines.articles});
       }
     });
+  }
+
+  refreshIndexes = () => {
     Request.indexesRefresh(indices => {
       if ('error' in indices) {
         alert(Fmt.serverError('Refresh Indexes', indices.error));

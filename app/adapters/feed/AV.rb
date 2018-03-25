@@ -53,7 +53,7 @@ module Feed
         error_msg = "Faraday client error: #{e}"
         Feed.fetch_series_failure(symbols, series, error_msg)
       else
-        symbols.each_with_index do |symbol, i|
+        symbols.each do |symbol|
           begin
             Rails.logger.debug "AV SERIES FETCH BEGIN for: #{symbol}."
             resp = conn.get do |req|

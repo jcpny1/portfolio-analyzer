@@ -5,17 +5,20 @@ class FeedWorker
   def perform(name)
     case name
     when 'instrument_bulk_load'
+      # Get latest list of instruments.
       feed_records = Feed.symbology  # Call feed handler to retrieve symbology.
       DataCache.instrument_bulk_load(feed_records)
     when 'price_bulk_load'
-      instruments = Instrument.select(:id, :symbol)  # Get instrument list.
+      # Get latest prices for all instruments.
+      instruments = Instrument.select(:id, :symbol)
       DataCache.price_values(instruments, true)
     when 'series_bulk_load_all'
-      instruments = Instrument.select(:id, :symbol)  # Get series data for all instruments.
+      # Get series data for all instruments.
+      instruments = Instrument.select(:id, :symbol).order(:symbol)
       DataCache.series_bulk_load(instruments)
     when 'series_bulk_load_new'
-      instruments = Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id').distinct)  # Get series data for instruments not yet in Series table.
-# instruments = Instrument.select(:id, :symbol).where("symbol like 'AIM%'")  # Get series data for instruments not yet in Series table.
+      # Get series data for instruments not yet in Series table.
+      instruments = Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id').distinct).order(:symbol)
       DataCache.series_bulk_load(instruments)
     else
       "FeedWorker Error: invalid request (#{name})"

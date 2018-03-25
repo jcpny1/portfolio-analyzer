@@ -33,7 +33,7 @@ select distinct instrument_id from positions where instrument_id not in (select 
 
 \echo Check for bad trades records.
 \prompt 'continue' xxx
-select symbol, trades.* from trades, instruments where trade_price = '0.0' and trades.instrument_id = instruments.id;
+select symbol, trades.* from trades, instruments where trade_price = '0.0' and trades.instrument_id = instruments.id order by 1;
 
 \echo Check for bad series records.
 \prompt 'continue' xxx

@@ -1,14 +1,15 @@
-engines:
-  rubocop:
-    enabled: true
-    checks:
-      Rubocop/Metrics/LineLength:
-        enabled: false
-  bundler-audit:
-    enabled: true
+version: "2"
+checks:
+  method-complexity:
+    config:
+      threshold: 10
+  method-lines:
+    config:
+      threshold: 100
+plugins:
   brakeman:
     enabled: true
-  eslint:
+  bundler-audit:
     enabled: true
   csslint:
     enabled: true
@@ -18,24 +19,27 @@ engines:
       languages:
       - ruby:
       - javascript:
-checks:
-  method-complexity:
-    config:
-      threshold: 10
-  method-lines:
-    config:
-      threshold: 100
-ratings:
-  paths:
-  - app/**
-  - lib/**
-  - "**.rb"
-  - "**.go"
-exclude_paths:
-- spec/**/*
-- test/**/*
-- "**/vendor/**/*"
-- bin
-- client/src/semantic-ui
-- config
-- db
+    mass_threshold: 30
+  eslint:
+    enabled: true
+  golint:
+    enabled: true
+  rubocop:
+    enabled: true
+    checks:
+      Rubocop/Metrics/LineLength:
+        enabled: false
+exclude_patterns:
+- "client/src/semantic-ui/"
+- "config/"
+- "coverage/"
+- "db/"
+- "dist/"
+- "features/"
+- "**/node_modules/"
+- "script/"
+- "**/spec/"
+- "**/test/"
+- "**/tests/"
+- "**/vendor/"
+- "**/*.d.ts"

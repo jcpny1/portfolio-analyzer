@@ -27,7 +27,9 @@ export const Help = () => {
       </ul>
       <h3>News Data</h3>
       <ul>
-        <li>Bloomberg News provided by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a></li>
+        <li>Bloomberg News provided by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a>.</li>
+        <li>Headlines are set to refresh every 5 minutes.</li>
+        <li>The DJIA index is set to refresh every 1 minute.</li>
       </ul>
       <h3>Symbol Lookup</h3>
       <ul>
