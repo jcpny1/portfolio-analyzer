@@ -3,6 +3,7 @@ import {Button, Header, Table} from 'semantic-ui-react';
 import ConfirmDialog from '../containers/ConfirmDialog';
 import PropTypes from 'prop-types';
 import Position  from '../classes/Position';
+import PortfolioChartPage from '../containers/PortfolioChartPage';
 import PositionEditPage from '../containers/PositionEditPage';
 
 export const Positions = (props) => {
@@ -71,6 +72,9 @@ export const Positions = (props) => {
     <div>
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
         {portfolio.name}
+        <span>
+          &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
+        </span>
         <span style={{float:'right'}}>
           <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => portfolioRefresh(portfolio)}/>
         </span>

@@ -28,10 +28,24 @@ class SeriesCache
     saved_series_ctr = 0
     Series.transaction do
       live_series.each do |lse|
+        next if lse.time_interval.nil?  # feed failure.
         # For each live series instrument and date, find corresponding entry in series.
         se = series.find { |se| (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) && (se.series_date == lse.series_date) }
+        # If se is null, do we have an se with the same year and month?
+        # If so, reuse that se record for the update.
+        if se.nil?
+          lse_series_date = lse.series_date.to_time.to_datetime
+          lse_year = lse_series_date.year
+          lse_month = lse_series_date.month
+          se = series.find do |se|
+            se_series_date = se.series_date.to_time.to_datetime
+            (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) &&
+            (se_series_date.year == lse_year) && (se_series_date.month == lse_month)
+          end
+        end
+        # If se is still null, then create a new record.
         se = Series.new(instrument: lse.instrument) if se.nil?
-        # If any values are not equal, update se.
+        # If any values have changed, update se.
         begin
           if se.changed?(lse)
             se.time_interval   = lse.time_interval

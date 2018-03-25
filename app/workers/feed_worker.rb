@@ -15,6 +15,7 @@ class FeedWorker
       DataCache.series_bulk_load(instruments)
     when 'series_bulk_load_new'
       instruments = Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id').distinct)  # Get series data for instruments not yet in Series table.
+# instruments = Instrument.select(:id, :symbol).where("symbol like 'AIM%'")  # Get series data for instruments not yet in Series table.
       DataCache.series_bulk_load(instruments)
     else
       "FeedWorker Error: invalid request (#{name})"
