@@ -30,6 +30,7 @@ dd-mmm-yy  0.4.2  Reduced headlines refresh rate to not exceed the free license 
                   Removed lastUpdate from the positions page.
                   Added pctTotalMV to the positions page.
                   Removed some code smells from feed handlers.
+                  Starting chart date will be the latest start date of all instruments in the chart.
 23-Mar-18  0.4.1  Update for loofah gem security fix.
                   Update chart $ symbol display.
                   Only keep the latest data point for each month in the monthly series table.
