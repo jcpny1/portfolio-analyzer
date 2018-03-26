@@ -14,15 +14,15 @@ const seriesDataToChartData = (series) => {
   // TODO we're making a pass over all instruments' data points for every instrument.
   // Better to do in one pass for all instruments.
   // For now it's ok since the time lost is small compared to the time to get the data from the server.
-  series.included.forEach(si => {
-    const instrumentId = si.id;
-    const instrumentSymbol = si.attributes.symbol;
-    const instrumentName = si.attributes.name;
+  series.included.forEach(seriesInstrument => {
+    const instrumentId = seriesInstrument.id;
+    const instrumentSymbol = seriesInstrument.attributes.symbol;
+    const instrumentName = seriesInstrument.attributes.name;
     const instrumentData = []
     const sharesHeld = [];
-    series.data.forEach(sd => {
-      if (sd.relationships.instrument.data.id === instrumentId) {
-        const plotPoint = convertToPlotPoint(sd.attributes, sharesHeld)
+    series.data.forEach(seriesInstrumentDataPoint => {
+      if (seriesInstrumentDataPoint.relationships.instrument.data.id === instrumentId) {
+        const plotPoint = convertToPlotPoint(seriesInstrumentDataPoint.attributes, sharesHeld)
         if (plotPoint !== null) {
           instrumentData.push(plotPoint);
         }

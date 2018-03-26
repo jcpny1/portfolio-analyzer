@@ -27,41 +27,46 @@ class SeriesCache
   private_class_method def self.save_series(live_series, series)
     saved_series_ctr = 0
     Series.transaction do
-      live_series.each do |lse|
-        next if lse.time_interval.nil?  # feed failure.
-        # For each live series instrument and date, find corresponding entry in series.
-        se = series.find { |se| (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) && (se.series_date == lse.series_date) }
-        # If se is null, do we have an se with the same year and month?
-        # If so, reuse that se record for the update.
-        if se.nil?
-          lse_series_date = lse.series_date.to_time.to_datetime
-          lse_year = lse_series_date.year
-          lse_month = lse_series_date.month
-          se = series.find do |se|
-            se_series_date = se.series_date.to_time.to_datetime
-            (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) &&
-            (se_series_date.year == lse_year) && (se_series_date.month == lse_month)
+      live_series.each do |ls_instrument|
+        ls_instrument.each do |lse|
+          break if lse.nil?  # nil element is result of oldest year cutoff mapping in feed handler.
+          if lse.time_interval.nil?
+            Rails.logger.error "Missing series data point: #{lse.inspect}."
           end
-        end
-        # If se is still null, then create a new record.
-        se = Series.new(instrument: lse.instrument) if se.nil?
-        # If any values have changed, update se.
-        begin
-          if se.changed?(lse)
-            se.time_interval   = lse.time_interval
-            se.series_date     = lse.series_date
-            se.open_price      = lse.open_price
-            se.high_price      = lse.high_price
-            se.low_price       = lse.low_price
-            se.close_price     = lse.close_price
-            se.adjusted_close_price = lse.adjusted_close_price
-            se.volume          = lse.volume
-            se.dividend_amount = lse.dividend_amount
-            se.save!
-            saved_series_ctr += 1
+          # For each live series instrument and date, find corresponding entry in series.
+          se = series.find { |se| (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) && (se.series_date == lse.series_date) }
+          # If se is null, do we have an se with the same year and month?
+          # If so, reuse that se record for the update.
+          if se.nil?
+            lse_series_date = lse.series_date.to_time.to_datetime
+            lse_year = lse_series_date.year
+            lse_month = lse_series_date.month
+            se = series.find do |se|
+              se_series_date = se.series_date.to_time.to_datetime
+              (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) &&
+              (se_series_date.year == lse_year) && (se_series_date.month == lse_month)
+            end
           end
-        rescue ActiveRecord::ActiveRecordError => e
-          Rails.logger.error "Error saving series: #{se.inspect}, #{e}"
+          # If se is still null, then create a new record.
+          se = Series.new(instrument: lse.instrument) if se.nil?
+          # If any values have changed, update se.
+          begin
+            if se.changed?(lse)
+              se.time_interval   = lse.time_interval
+              se.series_date     = lse.series_date
+              se.open_price      = lse.open_price
+              se.high_price      = lse.high_price
+              se.low_price       = lse.low_price
+              se.close_price     = lse.close_price
+              se.adjusted_close_price = lse.adjusted_close_price
+              se.volume          = lse.volume
+              se.dividend_amount = lse.dividend_amount
+              se.save!
+              saved_series_ctr += 1
+            end
+          rescue ActiveRecord::ActiveRecordError => e
+            Rails.logger.error "Error saving series: #{se.inspect}, #{e}."
+          end
         end
       end
     end

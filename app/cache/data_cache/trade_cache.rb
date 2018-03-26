@@ -44,11 +44,10 @@ class TradeCache
     Trade.transaction do
       live_trades.each do |live_trade|
         trade = trades.find { |trade| trade.instrument.symbol == live_trade.instrument.symbol }
-        # Leave #new in loop. Only hit on error condition that will likely never occur.
-        # It's the case where the feed returned an instrument that we didn't request.
-        # For a feed that drives what instruments we get back, you would not want to have a #new in a high frequency loop like this.
-        trade = Trade.new(instrument: live_trade.instrument) if trade.nil?
-        if !live_trade.trade_price.nil?
+        next if trade.nil?  # we got an instrument that we didn't request!
+        if live_trade.trade_price.nil?  # The feed glitched.
+          trade.error = live_trade.error
+        else
           begin
             if trade.changed?(live_trade)
               trade.trade_date   = live_trade.trade_date
@@ -59,11 +58,9 @@ class TradeCache
               saved_trades_ctr += 1
             end
           rescue ActiveRecord::ActiveRecordError => e
-            Rails.logger.error "Error saving trade: #{trade.inspect}, #{e}"
+            Rails.logger.error "Error saving trade: #{trade.inspect}, #{e}."
             trade.error = live_trade.error
           end
-        else
-          trade.error = live_trade.error
         end
       end
     end

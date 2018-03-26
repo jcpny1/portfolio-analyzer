@@ -57,16 +57,16 @@ module Feed
   end
 
   # Create error series for all symbols.
-  def self.fetch_series_failure(symbols, series, error_msg)
-    symbols.each_with_index do |symbol, i|
-      series[i] = error_series(symbol, error_msg)
+  def self.fetch_series_request_failure(symbols, error_msg)
+    symbols.map do |symbol|
+      error_series(symbol, error_msg)
     end
   end
 
   # Create error trades for all symbols.
-  def self.fetch_trade_failure(symbols, trades, error_msg)
-    symbols.each_with_index do |symbol, i|
-      trades[i] = error_trade(symbol, error_msg)
+  def self.fetch_trade_request_failure(symbols, error_msg)
+    symbols.map do |symbol|
+      error_trade(symbol, error_msg)
     end
   end
 

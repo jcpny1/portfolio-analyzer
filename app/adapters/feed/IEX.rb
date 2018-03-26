@@ -1,75 +1,70 @@
 module Feed
   # This is the Investors Exchange API handler.
+  ################################################
+  # See the bottom of this file for sample data. #
+  ################################################
   class IEX
-    #
-    # See the bottom of this file for sample data.
-    #
-    # Makes data request(s) for an array of symbols and returns results in trades.
+    # Makes data request for an array of symbols.
+    # Returns array of results.
     def self.latest_trades(symbols)
-      fetch_time = DateTime.now
       symbol_list = symbols.join(',')
-      trades = Array.new(symbols.length)
-      uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
-      uri.query_values = { types: 'quote', filter: 'companyName,latestPrice,change,latestUpdate', symbols: symbol_list }
       begin
+        uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
+        uri.query_values = { types: 'quote', filter: 'symbol,latestPrice,change,latestUpdate', symbols: symbol_list }
         Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
         resp = Faraday.get(uri)
         Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol_list}."
         response = JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: Faraday client error: #{e}."
-        Feed.fetch_trade_failure(symbols, trades, 'The feed is down.')
+        Feed.fetch_trade_request_failure(symbols, 'The feed is down.')
       rescue JSON::ParserError => e  # JSON.parse error
         Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: JSON parse error: #{e}."
-        Feed.fetch_trade_failure(symbols, trades, 'The feed is down.')
+        Feed.fetch_trade_request_failure(symbols, 'The feed is down.')
       else
-        #
-        # Error example:
-        #   <no errors defined yet>
-        #
-        symbols.each_with_index do |symbol, i|
-          trades[i] = process_price_response(symbol, response)
-          trades[i].created_at = fetch_time
-        end
+        process_price_response(response)
       end
-      trades
     end
 
     # Return the feed's list of valid symbols.
-    # Response format: [{symbol; 'ABC', name: 'Acme Banana'}]
+    # Response format: [{symbol; 'ABC', name: 'Acme Banana Company'}]
     def self.symbology
       begin
-        response = {}
         Rails.logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
         resp = Faraday.get('https://api.iextrading.com/1.0/ref-data/symbols')
         Rails.logger.debug 'IEX SYMBOLOGY FETCH END.'
-        response = JSON.parse(resp.body)
+        JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect.
         Rails.logger.error "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}."
+        {}
       rescue JSON::ParserError => e  # JSON.parse error
         Rails.logger.error "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}."
+        {}
       end
-      response
     end
 
     ### private ###
 
     # Extract trade data or an error from the response.
-    private_class_method def self.process_price_response(symbol, response)
-      if (symbol_tick = response[symbol]).nil? || (symbol_quote = symbol_tick['quote']).nil?
-        trade = Feed.error_trade(symbol, 'Price is not available.')
-      else
-        # TODO: Need proper timezone info.
-        # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.
-        #       On the other hand, then the caller would need to create or update a Trade object from this object.
-        trade = Trade.new do |t|
-          t.instrument   = Instrument.find_by(symbol: symbol)
-          t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
-          t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
-          t.price_change = symbol_quote['change'].to_f.round(4)
+    private_class_method def self.process_price_response(response)
+      fetch_time = DateTime.now
+      response.keys().map do |symbol|
+        symbol_quote = response[symbol]['quote']
+        if symbol_quote.nil?
+          Feed.error_trade(symbol, 'Price is not available.')
+        else
+          # TODO: Need proper timezone info.
+          # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.
+          #       On the other hand, then the caller would need to work with raw live data when updating the corresponding trade.
+          Trade.new do |t|
+            t.instrument   = Instrument.find_by(symbol: symbol)
+            t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
+            t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
+            t.price_change = symbol_quote['change'].to_f.round(4)
+            t.created_at   = fetch_time
+          end
         end
       end
-      trade
     end
 
     ###################

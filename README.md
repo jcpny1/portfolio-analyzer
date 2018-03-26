@@ -24,7 +24,12 @@ The remaining folders are primarily for the server code.
 ```
 dd-mmm-yy  0.4.2  Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
                   Refresh series data in symbol order.
-                  Incorporated a few Code Climate suggestions. Also update config file to V2.
+                  Incorporated a few Code Climate suggestions. Also updated config file to V2.
+                  Added new Decimal class data type 'percent'.
+                  Added new derived field 'pctTotalMV' (percentage of Total Market Value of portfolio) to class Position.
+                  Removed lastUpdate from the positions page.
+                  Added pctTotalMV to the positions page.
+                  Removed some code smells from feed handlers.
 23-Mar-18  0.4.1  Update for loofah gem security fix.
                   Update chart $ symbol display.
                   Only keep the latest data point for each month in the monthly series table.

@@ -18,17 +18,18 @@ export const Positions = (props) => {
         <Table.HeaderCell sorted={sortColName === 'lastTrade'     ? sortDirection : null} onClick={() => onClickColHeader('lastTrade')}>Price</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'priceChange'   ? sortDirection : null} onClick={() => onClickColHeader('priceChange')}>Change</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'marketValue'   ? sortDirection : null} onClick={() => onClickColHeader('marketValue')}>Market Value</Table.HeaderCell>
+        <Table.HeaderCell sorted={sortColName === 'pctTotalMV'    ? sortDirection : null} onClick={() => onClickColHeader('pctTotalMV')}>% of Portfolio</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'dayChange'     ? sortDirection : null} onClick={() => onClickColHeader('dayChange')}>Day Change</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'cost'          ? sortDirection : null} onClick={() => onClickColHeader('cost')}>Cost Basis</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'gainLoss'      ? sortDirection : null} onClick={() => onClickColHeader('gainLoss')}>Gain/Loss</Table.HeaderCell>
         <Table.HeaderCell sorted={sortColName === 'lastTradeDate' ? sortDirection : null} onClick={() => onClickColHeader('lastTradeDate')}>Last Trade</Table.HeaderCell>
-        <Table.HeaderCell sorted={sortColName === 'lastUpdate'    ? sortDirection : null} onClick={() => onClickColHeader('lastUpdate')}>Last Update</Table.HeaderCell>
       </Table.Row>
     );
   }
 
-  function listPositions() {
-    return portfolio.positions.map(position => {
+  function listPositions(positions, totalMV) {
+    return positions.map(position => {
+      position.pctTotalMV = position.marketValue / totalMV;
       return (
         <Table.Row key={position.id} textAlign='right'>
           <Table.Cell textAlign='center'>
@@ -40,11 +41,11 @@ export const Positions = (props) => {
           <Table.Cell>{position.lastTrade.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.priceChange.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.marketValue.toHTML(userLocale)}</Table.Cell>
+          <Table.Cell>{position.pctTotalMV.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.dayChange.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.cost.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.gainLoss.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.lastTradeDate.toHTML(userLocale)}</Table.Cell>
-          <Table.Cell>{position.lastUpdate.toHTML(userLocale)}</Table.Cell>
         </Table.Row>
       );
     });
@@ -59,10 +60,10 @@ export const Positions = (props) => {
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell>{portfolio.marketValue.toHTML(userLocale)}</Table.HeaderCell>
+        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell>{portfolio.dayChange.toHTML(userLocale)}</Table.HeaderCell>
         <Table.HeaderCell>{portfolio.cost.toHTML(userLocale)}</Table.HeaderCell>
         <Table.HeaderCell>{portfolio.gainLoss.toHTML(userLocale)}</Table.HeaderCell>
-        <Table.HeaderCell></Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>
     );
@@ -81,7 +82,7 @@ export const Positions = (props) => {
       </Header>
       <Table compact sortable striped style={{marginTop:0}}>
         <Table.Header>{columnTitles()}</Table.Header>
-        <Table.Body>{listPositions()}</Table.Body>
+        <Table.Body>{listPositions(portfolio.positions, portfolio.marketValue)}</Table.Body>
         <Table.Footer>{sumPositions()}</Table.Footer>
       </Table>
     </div>

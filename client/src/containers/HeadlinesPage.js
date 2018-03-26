@@ -26,7 +26,8 @@ class HeadlinesPage extends Component {
   componentDidMount() {
     this.refreshHeadlines();
     this.setState({headlinesIntervalId: window.setInterval(this.refreshHeadlines, HeadlinesPage.HEADLINES_REFRESH_INTERVAL)});
-    this.setState({indexesIntervalId: window.setInterval(this.refreshIndexes,   HeadlinesPage.INDEXES_REFRESH_INTERVAL)});
+    this.refreshIndexes();
+    this.setState({indexesIntervalId: window.setInterval(this.refreshIndexes, HeadlinesPage.INDEXES_REFRESH_INTERVAL)});
   }
 
   componentWillUnmount(){

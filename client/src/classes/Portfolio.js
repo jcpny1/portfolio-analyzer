@@ -61,10 +61,6 @@ export default class Portfolio {
       case 'name':
         portfolios.sort(Sort.sortBy(`_${portfolioProperty}`, portfolioReverseSort, function(a){return a.toUpperCase()}));
         break;
-      case 'dayChange':    // fall through
-      case 'gainLoss':     // fall through
-      case 'marketValue':  // fall through
-      case 'cost':         // fall through
       default:
         portfolios.sort(Sort.sortBy(`_${portfolioProperty}`, portfolioReverseSort));
         break;
@@ -76,15 +72,6 @@ export default class Portfolio {
         case 'symbol':
           portfolio._positions.sort(Sort.sortBy('_instrument', positionReverseSort, function(a){return a.symbol}));
           break;
-        case 'cost':           // fall through
-        case 'dayChange':      // fall through
-        case 'gainLoss':       // fall through
-        case 'lastTrade':      // fall through
-        case 'marketValue':    // fall through
-        case 'priceChange':    // fall through
-        case 'quantity':       // fall through
-        case 'dateAcquired':   // fall through
-        case 'lastTradeDate':  // fall through
         default:
           portfolio.positions.sort(Sort.sortBy(`_${positionProperty}`, positionReverseSort, function(a){return a.valueOf()}));
           break;

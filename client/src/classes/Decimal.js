@@ -76,6 +76,11 @@ export default class Decimal {
         options.minimumFractionDigits = 0;
         options.maximumFractionDigits = 2;
         break;
+      case 'percent':
+        options.style ='percent';
+        options.minimumFractionDigits = 0;
+        options.maximumFractionDigits = 2;
+        break;
       case 'quantity':
         options.minimumFractionDigits = 0;
         options.maximumFractionDigits = 5;

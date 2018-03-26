@@ -31,6 +31,7 @@ export default class Position {
   get lastUpdate()    {return this._lastUpdate}
   get lastTradeDate() {return this._lastTradeDate}
   get marketValue()   {return this._marketValue}
+  get pctTotalMV()    {return this._pctTotalMV}
   get portfolio_id()  {return this._portfolio_id}
   get priceChange()   {return this._priceChange}
   get quantity()      {return this._quantity}
@@ -38,6 +39,7 @@ export default class Position {
   set cost(cost)                 {this._cost          = new Decimal(cost, 'currency')}
   set dateAcquired(dateAcquired) {this._dateAcquired  = new DateTime(dateAcquired)}
   set instrument(instrument)     {this._instrument    = instrument}
+  set pctTotalMV(pctTotalMV)     {this._pctTotalMV    = new Decimal(pctTotalMV, 'percent')}
   set quantity(quantity)         {this._quantity      = new Decimal(quantity, 'quantity')}
 
   reprice(serverTrades) {
@@ -56,6 +58,7 @@ export default class Position {
     this._dayChange   = new Decimal(this._quantity * this._priceChange, 'currency', 'delta');
     this._marketValue = new Decimal(this._quantity * this._lastTrade, 'currency');
     this._gainLoss    = new Decimal(this._marketValue - this._cost, 'currency', 'delta');
+    this._pctTotalMV  = new Decimal(0.0, 'percent');
   }
 
   // If position strings are valid, returns null. Otherwise, returns error message.
