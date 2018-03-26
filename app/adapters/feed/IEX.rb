@@ -10,7 +10,7 @@ module Feed
       symbol_list = symbols.join(',')
       begin
         uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
-        uri.query_values = { types: 'quote', filter: 'symbol,latestPrice,change,latestUpdate', symbols: symbol_list }
+        uri.query_values = { types: 'quote', filter: 'latestPrice,change,latestUpdate', symbols: symbol_list }
         Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
         resp = Faraday.get(uri)
         Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol_list}."

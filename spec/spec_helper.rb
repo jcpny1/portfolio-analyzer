@@ -68,48 +68,48 @@ RSpec.configure do |config|
               }',
       headers: {})
   # Request instrument prices for user.
-  stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=companyName,latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").
+  stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").
     with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
     to_return(
       status: 200,
       body:   '{
-                "AAPL":{"quote":{"companyName":"Apple Inc.","latestPrice":175.42,"change":-2.6,"latestUpdate":1521472593247}},
-                "AMZN":{"quote":{"companyName":"Amazon.com Inc.","latestPrice":1546.96,"change":-24.72,"latestUpdate":1521472585431}},
-                "BABA":{"quote":{"companyName":"Alibaba Group Holding Limited","latestPrice":196.46,"change":-3.82,"latestUpdate":1521472581024}},
-                "COF":{"quote":{"companyName":"Capital One Financial Corporation","latestPrice":98.43,"change":-0.93,"latestUpdate":1521472536098}},
-                "FBGX":{"quote":{"companyName":"UBS AG FI Enhanced Large Cap Growth ETN","latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
-                "GOOG":{"quote":{"companyName":"Alphabet Inc.","latestPrice":1097.22,"change":-38.51,"latestUpdate":1521472582290}},
-                "GOOGL":{"quote":{"companyName":"Alphabet Inc.","latestPrice":1097.6,"change":-36.82,"latestUpdate":1521472593134}},
-                "GSK":{"quote":{"companyName":"GlaxoSmithKline PLC","latestPrice":37.135,"change":-0.145,"latestUpdate":1521472468254}},
-                "HD":{"quote":{"companyName":"Home Depot Inc. (The)","latestPrice":178.235,"change":-0.725,"latestUpdate":1521472533502}},
-                "INTC":{"quote":{"companyName":"Intel Corporation","latestPrice":50.495,"change":-0.675,"latestUpdate":1521472520980}},
-                "JNJ":{"quote":{"companyName":"Johnson & Johnson","latestPrice":131.64,"change":-2.04,"latestUpdate":1521472573951}},
-                "SNY":{"quote":{"companyName":"Sanofi American Depositary Shares (Each repstg one-half of one)","latestPrice":41.135,"change":0.175,"latestUpdate":1521472372465}}
+                "AAPL":{"quote":{"latestPrice":175.42,"change":-2.6,"latestUpdate":1521472593247}},
+                "AMZN":{"quote":{"latestPrice":1546.96,"change":-24.72,"latestUpdate":1521472585431}},
+                "BABA":{"quote":{"latestPrice":196.46,"change":-3.82,"latestUpdate":1521472581024}},
+                "COF":{"quote":{"latestPrice":98.43,"change":-0.93,"latestUpdate":1521472536098}},
+                "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
+                "GOOG":{"quote":{"latestPrice":1097.22,"change":-38.51,"latestUpdate":1521472582290}},
+                "GOOGL":{"quote":{"latestPrice":1097.6,"change":-36.82,"latestUpdate":1521472593134}},
+                "GSK":{"quote":{"latestPrice":37.135,"change":-0.145,"latestUpdate":1521472468254}},
+                "HD":{"quote":{"latestPrice":178.235,"change":-0.725,"latestUpdate":1521472533502}},
+                "INTC":{"quote":{"latestPrice":50.495,"change":-0.675,"latestUpdate":1521472520980}},
+                "JNJ":{"quote":{"latestPrice":131.64,"change":-2.04,"latestUpdate":1521472573951}},
+                "SNY":{"quote":{"latestPrice":41.135,"change":0.175,"latestUpdate":1521472372465}}
                 }',
       headers: {})
   # Request instrument prices for all instruments.
-  stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=companyName,latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
+  stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
     with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
     to_return(
       status: 200,
       body:   '{
-                "AAPL":{"quote":{"companyName":"Apple Inc.","latestPrice":175.6,"change":-2.42,"latestUpdate":1521473015555}},
-                "AMZN":{"quote":{"companyName":"Amazon.com Inc.","latestPrice":1547.75,"change":-23.93,"latestUpdate":1521472989944}},
-                "BABA":{"quote":{"companyName":"Alibaba Group Holding Limited","latestPrice":196.58,"change":-3.7,"latestUpdate":1521473025985}},
-                "COF":{"quote":{"companyName":"Capital One Financial Corporation","latestPrice":98.31,"change":-1.05,"latestUpdate":1521472812505}},
-                "DIA":{"quote":{"companyName":"SPDR Dow Jones Industrial Average","latestPrice":246.66,"change":-2.44,"latestUpdate":1521472967711}},
-                "FBGX":{"quote":{"companyName":"UBS AG FI Enhanced Large Cap Growth ETN","latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
-                "GOOG":{"quote":{"companyName":"Alphabet Inc.","latestPrice":1097.865,"change":-37.865,"latestUpdate":1521473007173}},
-                "GOOGL":{"quote":{"companyName":"Alphabet Inc.","latestPrice":1098.8,"change":-35.62,"latestUpdate":1521473025840}},
-                "GSK":{"quote":{"companyName":"GlaxoSmithKline PLC","latestPrice":37.165,"change":-0.115,"latestUpdate":1521472921890}},
-                "HD":{"quote":{"companyName":"Home Depot Inc. (The)","latestPrice":178.44,"change":-0.52,"latestUpdate":1521473018188}},
-                "INTC":{"quote":{"companyName":"Intel Corporation","latestPrice":50.51,"change":-0.66,"latestUpdate":1521473018049}},
-                "IWM":{"quote":{"companyName":"iShares Russell 2000","latestPrice":155.85,"change":-1.95,"latestUpdate":1521473021918}},
-                "JNJ":{"quote":{"companyName":"Johnson & Johnson","latestPrice":131.73,"change":-1.95,"latestUpdate":1521472959823}},
-                "QQQ":{"quote":{"companyName":"PowerShares QQQ Trust Series 1","latestPrice":167.37,"change":-3.65,"latestUpdate":1521473019483}},
-                "SNY":{"quote":{"companyName":"Sanofi American Depositary Shares (Each repstg one-half of one)","latestPrice":41.14,"change":0.18,"latestUpdate":1521472948422}},
-                "SPY":{"quote":{"companyName":"SPDR S&P 500","latestPrice":271.32,"change":-2.88,"latestUpdate":1521473026531}},
-                "URTH":{"quote":{"companyName":"Ishares MSCI World Index Fund","latestPrice":88.822,"change":-0.698,"latestUpdate":1521472050165}}
+                "AAPL":{"quote":{"latestPrice":175.6,"change":-2.42,"latestUpdate":1521473015555}},
+                "AMZN":{"quote":{"latestPrice":1547.75,"change":-23.93,"latestUpdate":1521472989944}},
+                "BABA":{"quote":{"latestPrice":196.58,"change":-3.7,"latestUpdate":1521473025985}},
+                "COF":{"quote":{"latestPrice":98.31,"change":-1.05,"latestUpdate":1521472812505}},
+                "DIA":{"quote":{"latestPrice":246.66,"change":-2.44,"latestUpdate":1521472967711}},
+                "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
+                "GOOG":{"quote":{"latestPrice":1097.865,"change":-37.865,"latestUpdate":1521473007173}},
+                "GOOGL":{"quote":{"latestPrice":1098.8,"change":-35.62,"latestUpdate":1521473025840}},
+                "GSK":{"quote":{"latestPrice":37.165,"change":-0.115,"latestUpdate":1521472921890}},
+                "HD":{"quote":{"latestPrice":178.44,"change":-0.52,"latestUpdate":1521473018188}},
+                "INTC":{"quote":{"latestPrice":50.51,"change":-0.66,"latestUpdate":1521473018049}},
+                "IWM":{"quote":{"latestPrice":155.85,"change":-1.95,"latestUpdate":1521473021918}},
+                "JNJ":{"quote":{"latestPrice":131.73,"change":-1.95,"latestUpdate":1521472959823}},
+                "QQQ":{"quote":{"latestPrice":167.37,"change":-3.65,"latestUpdate":1521473019483}},
+                "SNY":{"quote":{"latestPrice":41.14,"change":0.18,"latestUpdate":1521472948422}},
+                "SPY":{"quote":{"latestPrice":271.32,"change":-2.88,"latestUpdate":1521473026531}},
+                "URTH":{"quote":{"URTH","latestPrice":88.822,"change":-0.698,"latestUpdate":1521472050165}}
               }',
       headers: {})
   # Request for DJIA index value.
