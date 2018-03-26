@@ -9,6 +9,7 @@ const PortfolioChart = (props) => {
   const {etfSymbols, refData} = props;
 
   function plotInstruments() {
+    // Default etfSymbols to not visible.
     return refData.map(series => {
       return (
         <LineSeries
