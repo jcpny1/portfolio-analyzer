@@ -9,8 +9,8 @@ class SeriesCache
       processed += instrument_batch.length
       symbols = instrument_batch.map(&:symbol)
       series_batch = series_from_database(symbols)  # Get database series as a baseline.
-      Feed.load_series(symbols) do |live_series|  # Get feed series.
-        save_series(live_series, series_batch)  # Update database series with feed series.
+      Feed.load_series(symbols) do |live_series|    # Get feed series.
+        save_series(live_series, series_batch)      # Update database series with feed series.
       end
     end
     Rails.logger.debug "SERIES BULK LOAD END (received: #{instruments.length}, processed: #{processed})."
@@ -32,6 +32,7 @@ class SeriesCache
           break if lse.nil?  # nil element is result of oldest year cutoff mapping in feed handler.
           if lse.time_interval.nil?
             Rails.logger.error "Missing series data point: #{lse.inspect}."
+            next
           end
           # For each live series instrument and date, find corresponding entry in series.
           se = series.find { |se| (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) && (se.series_date == lse.series_date) }

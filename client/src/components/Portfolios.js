@@ -28,8 +28,8 @@ export const Portfolios = (props) => {
       return (
         <Table.Row key={portfolio.id} textAlign='right'>
           <Table.Cell textAlign='center'>
-            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio'/>}
-            &emsp;{<ConfirmDialog triggerType='icon' name='remove' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
+            {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio name'/>}
+            &emsp;{<ConfirmDialog triggerType='icon' name='trash' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
             &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.name}</Link></Table.Cell>
