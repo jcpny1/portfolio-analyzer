@@ -11,15 +11,15 @@ const PortfolioChart = (props) => {
 
   function plotInstruments() {
     // Default only portfolio to initially chart.
-    return refData.map(series => {
+    return Object.values(refData).map(series => {
       return (
         <LineSeries
-          key={series.instrumentSymbol}
-          id={series.instrumentName}
+          key={series.symbol}
+          id={series.name}
           marker={{enabled: false}}
-          visible={series.instrumentName === portfolioName}
-          name={`${Fmt.truncate(series.instrumentName, 20)} (${series.instrumentSymbol})`}
-          data={series.instrumentData}
+          visible={(series.name === portfolioName && series.data.length > 0) || series.symbol === 'SPY'}
+          name={`${Fmt.truncate(series.name, 20)} (${series.symbol})`}
+          data={series.data}
         />
       );
     });
