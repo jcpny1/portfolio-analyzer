@@ -27,13 +27,14 @@ class PortfolioChartPage extends Component {
 
   refreshData = () => {
     const {portfolio} = this.props;
+    const portfolioSymbolIds = portfolio.positions.map(position => position.instrument.id);
     const portfolioSymbols = portfolio.positions.map(position => position.instrument.symbol);
     const symbols = [...new Set(portfolioSymbols.concat(PortfolioChartPage.ETF_SYMBOLS))].join(',');  // uniquify portfolio and ETF symbol lists and turn into comma-separated string.
     Request.seriesFetch(symbols, series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
-        const chartData = Fmt.seriesDataToChartData(series, portfolio.name, portfolioSymbols);
+        const chartData = Fmt.seriesDataToChartData(series, portfolio.name, portfolioSymbolIds);
         this.setState({refData: chartData});
       }
     });
