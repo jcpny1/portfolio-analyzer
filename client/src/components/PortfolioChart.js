@@ -1,23 +1,24 @@
 import React from 'react';
 import Highcharts from 'highcharts';
 import {Chart, HighchartsChart, Legend, LineSeries, Title, Tooltip, withHighcharts, XAxis, YAxis} from 'react-jsx-highcharts';
+import Fmt from '../utils/formatter';
 
-const plotOptions = {
+const plotOptions = {  // leaving here for future use.
 };
 
 const PortfolioChart = (props) => {
-  const {etfSymbols, refData} = props;
+  const {portfolioName, refData} = props;
 
   function plotInstruments() {
-    // Default etfSymbols to not visible.
+    // Default only portfolio to initially chart.
     return refData.map(series => {
       return (
         <LineSeries
           key={series.instrumentSymbol}
           id={series.instrumentName}
           marker={{enabled: false}}
-          visible={!etfSymbols.includes(series.instrumentSymbol)}
-          name={`${series.instrumentName} (${series.instrumentSymbol})`}
+          visible={series.instrumentName === portfolioName}
+          name={`${Fmt.truncate(series.instrumentName, 20)} (${series.instrumentSymbol})`}
           data={series.instrumentData}
         />
       );

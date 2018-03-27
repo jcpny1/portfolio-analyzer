@@ -27,13 +27,13 @@ class PortfolioChartPage extends Component {
 
   refreshData = () => {
     const {portfolio} = this.props;
-    const symbols_array = portfolio.positions.map(position => position.instrument.symbol).concat(PortfolioChartPage.ETF_SYMBOLS);
-    const symbols = [...new Set(symbols_array)].join(',');  // uniquify symbol list and turn into comma-separated string.
+    const portfolioSymbols = portfolio.positions.map(position => position.instrument.symbol);
+    const symbols = [...new Set(portfolioSymbols.concat(PortfolioChartPage.ETF_SYMBOLS))].join(',');  // uniquify portfolio and ETF symbol lists and turn into comma-separated string.
     Request.seriesFetch(symbols, series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
-        const chartData = Fmt.seriesDataToChartData(series);
+        const chartData = Fmt.seriesDataToChartData(series, portfolio.name, portfolioSymbols);
         this.setState({refData: chartData});
       }
     });
@@ -55,7 +55,7 @@ class PortfolioChartPage extends Component {
   }
 
   render() {
-    const {iconColor, iconName, tooltip} = this.props;
+    const {iconColor, iconName, portfolio, tooltip} = this.props;
     const {refData, modalOpen} = this.state;
     return (
       <Modal
@@ -67,8 +67,8 @@ class PortfolioChartPage extends Component {
         size={'large'}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header content='Portfolio Chart' icon='chart line' size='small'/></Modal.Header>
-        <Modal.Content><PortfolioChart refData={refData} etfSymbols={PortfolioChartPage.ETF_SYMBOLS}/></Modal.Content>
+        <Modal.Header><Header content={portfolio.name} icon='chart line' size='small'/></Modal.Header>
+        <Modal.Content><PortfolioChart refData={refData} portfolioName={portfolio.name}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left' color='red' onClick={this.handleCancel}>Close</Button>
         </Modal.Actions>
