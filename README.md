@@ -22,7 +22,8 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-dd-mmm-yy  0.4.2  Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
+27-Mar-18  0.5.0  Add portfolio composite to chart in addition to individual instruments.
+                  Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
                   Refresh series data in symbol order.
                   Incorporated a few Code Climate suggestions. Also updated config file to V2.
                   Added new Decimal class data type 'percent'.
