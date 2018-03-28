@@ -95,7 +95,7 @@ function convertToPlotPoint(dataPoint, chartDataInstrument) {
 }
 
 // Of all the instruments in the series, return the series-date of the instrument series that starts the latest.
-// Assumes series data is grouped by instrument and is in series-date descending order.
+// Assumes series data is grouped by instrument and is in series-date ascending order.
 // That is, the first data point we encounter for each instrument will be its earliest data point.
 function latestSeriesStartDate(series) {
   let latestStartDate = '';

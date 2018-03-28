@@ -10,7 +10,7 @@ class FeedWorker
       DataCache.instrument_bulk_load(feed_records)
     when 'price_bulk_load'
       # Get latest prices for all instruments.
-      instruments = Instrument.select(:id, :symbol)
+      instruments = Instrument.select(:id, :symbol).order(:symbol)
       DataCache.price_values(instruments, true)
     when 'series_bulk_load_all'
       # Get series data for all instruments.
