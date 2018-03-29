@@ -43,6 +43,11 @@ module Feed
       api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
       begin
         conn = Faraday.new(url: 'https://www.alphavantage.co/query')
+        # conn = Faraday.new(:url => 'https://www.alphavantage.co/query') do |faraday|
+        #   faraday.request  :url_encoded             # form-encode POST params
+        #   faraday.response :logger                  # log requests to STDOUT
+        #   faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+        # end
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "AV SERIES FETCH ERROR for: #{symbols.inspect}."
         error_msg = "Faraday client error: #{e}"

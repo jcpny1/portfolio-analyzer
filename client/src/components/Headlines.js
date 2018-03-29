@@ -30,7 +30,9 @@ export const Headlines = (props) => {
             DJIA&nbsp;&nbsp;{djiaValue.toHTML(userLocale, 'purple')}&nbsp;&nbsp;{djiaChange.toHTML(userLocale)}
           </Header>
           &emsp;&emsp;&emsp;
-          Time&nbsp;<Header as='span' content={refreshTime.toLocaleTimeString("en-US")} title='Last refresh time' size='tiny' color='purple'/>
+          <Header as='span' title='Last index refresh time' size='tiny' color='purple'>
+            Time&nbsp;&nbsp;{refreshTime.toLocaleTimeString(userLocale)}
+          </Header>
           &emsp;&emsp;&emsp;
           <Button disabled content='Refresh: Auto' icon='refresh' title='Refresh headlines' compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => refreshHeadlines()}/>
         </span>
