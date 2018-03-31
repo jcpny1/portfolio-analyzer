@@ -7,7 +7,6 @@ module Feed
     # Makes data request for an array of symbols.
     # Returns array of results.
     def self.latest_trades(symbols)
-      api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
       begin
         conn = Faraday.new(url: 'https://www.alphavantage.co/query')
       rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
@@ -21,7 +20,7 @@ module Feed
             resp = conn.get do |req|
               req.params['function'] = 'TIME_SERIES_DAILY'
               req.params['symbol']   = symbol
-              req.params['apikey']   = api_key
+              req.params['apikey']   = alpha_vantage_key
             end
             Rails.logger.debug "AV PRICE FETCH END   for: #{symbol}."
             response = JSON.parse(resp.body)
@@ -40,7 +39,6 @@ module Feed
 
     # Makes data request(s) for an array of symbols and returns results in an augmented trades array.
     def self.monthly_series(symbols)
-      api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
       begin
         conn = Faraday.new(url: 'https://www.alphavantage.co/query')
         # conn = Faraday.new(:url => 'https://www.alphavantage.co/query') do |faraday|
@@ -59,7 +57,7 @@ module Feed
             resp = conn.get do |req|
               req.params['function'] = 'TIME_SERIES_MONTHLY_ADJUSTED'
               req.params['symbol']   = symbol
-              req.params['apikey']   = api_key
+              req.params['apikey']   = alpha_vantage_key
             end
             Rails.logger.debug "AV SERIES FETCH END   for: #{symbol}."
             response = JSON.parse(resp.body)
@@ -77,6 +75,11 @@ module Feed
     end
 
     ### private ###
+
+    # Return the Alpha Vantage API key.
+    private_class_method def self.alpha_vantage_key
+      @@api_key ||= ENV['RAILS_ENV'] == 'test' ? nil : ENV['ALPHA_VANTAGE_API_KEY']
+    end
 
     # Error examples:
     #   {"Error Message"=>"Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."}

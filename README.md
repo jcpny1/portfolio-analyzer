@@ -28,6 +28,7 @@ dd-mmm-yy  0.5.1  Enhanced series feed error handling.
                   Localize refresh time string and hover tooltip.
                   Update usage notes.
                   Update gems.
+                  Memoize data feed vendor keys.
 27-Mar-18  0.5.0  Added portfolio composite to chart in addition to individual instruments.
                   Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
                   Bulk refresh series data will now update in symbol order.
