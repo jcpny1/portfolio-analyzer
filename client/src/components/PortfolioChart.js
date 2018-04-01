@@ -10,7 +10,7 @@ const PortfolioChart = (props) => {
   const {portfolioName, refData} = props;
 
   function plotInstruments() {
-    // Default only portfolio to initially chart.
+    // Default only portfolio to initially chart as visible along with S&P 500.
     return Object.values(refData).map(series => {
       return (
         <LineSeries

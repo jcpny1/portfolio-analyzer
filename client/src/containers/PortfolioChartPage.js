@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as portfolioActions from '../actions/portfolioActions.js';
 import PropTypes from 'prop-types';
+import ChartData from '../classes/ChartData';
 import Fmt from '../utils/formatter';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import * as Request from '../utils/request';
@@ -34,7 +35,7 @@ class PortfolioChartPage extends Component {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {
-        const chartData = Fmt.seriesDataToChartData(series, portfolio.name, portfolioSymbolIds);
+        const chartData = ChartData.seriesDataToChartData(series, portfolio.name, portfolioSymbolIds);
         this.setState({refData: chartData});
       }
     });
