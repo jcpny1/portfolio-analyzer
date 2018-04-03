@@ -30,34 +30,45 @@ export default class ChartData {
     return ChartData.addPortfolioSummary(chartData, portfolioName, portfolioSymbolIds);
   };
 
-  // TODO: clean this up. Seems very old school.
   // Creates portfolio composite series data from contents of individual instrument series data.
+  // NOTE: Due to data feed quirks, we need to trim end dates to a date where all instruments still have data.
+  // The AV data feed is sometimes up-to-date and sometimes not.
+  // Maybe the last monthly data point is today, or yesterday, or maybe it's EOM from last month.
+  // By using series.length as a measure of date range, we assume series data has been normalized to a common start date by this point.
+  // If we didn't adjust, our portfolio value would not be correct where a particular date is missing.
+  // Also, the AV feed is missing monthly series data for some instruments.
   // Side Effects: adds portfolio data series to chartData.
   // Returns chartData.
   static addPortfolioSummary(chartData, portfolioName, portfolioSymbolIds) {
-    // Insert portfolio 'instrument'.
+    let shortestSeries = Number.MAX_SAFE_INTEGER; // Find series with the earliest end date.
+    Object.values(chartData).forEach(symbolSeries => {
+      if (symbolSeries['data'].length < shortestSeries) {
+        shortestSeries = symbolSeries['data'].length;
+      }
+    });
+
+    // Insert portfolio 'instrument', so it appears first in chart legend.
     chartData[0] = {'symbol': "Portfolio", 'name': portfolioName, 'data': []};
-    // Don't process data points if portfolio has no positions.
-    if (portfolioSymbolIds.length === 0) {
-      return chartData;
-    }
-    // Copy another instrument's series dates to the portfolio's dates.
-    const anySeriesKey = Object.keys(chartData)[1];
-    const anySeriesKeyData = chartData[anySeriesKey]['data'];
-    chartData[0]['data'] = anySeriesKeyData.map(dataPoint => {return [dataPoint[0], 0.0]});    // MAYBE PUT THIS IN CONVERTPOINT CALL LOOP ABOVE.
-    // Since we are summing all instruments values, we need the number of instruments so we can divide down to the original starting amount.
-    let symbolCount = portfolioSymbolIds.length;
-    // Sum all instruments' data points into the portfolio instrument.
+
+    // Sum each instrument's data points into the portfolio instrument.
+    let symbolCount = portfolioSymbolIds.length;  // Keep track of how many instruments were found to have series data. Used to calc adjusted portfolio value.
     portfolioSymbolIds.forEach(portfolioSymbolId => {
       const symbolSeries = chartData[portfolioSymbolId];
       if (symbolSeries) {
         symbolSeries['data'].forEach((dataPoint,i) => {
-          chartData[0]['data'][i][1] += dataPoint[1];
+          if (i < shortestSeries) {
+            if (i === chartData[0]['data'].length) {
+              chartData[0]['data'].push([dataPoint[0], dataPoint[1]]);
+            } else {
+              chartData[0]['data'][i][1] += dataPoint[1];
+            }
+          }
         });
       } else {
         symbolCount -= 1;  // Need to account for when a portfolio symbol is not returned in series data.
       }
     });
+
     // Rebase the portfolio amounts to the original starting amount.
     chartData[0]['data'].forEach(dataPoint => {
       dataPoint[1] /= symbolCount;

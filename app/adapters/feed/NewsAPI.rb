@@ -3,7 +3,6 @@ module Feed
   class NewsAPI
     # Retrieve all general headlines.
     def self.headlines
-      api_key = ENV['RAILS_ENV'] == 'test' ? nil : ENV['NEWSAPI_API_KEY']
       response = {}
       begin
         conn = Faraday.new(url: 'https://newsapi.org/v1/articles')
@@ -15,7 +14,7 @@ module Feed
         resp = conn.get do |req|
           req.params['source'] = 'bloomberg'
           req.params['sortBy'] = 'top'
-          req.params['apikey'] = api_key
+          req.params['apikey'] = news_api_key
         end
         Rails.logger.debug 'NEWSAPI FETCH END.'
         response = JSON.parse(resp.body)
@@ -25,6 +24,13 @@ module Feed
         Rails.logger.error "NEWSAPI FETCH ERROR: JSON parse error: #{e}."
       end
       response
+    end
+
+    ### private ###
+
+    # Return the NewsAPI API key.
+    private_class_method def self.news_api_key
+      @@api_key ||= ENV['RAILS_ENV'] == 'test' ? nil : ENV['NEWSAPI_API_KEY']
     end
   end
 end
