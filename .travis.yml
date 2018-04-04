@@ -1,12 +1,13 @@
 env:
   global:
     - CC_TEST_REPORTER_ID=95325b4141034c059f27f080ce9f4bb9ac4837204fe4fd73bb289060ed0c5b2a
-language: ruby
+    - MOZ_HEADLESS=1
+addons:
+  firefox: latest
+language:
+  - ruby
 rvm:
   - 2.4.2
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
 install:
   - . $HOME/.nvm/nvm.sh
   - cd client
@@ -17,12 +18,16 @@ install:
   - bundle install
 before_script:
   - bundle exec rake db:setup
+  - rackup -p 3000
+  - sleep 3
   - cd client
-  - npm start
+  # - npm start
+  - sleep 3
   - cd ..
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
   - chmod +x ../cc-test-reporter
 script:
+  - xvfb-run make test
   - ../cc-test-reporter before-build
   - bundle exec rspec
 after_script:
