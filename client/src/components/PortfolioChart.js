@@ -25,8 +25,6 @@ const PortfolioChart = (props) => {
     });
   }
 
-  // Disable warning: "Line 45:  Unexpected template string expression  no-template-curly-in-string"
-  // eslint-disable-next-line
   return (
     <div className='app'>
       <HighchartsChart plotOptions={plotOptions}>
