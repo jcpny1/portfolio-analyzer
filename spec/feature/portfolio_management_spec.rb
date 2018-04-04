@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Portfolio Management', js: true, :type => :feature do
-  if !ENV['TRAVIS']
+  # if !ENV['TRAVIS']
     scenario 'User creates a portfolio' do
       visit 'http://localhost:3000'
       page.first('#portfolioEdit').click
@@ -16,5 +16,5 @@ RSpec.feature 'Portfolio Management', js: true, :type => :feature do
     #   click_button 'YES'
     #   expect(page).not_to have_text(' <do-not-use>')
     # end
-  end
+  # end
 end
