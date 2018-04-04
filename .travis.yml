@@ -20,7 +20,7 @@ install:
   - cd client
   - nvm install stable
   - nvm use stable
-  # - npm install <<<'Y'
+  - npm install <<<'Y'
   - cd ..
   - bundle install
 before_script:
