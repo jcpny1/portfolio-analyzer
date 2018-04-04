@@ -25,7 +25,8 @@ install:
   - bundle install
 before_script:
   - bundle exec rake db:setup
-  - rackup -p 3000
+  - rackup
+  - cd .
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
   - chmod +x ../cc-test-reporter
 script:
