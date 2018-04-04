@@ -20,13 +20,13 @@ install:
   - cd client
   - nvm install stable
   - nvm use stable
-  - npm install <<<'Y'
+  # - npm install <<<'Y'
   - cd ..
   - bundle install
 before_script:
   - bundle exec rake db:setup
   - cd client
-  - PORT=3000 npm start
+  - "PORT=3000 npm start&"
   - cd ..
   - sleep 3
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
