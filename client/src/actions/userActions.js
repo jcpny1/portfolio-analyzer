@@ -1,4 +1,4 @@
-import * as UserReducer from '../reducers/users_reducer';
+import * as UserReducer from '../reducers/userReducer';
 import * as Request from './actionRequests.js';
 
 const GUEST_USER_ID = 1;

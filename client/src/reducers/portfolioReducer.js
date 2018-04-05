@@ -19,7 +19,7 @@ export function updateAllPortfolio(portfolios) {return {type: portfolioAction.UP
 export function updatingPortfolio()            {return {type: portfolioAction.UPDATING}}
 export function warnPortfolio(warning)         {return {type: portfolioAction.WARN,       payload: warning}}
 
-export function portfoliosReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: Sort.columnSorter('name', 'ascending', 'symbol', 'ascending')}, action) {
+export function portfolioReducer(state = {updatingPortfolio: false, portfolios: [], sortFn: Sort.columnSorter('name', 'ascending', 'symbol', 'ascending')}, action) {
   let returnObject = null;
   switch (action.type) {
     // Add a Portfolio.

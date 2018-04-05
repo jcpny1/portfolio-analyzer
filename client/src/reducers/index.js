@@ -1,10 +1,10 @@
 import {combineReducers}   from 'redux';
-import {portfoliosReducer} from './portfolios_reducer';
-import {usersReducer}      from './users_reducer';
+import {portfolioReducer} from './portfolioReducer';
+import {userReducer}      from './userReducer';
 
 const rootReducer = combineReducers({
-  portfolios: portfoliosReducer,
-  users: usersReducer,
+  portfolios: portfolioReducer,
+  users: userReducer,
 });
 
 export default rootReducer;

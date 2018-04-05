@@ -30,7 +30,7 @@ export default class SymbolsPage extends Component {
         this.setState({searchResults: []});
       } else {
         Request.instrumentSearch({value: value, exact:false}, instruments => {
-          this.setState({searchResults: instruments.data.slice(0, this.DISPLAY_ROWS_MAX)});
+          this.setState({searchResults: instruments.data.slice(0, SymbolsPage.DISPLAY_ROWS_MAX)});
         });
       }
     }

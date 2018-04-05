@@ -4,8 +4,8 @@ import Instrument from '../classes/Instrument';
 import Portfolio from '../classes/Portfolio';
 import Position from '../classes/Position';
 import {statusCheck} from '../utils/request.js';
-import * as PortfolioReducer from '../reducers/portfolios_reducer';
-import * as UserReducer from '../reducers/users_reducer';
+import * as PortfolioReducer from '../reducers/portfolioReducer';
+import * as UserReducer from '../reducers/userReducer';
 
 // Add a new portfolio.
 export function portfolioAdd(dispatch, portfolio) {

@@ -8,12 +8,12 @@
     "babel-runtime": "^6.26.0",
     "highcharts": "^6.0.7",
     "lodash.clonedeep": "^4.5.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "react-jsx-highstock": "^2.2.1",
-    "react-redux": "^5.0.6",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.0.17",
+    "react-scripts": "^1.1.4",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.75.1"
@@ -21,12 +21,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest --config ./jest-config.js",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "prop-types": "^15.6.0",
-    "semantic-ui": "^2.2.13"
+    "jest": "^22.4.3",
+    "prop-types": "^15.6.1",
+    "semantic-ui": "^2.3.1",
+    "standard": "^11.0.1"
   }
 }

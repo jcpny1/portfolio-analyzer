@@ -17,7 +17,7 @@ export default class Decimal {
   // Convert a locale-style decimal string to the en-US allowed by javascript.
   //   Remove thousands group character. Swap out decimal character.
   //   Some of this logic can be replaced with Intl.NumberFormat.prototype.formatToParts(number), when it becomes available.
-  static fromLocale = (stringValue, locale) => {
+  static fromLocale(stringValue, locale) {
     const testString = new Intl.NumberFormat(locale).format(1000.1); // => e.g. '1.000,1'
     const groupChar   = testString[1];
     const decimalChar = testString[5]
