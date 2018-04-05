@@ -17,7 +17,6 @@ install:
   - . $HOME/.nvm/nvm.sh
   - cd client
   - nvm install stable
-  # - nvm use stable
   - npm install <<<'Y'
   - cd ..
   - bundle install
