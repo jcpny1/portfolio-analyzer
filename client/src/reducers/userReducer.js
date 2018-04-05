@@ -12,7 +12,7 @@ export function updateUser(user)  {return {type: userActions.UPDATE, payload: us
 export function updatingUser()    {return {type: userActions.UPDATING}}
 export function warnUser(warning) {return {type: userActions.WARN,   payload: warning}}
 
-export function usersReducer(state = {updatingUser: false, user: {locale: 'en-US'}}, action) {
+export function userReducer(state = {updatingUser: false, user: {locale: 'en-US'}}, action) {
   let returnObject = null;
   switch (action.type) {
     // Error on Portfolio action.
