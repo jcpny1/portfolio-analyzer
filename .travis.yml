@@ -31,5 +31,8 @@ before_script:
 script:
   - ../cc-test-reporter before-build
   - bundle exec rspec
+  - cd client
+  - npm test
+  - cd ..
 after_script:
   - ../cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
