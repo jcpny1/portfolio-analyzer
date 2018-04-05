@@ -22,6 +22,9 @@ RSpec.configure do |config|
   Capybara.server_host = 'localhost'
   Capybara.server_port = '3001'
 
+  require 'sidekiq/testing'
+  Sidekiq::Testing.inline!
+
   require 'simplecov'
   SimpleCov.start
 
@@ -31,6 +34,7 @@ RSpec.configure do |config|
     Sidekiq::Worker.clear_all  # Makes sure jobs don't linger between tests:
 
   ## WebMock Reponse Setups ##
+
   # Request for data feed symbology.
   stub_request(:get, 'https://api.iextrading.com/1.0/ref-data/symbols').
     with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
@@ -111,6 +115,63 @@ RSpec.configure do |config|
                 "SPY":{"quote":{"latestPrice":271.32,"change":-2.88,"latestUpdate":1521473026531}},
                 "URTH":{"quote":{"URTH","latestPrice":88.822,"change":-0.698,"latestUpdate":1521472050165}}
               }',
+      headers: {})
+  # Request for AMZN series values.
+  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AMZN').
+    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+    to_return(
+      status: 200,
+      body:   '{
+                "Meta Data": {
+                  "1. Information": "Monthly Adjusted Prices and Volumes",
+                  "2. Symbol": "AMZN",
+                  "3. Last Refreshed": "2018-04-05",
+                  "4. Time Zone": "US/Eastern"
+                },
+                "Monthly Adjusted Time Series": {
+                  "2018-03-29": {
+                    "1. open": "1513.6000",
+                    "2. high": "1617.5400",
+                    "3. low": "1365.2000",
+                    "4. close": "1447.3400",
+                    "5. adjusted close": "1447.3400",
+                    "6. volume": "128401298",
+                    "7. dividend amount": "0.0000"
+                  },
+                  "2018-02-28": {
+                    "1. open": "1445.0000",
+                    "2. high": "1528.7000",
+                    "3. low": "1265.9300",
+                    "4. close": "1512.4500",
+                    "5. adjusted close": "1512.4500",
+                    "6. volume": "133362428",
+                    "7. dividend amount": "0.0000"
+                  },
+                  "2018-01-31": {
+                    "1. open": "1172.0000",
+                    "2. high": "1472.5800",
+                    "3. low": "1170.5100",
+                    "4. close": "1450.8900",
+                    "5. adjusted close": "1450.8900",
+                    "6. volume": "94145634",
+                    "7. dividend amount": "0.0000"
+                  }
+                }
+              }',
+      headers: {})
+  # Request for BABA series values.
+  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=BABA').
+    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+    to_return(
+      status: 200,
+      body: "",
+      headers: {})
+  # Request for COF series values.
+  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=COF').
+    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+    to_return(
+      status: 200,
+      body: "",
       headers: {})
   # Request for DJIA index value.
   stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').

@@ -8,6 +8,9 @@ export default class ChartData {
     //   instrumentId: {symbol: 'symbol', name: 'name', shares: #, data: []},
     // }
     const chartData = {};
+    if (series.data.length === 0) {  // Protect against no series data available.
+      return chartData;
+    }
     // Init chartData for each instrument.
     series.included.forEach(seriesInstrument => {
       chartData[seriesInstrument.id] = {'symbol': seriesInstrument.attributes.symbol, 'name': seriesInstrument.attributes.name, 'shares': 0, 'data': []};

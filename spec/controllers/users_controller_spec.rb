@@ -5,7 +5,7 @@ RSpec.describe UsersController, type: :controller do
   #   @user = create(:user)
   # end
 
-  # TODO: These test will need to be fixed when user is no longer hardcoded to 1,'guest'.
+  # TODO: These tests will need to be fixed when user is no longer hardcoded to 1,'guest'.
 
   describe "GET #show" do
     it "returns one user" do

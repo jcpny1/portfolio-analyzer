@@ -26,10 +26,10 @@ module Feed
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-            Feed.fetch_trade_request_failure([symbol], 'The feed is down.')
+            Feed.error_trade(symbol, 'The feed is down.')
           rescue JSON::ParserError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-            Feed.fetch_trade_request_failure([symbol], 'The feed is down.')
+            Feed.error_trade(symbol, 'The feed is down.')
           else
             process_price_response(symbol, response)
           end
@@ -63,10 +63,10 @@ module Feed
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
-            Feed.fetch_series_request_failure([symbol], 'The feed is down.')
+            Feed.error_series(symbol, 'The feed is down.')
           rescue JSON::ParserError => e
             Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
-            Feed.fetch_series_request_failure([symbol], 'The feed is down.')
+            Feed.error_series(symbol, 'The feed is down.')
           else
             process_series_response(symbol, response)
           end
