@@ -13,22 +13,20 @@ before_install:
   - mkdir geckodriver
   - tar -xzf geckodriver-v0.20.0-linux64.tar.gz -C geckodriver
   - export PATH=$PATH:$PWD/geckodriver
-  # - "export DISPLAY=:99.0"
-  # - "sh -e /etc/init.d/xvfb start"
 install:
   - . $HOME/.nvm/nvm.sh
   - cd client
   - nvm install stable
-  - nvm use stable
+  # - nvm use stable
   - npm install <<<'Y'
   - cd ..
   - bundle install
 before_script:
-  - bundle exec rake db:setup
   - cd client
   - "PORT=3000 npm start&"
   - cd ..
-  - sleep 3
+  - sleep 5
+  - bundle exec rake db:setup
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
   - chmod +x ../cc-test-reporter
 script:
