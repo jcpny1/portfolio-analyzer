@@ -9,7 +9,7 @@ class TradeCache
       if get_live_prices
         sleep DataCache::FEED_BATCH_DELAY if trades.length.nonzero?  # Throttle request rate after first request.
         Feed.load_prices(instrument_batch) do |live_trades|  # Get feed prices.
-          save_trades(live_trades, trade_batch)  # Update database prices with feed prices.
+          save_trades(trade_batch, live_trades)  # Update database prices with feed prices.
         end
       end
       trades.concat(trade_batch)
@@ -39,7 +39,7 @@ class TradeCache
   # sqlite timeout was increased from 5000ms to 10000ms in config/database.yml in an attempt to avoid this.
 
   # Updates trades with live_trades data and saves to the database.
-  private_class_method def self.save_trades(live_trades, trades)
+  private_class_method def self.save_trades(trades, live_trades)
     saved_trades_ctr = 0
     Trade.transaction do
       live_trades.each do |live_trade|
@@ -49,12 +49,8 @@ class TradeCache
           trade.error = live_trade.error
         else
           begin
-            if trade.changed?(live_trade)
-              trade.trade_date   = live_trade.trade_date
-              trade.trade_price  = live_trade.trade_price
-              trade.price_change = live_trade.price_change
-              trade.created_at   = live_trade.created_at
-              trade.save!
+            if Trade.dataChanged?(trade, live_trade)
+              Trade.dataUpdate(trade, live_trade)
               saved_trades_ctr += 1
             end
           rescue ActiveRecord::ActiveRecordError => e

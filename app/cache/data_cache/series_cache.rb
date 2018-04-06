@@ -35,34 +35,24 @@ class SeriesCache
             next
           end
           # For each live series instrument and date, find corresponding entry in series.
-          se = series.find { |se| (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) && (se.series_date == lse.series_date) }
+          se = series.find { |dp| (dp.instrument_id == lse.instrument_id) && (dp.time_interval == lse.time_interval) && (dp.series_date == lse.series_date) }
           # If se is null, do we have an se with the same year and month?
           # If so, reuse that se record for the update.
           if se.nil?
             lse_series_date = lse.series_date.to_time.to_datetime
             lse_year = lse_series_date.year
             lse_month = lse_series_date.month
-            se = series.find do |se|
-              se_series_date = se.series_date.to_time.to_datetime
-              (se.instrument_id == lse.instrument_id) && (se.time_interval == lse.time_interval) &&
-              (se_series_date.year == lse_year) && (se_series_date.month == lse_month)
+            se = series.find do |dp|
+              dp_date = dp.series_date.to_time.to_datetime
+              (dp.instrument_id == lse.instrument_id) && (dp.time_interval == lse.time_interval) && (dp_date.year == lse_year) && (dp_date.month == lse_month)
             end
           end
           # If se is still null, then create a new record.
           se = Series.new(instrument: lse.instrument) if se.nil?
           # If any values have changed, update se.
           begin
-            if se.changed?(lse)
-              se.time_interval   = lse.time_interval
-              se.series_date     = lse.series_date
-              se.open_price      = lse.open_price
-              se.high_price      = lse.high_price
-              se.low_price       = lse.low_price
-              se.close_price     = lse.close_price
-              se.adjusted_close_price = lse.adjusted_close_price
-              se.volume          = lse.volume
-              se.dividend_amount = lse.dividend_amount
-              se.save!
+            if Series.dataChanged?(se, lse)
+              Series.dataUpdate(se, lse)
               saved_series_ctr += 1
             end
           rescue ActiveRecord::ActiveRecordError => e
@@ -76,6 +66,6 @@ class SeriesCache
 
   # Fetch database series by symbol.
   private_class_method def self.series_from_database(symbols)
-    Series.joins(:instrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
+    Series.joins(:instrument).where(instruments: { symbol: symbols }).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
   end
 end

@@ -6,7 +6,17 @@ class Trade < ApplicationRecord
   attr_accessor :error
 
   # Compare two trades for differences.
-  def changed?(compare)
-    (trade_price != compare.trade_price) || (trade_date < compare.trade_date)
+  def self.dataChanged?(t1, t2)
+    (t1.trade_price != t2.trade_price) || (t1.trade_date < t2.trade_date)
+  end
+
+  # Update tgt attributes from src, then save.
+  # Could throw ActiveRecord::ActiveRecordError.
+  def self.dataUpdate(tgt, src)
+    tgt.trade_date   = src.trade_date
+    tgt.trade_price  = src.trade_price
+    tgt.price_change = src.price_change
+    tgt.created_at   = src.created_at
+    tgt.save!
   end
 end

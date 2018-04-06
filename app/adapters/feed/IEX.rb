@@ -48,7 +48,7 @@ module Feed
     # Extract trade data or an error from the response.
     private_class_method def self.process_price_response(response)
       fetch_time = DateTime.now
-      response.keys().map do |symbol|
+      response.keys.map do |symbol|
         symbol_quote = response[symbol]['quote']
         if symbol_quote.nil?
           Feed.error_trade(symbol, 'Price is not available.')
@@ -58,7 +58,7 @@ module Feed
           #       On the other hand, then the caller would need to work with raw live data when updating the corresponding trade.
           Trade.new do |t|
             t.instrument   = Instrument.find_by(symbol: symbol)
-            t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f/1000.0).round(4).to_datetime
+            t.trade_date   = Time.at(symbol_quote['latestUpdate'].to_f / 1000.0).round(4).to_datetime
             t.trade_price  = symbol_quote['latestPrice'].to_f.round(4)
             t.price_change = symbol_quote['change'].to_f.round(4)
             t.created_at   = fetch_time
