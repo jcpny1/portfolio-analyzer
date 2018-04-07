@@ -5,7 +5,7 @@ class SeriesCache
     Rails.logger.debug 'SERIES BULK LOAD BEGIN.'
     processed = 0
     instruments.each_slice(DataCache::SERIES_BATCH_SIZE) do |instrument_batch|
-      sleep DataCache::SERIES_BATCH_DELAY unless processed.zero?  # Throttle request rate.
+      sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
       processed += instrument_batch.length
       symbols = instrument_batch.map(&:symbol)
       series_batch = series_from_database(symbols)  # Get database series as a baseline.

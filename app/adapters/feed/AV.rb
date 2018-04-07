@@ -40,6 +40,7 @@ module Feed
     # Makes data request(s) for an array of symbols and returns results in an augmented trades array.
     def self.monthly_series(symbols)
       begin
+        # TODO: We could store connection for duration of bulk load instead of recreate for every symbol. Just not sure how much that would save.
         conn = Faraday.new(url: 'https://www.alphavantage.co/query')
         # conn = Faraday.new(:url => 'https://www.alphavantage.co/query') do |faraday|
         #   faraday.request  :url_encoded             # form-encode POST params

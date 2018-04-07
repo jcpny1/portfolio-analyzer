@@ -8,7 +8,7 @@ module DataCache
   # Also, don't hit the database too hard.
   FEED_BATCH_SIZE    = 50      # Number of records in one feed request.
   FEED_BATCH_DELAY   =  1.000  # Delay time between requests (in seconds).
-  SERIES_BATCH_SIZE  =  3      # Number of series records in one series request.
+  SERIES_BATCH_SIZE  =  1      # Number of series records in one series request.
   SERIES_BATCH_DELAY =  2.000  # Delay time between series requests (in seconds).
 
   # Update instrument cache from instrument_data records.
