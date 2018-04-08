@@ -25,16 +25,17 @@ The remaining folders are primarily for the server code.
 dd-mmm-yy  0.5.1  Enhanced series feed error handling.
                   Cut Sidekiq threads from 10 to 1. Reduces Heroku worker dyno memory utilization and prevents concurrent bulk operations.
                   Bulk refresh instrument prices will now update in sorted symbol order.
-                  Localize refresh time string and hover tooltip.
-                  Update usage notes.
-                  Update gems.
-                  Update node packages.
-                  Move chart code out of formatter and into new ChartData class.
-                  Memoize data feed vendor keys.
+                  Localized refresh time string and hover tooltip.
+                  Updated usage notes.
+                  Updated gems.
+                  Updated node packages.
+                  Moved chart code out of formatter and into new ChartData class.
+                  Memoized data feed vendor keys.
                   Added first jest test.
                   Only chart portfolio value to earliest end date of underlying instruments to avoid incorrect valuation due to missing data.
                   Reduction in RuboCop findings.
-                  Reduce series fetch rate to prevent exceeding vendor limits.
+                  Reduced series fetch rate to prevent exceeding vendor limits.
+                  Now storing all available series data; Removed hardcoded year 2013 start date.
 27-Mar-18  0.5.0  Added portfolio composite to chart in addition to individual instruments.
                   Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
                   Bulk refresh series data will now update in symbol order.

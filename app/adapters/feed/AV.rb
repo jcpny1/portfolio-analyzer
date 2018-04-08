@@ -108,8 +108,6 @@ module Feed
       end
     end
 
-    START_YEAR = 2013
-
     # Extract series data or an error from the response.
     # NOTE: The symbol in the meta data doesn't always match the symbol requested.
     #       e.g., 'DJIA' => 'Dow Jones Industrial Average Index'
@@ -120,7 +118,6 @@ module Feed
         instrument = Instrument.new(symbol: symbol) if instrument.nil?    # We don't keep index instruments in the database, so make one up here.
         fetch_time = DateTime.now
         ticks.map do |key, value|
-          next if key[0..3].to_i < START_YEAR
           # TODO: Get timezone from Meta Data.
           Series.new do |s|
             s.instrument = instrument
