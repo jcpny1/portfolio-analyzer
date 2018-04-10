@@ -29,7 +29,6 @@ class App extends Component {
     return (
       <Dropdown item text='Help'>
         <Dropdown.Menu>
-          <SettingsEditPage/>
           <HelpPage trigger={<Dropdown.Item>Usage Notes</Dropdown.Item>}/>
           <Dropdown.Divider/>
           <Dropdown.Item disabled as={Link} to='/about'>About</Dropdown.Item>
@@ -132,6 +131,7 @@ class App extends Component {
     return (
       <Menu.Menu position='right'>
         {this.menuItemAdmin()}
+        {<SettingsEditPage/>}
         {this.menuItemHelp()}
       </Menu.Menu>
     );

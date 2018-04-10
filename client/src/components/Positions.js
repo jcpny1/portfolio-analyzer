@@ -36,7 +36,7 @@ export const Positions = (props) => {
             {<PositionEditPage position={position} iconName='edit' iconColor='blue' tooltip='Edit position'/>}
             {<ConfirmDialog triggerType='icon' name='trash' color='red' title='Delete position' header='Delete Position' onClickConfirm={onClickRemove(portfolio.id, position.id)}/>}
           </Table.Cell>
-          <Table.Cell textAlign='left' title={position.instrument.name}>{position.instrument.toHTML(position.gainLoss)}</Table.Cell>
+          <Table.Cell textAlign='left' title={position.instrument.name}>{position.instrument.symbolToHTML(position.gainLoss)}</Table.Cell>
           <Table.Cell>{position.quantity.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.lastTrade.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{position.priceChange.toHTML(userLocale)}</Table.Cell>
@@ -72,7 +72,7 @@ export const Positions = (props) => {
   return (
     <div>
       <Header size='medium' color='purple' style={{marginBottom:0, marginLeft:'4px'}}>
-        {portfolio.name}
+        {portfolio.nameToHTML()}
         <span>
           &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
         </span>

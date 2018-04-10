@@ -73,7 +73,7 @@ class PortfolioChartPage extends Component {
         size={'large'}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header content={portfolio.name} icon='chart line' size='small'/></Modal.Header>
+        <Modal.Header><Header content={portfolio.nameToHTML()} icon='chart line' size='small'/></Modal.Header>
         <Modal.Content><PortfolioChart refData={refData} portfolioName={portfolio.name}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left' color='red' onClick={this.handleCancel}>Close</Button>

@@ -32,7 +32,7 @@ export const Portfolios = (props) => {
             &emsp;{<ConfirmDialog triggerType='icon' name='trash' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
             &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
           </Table.Cell>
-          <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.name}</Link></Table.Cell>
+          <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.nameToHTML()}</Link></Table.Cell>
           <Table.Cell>{portfolio.marketValue.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{portfolio.dayChange.toHTML(userLocale)}</Table.Cell>
           <Table.Cell>{portfolio.cost.toHTML(userLocale)}</Table.Cell>

@@ -41,14 +41,14 @@ export default class SymbolsPage extends Component {
   }
 
   render() {
-    const {searchResults, searchValue} = this.state;
+    const {modalOpen, searchResults, searchValue} = this.state;
     return (
       <Modal
         closeIcon
         closeOnDimmerClick={false}
         size='small'
         trigger={<Menu.Item onClick={this.handleOpen}>Symbol Lookup</Menu.Item>}
-        open={this.state.modalOpen}
+        open={modalOpen}
         onClose={this.handleCancel}
       >
         <Modal.Header><Header content='Symbol Lookup' icon='search' size='small'/></Modal.Header>

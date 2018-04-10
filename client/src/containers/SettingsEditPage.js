@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Button, Dropdown, Header, Modal} from 'semantic-ui-react';
+import {Button, Header, Menu, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import {SettingsEdit} from '../components/SettingsEdit';
 import * as userActions from '../actions/userActions.js';
@@ -50,12 +50,12 @@ class SettingsEditPage extends Component {
     return (
       <Modal
         closeOnDimmerClick={false}
-        trigger={<Dropdown.Item onClick={this.handleOpen}>Settings</Dropdown.Item>}
+        trigger={<Menu.Item onClick={this.handleOpen}>Settings</Menu.Item>}
         open={modalOpen}
         onClose={this.handleCancel}
         style={{paddingBottom:'10px'}}
       >
-        <Modal.Header><Header content='Settings Editor' icon='settings' size='small'/></Modal.Header>
+        <Modal.Header><Header content='Settings Editor' icon='setting' size='small'/></Modal.Header>
         <Modal.Content><SettingsEdit user={editedUser} onChange={this.handleChange} onSubmit={this.handleSubmit}/></Modal.Content>
         <Modal.Actions>
           <Button floated='left'color='red' onClick={this.handleCancel}>Cancel</Button>

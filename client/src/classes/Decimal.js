@@ -31,7 +31,7 @@ export default class Decimal {
   // Returns the formatted value string with HTML code.
   toHTML(locale, useColor = '' ) {
     const stringValue = this.toString(locale)
-    let color = '';
+    let color = 'black';
     let sign  = '';
     if (useColor) {
       color = useColor;
@@ -40,8 +40,6 @@ export default class Decimal {
     } else if (this._value > 0.0 && this._delta) {
       color = 'green';
       sign  = '+';
-    } else {
-      color = 'black';
     }
     return (<span style={{color:color}}>{sign}{stringValue}</span>);
   }

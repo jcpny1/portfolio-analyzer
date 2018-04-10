@@ -26,7 +26,7 @@ export const Help = () => {
       <h3>Portfolio Charts</h3>
       <ul>
         <li>Monthly adjusted price data provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
-        <li>Where there is not five years of historical data available, the chart start date will be adjusted to the earliest date that all the portfolio instruments have data.</li>
+        <li>The chart start date will be the earliest date where all portfolio instruments have data (to a maximum of 5 years ago).</li>
       </ul>
       <h3>Headline News</h3>
       <ul>

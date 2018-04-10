@@ -22,7 +22,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-dd-mmm-yy  0.5.1  Enhanced series feed error handling.
+dd-mmm-yy  0.6.0  Enhanced series feed error handling.
                   Cut Sidekiq threads from 10 to 1. Reduces Heroku worker dyno memory utilization and prevents concurrent bulk operations.
                   Bulk refresh instrument prices will now update in sorted symbol order.
                   Localized refresh time string and hover tooltip.
@@ -37,7 +37,10 @@ dd-mmm-yy  0.5.1  Enhanced series feed error handling.
                   Reduced series fetch rate to prevent exceeding vendor limits.
                   Now storing all available series data; Removed hardcoded year 2013 start date. Pass date range from client.
                   Series fetch API now accepts a date range.
-                  Remove dividend reinvestment adjustments from chart now that we are using adjusted data.
+                  Removed dividend reinvestment adjustments from chart now that we are using adjusted data.
+                  Moved Settings menu item from Help menu to main level.
+                  When editing an existing position, the date-acquired field will now show the existing value instead of today's date.
+                  Display portfolio name in red/green/black color depending on gain/loss value.
 27-Mar-18  0.5.0  Added portfolio composite to chart in addition to individual instruments.
                   Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
                   Bulk refresh series data will now update in symbol order.

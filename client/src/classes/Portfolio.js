@@ -1,3 +1,5 @@
+import React from 'react';
+import Fmt from '../utils/formatter';
 import * as Sort from '../utils/sort';
 import Decimal from '../classes/Decimal';
 
@@ -44,6 +46,13 @@ export default class Portfolio {
       portfolio.reprice(serverTrades);
       portfolio.updateDerivedValues();
     });
+  }
+
+  // Returns the portfolio name string with HTML code.
+  // Specify gainLoss number to determine color.
+  nameToHTML() {
+    const color = Fmt.valueColor(this._gainLoss);
+    return (<span style={{color:color}}>{this._name}</span>);
   }
 
   reprice(serverTrades) {

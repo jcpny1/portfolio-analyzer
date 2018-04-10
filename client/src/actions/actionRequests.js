@@ -78,7 +78,7 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
           instruments.push(new Instrument(relation.id, relation.attributes.symbol, relation.attributes.name));
           break;
         case 'positions':
-          positions.push(new Position(relation.attributes['portfolio-id'], relation.id, relation.attributes.quantity, relation.attributes.cost, relation.attributes.date_acquired));
+          positions.push(new Position(relation.attributes['portfolio-id'], relation.id, relation.attributes.quantity, relation.attributes.cost, relation.attributes['date-acquired']));
           break;
         default:
           console.log("Error: unknown relation type.");
