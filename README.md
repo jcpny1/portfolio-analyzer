@@ -22,6 +22,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
+10-Apr-18  0.6.1  Updated gems.
 10-Apr-18  0.6.0  Enhanced series feed error handling.
                   Cut Sidekiq threads from 10 to 1. Reduces Heroku worker dyno memory utilization and prevents concurrent bulk operations.
                   Bulk refresh instrument prices will now update in sorted symbol order.

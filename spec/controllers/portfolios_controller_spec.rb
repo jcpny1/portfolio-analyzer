@@ -10,7 +10,7 @@ RSpec.describe PortfoliosController, type: :controller do
       request.accept = "application/json"
       get :index, :format => :json
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data'].length).to be > 0
       expect(pr['data'][0]['attributes']['name']).to eq("Crazy 8's")
     end
@@ -21,7 +21,7 @@ RSpec.describe PortfoliosController, type: :controller do
       request.accept = "application/json"
       get :show, { :params => { id: @portfolio.id }, format: :json }
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data'].length).to be > 0
       expect(pr['data'][0]['attributes']['name']).to eq(@portfolio.name)
     end
@@ -32,7 +32,7 @@ RSpec.describe PortfoliosController, type: :controller do
       request.accept = "application/json"
       post :create, { params: { portfolio: { name: 'waTSon' }, format: :json }}
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data']['attributes']['name']).to eq('waTSon')
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe PortfoliosController, type: :controller do
       request.accept = "application/json"
       patch :update, { params: { id: @portfolio.id, portfolio: { name: 'XYZee' }}, format: :json }
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data']['attributes']['name']).to eq('XYZee')
     end
   end
@@ -52,7 +52,7 @@ RSpec.describe PortfoliosController, type: :controller do
       request.accept = "application/json"
       delete :destroy, { params: { id: @portfolio.id }, format: :json }
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data']['attributes']['name']).to eq(@portfolio.name)
     end
   end

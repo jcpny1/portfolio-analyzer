@@ -6,7 +6,7 @@ RSpec.describe InstrumentsController, type: :controller do
       request.accept = "application/json"
       get :index, { :params => { v: 'INTC' }, format: :json }
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data'].length).to be > 0
       expect(pr['data'][0]['attributes']['name']).to eq('Intel Corporation')
     end
@@ -16,7 +16,7 @@ RSpec.describe InstrumentsController, type: :controller do
     it "populates database with all instruments" do
       request.accept = "application/json"
       get :instrument_bulk_load, :format => :json
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
   end
 

@@ -5,9 +5,9 @@ RSpec.feature 'Portfolio Management', js: true, :type => :feature do
     scenario 'User creates a portfolio' do
       visit 'http://localhost:3000'
       page.first('#portfolioEdit').click
-      fill_in "Name", :with => ' <do-not-use>'
+      fill_in "Name", :with => '<do-not-use>'
       click_button 'Submit'
-      expect(page).to have_text(' <do-not-use>')
+      expect(page).to have_text('<do-not-use>')
     end
     #
     # scenario 'User deletes a portfolio' do

@@ -6,7 +6,7 @@ RSpec.describe HeadlinesController, type: :controller do
       request.accept = "application/json"
       get :index, format: :json
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr.length).to be > 0
       expect(pr['articles'][0]['author']).to eq('Shannon Pettypiece')
     end

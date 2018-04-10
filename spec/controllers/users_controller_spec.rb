@@ -12,7 +12,7 @@ RSpec.describe UsersController, type: :controller do
       request.accept = "application/json"
       get :show, { :params => { id: 1 }, format: :json }
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data'].length).to be > 0
       expect(pr['data']['id']).to eq('1')
     end
@@ -23,7 +23,7 @@ RSpec.describe UsersController, type: :controller do
       request.accept = "application/json"
       patch :update, { params: { id: 1, user: { locale: 'krypton-en' }}, format: :json }
       pr = JSON.parse(response.body)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
       expect(pr['data']['attributes']['locale']).to eq('krypton-en')
     end
   end
