@@ -17,11 +17,16 @@ export const Help = () => {
       <h3>Market Data</h3>
       <ul>
         <li>Latest trade data provided for free by <a href='https://iextrading.com/developer' target='_blank' rel='noopener noreferrer'>IEX</a>. <a href='https://iextrading.com/api-exhibit-a' target="_blank" rel='noopener noreferrer'>(IEX Terms Of Service)</a></li>
-        <li>Series chart data provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
         <li>Index data (specifically, the DJIA) is provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
         <li>Note that the prices shown may not be the correct prices or the latest prices.</li>
         <li>Any prices displayed should be verfied through other sources.</li>
         <li>When the application is first opened, the prices displayed are from the last time someone refreshed a portfolio containing those same symbols. Pressing refresh will update those prices from the latest available prices.</li>
+        <li>Day change values are calculated based on the previous close price, not the current open price.</li>
+      </ul>
+      <h3>Portfolio Charts</h3>
+      <ul>
+        <li>Monthly adjusted price data provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
+        <li>Where there is not five years of historical data available, the chart start date will be adjusted to the earliest date that all the portfolio instruments have data.</li>
       </ul>
       <h3>Headline News</h3>
       <ul>

@@ -46,8 +46,8 @@ export function pricesRefresh() {
 }
 
 // Get series data for given symbols.
-export function seriesFetch(symbols, cb) {
-  fetch(`/api/monthly-series?symbols=${symbols}`, {headers: {'Accept': 'application/json'}})
+export function seriesFetch(symbols, start_date, end_date, cb) {
+  fetch(`/api/monthly-series?symbols=${symbols}&start_date=${start_date}&end_date=${end_date}`, {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .then(response => response.json())
   .then(cb)

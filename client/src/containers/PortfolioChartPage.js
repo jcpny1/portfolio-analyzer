@@ -13,6 +13,7 @@ import PortfolioChart from '../components/PortfolioChart';
 class PortfolioChartPage extends Component {
 
   static ETF_SYMBOLS = ['URTH','IWM','QQQ','DIA','SPY'];
+  static CHART_RANGE = 5;  // years
 
   constructor(props) {
     super(props);
@@ -31,7 +32,10 @@ class PortfolioChartPage extends Component {
     const portfolioSymbolIds = portfolio.positions.map(position => position.instrument.id);
     const portfolioSymbols = portfolio.positions.map(position => position.instrument.symbol);
     const symbols = [...new Set(portfolioSymbols.concat(PortfolioChartPage.ETF_SYMBOLS))].join(',');  // uniquify portfolio and ETF symbol lists and turn into comma-separated string.
-    Request.seriesFetch(symbols, series => {
+    const dateNow = new Date(Date.now());
+    const start_date = new Date(dateNow.getFullYear() - PortfolioChartPage.CHART_RANGE, dateNow.getMonth(), dateNow.getDate()).toJSON();
+    const end_date = dateNow.toJSON();
+    Request.seriesFetch(symbols, start_date, end_date, series => {
       if ('error' in series) {
         alert(Fmt.serverError('Refresh Series', series.error));
       } else {

@@ -4,7 +4,7 @@ RSpec.describe SeriesController, type: :controller do
   describe "GET monthly series" do
     it "returns monthly series data" do
       request.accept = "application/json"
-      get :monthly_series, { :params => { symbols: 'AAPL' }, format: :json }
+      get :monthly_series, { :params => { symbols: 'AAPL', start_date: '2017-01-01', end_date: '2018-01-01' }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to have_http_status(:success)
       expect(pr['data'].length).to be > 0

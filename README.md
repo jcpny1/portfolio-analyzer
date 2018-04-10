@@ -35,7 +35,9 @@ dd-mmm-yy  0.5.1  Enhanced series feed error handling.
                   Only chart portfolio value to earliest end date of underlying instruments to avoid incorrect valuation due to missing data.
                   Reduction in RuboCop findings.
                   Reduced series fetch rate to prevent exceeding vendor limits.
-                  Now storing all available series data; Removed hardcoded year 2013 start date.
+                  Now storing all available series data; Removed hardcoded year 2013 start date. Pass date range from client.
+                  Series fetch API now accepts a date range.
+                  Remove dividend reinvestment adjustments from chart now that we are using adjusted data.
 27-Mar-18  0.5.0  Added portfolio composite to chart in addition to individual instruments.
                   Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
                   Bulk refresh series data will now update in symbol order.

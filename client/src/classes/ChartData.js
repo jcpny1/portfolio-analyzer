@@ -82,20 +82,21 @@ export default class ChartData {
   // Convert monthly series data point to a chart plot point, beginning at START_YEAR, for now.
   // Side effect: updates sharesHeld.
   static convertToPlotPoint(dataPoint, chartDataInstrument) {
-    const START_VALUE = 10.0;  // in thousands
     const closePrice = parseFloat(dataPoint['adjusted-close-price']);
     let sharesHeld = chartDataInstrument['shares'];
     // Establish beginning sharesHeld.
-    if (sharesHeld === 0) {
+    if (sharesHeld === 0 && closePrice > 0.0) {
+      const START_VALUE = 10.0;  // in thousands
       sharesHeld = START_VALUE / closePrice;
       chartDataInstrument['shares'] = sharesHeld;
     }
+    // No need for dividend reinvestment since we are now using adjusted price data.
     // If there was a dividend, reinvest it in more shares.
-    const dividendAmount = parseFloat(dataPoint['dividend-amount']);
-    if (dividendAmount > 0.0) {
-      sharesHeld += (dividendAmount * sharesHeld) / closePrice;
-      chartDataInstrument['shares'] = sharesHeld;
-    }
+    // const dividendAmount = parseFloat(dataPoint['dividend-amount']);
+    // if (dividendAmount > 0.0) {
+    //   sharesHeld += (dividendAmount * sharesHeld) / closePrice;
+    //   chartDataInstrument['shares'] = sharesHeld;
+    // }
     // Return the datapoint date and value.
     return [Date.parse(dataPoint['series-date']), sharesHeld * closePrice];
   }

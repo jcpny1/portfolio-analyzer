@@ -23,8 +23,8 @@ module DataCache
   end
 
   # Retrieve the latest monthly series values for the given array of symbols.
-  def self.monthly_series(symbols)
-    SeriesCache.series(symbols)
+  def self.monthly_series(symbols, start_date, end_date)
+    SeriesCache.series(symbols, start_date, end_date)
   end
 
   # Retrieve the latest prices for the given instrument list.

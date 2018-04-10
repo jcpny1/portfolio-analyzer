@@ -8,7 +8,7 @@ class SeriesCache
       sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
       processed += instrument_batch.length
       symbols = instrument_batch.map(&:symbol)
-      series_batch = series_from_database(symbols)  # Get database series as a baseline.
+      series_batch = series_from_database(symbols, nil, nil)  # Get database series as a baseline.
       Feed.load_series(symbols) do |live_series|    # Get feed series.
         save_series(live_series, series_batch)      # Update database series with feed series.
         clean_series(live_series, series_batch)     # Remove obsolete series data points.
@@ -18,8 +18,8 @@ class SeriesCache
   end
 
   # Retrieve the latest values for the given symbols array.
-  def self.series(symbols)
-    series_from_database(symbols)
+  def self.series(symbols, start_date, end_date)
+    series_from_database(symbols, start_date, end_date)
   end
 
   ### private ###
@@ -70,7 +70,15 @@ class SeriesCache
   end
 
   # Fetch database series by symbol.
-  private_class_method def self.series_from_database(symbols)
-    Series.joins(:instrument).where(instruments: { symbol: symbols }).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
+  private_class_method def self.series_from_database(symbols, start_date, end_date)
+    if start_date.nil?  # Retrieve all data points
+      Series.joins(:instrument).where(instruments: { symbol: symbols }).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
+    else  # Retrieve data points withing date range.
+      Series.joins(:instrument).where(instruments: { symbol: symbols }).where("series_date between ? and ?", start_date, end_date).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
+    end
   end
+
+# Client.where("created_at >= :start_date AND created_at <= :end_date", {start_date: params[:start_date], end_date: params[:end_date]})
+# Client.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
+
 end

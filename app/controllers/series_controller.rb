@@ -3,7 +3,7 @@ class SeriesController < ApplicationController
   # Retrieve the monthly series values for the symbols specified in params.
   def monthly_series
     logger.info 'MONTHLY SERIES LOAD BEGIN.'
-    series = DataCache.monthly_series(params[:symbols].split(','))
+    series = DataCache.monthly_series(params[:symbols].split(','), params[:start_date], params[:end_date])
     logger.info 'MONTHLY SERIES LOAD END.'
     render json: series, each_serializer: SeriesSerializer, include: 'instrument'
   end
