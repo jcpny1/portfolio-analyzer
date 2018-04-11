@@ -28,6 +28,7 @@
     "gulp": "^3.9.1",
     "jest": "^22.4.3",
     "prop-types": "^15.6.1",
+    "react-test-renderer": "^16.3.1",
     "semantic-ui": "^2.3.1",
     "standard": "^11.0.1"
   }
