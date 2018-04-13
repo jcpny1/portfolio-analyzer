@@ -3,7 +3,7 @@ import Fmt from '../utils/formatter';
 import Instrument from '../classes/Instrument';
 import Portfolio from '../classes/Portfolio';
 import Position from '../classes/Position';
-import {statusCheck} from '../utils/request.js';
+import {statusCheck} from '../utils/request';
 import * as PortfolioReducer from '../reducers/portfolioReducer';
 import * as UserReducer from '../reducers/userReducer';
 

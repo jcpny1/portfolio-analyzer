@@ -1,6 +1,6 @@
 import Portfolio from '../classes/Portfolio';
 import * as PortfolioReducer from '../reducers/portfolioReducer';
-import * as Request from './actionRequests.js';
+import * as Request from './actionRequests';
 
 // Create a new position.
 export function positionAdd(position, sortFn) {

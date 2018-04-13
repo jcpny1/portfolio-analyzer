@@ -33,195 +33,185 @@ RSpec.configure do |config|
   config.before(:each) do
     Sidekiq::Worker.clear_all  # Makes sure jobs don't linger between tests:
 
-  ## WebMock Reponse Setups ##
+    ## WebMock Reponse Setups ##
 
-  # Request for data feed symbology.
-  stub_request(:get, 'https://api.iextrading.com/1.0/ref-data/symbols').
-    with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body: '[
-              {"symbol":"A",   "name":"Agilent Technologies Inc.","date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"2"},
-              {"symbol":"AA",  "name":"Alcoa Corporation",        "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"12042"},
-              {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
-            ]',
-      headers: {})
-  # Request monthly price series for instrument.
-  stub_request(:get, "https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=DIA").
-    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body:   '{
-                "Meta Data": {
-                  "1. Information": "Monthly Adjusted Prices and Volumes",
-                  "2. Symbol": "DIA",
-                  "3. Last Refreshed": "2018-03-16",
-                  "4. Time Zone": "US/Eastern"
-                },
-                "Monthly Adjusted Time Series": {
-                  "2018-02-28": {
-                    "1. open": "259.9500",
-                    "2. high": "262.9000",
-                    "3. low": "233.7600",
-                    "4. close": "250.2000",
-                    "5. adjusted close": "249.7448",
-                    "6. volume": "183041900",
-                    "7. dividend amount": "0.6448"
-                  }
-                }
-              }',
-      headers: {})
-  # Request instrument prices for user.
-  stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").
-    with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body:   '{
-                "AAPL":{"quote":{"latestPrice":175.42,"change":-2.6,"latestUpdate":1521472593247}},
-                "AMZN":{"quote":{"latestPrice":1546.96,"change":-24.72,"latestUpdate":1521472585431}},
-                "BABA":{"quote":{"latestPrice":196.46,"change":-3.82,"latestUpdate":1521472581024}},
-                "COF":{"quote":{"latestPrice":98.43,"change":-0.93,"latestUpdate":1521472536098}},
-                "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
-                "GOOG":{"quote":{"latestPrice":1097.22,"change":-38.51,"latestUpdate":1521472582290}},
-                "GOOGL":{"quote":{"latestPrice":1097.6,"change":-36.82,"latestUpdate":1521472593134}},
-                "GSK":{"quote":{"latestPrice":37.135,"change":-0.145,"latestUpdate":1521472468254}},
-                "HD":{"quote":{"latestPrice":178.235,"change":-0.725,"latestUpdate":1521472533502}},
-                "INTC":{"quote":{"latestPrice":50.495,"change":-0.675,"latestUpdate":1521472520980}},
-                "JNJ":{"quote":{"latestPrice":131.64,"change":-2.04,"latestUpdate":1521472573951}},
-                "SNY":{"quote":{"latestPrice":41.135,"change":0.175,"latestUpdate":1521472372465}}
+    # Request for news.
+    stub_request(:get, 'https://newsapi.org/v1/articles?apikey&sortBy=top&source=bloomberg').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body: '{
+          "status": "ok",
+          "articles": [{
+            "source": {"id": "bloomberg", "name": "Bloomberg"},
+            "author": "Shannon Pettypiece",
+            "title": "Trump to Pay His Own Legal Bills, Set Up Fund to Cover Staff",
+            "description": "President Donald Trump has started paying his own legal bills related to the Russia probe, rather than charging them to his campaign or the Republican National Committee, and is finalizing a plan to use personal funds to help current and former White House staff with their legal costs.",
+            "url": "http://www.bloomberg.com/news/articles/2017-11-17/trump-to-pay-his-own-legal-bills-set-up-fund-to-cover-staff",
+            "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i5_F2CKD0NVI/v1/1200x675.jpg",
+            "publishedAt": "2017-11-17T16:51:29Z"
+          }]
+        }',
+        headers: {})
+    # Request for data feed symbology.
+    stub_request(:get, 'https://api.iextrading.com/1.0/ref-data/symbols').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body: '[
+                {"symbol":"A",   "name":"Agilent Technologies Inc.","date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"2"},
+                {"symbol":"AA",  "name":"Alcoa Corporation",        "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"12042"},
+                {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
+              ]',
+        headers: {})
+    # Request instrument prices for all instruments.
+    stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+                  "AAPL":{"quote":{"latestPrice":175.6,"change":-2.42,"latestUpdate":1521473015555}},
+                  "AMZN":{"quote":{"latestPrice":1547.75,"change":-23.93,"latestUpdate":1521472989944}},
+                  "BABA":{"quote":{"latestPrice":196.58,"change":-3.7,"latestUpdate":1521473025985}},
+                  "COF":{"quote":{"latestPrice":98.31,"change":-1.05,"latestUpdate":1521472812505}},
+                  "DIA":{"quote":{"latestPrice":246.66,"change":-2.44,"latestUpdate":1521472967711}},
+                  "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
+                  "GOOG":{"quote":{"latestPrice":1097.865,"change":-37.865,"latestUpdate":1521473007173}},
+                  "GOOGL":{"quote":{"latestPrice":1098.8,"change":-35.62,"latestUpdate":1521473025840}},
+                  "GSK":{"quote":{"latestPrice":37.165,"change":-0.115,"latestUpdate":1521472921890}},
+                  "HD":{"quote":{"latestPrice":178.44,"change":-0.52,"latestUpdate":1521473018188}},
+                  "INTC":{"quote":{"latestPrice":50.51,"change":-0.66,"latestUpdate":1521473018049}},
+                  "IWM":{"quote":{"latestPrice":155.85,"change":-1.95,"latestUpdate":1521473021918}},
+                  "JNJ":{"quote":{"latestPrice":131.73,"change":-1.95,"latestUpdate":1521472959823}},
+                  "QQQ":{"quote":{"latestPrice":167.37,"change":-3.65,"latestUpdate":1521473019483}},
+                  "SNY":{"quote":{"latestPrice":41.14,"change":0.18,"latestUpdate":1521472948422}},
+                  "SPY":{"quote":{"latestPrice":271.32,"change":-2.88,"latestUpdate":1521473026531}},
+                  "URTH":{"quote":{"URTH","latestPrice":88.822,"change":-0.698,"latestUpdate":1521472050165}}
                 }',
-      headers: {})
-  # Request instrument prices for all instruments.
-  stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
-    with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body:   '{
-                "AAPL":{"quote":{"latestPrice":175.6,"change":-2.42,"latestUpdate":1521473015555}},
-                "AMZN":{"quote":{"latestPrice":1547.75,"change":-23.93,"latestUpdate":1521472989944}},
-                "BABA":{"quote":{"latestPrice":196.58,"change":-3.7,"latestUpdate":1521473025985}},
-                "COF":{"quote":{"latestPrice":98.31,"change":-1.05,"latestUpdate":1521472812505}},
-                "DIA":{"quote":{"latestPrice":246.66,"change":-2.44,"latestUpdate":1521472967711}},
-                "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
-                "GOOG":{"quote":{"latestPrice":1097.865,"change":-37.865,"latestUpdate":1521473007173}},
-                "GOOGL":{"quote":{"latestPrice":1098.8,"change":-35.62,"latestUpdate":1521473025840}},
-                "GSK":{"quote":{"latestPrice":37.165,"change":-0.115,"latestUpdate":1521472921890}},
-                "HD":{"quote":{"latestPrice":178.44,"change":-0.52,"latestUpdate":1521473018188}},
-                "INTC":{"quote":{"latestPrice":50.51,"change":-0.66,"latestUpdate":1521473018049}},
-                "IWM":{"quote":{"latestPrice":155.85,"change":-1.95,"latestUpdate":1521473021918}},
-                "JNJ":{"quote":{"latestPrice":131.73,"change":-1.95,"latestUpdate":1521472959823}},
-                "QQQ":{"quote":{"latestPrice":167.37,"change":-3.65,"latestUpdate":1521473019483}},
-                "SNY":{"quote":{"latestPrice":41.14,"change":0.18,"latestUpdate":1521472948422}},
-                "SPY":{"quote":{"latestPrice":271.32,"change":-2.88,"latestUpdate":1521473026531}},
-                "URTH":{"quote":{"URTH","latestPrice":88.822,"change":-0.698,"latestUpdate":1521472050165}}
-              }',
-      headers: {})
-  # Request for AMZN series values.
-  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AMZN').
-    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body:   '{
-                "Meta Data": {
-                  "1. Information": "Monthly Adjusted Prices and Volumes",
-                  "2. Symbol": "AMZN",
-                  "3. Last Refreshed": "2018-04-05",
-                  "4. Time Zone": "US/Eastern"
-                },
-                "Monthly Adjusted Time Series": {
-                  "2018-03-29": {
-                    "1. open": "1513.6000",
-                    "2. high": "1617.5400",
-                    "3. low": "1365.2000",
-                    "4. close": "1447.3400",
-                    "5. adjusted close": "1447.3400",
-                    "6. volume": "128401298",
-                    "7. dividend amount": "0.0000"
+        headers: {})
+    # Request instrument prices for user.
+    stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+                  "AAPL":{"quote":{"latestPrice":175.42,"change":-2.6,"latestUpdate":1521472593247}},
+                  "AMZN":{"quote":{"latestPrice":1546.96,"change":-24.72,"latestUpdate":1521472585431}},
+                  "BABA":{"quote":{"latestPrice":196.46,"change":-3.82,"latestUpdate":1521472581024}},
+                  "COF":{"quote":{"latestPrice":98.43,"change":-0.93,"latestUpdate":1521472536098}},
+                  "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
+                  "GOOG":{"quote":{"latestPrice":1097.22,"change":-38.51,"latestUpdate":1521472582290}},
+                  "GOOGL":{"quote":{"latestPrice":1097.6,"change":-36.82,"latestUpdate":1521472593134}},
+                  "GSK":{"quote":{"latestPrice":37.135,"change":-0.145,"latestUpdate":1521472468254}},
+                  "HD":{"quote":{"latestPrice":178.235,"change":-0.725,"latestUpdate":1521472533502}},
+                  "INTC":{"quote":{"latestPrice":50.495,"change":-0.675,"latestUpdate":1521472520980}},
+                  "JNJ":{"quote":{"latestPrice":131.64,"change":-2.04,"latestUpdate":1521472573951}},
+                  "SNY":{"quote":{"latestPrice":41.135,"change":0.175,"latestUpdate":1521472372465}}
+                  }',
+        headers: {})
+    # Request monthly price series.
+    # stub_request(:get, /https:\/\/www\.alphavantage\.co\/query\?apikey\&function\=TIME_SERIES_MONTHLY_ADJUSTED\&symbol=\w+/).
+    #   with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+    stub_request(:get, /https:\/\/www\.alphavantage\.co\/query\?apikey\&function=TIME_SERIES_MONTHLY_ADJUSTED\&symbol=\w+/).
+      with(query: hash_excluding({'symbol'=>['AMZN','DIA']}), headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(status: 200, body: '', headers: {})
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AMZN').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+                  "Meta Data": {
+                    "1. Information": "Monthly Adjusted Prices and Volumes",
+                    "2. Symbol": "AMZN",
+                    "3. Last Refreshed": "2018-04-05",
+                    "4. Time Zone": "US/Eastern"
                   },
-                  "2018-02-28": {
-                    "1. open": "1445.0000",
-                    "2. high": "1528.7000",
-                    "3. low": "1265.9300",
-                    "4. close": "1512.4500",
-                    "5. adjusted close": "1512.4500",
-                    "6. volume": "133362428",
-                    "7. dividend amount": "0.0000"
-                  },
-                  "2018-01-31": {
-                    "1. open": "1172.0000",
-                    "2. high": "1472.5800",
-                    "3. low": "1170.5100",
-                    "4. close": "1450.8900",
-                    "5. adjusted close": "1450.8900",
-                    "6. volume": "94145634",
-                    "7. dividend amount": "0.0000"
+                  "Monthly Adjusted Time Series": {
+                    "2018-03-29": {
+                      "1. open": "1513.6000",
+                      "2. high": "1617.5400",
+                      "3. low": "1365.2000",
+                      "4. close": "1447.3400",
+                      "5. adjusted close": "1447.3400",
+                      "6. volume": "128401298",
+                      "7. dividend amount": "0.0000"
+                    },
+                    "2018-02-28": {
+                      "1. open": "1445.0000",
+                      "2. high": "1528.7000",
+                      "3. low": "1265.9300",
+                      "4. close": "1512.4500",
+                      "5. adjusted close": "1512.4500",
+                      "6. volume": "133362428",
+                      "7. dividend amount": "0.0000"
+                    },
+                    "2018-01-31": {
+                      "1. open": "1172.0000",
+                      "2. high": "1472.5800",
+                      "3. low": "1170.5100",
+                      "4. close": "1450.8900",
+                      "5. adjusted close": "1450.8900",
+                      "6. volume": "94145634",
+                      "7. dividend amount": "0.0000"
+                    }
                   }
-                }
-              }',
-      headers: {})
-  # Request for BABA series values.
-  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=BABA').
-    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body: "",
-      headers: {})
-  # Request for COF series values.
-  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=COF').
-    with(  headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body: "",
-      headers: {})
-  # Request for DJIA index value.
-  stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
-    with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body:   '{
-                "Meta Data": {
-                  "1. Information": "Daily Prices (open, high, low, close) and Volumes",
-                  "2. Symbol": "Dow Jones Industrial Average Index",
-                  "3. Last Refreshed": "2018-03-19",
-                  "4. Output Size": "Compact",
-                  "5. Time Zone": "US/Eastern"
-                },
-                "Time Series (Daily)": {
-                  "2018-03-19": {
-                    "1. open": "24893.6895",
-                    "2. high": "24893.6895",
-                    "3. low": "24658.6191",
-                    "4. close": "24686.0898",
-                    "5. volume": "103013890"
+                }',
+        headers: {})
+    stub_request(:get, "https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=DIA").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+                  "Meta Data": {
+                    "1. Information": "Monthly Adjusted Prices and Volumes",
+                    "2. Symbol": "DIA",
+                    "3. Last Refreshed": "2018-03-16",
+                    "4. Time Zone": "US/Eastern"
                   },
-                  "2018-03-16": {
-                    "1. open": "24877.3398",
-                    "2. high": "25031.0000",
-                    "3. low": "24857.0898",
-                    "4. close": "24946.5098",
-                    "5. volume": "654240000"
+                  "Monthly Adjusted Time Series": {
+                    "2018-02-28": {
+                      "1. open": "259.9500",
+                      "2. high": "262.9000",
+                      "3. low": "233.7600",
+                      "4. close": "250.2000",
+                      "5. adjusted close": "249.7448",
+                      "6. volume": "183041900",
+                      "7. dividend amount": "0.6448"
+                    }
                   }
-                }
-              }',
-      headers: {})
-  # Request for Bloomberg headline news.
-  stub_request(:get, 'https://newsapi.org/v1/articles?apikey&sortBy=top&source=bloomberg').
-    with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
-    to_return(
-      status: 200,
-      body: '{
-        "status": "ok",
-        "articles": [{
-          "source": {"id": "bloomberg", "name": "Bloomberg"},
-          "author": "Shannon Pettypiece",
-          "title": "Trump to Pay His Own Legal Bills, Set Up Fund to Cover Staff",
-          "description": "President Donald Trump has started paying his own legal bills related to the Russia probe, rather than charging them to his campaign or the Republican National Committee, and is finalizing a plan to use personal funds to help current and former White House staff with their legal costs.",
-          "url": "http://www.bloomberg.com/news/articles/2017-11-17/trump-to-pay-his-own-legal-bills-set-up-fund-to-cover-staff",
-          "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i5_F2CKD0NVI/v1/1200x675.jpg",
-          "publishedAt": "2017-11-17T16:51:29Z"
-        }]
-      }',
-      headers: {})
+                }',
+        headers: {})
+    # Request for DJIA index value.
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.14.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+                  "Meta Data": {
+                    "1. Information": "Daily Prices (open, high, low, close) and Volumes",
+                    "2. Symbol": "Dow Jones Industrial Average Index",
+                    "3. Last Refreshed": "2018-03-19",
+                    "4. Output Size": "Compact",
+                    "5. Time Zone": "US/Eastern"
+                  },
+                  "Time Series (Daily)": {
+                    "2018-03-19": {
+                      "1. open": "24893.6895",
+                      "2. high": "24893.6895",
+                      "3. low": "24658.6191",
+                      "4. close": "24686.0898",
+                      "5. volume": "103013890"
+                    },
+                    "2018-03-16": {
+                      "1. open": "24877.3398",
+                      "2. high": "25031.0000",
+                      "3. low": "24857.0898",
+                      "4. close": "24946.5098",
+                      "5. volume": "654240000"
+                    }
+                  }
+                }',
+        headers: {})
   end
 
   # rspec-expectations config goes here. You can use an alternate

@@ -4,10 +4,10 @@ class TradeCache
   # Specify get_live_prices to retrieve feed data. Otherwise, just get prices from database.
   def self.prices(instruments, get_live_prices)
     trades = []
-    instruments.each_slice(DataCache::FEED_BATCH_SIZE) do |instrument_batch|
+    instruments.each_slice(DataCache::TRADE_BATCH_SIZE) do |instrument_batch|
       trade_batch = prices_from_database(instrument_batch)  # Get database prices as a baseline.
       if get_live_prices
-        sleep DataCache::FEED_BATCH_DELAY if trades.length.nonzero?  # Throttle request rate after first request.
+        sleep DataCache::TRADE_BATCH_DELAY if trades.length.nonzero?  # Throttle request rate after first request.
         Feed.load_prices(instrument_batch) do |live_trades|  # Get feed prices.
           save_trades(trade_batch, live_trades)  # Update database prices with feed prices.
         end

@@ -6,7 +6,7 @@ import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Instrument from '../classes/Instrument';
 import Position from '../classes/Position';
-import * as positionActions  from '../actions/positionActions.js';
+import * as positionActions  from '../actions/positionActions';
 import {PositionEdit} from '../components/PositionEdit';
 
 // This class handles the editing of a Position.

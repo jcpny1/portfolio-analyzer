@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _cloneDeep from 'lodash.clonedeep';
-import * as portfolioActions from '../actions/portfolioActions.js';
+import * as portfolioActions from '../actions/portfolioActions';
 import PropTypes from 'prop-types';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import {PortfolioEdit} from '../components/PortfolioEdit';

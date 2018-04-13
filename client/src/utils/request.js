@@ -62,13 +62,13 @@ export function seriesRefresh(allSeries) {
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
-// Request the server to refresh all series prices.
+// Request the server to update series prices for all instruments in Instruments table.
 export function seriesRefreshAll() {
   seriesRefresh(true);
 }
 
-// Request the server to create series prices for instruments that are not in Series.
-export function seriesRefreshNew() {
+// Request the server to update series prices only for instruments held by Users.
+export function seriesRefreshActive() {
   seriesRefresh(false);
 }
 

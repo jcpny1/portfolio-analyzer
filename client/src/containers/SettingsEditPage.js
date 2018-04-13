@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Button, Header, Menu, Modal} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import {SettingsEdit} from '../components/SettingsEdit';
-import * as userActions from '../actions/userActions.js';
+import * as userActions from '../actions/userActions';
 
 class SettingsEditPage extends Component {
   componentWillMount() {

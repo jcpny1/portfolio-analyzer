@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as portfolioActions from '../actions/portfolioActions.js';
+import * as portfolioActions from '../actions/portfolioActions';
 import PropTypes from 'prop-types';
 import ChartData from '../classes/ChartData';
 import Fmt from '../utils/formatter';

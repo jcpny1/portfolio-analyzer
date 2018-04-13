@@ -8,11 +8,11 @@ class SeriesController < ApplicationController
     render json: series, each_serializer: SeriesSerializer, include: 'instrument'
   end
 
-  # Update series data for every instrument in the database.
+  # Update Series table from live feed.
   # Intended for admin user only.
   def series_bulk_load
     logger.info 'SERIES BULK LOAD REQUESTED.'
-    fn_name = params.key?('allSeries') ? 'series_bulk_load_all' : 'series_bulk_load_new'
+    fn_name = params.key?('allSeries') ? 'series_bulk_load_all' : 'series_bulk_load_active'
     FeedWorker.perform_async(fn_name)
     head :accepted
   end

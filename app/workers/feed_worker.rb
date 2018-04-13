@@ -12,13 +12,13 @@ class FeedWorker
       # Get latest prices for all instruments.
       instruments = Instrument.select(:id, :symbol).order(:symbol)
       DataCache.price_values(instruments, true)
-    when 'series_bulk_load_all'
-      # Get series data for all instruments.
-      instruments = Instrument.select(:id, :symbol).order(:symbol)
+    when 'series_bulk_load_active'
+      # Get series data for instruments in Positions table.
+      instruments = Instrument.select(:id, :symbol).where(id: Position.select('instrument_id').distinct).order(:symbol)
       DataCache.series_bulk_load(instruments)
-    when 'series_bulk_load_new'
-      # Get series data for instruments not yet in Series table.
-      instruments = Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id').distinct).order(:symbol)
+    when 'series_bulk_load_all'
+      # Get series data for instruments in Instruments table.
+      instruments = Instrument.select(:id, :symbol).order(:symbol)
       DataCache.series_bulk_load(instruments)
     else
       "FeedWorker Error: invalid request (#{name})"
