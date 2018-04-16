@@ -12,7 +12,7 @@ class SeriesController < ApplicationController
   # Intended for admin user only.
   def series_bulk_load
     logger.info 'SERIES BULK LOAD REQUESTED.'
-    FeedWorker.perform_async('series_bulk_load', params[:series], params[:symbols])
+    FeedWorker.perform_async('series_bulk_load', params[:instruments], params[:symbols])
     head :accepted
   end
 end

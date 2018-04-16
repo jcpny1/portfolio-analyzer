@@ -7,6 +7,7 @@ class PositionsController < ApplicationController
     input_params = add_param_instrument_id
     position = @portfolio.positions.new(input_params)
     if position.save
+      FeedWorker.perform_async('series_bulk_load', nil, position.instrument.symbol)  # Update series for this symbol.
       render json: @portfolio
     else
       render json: position.errors.full_messages, status: :unprocessable_entity
@@ -19,6 +20,7 @@ class PositionsController < ApplicationController
     if position.instrument.symbol != params['instrument_symbol'] # Then we're changing instruments.
       position.instrument_id = nil
       input_params = add_param_instrument_id
+      FeedWorker.perform_async('series_bulk_load', nil, params['instrument_symbol'])  # Update series for this symbol.
     else
       input_params = position_params
     end

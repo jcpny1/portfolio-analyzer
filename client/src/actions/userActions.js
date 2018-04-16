@@ -1,5 +1,5 @@
 import * as UserReducer from '../reducers/userReducer';
-import * as Request from './actionRequests';
+import * as ActionRequest from './actionRequests';
 
 const GUEST_USER_ID = 1;
 
@@ -7,7 +7,7 @@ const GUEST_USER_ID = 1;
 export function userLoad() {
   return function(dispatch) {
     dispatch(UserReducer.updatingUser());
-    Request.userFetch(dispatch, GUEST_USER_ID);
+    ActionRequest.userFetch(dispatch, GUEST_USER_ID);
   }
 }
 
@@ -15,6 +15,6 @@ export function userLoad() {
 export function userUpdate(user) {
   return function(dispatch) {
     dispatch(UserReducer.updatingUser());
-    Request.userSave(dispatch, user);
+    ActionRequest.userSave(dispatch, user);
   }
 }

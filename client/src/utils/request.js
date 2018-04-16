@@ -56,21 +56,20 @@ export function seriesFetch(symbols, start_date, end_date, cb) {
 }
 
 // Request the server to refresh series prices.
-export function seriesRefresh(allSeries) {
-  const series = allSeries ? 'all' : 'active';
-  fetch(`/api/series/refresh?series=${series}&symbols=${Series.ETF_SYMBOLS}`, {headers: {'Accept': 'application/json'}})
+export function seriesRefresh(seriesType) {
+  fetch(`/api/series/refresh?instruments=${seriesType}&symbols=${Series.ETF_SYMBOLS}`, {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
 // Request the server to update series prices only for instruments held by Users.
 export function seriesRefreshActive() {
-  seriesRefresh(false);
+  seriesRefresh('active');
 }
 
 // Request the server to update series prices for all instruments in Instruments table.
 export function seriesRefreshAll() {
-  seriesRefresh(true);
+  seriesRefresh('all');
 }
 
 // Check a fetch response status.
