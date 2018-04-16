@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as portfolioActions from '../actions/portfolioActions';
 import PropTypes from 'prop-types';
+import * as portfolioActions from '../actions/portfolioActions';
 import ChartData from '../classes/ChartData';
+import Series from '../classes/Series';
 import Fmt from '../utils/formatter';
 import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import * as Request from '../utils/request';
@@ -12,7 +13,6 @@ import PortfolioChart from '../components/PortfolioChart';
 // This class handles display window of the Portfolio chart.
 class PortfolioChartPage extends Component {
 
-  static ETF_SYMBOLS = ['URTH','IWM','QQQ','DIA','SPY'];
   static CHART_RANGE = 5;  // years
 
   constructor(props) {
@@ -31,7 +31,7 @@ class PortfolioChartPage extends Component {
     const {portfolio} = this.props;
     const portfolioSymbolIds = portfolio.positions.map(position => position.instrument.id);
     const portfolioSymbols = portfolio.positions.map(position => position.instrument.symbol);
-    const symbols = [...new Set(portfolioSymbols.concat(PortfolioChartPage.ETF_SYMBOLS))].join(',');  // uniquify portfolio and ETF symbol lists and turn into comma-separated string.
+    const symbols = [...new Set(portfolioSymbols.concat(Series.ETF_SYMBOLS))].join(',');  // uniquify portfolio and ETF symbol lists and turn into comma-separated string.
     const dateNow = new Date(Date.now());
     const start_date = new Date(dateNow.getFullYear() - PortfolioChartPage.CHART_RANGE, dateNow.getMonth(), dateNow.getDate()).toJSON();
     const end_date = dateNow.toJSON();

@@ -35,8 +35,8 @@ module DataCache
     TradeCache.prices(instruments, get_live_prices)
   end
 
-  # Update series data for the given instrument list.
-  def self.series_bulk_load(instruments)
-    SeriesCache.bulk_load(instruments)
+  # Update series data for the given symbols.
+  def self.series_bulk_load(symbol_array)
+    SeriesCache.bulk_load(symbol_array)
   end
 end

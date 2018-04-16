@@ -1,20 +1,19 @@
 # This class is responsible for interfacing the outside world with the Series data store.
 class SeriesCache
-  # Update series cache for given instruments.
-  def self.bulk_load(instruments)
+  # Update series cache for given symbols.
+  def self.bulk_load(symbol_array)
     Rails.logger.debug 'SERIES BULK LOAD BEGIN.'
     processed = 0
-    instruments.each_slice(DataCache::SERIES_BATCH_SIZE) do |instrument_batch|
+    symbol_array.each_slice(DataCache::SERIES_BATCH_SIZE) do |symbol_batch|
       sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
-      processed += instrument_batch.length
-      symbols = instrument_batch.map(&:symbol)
-      series_batch = series_from_database(symbols, nil, nil)  # Get database series as a baseline.
-      Feed.load_series(symbols) do |live_series|    # Get feed series.
-        save_series(live_series, series_batch)      # Update database series with feed series.
-        clean_series(live_series, series_batch)     # Remove obsolete series data points.
+      processed += symbol_batch.length
+      series_batch = series_from_database(symbol_batch, nil, nil)  # Get database series as a baseline.
+      Feed.load_series(symbol_batch) do |live_series|  # Get feed series.
+        save_series(live_series, series_batch)         # Update database series with feed series.
+        clean_series(live_series, series_batch)        # Remove obsolete series data points.
       end
     end
-    Rails.logger.debug "SERIES BULK LOAD END (received: #{instruments.length}, processed: #{processed})."
+    Rails.logger.debug "SERIES BULK LOAD END (received: #{symbol_array.length}, processed: #{processed})."
   end
 
   # Retrieve the latest values for the given symbols array.
@@ -73,7 +72,7 @@ class SeriesCache
   private_class_method def self.series_from_database(symbols, start_date, end_date)
     if start_date.nil?  # Retrieve all data points
       Series.joins(:instrument).where(instruments: { symbol: symbols }).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
-    else  # Retrieve data points withing date range.
+    else  # Retrieve data points within date range.
       Series.joins(:instrument).where(instruments: { symbol: symbols }).where("series_date between ? and ?", start_date, end_date).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
     end
   end

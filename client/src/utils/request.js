@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
+import Series from '../classes/Series';
 
 // Request the server to refresh the symbololgy database.
 export function headlinesRefresh(cb) {
@@ -56,20 +57,20 @@ export function seriesFetch(symbols, start_date, end_date, cb) {
 
 // Request the server to refresh series prices.
 export function seriesRefresh(allSeries) {
-  const all = allSeries ? '&allSeries' : '';
-  fetch(`/api/series/refresh?${all}`, {headers: {'Accept': 'application/json'}})
+  const series = allSeries ? 'all' : 'active';
+  fetch(`/api/series/refresh?series=${series}&symbols=${Series.ETF_SYMBOLS}`, {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
-}
-
-// Request the server to update series prices for all instruments in Instruments table.
-export function seriesRefreshAll() {
-  seriesRefresh(true);
 }
 
 // Request the server to update series prices only for instruments held by Users.
 export function seriesRefreshActive() {
   seriesRefresh(false);
+}
+
+// Request the server to update series prices for all instruments in Instruments table.
+export function seriesRefreshAll() {
+  seriesRefresh(true);
 }
 
 // Check a fetch response status.
