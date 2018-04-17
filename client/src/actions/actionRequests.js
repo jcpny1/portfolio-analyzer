@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch';
-import Fmt from '../utils/formatter';
 import Instrument from '../classes/Instrument';
 import Portfolio from '../classes/Portfolio';
 import Position from '../classes/Position';
@@ -129,9 +128,9 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
       if ('error' in trades) {
         dispatch(PortfolioReducer.errorPortfolio({prefix: 'Load Portfolios: ', error: trades}));
       } else {
-        trades.data.forEach(trade => {    // Validate trade data.
+        trades.data.forEach(trade => {  // Validate trade data.
           if (trade.attributes.error !== null) {
-            dispatch(PortfolioReducer.warnPortfolio({prefix: 'Load Portfolios Prices for ', warning: trade.error}));
+            dispatch(PortfolioReducer.warnPortfolio({prefix: 'Load Portfolios Prices for ', warning: trade.attributes.error}));
           }
         });
         Portfolio.applyPrices(portfolios, trades.data);
@@ -195,13 +194,6 @@ export function positionUpdate(dispatch, position, sortFn) {
     portfoliosLoad(dispatch, false, sortFn);
   })
   .catch(error => dispatch(PortfolioReducer.errorPortfolio({prefix: 'Update Position: ', error: error.message})))
-}
-
-// Request the server to refresh trade prices.
-export function pricesRefresh() {
-  fetch('/api/trades/refresh', {headers: {'Accept': 'application/json'}})
-  .then(statusCheck)
-  .catch(error => {alert(Fmt.serverError('Refresh Prices', error));});
 }
 
 // Retrieve User.

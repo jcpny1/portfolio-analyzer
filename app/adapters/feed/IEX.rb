@@ -8,6 +8,7 @@ module Feed
     # Returns array of results.
     def self.latest_trades(symbols)
       symbol_list = symbols.join(',')
+response = ''
       begin
         uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
         uri.query_values = { types: 'quote', filter: 'latestPrice,change,latestUpdate', symbols: symbol_list }

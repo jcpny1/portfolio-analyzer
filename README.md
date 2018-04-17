@@ -26,7 +26,7 @@ dd-mmm-yy  x.y.z  Added more Jest tests.
                   Added option to bulk load series data only for symbols contained in Positions table.
                   Removed option to bulk load Series data only for symbols missing from Series table.
                   Increased index fetch and series fetch throttling delays. Keep tripping AV rate limits (might be a feed bug; it's not me).
-                  Refresh Series cache data points for newly added Position Instrument.
+                  Refresh Series data points for newly added Position Instrument.
 10-Apr-18  0.6.1  Updated gems.
 10-Apr-18  0.6.0  Enhanced series feed error handling.
                   Cut Sidekiq threads from 10 to 1. Reduces Heroku worker dyno memory utilization and prevents concurrent bulk operations.
