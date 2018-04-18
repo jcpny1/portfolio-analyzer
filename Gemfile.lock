@@ -52,7 +52,7 @@ GEM
     arel (9.0.0)
     builder (3.2.3)
     byebug (10.0.2)
-    capybara (3.0.1)
+    capybara (3.0.2)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -89,7 +89,7 @@ GEM
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashdiff (0.3.7)
-    i18n (1.0.0)
+    i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
     jsonapi-renderer (0.2.0)
@@ -118,7 +118,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.2)
-    puma (3.11.3)
+    puma (3.11.4)
     rack (2.0.4)
     rack-protection (2.0.1)
       rack
@@ -247,4 +247,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
