@@ -3,7 +3,7 @@ import React from 'react';
 // This class is used to hold and format numeric values.
 export default class Decimal {
   // Value can be a string or a number.
-  // Valid types are currency, decimal, index, and quantity.
+  // Valid types are currency, decimal, index, percent, and quantity.
   // Specifying delta will affect the color of the displayed value.
   constructor(value = '', type = 'decimal', delta = '') {
     const floatValue = Number.parseFloat(value);
