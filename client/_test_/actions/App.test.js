@@ -25,6 +25,7 @@ import * as ActionRequest    from '../../src/actions/actionRequests';
 import * as PortfolioAction  from '../../src/actions/portfolioActions';
 import * as PortfolioReducer from '../../src/reducers/portfolioReducer';
 import * as PositionAction   from '../../src/actions/positionActions';
+import * as Request          from '../../src/utils/request';
 import * as UserReducer      from '../../src/reducers/userReducer';
 
 const myDispatch = jest.fn();
@@ -158,9 +159,21 @@ describe('actions', () => {
     expect(ActionRequest.positionAdd(myDispatch, myPosition, mySort)).toBeUndefined();
     expect(ActionRequest.positionDelete(myDispatch, myPortfolio.id, myPosition.id, mySort)).toBeUndefined();
     expect(ActionRequest.positionUpdate(myDispatch, myPosition, mySort)).toBeUndefined();
-    expect(ActionRequest.pricesRefresh()).toBeUndefined();
     expect(ActionRequest.userFetch(myDispatch, myUser.id)).resolves.toBe({});
     expect(ActionRequest.userSave(myDispatch, myUser)).toBeUndefined();
+  });
+
+  it('should have Requests', () => {
+    expect(Request.headlinesRefresh(myMock)).toBeUndefined();
+    expect(Request.indexesRefresh(myMock)).toBeUndefined();
+    expect(Request.instrumentSearch({}, myMock)).toBeTruthy();
+    expect(Request.instrumentsRefresh()).toBeUndefined();
+    expect(Request.pricesRefresh()).toBeUndefined();
+    expect(Request.seriesFetch()).toBeUndefined();
+    expect(Request.seriesRefresh('active')).toBeUndefined();
+    expect(Request.seriesRefreshActive()).toBeUndefined();
+    expect(Request.seriesRefreshAll()).toBeUndefined();
+    expect(Request.statusCheck('')).toEqual("");
   });
 });
 
