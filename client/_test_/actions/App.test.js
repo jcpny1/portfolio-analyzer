@@ -235,6 +235,15 @@ describe('classes', () => {
     const chartData = new ChartData();
   });
 
+  it('has a ChartData class', () => {
+    const chartData = new ChartData();
+    const portfolioSymbolIds = [];
+      data: [{attributes: {'series-date': '2018-01-01'}, relationships: {instrument: {data: {id: '1'}}}}],
+      included: [{id:'1', attributes:{symbol:'AAPL', name:'Apple'}}]
+    };
+    ChartData.seriesDataToChartData(series, myPortfolio.name, portfolioSymbolIds);
+  });
+
   it('has a DateTime class', () => {
     const dt1 = new DateTime();
     const dt2 = new DateTime('2000-01-01');
