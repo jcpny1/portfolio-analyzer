@@ -238,6 +238,7 @@ describe('classes', () => {
   it('has a ChartData class', () => {
     const chartData = new ChartData();
     const portfolioSymbolIds = [];
+    const series = {
       data: [{attributes: {'series-date': '2018-01-01'}, relationships: {instrument: {data: {id: '1'}}}}],
       included: [{id:'1', attributes:{symbol:'AAPL', name:'Apple'}}]
     };
