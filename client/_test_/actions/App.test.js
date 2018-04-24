@@ -212,7 +212,7 @@ describe('actions', () => {
     expect(ActionRequest.positionAdd(myDispatch, myPosition, mySort)).toBeUndefined();
     expect(ActionRequest.positionDelete(myDispatch, myPortfolio.id, myPosition.id, mySort)).toBeUndefined();
     expect(ActionRequest.positionUpdate(myDispatch, myPosition, mySort)).toBeUndefined();
-    expect(ActionRequest.userFetch(myDispatch, myUser.id)).resolves.toBe({});
+    expect(ActionRequest.userFetch(myDispatch, myUser.id)).resolves.toBeUndefined();
     expect(ActionRequest.userSave(myDispatch, myUser)).toBeUndefined();
   });
 

@@ -1,6 +1,7 @@
 import DateTime from '../classes/DateTime';
 import Decimal from '../classes/Decimal';
 import Instrument from '../classes/Instrument';
+import Trade from '../classes/Trade';
 import * as Request from '../utils/request';
 
 export default class Position {
@@ -8,17 +9,12 @@ export default class Position {
     // persisted
     this._portfolio_id  = portfolioId;
     this._id            = id;
-    this.instrument     = new Instrument();
-    this.quantity       = quantity;
-    this.cost           = cost;
+    this._cost          = new Decimal(cost, 'currency');
     this._dateAcquired  = new DateTime(dateAcquired);
-    // from market data
-    this._lastTrade     = new Decimal(0.0, 'currency');
-    this._lastTradeDate = new DateTime();
-    this._priceChange   = new Decimal(0.0, 'currency', 'delta');
-    this._lastUpdate    = new DateTime();
-    // derived
-    this.updateDerivedValues();
+    this._instrument    = new Instrument();
+    this._quantity      = new Decimal(quantity, 'quantity');
+    this._trade         = new Trade();  // from market data
+    this.updateDerivedValues();         // derived
   }
 
   get cost()          {return this._cost}
@@ -27,13 +23,13 @@ export default class Position {
   get gainLoss()      {return this._gainLoss}
   get id()            {return this._id}
   get instrument()    {return this._instrument}
-  get lastTrade()     {return this._lastTrade}
-  get lastUpdate()    {return this._lastUpdate}
-  get lastTradeDate() {return this._lastTradeDate}
+  get lastTrade()     {return this._trade.price}
+  get lastUpdate()    {return this._trade.lastUpdate}
+  get lastTradeDate() {return this._trade.tradeDate}
   get marketValue()   {return this._marketValue}
   get pctTotalMV()    {return this._pctTotalMV}
   get portfolio_id()  {return this._portfolio_id}
-  get priceChange()   {return this._priceChange}
+  get priceChange()   {return this._trade.priceChange}
   get quantity()      {return this._quantity}
 
   set cost(cost)                 {this._cost          = new Decimal(cost, 'currency')}
@@ -45,19 +41,20 @@ export default class Position {
   reprice(serverTrades) {
     const serverTrade = serverTrades.find(serverTrade => serverTrade.attributes['instrument-id'].toString() === this._instrument.id);
     if (serverTrade) {
-      this._lastTrade     = new Decimal(serverTrade.attributes['trade-price'],  'currency');
-      this._priceChange   = new Decimal(serverTrade.attributes['price-change'], 'currency', 'delta');
-      this._lastUpdate    = new DateTime(serverTrade.attributes['created-at']);
-      this._lastTradeDate = new DateTime(serverTrade.attributes['trade-date']);
+      this._trade = new Trade(this._instrument.id,
+                              serverTrade.attributes['trade-price'],
+                              serverTrade.attributes['price-change'],
+                              serverTrade.attributes['trade-date'],
+                              serverTrade.attributes['created-at']);
       this.updateDerivedValues();
     }
   }
 
   // Recompute position summary info.
   updateDerivedValues() {
-    this._dayChange   = new Decimal(this._quantity * this._priceChange, 'currency', 'delta');
-    this._marketValue = new Decimal(this._quantity * this._lastTrade, 'currency');
-    this._gainLoss    = new Decimal(this._marketValue - this._cost, 'currency', 'delta');
+    this._dayChange   = new Decimal(this.quantity * this.priceChange, 'currency', 'delta');
+    this._marketValue = new Decimal(this.quantity * this.lastTrade, 'currency');
+    this._gainLoss    = new Decimal(this.marketValue - this.cost, 'currency', 'delta');
     this._pctTotalMV  = new Decimal(0.0, 'percent');
   }
 
