@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 import Fmt from '../utils/formatter';
 import Series from '../classes/Series';
 

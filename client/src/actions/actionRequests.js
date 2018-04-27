@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 import Instrument from '../classes/Instrument';
 import Portfolio from '../classes/Portfolio';
 import Position from '../classes/Position';

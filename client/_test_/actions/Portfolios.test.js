@@ -7,12 +7,13 @@ import rootReducer from '../../src/reducers';
 import Portfolio  from '../../src/classes/Portfolio';
 import Position   from '../../src/classes/Position';
 
+// import * as PortfolioReducer from '../../src/reducers/portfolioReducer';
+
 import * as ActionRequest    from '../../src/actions/actionRequests';
 import * as PortfolioAction  from '../../src/actions/portfolioActions';
 import * as PositionAction   from '../../src/actions/positionActions';
 import * as Request          from '../../src/utils/request';
 
-const myDispatch = jest.fn();
 const myMock     = jest.fn();
 const mySort     = jest.fn();
 
@@ -27,15 +28,21 @@ registerInitialStoreState(buildInitialStoreState(rootReducer));
 beforeEach(registerAssertions);
 
 describe('Portfolios', () => {
-  // it("should load a User's Portfolios", done => {
-it("should load a User's Portfolios", () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
+  it("should load a User's Portfolios", done => {
     const expectedActions = [
-      {}
-      // {type: types.RESOURCES_REQUEST},
-      // {type: types.RESOURCES_RECEIVE, payload: {bar: 'foo'}}
+      // PortfolioReducer.updateAllPortfolio([]),
+      // {type: portfolioAction.UPDATE_ALL, payload: portfolios},
+      // {"type":"PORTFOLIOS_ERROR","payload":{"prefix":"Load Portfolios: ","error":"only absolute urls are supported"}},
+      // {"type":"PORTFOLIO_UPDATING"},{"type":"PORTFOLIOS_ERROR","payload":{"prefix":"Load Portfolios: ","error":"only absolute urls are supported"}}
+      {"type":"PORTFOLIO_UPDATING"}
     ];
-expect(PortfolioAction.portfoliosLoad(false, mySort)).toBeDefined();
-// done();
-//     expect(ActionRequest.portfoliosLoad(myDispatch, 'false', mySort)).toDispatchActions(expectedActions, done);
+    fetch.mockResponseOnce(JSON.stringify({ data: '12345' }))
+    expect(PortfolioAction.portfoliosLoad('false', mySort)).toDispatchActions(expectedActions, done);
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toEqual('/api/portfolios');
   });
 });

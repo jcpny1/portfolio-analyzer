@@ -51,8 +51,8 @@ select count(*) from series;
 
 \echo Count dashed symbols in instruments, trades, series.
 select count(*) as instrs from instruments where symbol like '%-%';
-select count(*) as trades from trades, instruments where instruments.symbol like '%-%' and trades.instrument_id = instruments.id;
-select count(distinct instrument_id) as series from series, instruments where instruments.symbol like '%-%' and series.instrument_id = instruments.id;
+SELECT COUNT(*) AS trades FROM trades WHERE instrument_id IN (SELECT id FROM instruments i WHERE symbol LIKE '%-%');
+SELECT COUNT(DISTINCT instrument_id) AS series FROM series s INNER JOIN instruments i ON s.instrument_id = i.id WHERE i.symbol like '%-%';
 
 \echo Check for series records without an instrument.
 \prompt 'continue' xxx
@@ -68,7 +68,7 @@ select distinct instrument_id from positions where instrument_id not in (select 
 
 \echo Check for $0 trades records.
 \prompt 'continue' xxx
-select symbol, trades.* from trades, instruments where trade_price = '0.0' and trades.instrument_id = instruments.id order by 1;
+SELECT symbol, t.* FROM trades t INNER JOIN instruments i ON t.instrument_id = i.id WHERE trade_price = '0.0';
 
 \echo Check for series records where low_price > high_price.
 \prompt 'continue' xxx
@@ -76,15 +76,15 @@ select * from series where low_price > high_price;
 
 \echo Check for multiple series data points in the current month.
 \prompt 'continue' xxx
-select instrument_id, symbol, count(*) from series, instruments where series_date >= date_trunc('month', current_timestamp) and series.instrument_id = instruments.id group by instrument_id, symbol having count(*) > 1 order by 3 desc, 2 asc;
+SELECT instrument_id, symbol, COUNT(*) FROM series s INNER JOIN instruments i ON s.instrument_id = i.id WHERE series_date >= DATE_TRUNC('month', current_timestamp) GROUP BY instrument_id, symbol HAVING COUNT(*) > 1 ORDER BY 3 DESC, 2 ASC;
 
 \echo Check for multiple series data points in any month.
 \prompt 'continue' xxx
-select instrument_id, symbol, date_trunc('month', series_date), count(*) from series, instruments where series.instrument_id = instruments.id group by instrument_id, symbol, date_trunc('month', series_date)  having count(*) > 1 order by 4 desc, 2 asc, 3 asc;
+select instrument_id, symbol, date_trunc('month', series_date), count(*) from series s, instruments i where s.instrument_id = i.id group by instrument_id, symbol, date_trunc('month', series_date) having count(*) > 1 order by 4 desc, 2 asc, 3 asc;
 
 \echo Count instruments without a current month series data point.
 \prompt 'continue' xxx
-select count(distinct instrument_id) from series where instrument_id not in (select instrument_id from series where series.series_date >= date_trunc('month', current_timestamp));
+select count(distinct instrument_id) from series where instrument_id not in (select distinct instrument_id from series where series.series_date >= date_trunc('month', current_timestamp));
 
 \echo Show instruments without a current month series data point.
 \prompt 'continue' xxx
