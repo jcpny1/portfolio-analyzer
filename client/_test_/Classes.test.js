@@ -1,11 +1,11 @@
-import ChartData  from '../../src/classes/ChartData';
-import DateTime   from '../../src/classes/DateTime';
-import Decimal    from '../../src/classes/Decimal';
-import Instrument from '../../src/classes/Instrument';
-import Portfolio  from '../../src/classes/Portfolio';
-import Position   from '../../src/classes/Position';
-import Series     from '../../src/classes/Series';
-import Trade      from '../../src/classes/Trade';
+import ChartData  from '../src/classes/ChartData';
+import DateTime   from '../src/classes/DateTime';
+import Decimal    from '../src/classes/Decimal';
+import Instrument from '../src/classes/Instrument';
+import Portfolio  from '../src/classes/Portfolio';
+import Position   from '../src/classes/Position';
+import Series     from '../src/classes/Series';
+import Trade      from '../src/classes/Trade';
 
 describe('classes', () => {
   it('has a ChartData class', () => {

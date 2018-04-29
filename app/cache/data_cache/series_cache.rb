@@ -5,12 +5,18 @@ class SeriesCache
     Rails.logger.debug 'SERIES BULK LOAD BEGIN.'
     processed = 0
     symbol_array.each_slice(DataCache::SERIES_BATCH_SIZE) do |symbol_batch|
-      sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
+# TODO: XXX when AV fixes fetch rate errors, we can put this sleep back in.
+#      sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
       processed += symbol_batch.length
       series_batch = series_from_database(symbol_batch, nil, nil)  # Get database series as a baseline.
       Feed.load_series(symbol_batch) do |live_series|  # Get feed series.
-        save_series(live_series, series_batch)         # Update database series with feed series.
-        clean_series(live_series, series_batch)        # Remove obsolete series data points.
+# TODO: XXX when AV fixes fetch rate errors, we can take out this if statement. (See AV.rb TODO)
+        if !live_series[0].nil?
+          save_series(live_series, series_batch)   # Update database series with feed series.
+          clean_series(live_series, series_batch)  # Remove obsolete series data points.
+# TODO: XXX when AV fixes fetch rate errors, we can take this sleep out.
+sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
+        end
       end
     end
     Rails.logger.debug "SERIES BULK LOAD END (received: #{symbol_array.length}, processed: #{processed})."
@@ -76,8 +82,4 @@ class SeriesCache
       Series.joins(:instrument).where(instruments: { symbol: symbols }).where("series_date between ? and ?", start_date, end_date).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
     end
   end
-
-# Client.where("created_at >= :start_date AND created_at <= :end_date", {start_date: params[:start_date], end_date: params[:end_date]})
-# Client.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
-
 end

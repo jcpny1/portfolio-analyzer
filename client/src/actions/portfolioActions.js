@@ -1,12 +1,12 @@
 import Portfolio from '../classes/Portfolio';
 import * as PortfolioReducer from '../reducers/portfolioReducer';
-import * as ActionRequest from './actionRequests';
+import * as FetchAction from './fetchActions';
 
 // Create a new portfolio.
 export function portfolioAdd(portfolio) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.portfolioAdd(dispatch, portfolio);
+    FetchAction.portfolioAdd(dispatch, portfolio);
   }
 }
 
@@ -14,7 +14,7 @@ export function portfolioAdd(portfolio) {
 export function portfolioDelete(portfolioId) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.portfolioDelete(dispatch, portfolioId);
+    FetchAction.portfolioDelete(dispatch, portfolioId);
   }
 }
 
@@ -22,7 +22,7 @@ export function portfolioDelete(portfolioId) {
 export function portfoliosLoad(loadLivePrices, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.portfoliosLoad(dispatch, loadLivePrices, sortFn);
+    FetchAction.portfoliosLoad(dispatch, loadLivePrices, sortFn);
   }
 }
 
@@ -39,6 +39,6 @@ export function portfoliosSort(portfolios, property, sortFn) {
 export function portfolioUpdate(portfolio) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.portfolioUpdate(dispatch, portfolio);
+    FetchAction.portfolioUpdate(dispatch, portfolio);
   }
 }

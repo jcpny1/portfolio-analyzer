@@ -8,22 +8,22 @@ import Enzyme          from 'enzyme';
 import { shallow, mount, render } from 'enzyme';
 import Adapter         from 'enzyme-adapter-react-16';
 
-import rootReducer  from '../../src/reducers';
-import {WrapperApp} from '../../src/App';
+import rootReducer  from '../src/reducers';
+import {WrapperApp} from '../src/App';
 
-import Portfolio  from '../../src/classes/Portfolio';
-import Position   from '../../src/classes/Position';
+import Portfolio  from '../src/classes/Portfolio';
+import Position   from '../src/classes/Position';
 
-import ConfirmDialog      from '../../src/containers/ConfirmDialog';
-import HeadlinesPage      from '../../src/containers/HeadlinesPage';
-import HelpPage           from '../../src/containers/HelpPage';
-import PortfolioChartPage from '../../src/containers/PortfolioChartPage';
-import PortfolioEditPage  from '../../src/containers/PortfolioEditPage';
-import PortfoliosPage     from '../../src/containers/PortfoliosPage';
-import PositionsPage      from '../../src/containers/PositionsPage';
-import PositionEditPage   from '../../src/containers/PositionEditPage';
-import SettingsEditPage   from '../../src/containers/SettingsEditPage';
-import SymbolsPage        from '../../src/containers/SymbolsPage';
+import ConfirmDialog      from '../src/containers/ConfirmDialog';
+import HeadlinesPage      from '../src/containers/HeadlinesPage';
+import HelpPage           from '../src/containers/HelpPage';
+import PortfolioChartPage from '../src/containers/PortfolioChartPage';
+import PortfolioEditPage  from '../src/containers/PortfolioEditPage';
+import PortfoliosPage     from '../src/containers/PortfoliosPage';
+import PositionsPage      from '../src/containers/PositionsPage';
+import PositionEditPage   from '../src/containers/PositionEditPage';
+import SettingsEditPage   from '../src/containers/SettingsEditPage';
+import SymbolsPage        from '../src/containers/SymbolsPage';
 
 const myDispatch = jest.fn();
 const myMock     = jest.fn();

@@ -1,10 +1,10 @@
-import Portfolio  from '../../src/classes/Portfolio';
-import Position   from '../../src/classes/Position';
+import Portfolio  from '../src/classes/Portfolio';
+import Position   from '../src/classes/Position';
 
-import * as ActionRequest    from '../../src/actions/actionRequests';
-import * as PortfolioAction  from '../../src/actions/portfolioActions';
-import * as PositionAction   from '../../src/actions/positionActions';
-import * as Request          from '../../src/utils/request';
+import * as ActionRequest    from '../src/actions/fetchActions';
+import * as PortfolioAction  from '../src/actions/portfolioActions';
+import * as PositionAction   from '../src/actions/positionActions';
+import * as Request          from '../src/utils/request';
 
 const myDispatch = jest.fn();
 const myMock     = jest.fn();
@@ -15,15 +15,17 @@ const myPosition   = new Position(myPortfolio.id, '1', 100.0, 1.0, '2018-01-01')
 myPortfolio._positions.push(myPosition);
 const myUser = {locale: 'en-US'};
 
-describe('actions', () => {
-  it('should have Portfolio actions', () => {
+describe('Portfolio action creators', () => {
+  it('should have actions', () => {
     expect(PortfolioAction.portfolioAdd(myPortfolio)).toBeDefined();
     expect(PortfolioAction.portfolioDelete(myPortfolio.id)).toBeDefined();
     expect(PortfolioAction.portfoliosLoad(false, mySort)).toBeDefined();
     expect(PortfolioAction.portfoliosSort([myPortfolio], 'name', mySort)).toBeDefined();
     expect(PortfolioAction.portfolioUpdate(myPortfolio)).toBeDefined();
   });
+});
 
+describe('action creators', () => {
   it('should have Position actions', () => {
     expect(PositionAction.positionAdd(myPosition, mySort)).toBeDefined();
     expect(PositionAction.positionDelete(myPortfolio.id, myPosition.id, mySort)).toBeDefined();

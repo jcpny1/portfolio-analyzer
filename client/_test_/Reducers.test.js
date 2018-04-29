@@ -1,5 +1,5 @@
-import * as PortfolioReducer from '../../src/reducers/portfolioReducer';
-import * as UserReducer      from '../../src/reducers/userReducer';
+import * as PortfolioReducer from '../src/reducers/portfolioReducer';
+import * as UserReducer      from '../src/reducers/userReducer';
 
 describe('reducers', () => {
   it('should have User reducers', () => {

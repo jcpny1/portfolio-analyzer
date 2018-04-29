@@ -8,22 +8,22 @@ import Enzyme          from 'enzyme';
 import { shallow, mount, render } from 'enzyme';
 import Adapter         from 'enzyme-adapter-react-16';
 
-import rootReducer  from '../../src/reducers';
-import {WrapperApp} from '../../src/App';
+import rootReducer  from '../src/reducers';
+import {WrapperApp} from '../src/App';
 
-import {Headlines}      from '../../src/components/Headlines';
-import {Help}           from '../../src/components/Help';
-import {PortfolioChart} from '../../src/components/PortfolioChart';
-import {PortfolioEdit}  from '../../src/components/PortfolioEdit';
-import {Portfolios}     from '../../src/components/Portfolios';
-import {PositionEdit}   from '../../src/components/PositionEdit';
-import {Positions}      from '../../src/components/Positions';
-import {SettingsEdit}   from '../../src/components/SettingsEdit';
-import {Symbols}        from '../../src/components/Symbols';
+import {Headlines}      from '../src/components/Headlines';
+import {Help}           from '../src/components/Help';
+import {PortfolioChart} from '../src/components/PortfolioChart';
+import {PortfolioEdit}  from '../src/components/PortfolioEdit';
+import {Portfolios}     from '../src/components/Portfolios';
+import {PositionEdit}   from '../src/components/PositionEdit';
+import {Positions}      from '../src/components/Positions';
+import {SettingsEdit}   from '../src/components/SettingsEdit';
+import {Symbols}        from '../src/components/Symbols';
 
-import Decimal    from '../../src/classes/Decimal';
-import Portfolio  from '../../src/classes/Portfolio';
-import Position   from '../../src/classes/Position';
+import Decimal    from '../src/classes/Decimal';
+import Portfolio  from '../src/classes/Portfolio';
+import Position   from '../src/classes/Position';
 
 const myDispatch = jest.fn();
 const myMock     = jest.fn();

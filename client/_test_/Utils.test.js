@@ -1,4 +1,4 @@
-import Fmt from '../../src/utils/formatter';
+import Fmt from '../src/utils/formatter';
 
 describe('utils', () => {
   it('should have an error formatter', () => {

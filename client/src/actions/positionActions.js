@@ -1,12 +1,12 @@
 import Portfolio from '../classes/Portfolio';
 import * as PortfolioReducer from '../reducers/portfolioReducer';
-import * as ActionRequest from './actionRequests';
+import * as FetchAction from './fetchActions';
 
 // Create a new position.
 export function positionAdd(position, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.positionAdd(dispatch, position, sortFn);
+    FetchAction.positionAdd(dispatch, position, sortFn);
   }
 }
 
@@ -14,7 +14,7 @@ export function positionAdd(position, sortFn) {
 export function positionDelete(portfolioId, positionId, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.positionDelete(dispatch, portfolioId, positionId, sortFn);
+    FetchAction.positionDelete(dispatch, portfolioId, positionId, sortFn);
   }
 }
 
@@ -31,6 +31,6 @@ export function positionsSort(portfolios, property, sortFn) {
 export function positionUpdate(position, sortFn) {
   return function(dispatch) {
     dispatch(PortfolioReducer.updatingPortfolio());
-    ActionRequest.positionUpdate(dispatch, position, sortFn);
+    FetchAction.positionUpdate(dispatch, position, sortFn);
   }
 }

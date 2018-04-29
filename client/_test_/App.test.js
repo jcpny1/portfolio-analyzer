@@ -8,8 +8,8 @@ import Enzyme          from 'enzyme';
 import { shallow, mount, render } from 'enzyme';
 import Adapter         from 'enzyme-adapter-react-16';
 
-import rootReducer  from '../../src/reducers';
-import {WrapperApp} from '../../src/App';
+import rootReducer  from '../src/reducers';
+import {WrapperApp} from '../src/App';
 
 Enzyme.configure({ adapter: new Adapter() });
 

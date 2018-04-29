@@ -54,7 +54,15 @@ module Feed
       else
         symbols.map do |symbol|
           begin
-            Rails.logger.debug "AV SERIES FETCH BEGIN for: #{symbol}."
+# TODO: XXX when AV fixes fetch rate errors, we can take out this code.
+# This is trying to limit the number of requests we're making by not asking for data we already
+# updated for the current day - a result of re-running the load multiple times to try to get a full data set.
+# Also, there is a mismatch between IEX and Alpha Vantage symbology for IEX instruments containing a dash or an asterisk.
+# Alpha Vantage support has not been responsive about how to query for those instruments.
+next if !symbol.index(/[-\*]/).nil?
+current_dt = DateTime.current
+next if Series.exists?(instrument_id: Instrument.select('instrument_id').where(symbol: symbol), updated_at: current_dt.beginning_of_day..current_dt.end_of_day)
+          Rails.logger.debug "AV SERIES FETCH BEGIN for: #{symbol}."
             resp = conn.get do |req|
               req.params['function'] = 'TIME_SERIES_MONTHLY_ADJUSTED'
               req.params['symbol']   = symbol
