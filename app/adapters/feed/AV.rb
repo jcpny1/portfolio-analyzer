@@ -54,15 +54,8 @@ module Feed
       else
         symbols.map do |symbol|
           begin
-# TODO: XXX when AV fixes fetch rate errors, we can take out this code.
-# This is trying to limit the number of requests we're making by not asking for data we already
-# updated for the current day - a result of re-running the load multiple times to try to get a full data set.
-# Also, there is a mismatch between IEX and Alpha Vantage symbology for IEX instruments containing a dash or an asterisk.
-# Alpha Vantage support has not been responsive about how to query for those instruments.
-next if !symbol.index(/[-\*]/).nil?
-current_dt = DateTime.current
-next if Series.exists?(instrument_id: Instrument.select('instrument_id').where(symbol: symbol), updated_at: current_dt.beginning_of_day..current_dt.end_of_day)
-          Rails.logger.debug "AV SERIES FETCH BEGIN for: #{symbol}."
+            next if skip_fetch?(symbol) # TODO: XXX when AV fixes fetch rate errors, we can take out this line.
+            Rails.logger.debug "AV SERIES FETCH BEGIN for: #{symbol}."
             resp = conn.get do |req|
               req.params['function'] = 'TIME_SERIES_MONTHLY_ADJUSTED'
               req.params['symbol']   = symbol
@@ -145,6 +138,30 @@ next if Series.exists?(instrument_id: Instrument.select('instrument_id').where(s
         Rails.logger.error "AV SERIES FETCH ERROR for: #{symbol}: #{response.first}."
         Feed.error_series(symbol, 'Price is not available.')
       end
+    end
+
+    # TODO: There is a mismatch between IEX and Alpha Vantage symbology for IEX instruments containing a dash or an asterisk.
+    # Alpha Vantage support has not been responsive about how to query for those instruments.
+    # TODO: XXX when AV fixes fetch rate errors, we can take out this code.
+    # This is trying to limit the number of requests we're making by not asking for data we already have.
+    # get latest series record, and trades record.
+    # skip fetch if series_date == trade_date && close_price == trade_price.
+    private_class_method def self.skip_fetch?(symbol)
+      ret_stat = false
+      if !symbol.index(/[-\+\.\*]/).nil?
+        ret_stat = true
+      else
+        instrument_id = Instrument.select(:id).where(symbol: symbol)
+        trade_data = Trade.select(:trade_date, :trade_price).where(instrument_id: instrument_id).first
+        if trade_data
+          series_data = Series.select(:series_date, :close_price).where(instrument_id: instrument_id, series_date: trade_data.trade_date.to_date).first
+          if series_data && (series_data.close_price == trade_data.trade_price)
+            ret_stat = true
+          end
+        end
+      end
+      Rails.logger.debug "SKIPPING FETCH for: #{symbol}." if ret_stat
+      ret_stat
     end
 
     ###################
