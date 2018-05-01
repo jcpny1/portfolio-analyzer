@@ -40,6 +40,26 @@ describe('Portfolios', () => {
     ];
 
     fetch.mockResponseOnce(JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}));
+
+    // fetch.mockResponses(
+    //   [
+    //     JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}),
+    //     { status: 200 }
+    //   ],
+    //   [
+    //     JSON.stringify([{ name: 'bleach', average_score: 68 }]),
+    //     { status: 200 }
+    //   ],
+    //   [
+    //     JSON.stringify([{ name: 'one piece', average_score: 80 }]),
+    //     { status: 200 }
+    //   ],
+    //   [
+    //     JSON.stringify([{ name: 'shingeki', average_score: 91 }]),
+    //     { status: 200 }
+    //   ]
+    // );
+
     expect(PortfolioAction.portfoliosLoad('false', mySort)).toDispatchActions(expectedActions, done);
     expect(fetch.mock.calls.length).toEqual(1);
     expect(fetch.mock.calls[0][0]).toEqual('/api/portfolios');

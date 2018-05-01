@@ -27,7 +27,7 @@ export const Help = () => {
       <ul>
         <li>Monthly adjusted price data provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
         <li>The chart start date will be the earliest date where all portfolio instruments have data (to a maximum of 5 years ago).</li>
-        <li>For a more accurate performance comparison, the comparison instruments displayed on the chart are index ETF's, and not the indices themselves (e.g. DIA, not DJIA).</li>
+        <li>For a more accurate performance comparison, the comparison instruments displayed on the chart are index ETFs, and not the indices themselves (e.g. DIA, not DJIA).</li>
       </ul>
       <h3>Headline News</h3>
       <ul>
@@ -42,6 +42,11 @@ export const Help = () => {
       <h3>Known issues:</h3>
       <ul>
         <li>Chart data is not provided by the feed vendor for every instrument.</li>
+        <li>
+          Due to vendor call rate problems, series data will only call for new data when the latest series data point date or price does not match the corresponding latest trade data.
+          To only fetch missing series values, rerun Refresh Series one or more times without running Refresh Prices.
+          To update all series data, run Refresh Prices first.
+        </li>
         <li>Chart data provided by the feed vendor may or may not include the latest trading day.</li>
         <li>Due to license restrictions, Headline News may post an error popup if the request limit is reached.</li>
         <li>Some server errors will display popups for debugging purposes. This is expected since this is a development environment.</li>
