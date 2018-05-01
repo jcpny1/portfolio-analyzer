@@ -12,8 +12,8 @@ export default class DateTime {
 
   valueOf() {return this._value}
 
-  // Returns a date string formatted for Form input.
-  toForm(dateValue) {
+  // Returns the date formatted for Form input.
+  toForm() {
     return this._value.toISOString().substring(0, 10);
   }
 

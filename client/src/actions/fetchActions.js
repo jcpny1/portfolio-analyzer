@@ -183,7 +183,7 @@ export function positionUpdate(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions/${position.id}`, {
     method:  'PATCH',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), dateAcquired: position.dateAcquired.toString()}),
+    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), date_acquired: position.dateAcquired.toForm()}),
   })
   .then(statusCheck)
   .then(response => response.json())

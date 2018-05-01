@@ -61,10 +61,14 @@ export default class Position {
   // If position strings are valid, returns null. Otherwise, returns error message.
   static validateStringInput(position, cb) {
     let errorReturn = null;
-    if (!(/^[A-Z.*+-]+$/.test(position.instrument.symbol))) {
-      errorReturn = {name: 'instrument', message: 'Symbol is not valid.'};
+    if (!(/^[A-Z.*+-]+$/.test(position.symbol))) {
+      errorReturn = {name: 'symbol', message: 'Symbol is not valid.'};
+    } else if (Number.isNaN(parseFloat(position.quantity)) || !isFinite(position.quantity)) {
+      errorReturn = {name: 'quantity', message: 'Quantity must be a number.'};
     } else if (!(Number.parseFloat(position.quantity) >= 0)) {
       errorReturn = {name: 'quantity', message: 'Quantity must be greater than or equal to zero.'};
+    } else if (Number.isNaN(parseFloat(position.cost)) || !isFinite(position.cost)) {
+      errorReturn = {name: 'cost', message: 'Cost must be a number.'};
     } else if (position.cost < 0.0) {
       errorReturn = {name: 'cost', message: 'Cost must be greater than or equal to zero.'};
     } else if (Number.isNaN(Date.parse(position.dateAcquired))) {
@@ -72,9 +76,9 @@ export default class Position {
     }
     if (errorReturn === null) {
       // async validations should always come last.
-      Request.instrumentSearch({value: position.instrument.symbol, exact:true}, instruments => {
+      Request.instrumentSearch({value: position.symbol, exact:true}, instruments => {
         if (instruments.data.length !== 1) {
-          errorReturn = {name: 'instrument', message: 'Symbol is not valid.'};
+          errorReturn = {name: 'symbol', message: 'Symbol is not valid.'};
         }
         cb(errorReturn);
       });
