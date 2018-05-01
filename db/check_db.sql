@@ -34,20 +34,9 @@
 \pset footer off
 \pset pager off
 
-\echo Check number of instruments.
-select count(*) from instruments;
-
-\echo Check number of trades instruments.
-select count(distinct instrument_id) from trades;
-
-\echo Check number of trades (1 per instrument).
-select count(*) from trades;
-
-\echo Check number of series instruments.
-select count(distinct instrument_id) from series;
-
-\echo Check number of series data points.
-select count(*) from series;
+select count(*) as instruments from instruments;
+select count(distinct instrument_id) as instruments, count(*) as trades from trades;
+select count(distinct instrument_id) as instruments, count(*) as series from series;
 
 \echo Count dashed symbols in instruments, trades, series.
 select count(*) as instrs from instruments where symbol like '%-%';

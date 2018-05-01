@@ -148,7 +148,7 @@ module Feed
     # skip fetch if series_date == trade_date && close_price == trade_price.
     private_class_method def self.skip_fetch?(symbol)
       ret_stat = false
-      if !symbol.index(/[-\+\.\*]/).nil?
+      if !symbol.index(/[-=\+\.\#\^\*]/).nil?
         ret_stat = true
       else
         instrument_id = Instrument.select(:id).where(symbol: symbol)
