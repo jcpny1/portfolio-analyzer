@@ -41,6 +41,7 @@ Enzyme.configure({ adapter: new Adapter() });
 it('renders Headlines', () => {
   const mockCallBack = jest.fn();
   const page = shallow((<Headlines articles={[myArticle]} djiaValue={decimalValue} djiaChange={decimalValue} refreshTime={new Date()} refreshHeadlines={mockCallBack} userLocale={myUser.locale}/>));
+  expect(page.length).toEqual(1)
   page.find('[title="Refresh headlines"]').simulate('click');
   expect(mockCallBack.mock.calls.length).toEqual(1);
 });
@@ -53,6 +54,7 @@ it('does not render Headlines', () => {
 
 it('renders Help', () => {
   const page = shallow((<Help/>));
+  expect(page.length).toEqual(1)
 });
 
 it('renders PortfolioChart', () => {

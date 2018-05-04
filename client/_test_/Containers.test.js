@@ -35,6 +35,25 @@ myPortfolio._positions.push(myPosition);
 
 Enzyme.configure({ adapter: new Adapter() });
 
+function setup() {
+const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+const div = document.createElement('div');
+
+  const props = {
+    addTodo: jest.fn(),
+  };
+  const enzymeWrapper = mount(
+    <Provider store={store}>
+      <PortfolioChartPage portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>
+    </Provider>,
+    div
+  );
+  return {
+    props,
+    enzymeWrapper,
+  };
+}
+
 it('renders HeadlinesPage', () => {
   const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
   const div = document.createElement('div');
@@ -66,6 +85,33 @@ it('renders PortfolioChartPage', () => {
     </Provider>,
     div
   );
+});
+
+it('opens modal when button is clicked', () => {
+  // const wrapper = shallow(<ModalContainer />);
+  // wrapper.find('button').simulate('click');
+  // expect(wrapper.find(ReactModal).prop('isOpen')).toEqual(true);
+
+  const { enzymeWrapper } = setup();
+// expect(enzymeWrapper.find('#portfolioChart:first').text()).toBe('todos');
+// expect(enzymeWrapper.find({href: '/portfolios/2'}).text()).toBe('todos');
+
+  // const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  // const div = document.createElement('div');
+  // const wrapper = ReactDOM.render (
+  //   <Provider store={store}>
+  //     <PortfolioChartPage portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>
+  //   </Provider>,
+  //   div
+  // );
+
+  // wrapper.find('button').simulate('click');
+
+  //
+  // const renderer = new ShallowRenderer();
+  // renderer.render(<PortfolioChartPage portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>);
+  // const result = renderer.getRenderOutput();
+
 });
 
 it('renders PositionsPage', () => {
