@@ -30,6 +30,30 @@ describe('Portfolios', () => {
     fetch.resetMocks();
   });
 
+  it("adds a new Portfolio", done => {
+    const portfolio = new Portfolio('', 'jestMock');
+    const expectedActions = [
+      {"type":"PORTFOLIO_UPDATING"}
+    ];
+    fetch.mockResponseOnce(JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}));
+    expect(PortfolioAction.portfolioAdd(portfolio)).toDispatchActions(expectedActions, done);
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toEqual('/api/portfolios/');
+    done();
+  });
+
+  it("deletes a Portfolio", done => {
+    const portfolio = new Portfolio('999', 'jestMock');
+    const expectedActions = [
+      {"type":"PORTFOLIO_UPDATING"}
+    ];
+    fetch.mockResponseOnce(JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}));
+    expect(PortfolioAction.portfolioDelete(portfolio.id)).toDispatchActions(expectedActions, done);
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toEqual(`/api/portfolios/${portfolio.id}`);
+    done();
+  });
+
   it("should load a User's Portfolios", done => {
     const expectedActions = [
       // PortfolioReducer.updateAllPortfolio([]),
@@ -38,8 +62,6 @@ describe('Portfolios', () => {
       // {"type":"PORTFOLIO_UPDATING"},{"type":"PORTFOLIOS_ERROR","payload":{"prefix":"Load Portfolios: ","error":"only absolute urls are supported"}}
       {"type":"PORTFOLIO_UPDATING"}
     ];
-
-    fetch.mockResponseOnce(JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}));
 
     // fetch.mockResponses(
     //   [
@@ -60,9 +82,32 @@ describe('Portfolios', () => {
     //   ]
     // );
 
+    fetch.mockResponseOnce(JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}));
     expect(PortfolioAction.portfoliosLoad('false', mySort)).toDispatchActions(expectedActions, done);
     expect(fetch.mock.calls.length).toEqual(1);
-    expect(fetch.mock.calls[0][0]).toEqual('/api/portfolios');
+    expect(fetch.mock.calls[0][0]).toEqual('/api/portfolios/');
+    done();
+  });
+
+  it("sorts Portfolios", done => {
+    const portfolios = [new Portfolio('999', 'jestMock')];
+    const expectedActions = [
+      {"type":"PORTFOLIO_UPDATING"}
+    ];
+    expect(PortfolioAction.portfoliosSort(portfolios, 'name', mySort)).toDispatchActions(expectedActions, done);
+    expect(mySort.mock.calls.length).toEqual(1);
+    done();
+  });
+
+  it("updates a Portfolio", done => {
+    const portfolio = new Portfolio('999', 'jestMock');
+    const expectedActions = [
+      {"type":"PORTFOLIO_UPDATING"}
+    ];
+    fetch.mockResponseOnce(JSON.stringify({data: {id:'12345', attributes:{name:'xyz'}}, included:{}}));
+    expect(PortfolioAction.portfolioUpdate(portfolio)).toDispatchActions(expectedActions, done);
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toEqual(`/api/portfolios/${portfolio.id}`);
     done();
   });
 });

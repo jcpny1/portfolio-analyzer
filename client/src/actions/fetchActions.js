@@ -63,7 +63,7 @@ export function portfolioUpdate(dispatch, portfolio) {
 
 // Load all portfolios from server.
 export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
-  fetch('/api/portfolios', {headers: {'Accept': 'application/json'}})
+  fetch('/api/portfolios/', {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .then(response => response.json())
   .then(serverPortfolios => {
