@@ -107,8 +107,8 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
       serverPortfolio.relationships.positions.data.forEach(serverPosition => {
         switch(serverPosition.type) {
           case 'positions':
-            const positionId   = serverPosition.id;
-            const position     = positions.find( position => position.id === positionId );
+            const positionId = serverPosition.id;
+            const position   = positions.find( position => position.id === positionId );
             portfolio.positions.push(position);
             break;
           default:
