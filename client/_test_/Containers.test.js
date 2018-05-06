@@ -3,6 +3,7 @@ import ReactDOM        from 'react-dom';
 import {Provider}      from 'react-redux';
 import {createStore, applyMiddleware, compose } from 'redux';
 import thunk           from 'redux-thunk';
+import {Button, Header, Icon, Modal} from 'semantic-ui-react';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import Enzyme          from 'enzyme';
 import { shallow, mount, render } from 'enzyme';
@@ -36,22 +37,10 @@ myPortfolio._positions.push(myPosition);
 Enzyme.configure({ adapter: new Adapter() });
 
 function setup() {
-const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
-const div = document.createElement('div');
-
-  const props = {
-    addTodo: jest.fn(),
-  };
-  const enzymeWrapper = mount(
-    <Provider store={store}>
-      <PortfolioChartPage portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>
-    </Provider>,
-    div
-  );
-  return {
-    props,
-    enzymeWrapper,
-  };
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const props = { addTodo: jest.fn() };
+  const enzymeWrapper = shallow(<PortfolioChartPage store={store} portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>);
+  return { props, enzymeWrapper };
 }
 
 it('renders HeadlinesPage', () => {
@@ -105,7 +94,34 @@ it('opens modal when button is clicked', () => {
   //   div
   // );
 
-  // wrapper.find('button').simulate('click');
+  enzymeWrapper.setState({ modalOpen: true });
+
+  console.log('wrapper.debug(): ' + JSON.stringify(enzymeWrapper.debug()));
+  console.log('wrapper.dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().debug()));
+  console.log('wrapper.dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().debug()));
+  console.log('wrapper.dive().dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().dive().debug()));
+  console.log('wrapper.dive().dive().dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().dive().dive().debug()));
+  console.log('wrapper.props(): ' + JSON.stringify(enzymeWrapper.props()));
+  console.log('wrapper.props().iconName: ' + JSON.stringify(enzymeWrapper.props().iconName));
+  console.log('wrapper.children(): ' + JSON.stringify(enzymeWrapper.children()));
+  console.log('wrapper.childAt(0): ' + JSON.stringify(enzymeWrapper.childAt(0)));
+  console.log('wrapper.props().children: ' + JSON.stringify(enzymeWrapper.props().children));
+
+  console.log('enzymeWrapper.find(PortfolioChartPage).debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').debug()));
+  console.log('enzymeWrapper.find(PortfolioChartPage).dive().debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').dive().debug()));
+  console.log('enzymeWrapper.find(PortfolioChartPage).dive().find(Button).debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').dive().find('Button').debug()));
+
+  const myButton = enzymeWrapper.find('PortfolioChartPage').dive().find('Button');
+
+  expect(enzymeWrapper.props().iconName).toEqual('chart line');
+  enzymeWrapper.find('PortfolioChartPage').dive().instance().handleOpen();
+
+  console.log(myButton.debug());
+  myButton.simulate('click');
+
+  // enzymeWrapper.dive().instance().handleOpen();
+
+  // expect(enzymeWrapper.find(Modal).dive().find(Modal)).to.have.length(1);
 
   //
   // const renderer = new ShallowRenderer();
