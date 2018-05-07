@@ -124,10 +124,6 @@ describe('Portfolios', () => {
     done();
   });
 
-  //   case 'positions':
-  //     positions.push(new Position(relation.attributes['portfolio-id'], relation.id, relation.attributes.quantity, relation.attributes.cost, relation.attributes['date-acquired']));
-  //     break;
-
   it("sorts Portfolios", done => {
     const portfolios = [new Portfolio('999', 'jestMock')];
     const expectedActions = [

@@ -75,9 +75,7 @@ class PortfolioChartPage extends Component {
       >
         <Modal.Header><Header content={portfolio.nameToHTML()} icon='chart line' size='small'/></Modal.Header>
         <Modal.Content><PortfolioChart refData={refData} portfolioName={portfolio.name}/></Modal.Content>
-        <Modal.Actions>
-          <Button floated='left' color='red' onClick={this.handleCancel}>Close</Button>
-        </Modal.Actions>
+        <Modal.Actions><Button floated='left' color='red' onClick={this.handleCancel}>Close</Button></Modal.Actions>
       </Modal>
     );
   }

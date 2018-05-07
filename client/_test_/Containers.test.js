@@ -36,16 +36,25 @@ myPortfolio._positions.push(myPosition);
 
 Enzyme.configure({ adapter: new Adapter() });
 
-function setup() {
-  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
-  const props = { addTodo: jest.fn() };
-  const enzymeWrapper = shallow(<PortfolioChartPage store={store} portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>);
-  return { props, enzymeWrapper };
-}
-
 it('renders HeadlinesPage', () => {
   const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
   const div = document.createElement('div');
+  fetch.mockResponses(
+    [ JSON.stringify(
+      { articles:
+        [
+          { title:'What I did last summer', url:'http://www.www.com', description:'last summer activities' },
+        ],
+      }
+    )],
+    [ JSON.stringify(
+      { data:
+        [
+          { attributes:{ instrument:{ symbol:'DJIA' }, 'trade-price':'24567.213', 'price-change':'123.456' } },
+        ],
+      }
+    )],
+  );
   ReactDOM.render (
     <Provider store={store}>
       <HeadlinesPage />
@@ -65,6 +74,32 @@ it('renders PortfoliosPage', () => {
   );
 });
 
+it('renders PortfolioEditPage', () => {
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const div = document.createElement('div');
+  ReactDOM.render (
+    <Provider store={store}>
+      <PortfolioEditPage portfolio={myPortfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio name'/>
+    </Provider>,
+    div
+  );
+});
+
+function setupPortfolioEditPage() {
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const props = { addTodo: jest.fn() };
+  const enzymeWrapper = shallow(<PortfolioEditPage store={store} portfolio={myPortfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio name'/>);
+  return { props, enzymeWrapper };
+}
+
+it('renders a portfolio editor', () => {
+  const { enzymeWrapper } = setupPortfolioEditPage();
+  expect(enzymeWrapper.props().iconName).toEqual('edit');
+  enzymeWrapper.find('PortfolioEditPage').dive().instance().handleOpen();
+  const myButton = enzymeWrapper.find('PortfolioEditPage').dive().find("Button[color='red']");
+  myButton.simulate('click');
+});
+
 it('renders PortfolioChartPage', () => {
   const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
   const div = document.createElement('div');
@@ -76,58 +111,19 @@ it('renders PortfolioChartPage', () => {
   );
 });
 
-it('opens modal when button is clicked', () => {
-  // const wrapper = shallow(<ModalContainer />);
-  // wrapper.find('button').simulate('click');
-  // expect(wrapper.find(ReactModal).prop('isOpen')).toEqual(true);
+function setupPortfolioChartPage() {
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const props = { addTodo: jest.fn() };
+  const enzymeWrapper = shallow(<PortfolioChartPage store={store} portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>);
+  return { props, enzymeWrapper };
+}
 
-  const { enzymeWrapper } = setup();
-// expect(enzymeWrapper.find('#portfolioChart:first').text()).toBe('todos');
-// expect(enzymeWrapper.find({href: '/portfolios/2'}).text()).toBe('todos');
-
-  // const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
-  // const div = document.createElement('div');
-  // const wrapper = ReactDOM.render (
-  //   <Provider store={store}>
-  //     <PortfolioChartPage portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>
-  //   </Provider>,
-  //   div
-  // );
-
-  enzymeWrapper.setState({ modalOpen: true });
-
-  console.log('wrapper.debug(): ' + JSON.stringify(enzymeWrapper.debug()));
-  console.log('wrapper.dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().debug()));
-  console.log('wrapper.dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().debug()));
-  console.log('wrapper.dive().dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().dive().debug()));
-  console.log('wrapper.dive().dive().dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().dive().dive().debug()));
-  console.log('wrapper.props(): ' + JSON.stringify(enzymeWrapper.props()));
-  console.log('wrapper.props().iconName: ' + JSON.stringify(enzymeWrapper.props().iconName));
-  console.log('wrapper.children(): ' + JSON.stringify(enzymeWrapper.children()));
-  console.log('wrapper.childAt(0): ' + JSON.stringify(enzymeWrapper.childAt(0)));
-  console.log('wrapper.props().children: ' + JSON.stringify(enzymeWrapper.props().children));
-
-  console.log('enzymeWrapper.find(PortfolioChartPage).debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').debug()));
-  console.log('enzymeWrapper.find(PortfolioChartPage).dive().debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').dive().debug()));
-  console.log('enzymeWrapper.find(PortfolioChartPage).dive().find(Button).debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').dive().find('Button').debug()));
-
-  const myButton = enzymeWrapper.find('PortfolioChartPage').dive().find('Button');
-
+it('renders a portfolio chart', () => {
+  const { enzymeWrapper } = setupPortfolioChartPage();
   expect(enzymeWrapper.props().iconName).toEqual('chart line');
   enzymeWrapper.find('PortfolioChartPage').dive().instance().handleOpen();
-
-  console.log(myButton.debug());
+  const myButton = enzymeWrapper.find('PortfolioChartPage').dive().find('Button');
   myButton.simulate('click');
-
-  // enzymeWrapper.dive().instance().handleOpen();
-
-  // expect(enzymeWrapper.find(Modal).dive().find(Modal)).to.have.length(1);
-
-  //
-  // const renderer = new ShallowRenderer();
-  // renderer.render(<PortfolioChartPage portfolio={myPortfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>);
-  // const result = renderer.getRenderOutput();
-
 });
 
 it('renders PositionsPage', () => {
@@ -145,11 +141,65 @@ it('renders PositionsPage', () => {
 it('renders PositionEditPage', () => {
   const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
   const div = document.createElement('div');
-  const match = {params:{id: '1'}};
   ReactDOM.render (
     <Provider store={store}>
       <PositionEditPage position={myPosition} iconName='edit' iconColor='blue' tooltip='Edit position'/>
     </Provider>,
     div
   );
+});
+
+function setupPositionEditPage() {
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const props = { addTodo: jest.fn() };
+  const enzymeWrapper = shallow(<PositionEditPage store={store} position={myPosition} iconName='edit' iconColor='blue' tooltip='Edit position'/>);
+  return { props, enzymeWrapper };
+}
+
+it('renders a position editor', () => {
+  const { enzymeWrapper } = setupPositionEditPage();
+  expect(enzymeWrapper.props().iconName).toEqual('edit');
+  enzymeWrapper.find('PositionEditPage').dive().instance().handleOpen();
+  const myButton = enzymeWrapper.find('PositionEditPage').dive().find("Button[color='red']");
+  myButton.simulate('click');
+});
+
+it('renders SymbolsPage', () => {
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const div = document.createElement('div');
+  ReactDOM.render (
+    <Provider store={store}>
+      <SymbolsPage/>
+    </Provider>,
+    div
+  );
+});
+
+function setupSymbolsPage() {
+  const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+  const props = { addTodo: jest.fn() };
+  const enzymeWrapper = shallow(<SymbolsPage store={store}/>);
+  return { props, enzymeWrapper };
+}
+
+it('renders a symbols searcher', () => {
+  const sp = new SymbolsPage;
+  sp.handleOpen();
+  const { enzymeWrapper } = setupSymbolsPage();
+  const myButton = enzymeWrapper.find('Button');
+  myButton.simulate('click');
+  // console.log('SymbolsPage wrapper.debug(): ' + JSON.stringify(enzymeWrapper.debug()));
+  // console.log('wrapper.dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().debug()));
+  // console.log('wrapper.dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().debug()));
+  // console.log('wrapper.dive().dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().dive().debug()));
+  // console.log('wrapper.dive().dive().dive().dive().debug(): ' + JSON.stringify(enzymeWrapper.dive().dive().dive().dive().debug()));
+  // console.log('wrapper.props(): ' + JSON.stringify(enzymeWrapper.props()));
+  // console.log('wrapper.props().iconName: ' + JSON.stringify(enzymeWrapper.props().iconName));
+  // console.log('wrapper.children(): ' + JSON.stringify(enzymeWrapper.children()));
+  // console.log('wrapper.childAt(0): ' + JSON.stringify(enzymeWrapper.childAt(0)));
+  // console.log('wrapper.props().children: ' + JSON.stringify(enzymeWrapper.props().children));
+  // console.log('enzymeWrapper.find(PortfolioChartPage).debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').debug()));
+  // console.log('enzymeWrapper.find(PortfolioChartPage).dive().debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').dive().debug()));
+  // console.log('enzymeWrapper.find(PortfolioChartPage).dive().find(Button).debug(): ' + JSON.stringify(enzymeWrapper.find('PortfolioChartPage').dive().find('Button').debug()));
+  //
 });
