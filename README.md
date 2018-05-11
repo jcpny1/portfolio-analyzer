@@ -25,6 +25,7 @@ The remaining folders are primarily for the server code.
 dd-mmm-yy  x.y.z  Added more Jest tests.
                   Added option to bulk load series data only for symbols contained in Positions table.
                   Removed option to bulk load Series data only for symbols missing from Series table.
+                  Updated gems.
                   Increased index fetch and series fetch throttling delays. Keep tripping AV rate limits (might be a feed bug; it's not me).
                   Refresh Series data points for newly added Position Instrument.
 10-Apr-18  0.6.1  Updated gems.
@@ -123,11 +124,14 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Testing
 
-To run the test suite:
+To run the RSpec test suite:
 * In one window, run `npm start` from the client directory.
 * On another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
 
 You may have to migrate and seed the test database.
+
+To run the Jest test suite:
+* Run `npm test` from the client directory.
 
 ## Deployment
 
