@@ -90,6 +90,8 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 * `rake db:migrate`
 * `rake db:seed`
 
+After a fresh install of seed data, the application should be showing a Total Gain/Loss of $179,565.842.
+
 ### Install npm packages
 * `cd client`
 * `npm install`  (the default responses are ok)
