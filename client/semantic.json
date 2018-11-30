@@ -18,5 +18,9 @@
   "permission": false,
   "autoInstall": false,
   "rtl": false,
+<<<<<<< HEAD
   "version": "2.4.2"
+=======
+  "version": "2.3.1"
+>>>>>>> 5f53ce5ca6b482fbdcb29c63393f1e7e67e614e3
 }
