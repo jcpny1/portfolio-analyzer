@@ -17,7 +17,7 @@ install:
   - . $HOME/.nvm/nvm.sh
   - cd client
   - nvm install stable
-  - npm install <<<'Y'
+  - npm install
   - cd ..
   - bundle install
 before_script:
