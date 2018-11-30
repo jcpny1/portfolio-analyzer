@@ -22,7 +22,8 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-dd-mmm-yy  x.y.z  Added more Jest tests.
+30-Nov-18  0.7.0  Upgraded Ruby from 2.4.2 to 2.5.3. Updated gems, node packages, etc.
+06-May-18  0.6.2  Added more Jest tests.
                   Added option to bulk load series data only for symbols contained in Positions table.
                   Removed option to bulk load Series data only for symbols missing from Series table.
                   Updated gems.
