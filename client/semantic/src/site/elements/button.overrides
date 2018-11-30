@@ -1,0 +1,12 @@
+/*******************************
+         Site Overrides
+*******************************/
+.ui.inverted.button {
+  color: @purple !important;
+  margin: 0em;
+  padding: 0px;
+}
+
+.ui.inverted.button.link {
+  color: @blue !important;
+}

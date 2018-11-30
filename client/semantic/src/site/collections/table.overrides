@@ -1,0 +1,6 @@
+/*******************************
+         Site Overrides
+*******************************/
+.ui.table tfoot th {
+  font-weight: @headerFontWeight;
+}

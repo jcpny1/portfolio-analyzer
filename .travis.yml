@@ -1,0 +1,41 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=95325b4141034c059f27f080ce9f4bb9ac4837204fe4fd73bb289060ed0c5b2a
+    - MOZ_HEADLESS=1
+addons:
+  firefox: latest
+language:
+  - ruby
+rvm:
+  - 2.4.2
+before_install:
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.20.0/geckodriver-v0.20.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.20.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
+install:
+  - . $HOME/.nvm/nvm.sh
+  - cd client
+  - nvm install stable
+  - npm install <<<'Y'
+  - cd ..
+  - bundle install
+before_script:
+  - cd client
+  - "PORT=3000 npm start&"
+  - cd ..
+  - sleep 5
+  - bundle exec rake db:setup
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
+  - chmod +x ../cc-test-reporter
+script:
+  - ../cc-test-reporter before-build
+  - bundle exec rspec
+  - ../cc-test-reporter format-coverage --output coverage/codeclimate.rspec.json
+  - cd client
+  - npm test
+  - ../../cc-test-reporter format-coverage --output ../coverage/codeclimate.jest.json
+  - cd ..
+after_script:
+  - ../cc-test-reporter sum-coverage coverage/codeclimate.*.json
+  - ../cc-test-reporter upload-coverage

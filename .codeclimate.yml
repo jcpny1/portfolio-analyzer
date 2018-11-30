@@ -1,0 +1,43 @@
+version: "2"
+checks:
+  method-complexity:
+    config:
+      threshold: 10
+  method-lines:
+    config:
+      threshold: 100
+plugins:
+  brakeman:
+    enabled: true
+  bundler-audit:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby:
+      - javascript:
+    mass_threshold: 30
+  eslint:
+    enabled: true
+  golint:
+    enabled: true
+  rubocop:
+    enabled: true
+exclude_patterns:
+- "client/src/semantic-ui/"
+- "client/_test_/"
+- "config/"
+- "coverage/"
+- "db/"
+- "dist/"
+- "features/"
+- "**/node_modules/"
+- "script/"
+- "**/spec/"
+- "**/test/"
+- "**/tests/"
+- "**/vendor/"
+- "**/*.d.ts"
