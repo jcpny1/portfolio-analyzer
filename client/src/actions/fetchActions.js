@@ -148,7 +148,7 @@ export function positionAdd(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions`, {
     method:  'POST',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), date_acquired: position.dateAcquired.toForm()}),
+    body:    JSON.stringify({instrument_symbol: position.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), date_acquired: position.dateAcquired.toForm()}),
   })
   .then(statusCheck)
   .then(response => response.json())
@@ -183,7 +183,7 @@ export function positionUpdate(dispatch, position, sortFn) {
   fetch(`/api/portfolios/${position.portfolio_id}/positions/${position.id}`, {
     method:  'PATCH',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    body:    JSON.stringify({instrument_symbol: position.instrument.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), date_acquired: position.dateAcquired.toForm()}),
+    body:    JSON.stringify({instrument_symbol: position.symbol, quantity: position.quantity.toString(), cost: position.cost.toString(), date_acquired: position.dateAcquired.toForm()}),
   })
   .then(statusCheck)
   .then(response => response.json())
