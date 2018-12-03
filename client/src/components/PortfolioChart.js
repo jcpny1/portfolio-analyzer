@@ -39,9 +39,10 @@ const PortfolioChart = (props) => {
           pointFormat='<tr><td style="color: {series.color}">{series.name}: </td><td style="text-align: right"><b>&dollar;{point.y}K</b></td></tr>'
           footerFormat='</table>'
         />
-        <XAxis type='datetime' crosshair={true}/>
-        <YAxis id='yAxis' labels={{format: '\u0024{value}K'}} />
-        {plotInstruments()}
+        <XAxis type='datetime' crosshair={true} />
+        <YAxis id='yAxis' labels={{format: '\u0024{value}K'}}>
+          {plotInstruments()}
+        </YAxis>
       </HighchartsChart>
     </div>
   );
