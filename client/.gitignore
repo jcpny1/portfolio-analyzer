@@ -27,6 +27,8 @@ yarn-error.log*
 /semantic/*
 !/semantic/src
 /semantic/src/*
+!/semantic/src/definitions
+/semantic/src/definitions/*
 !/semantic/src/site
 /semantic/src/site/*
 !/semantic/src/site/collections
