@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Portfolio Management', js: true, :type => :feature do
   # if !ENV['TRAVIS']
     scenario 'User creates a portfolio' do
-      visit 'http://localhost:3000'
+      visit 'http://localhost:3001'
       page.first('#portfolioEdit').click
       fill_in "Name", :with => '<do-not-use>'
       click_button 'Submit'
