@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe PortfoliosController, type: :controller do
   before(:each) do
-    @portfolio = create(:portfolio)
+    @user = create(:user)
+    @portfolio = create(:portfolio, user: @user)
   end
 
   describe "GET #index" do
