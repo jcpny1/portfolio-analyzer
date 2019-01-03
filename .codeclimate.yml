@@ -28,6 +28,7 @@ plugins:
     enabled: true
 exclude_patterns:
 - "client/src/semantic-ui/"
+- "client/semantic/"
 - "client/_test_/"
 - "config/"
 - "coverage/"
