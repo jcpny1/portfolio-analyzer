@@ -16,7 +16,7 @@ You can enter your investment holdings and monitor their total value and intra-d
 It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project.
 It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI-React.
 
-This repository contains the front end code in the client folder.
+This repository contains the front end code in the ```client``` folder.
 The remaining folders are primarily for the server code.
 
 ## History
