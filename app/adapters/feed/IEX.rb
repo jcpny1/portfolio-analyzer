@@ -16,7 +16,7 @@ module Feed
           resp = Faraday.get("https://cloud.iexapis.com/stable/stock/#{symbol}/quote?token=#{iex_key}")
           Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol}."
           response = JSON.parse(resp.body)
-Rails.logger.debug "IEX PRICE FETCH RESPONSE: #{response}."
+          # Rails.logger.debug "IEX PRICE FETCH RESPONSE: #{response}."
         rescue Faraday::ClientError => e
           Rails.logger.error "IEX PRICE FETCH ERROR: Faraday client error: #{e}."
           Feed.error_trade(symbol, 'The feed is down.')
