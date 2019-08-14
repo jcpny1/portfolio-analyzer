@@ -1,7 +1,9 @@
 env:
-  global:
-    - CC_TEST_REPORTER_ID=95325b4141034c059f27f080ce9f4bb9ac4837204fe4fd73bb289060ed0c5b2a
-    - MOZ_HEADLESS=1
+global:
+  - CC_TEST_REPORTER_ID=95325b4141034c059f27f080ce9f4bb9ac4837204fe4fd73bb289060ed0c5b2a
+  - MOZ_HEADLESS=1
+services:
+  - postgresql
 addons:
   firefox: latest
 language:
