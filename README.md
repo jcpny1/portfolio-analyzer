@@ -21,6 +21,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
+14-Aug-19  0.8.0  Updated IEX Trading API to latest version.
 15-Feb-19  0.7.1  Updated Babel syntax for V7 to fix test suite errors.
 30-Nov-18  0.7.0  Upgraded Ruby from 2.4.2 to 2.5.3. Updated gems, node packages, etc.
 06-May-18  0.6.2  Added more Jest tests.
