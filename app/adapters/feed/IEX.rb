@@ -7,31 +7,37 @@ module Feed
     # Makes data request for an array of symbols.
     # Returns array of results.
     def self.latest_trades(symbols)
-      symbol_list = symbols.join(',')
-      begin
-        uri = Addressable::URI.parse('https://api.iextrading.com/1.0/stock/market/batch')
-        uri.query_values = { types: 'quote', filter: 'latestPrice,change,latestUpdate', symbols: symbol_list }
-        Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
-        resp = Faraday.get(uri)
-        Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol_list}."
-        response = JSON.parse(resp.body)
-      rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
-        Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: Faraday client error: #{e}."
-        Feed.fetch_trade_request_failure(symbols, 'The feed is down.')
-      rescue JSON::ParserError => e  # JSON.parse error
-        Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol_list}: JSON parse error: #{e}."
-        Feed.fetch_trade_request_failure(symbols, 'The feed is down.')
-      else
-        process_price_response(response)
+      ###
+      ### Don't allow an empty symbol list. IEX will pass back all symbols and use a lot of message count.
+      ###
+        symbols.map do |symbol|
+          begin
+            Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol}."
+            conn = Faraday.get(url: `https://cloud.iexapis.com/stable/stock/#{symbol}/quote?token=#{iex_key}`)
+            Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol}."
+            response = JSON.parse(resp.body)
+          rescue Faraday::ClientError => e
+            Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
+            Feed.error_trade(symbol, 'The feed is down.')
+          rescue JSON::ParserError => e
+            Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
+            Feed.error_trade(symbol, 'The feed is down.')
+          else
+            process_price_response(symbol, response)
+          end
+        end
       end
+
+    # Return the IEX Trading API key.
+    private_class_method def self.iex_key
+      @@api_key ||= ENV['RAILS_ENV'] == 'test' ? nil : ENV['IEX_API_KEY']
     end
 
     # Return the feed's list of valid symbols.
-    # Response format: [{symbol; 'ABC', name: 'Acme Banana Company'}]
     def self.symbology
       begin
         Rails.logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
-        resp = Faraday.get('https://api.iextrading.com/1.0/ref-data/symbols')
+        resp = Faraday.get(`https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token=#{iex_key}`)
         Rails.logger.debug 'IEX SYMBOLOGY FETCH END.'
         JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect.
@@ -71,43 +77,62 @@ module Feed
     ##  SAMPLE DATA  ##
     ###################
     #
-    # Quotes:
-    # https://api.iextrading.com/1.0/stock/market/batch?types=quote&filter=companyName,latestPrice,change,latestUpdate&symbols=aapl,msft
+    # Quote:
+    # https://cloud.iexapis.com/stable/stock/AAPL/quote?token=#{iex_key}
     # {
-    #  AAPL: {
-    #   quote: {
-    #    companyName	"Apple Inc."
-    #    latestPrice	172.5
-    #    change	4.39
-    #    latestUpdate	1509739200293
-    #   }
-    #  },
-    #  MSFT: {
-    #   quote: {
-    #    companyName	"Microsoft Corporation"
-    #    latestPrice	84.4
-    #    change	1.09
-    #    latestUpdate	1509739220275
-    #   }
-    #  }
+    #   "symbol": "AAPL",
+    #   "companyName": "Apple Inc.",
+    #   "calculationPrice": "tops",
+    #   "open": 154,
+    #   "openTime": 1506605400394,
+    #   "close": 153.28,
+    #   "closeTime": 1506605400394,
+    #   "high": 154.80,
+    #   "low": 153.25,
+    #   "latestPrice": 158.73,
+    #   "latestSource": "Previous close",
+    #   "latestTime": "September 19, 2017",
+    #   "latestUpdate": 1505779200000,
+    #   "latestVolume": 20567140,
+    #   "iexRealtimePrice": 158.71,
+    #   "iexRealtimeSize": 100,
+    #   "iexLastUpdated": 1505851198059,
+    #   "delayedPrice": 158.71,
+    #   "delayedPriceTime": 1505854782437,
+    #   "extendedPrice": 159.21,
+    #   "extendedChange": -1.68,
+    #   "extendedChangePercent": -0.0125,
+    #   "extendedPriceTime": 1527082200361,
+    #   "previousClose": 158.73,
+    #   "change": -1.67,
+    #   "changePercent": -0.01158,
+    #   "iexMarketPercent": 0.00948,
+    #   "iexVolume": 82451,
+    #   "avgTotalVolume": 29623234,
+    #   "iexBidPrice": 153.01,
+    #   "iexBidSize": 100,
+    #   "iexAskPrice": 158.66,
+    #   "iexAskSize": 100,
+    #   "marketCap": 751627174400,
+    #   "week52High": 159.65,
+    #   "week52Low": 93.63,
+    #   "ytdChange": 0.3665,
+    #   "peRatio": 17.18,
     # }
     #
     # Symbols:
-    # https://api.iextrading.com/1.0/ref-data/symbols'
+    # https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token=#{iex_key}
     # [
-    #  {
-    #   "symbol":"A",
-    #   "name":"Agilent Technologies Inc.",
-    #   "date":"2017-11-03",
-    #   "isEnabled":true,
-    #   "type":"cs"
-    #  },
-    #  {
-    #   "symbol":"AA",
-    #   "name":"Alcoa Corporation",
-    #   "date":"2017-11-03",
-    #   "isEnabled":true,
-    #   "type":"cs"
+    #   {
+    #     "symbol":"A",
+    #     "exchange":"NYS",
+    #     "name":"Agilent Technologies Inc.",
+    #     "date":"2019-08-14",
+    #     "type":"cs",
+    #     "iexId":"IEX_46574843354B2D52",
+    #     "region":"US",
+    #     "currency":"USD",
+    #     "isEnabled":true
     #   },
     #   .
     #   .

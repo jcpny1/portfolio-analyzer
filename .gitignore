@@ -13,6 +13,9 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore .env file containing api keys.
+.env
+
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep
