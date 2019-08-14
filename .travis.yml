@@ -24,6 +24,8 @@ before_script:
   - cd client
   - "PORT=3000 npm start&"
   - cd ..
+  - cp config/database.yml.travis config/database.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
   - sleep 5
   - bundle exec rake db:setup
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
