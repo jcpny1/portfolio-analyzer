@@ -13,7 +13,7 @@ module Feed
         symbols.map do |symbol|
           begin
             Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol}."
-            conn = Faraday.get(url: `https://cloud.iexapis.com/stable/stock/#{symbol}/quote?token=#{iex_key}`)
+            resp = Faraday.get(url: `https://cloud.iexapis.com/stable/stock/#{symbol}/quote?token=#{iex_key}`)
             Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol}."
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
