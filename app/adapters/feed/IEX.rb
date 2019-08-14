@@ -10,17 +10,18 @@ module Feed
       ###
       ### Don't allow an empty symbol list. IEX will pass back all symbols and use a lot of message count.
       ###
+      begin
         symbols.map do |symbol|
           begin
             Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol}."
-            resp = Faraday.get(`https://cloud.iexapis.com/stable/stock/#{symbol}/quote?token=#{iex_key}`)
+            resp = Faraday.get("https://cloud.iexapis.com/stable/stock/#{symbol}/quote?token=#{iex_key}")
             Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol}."
             response = JSON.parse(resp.body)
           rescue Faraday::ClientError => e
-            Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol}: Faraday client error: #{e}."
+            Rails.logger.error "IEX PRICE FETCH ERROR: Faraday client error: #{e}."
             Feed.error_trade(symbol, 'The feed is down.')
           rescue JSON::ParserError => e
-            Rails.logger.error "IEX PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
+            Rails.logger.error "IEX PRICE FETCH ERROR: JSON parse error: #{e}."
             Feed.error_trade(symbol, 'The feed is down.')
           else
             process_price_response(symbol, response)
