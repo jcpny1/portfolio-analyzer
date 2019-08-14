@@ -37,8 +37,7 @@ module Feed
     def self.symbology
       begin
         Rails.logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
-        url = `https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token=#{iex_key}`
-        resp = Faraday.get(url)
+        resp = Faraday.get('https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token=#{iex_key}')
         Rails.logger.debug 'IEX SYMBOLOGY FETCH END.'
         JSON.parse(resp.body)
       rescue Faraday::ClientError => e  # Can't connect.
