@@ -23,7 +23,7 @@ module Feed
           Rails.logger.error "IEX PRICE FETCH ERROR: JSON parse error: #{e}."
           Feed.error_trade(symbol, 'The feed is down.')
         else
-          process_price_response(symbol, response)
+          process_price_response(response)
         end
       end
     end
