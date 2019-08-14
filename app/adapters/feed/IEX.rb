@@ -36,16 +36,25 @@ module Feed
     # Return the feed's list of valid symbols.
     def self.symbology
       begin
-        Rails.logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
-        resp = Faraday.get('https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token=#{iex_key}')
-        Rails.logger.debug 'IEX SYMBOLOGY FETCH END.'
-        JSON.parse(resp.body)
-      rescue Faraday::ClientError => e  # Can't connect.
+        conn = Faraday.new(url: 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols')
+      rescue Faraday::ClientError => e  # Can't connect. Error out all symbols.
         Rails.logger.error "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}."
         {}
-      rescue JSON::ParserError => e  # JSON.parse error
-        Rails.logger.error "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}."
-        {}
+      else
+        begin
+          Rails.logger.debug 'IEX SYMBOLOGY FETCH BEGIN.'
+          resp = conn.get do |req|
+            req.params['token']   = iex_key
+          end
+          Rails.logger.debug 'IEX SYMBOLOGY FETCH END.'
+          JSON.parse(resp.body)
+        rescue Faraday::ClientError => e
+          Rails.logger.error "IEX SYMBOLOGY FETCH ERROR: Faraday client error: #{e}."
+          {}
+        rescue JSON::ParserError => e
+          Rails.logger.error "IEX SYMBOLOGY FETCH ERROR: JSON parse error: #{e}."
+          {}
+        end
       end
     end
 
