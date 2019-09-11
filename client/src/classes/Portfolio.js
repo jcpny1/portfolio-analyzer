@@ -68,10 +68,10 @@ export default class Portfolio {
     // Sort portfolios.
     switch (portfolioProperty) {
       case 'name':
-        portfolios.sort(Sort.sortBy(`_${portfolioProperty}`, portfolioReverseSort, function(a){return a.toUpperCase()}));
+        portfolios.sort(Sort.sortBy(`${portfolioProperty}`, portfolioReverseSort, function(a){return a.toUpperCase()}));
         break;
       default:
-        portfolios.sort(Sort.sortBy(`_${portfolioProperty}`, portfolioReverseSort));
+        portfolios.sort(Sort.sortBy(`${portfolioProperty}`, portfolioReverseSort));
         break;
     }
 
@@ -79,10 +79,10 @@ export default class Portfolio {
     portfolios.forEach(portfolio => {
       switch (positionProperty) {
         case 'symbol':
-          portfolio._positions.sort(Sort.sortBy('_instrument', positionReverseSort, function(a){return a.symbol}));
+          portfolio._positions.sort(Sort.sortBy('instrument', positionReverseSort, function(a){return a.symbol}));
           break;
         default:
-          portfolio.positions.sort(Sort.sortBy(`_${positionProperty}`, positionReverseSort, function(a){return a.valueOf()}));
+          portfolio.positions.sort(Sort.sortBy(`${positionProperty}`, positionReverseSort, function(a){return a.valueOf()}));
           break;
       }
     });
