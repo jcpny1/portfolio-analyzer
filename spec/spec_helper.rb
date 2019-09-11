@@ -54,7 +54,7 @@ RSpec.configure do |config|
         }',
         headers: {})
     # Request for data feed symbology.
-    stub_request(:get, "https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token").
+    stub_request(:get, 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
         status: 200,
@@ -62,7 +62,7 @@ RSpec.configure do |config|
                 {"symbol":"A",   "name":"Agilent Technologies Inc.","date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"2"},
                 {"symbol":"AA",  "name":"Alcoa Corporation",        "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"12042"},
                 {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
-              ]'
+              ]',
         headers: {})
     # Request instrument prices for all instruments.
     stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
