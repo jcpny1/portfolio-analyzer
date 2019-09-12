@@ -5,9 +5,9 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
+    "@babel/runtime": "^7.6.0",
     "es6-promise": "^4.2.8",
-    "fomantic-ui": "^2.7.7",
+    "fomantic-ui": "^2.7.8",
     "highcharts": "^6.2.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash.clonedeep": "^4.5.0",
@@ -37,7 +37,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/core": "^7.5.5",
+    "@babel/core": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
