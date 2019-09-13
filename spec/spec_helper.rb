@@ -69,7 +69,7 @@ RSpec.configure do |config|
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
         status: 200,
-        body: '{"symbol": "AAPL", "latestPrice": 175.6, "change": -2.42, "latestUpdate": 1521473015555}',
+        body: '{"symbol": "AAPL", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/AMZN/quote?token=").
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
