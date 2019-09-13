@@ -64,6 +64,16 @@ RSpec.configure do |config|
                 {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
               ]',
         headers: {})
+    # Request instrument prices.
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/AAPL/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '[
+        {"symbol": "AAPL", "latestPrice": 175.6, "change": -2.42, "latestUpdate": 1521473015555}
+        ]',
+        headers: {})
+
     # Request instrument prices for all instruments.
     stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
