@@ -69,55 +69,103 @@ RSpec.configure do |config|
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
         status: 200,
-        body: '{
-                "symbol": "AAPL", "latestPrice": 175.6, "change": -2.42, "latestUpdate": 1521473015555
-                }',
+        body: '{"symbol": "AAPL", "latestPrice": 175.6, "change": -2.42, "latestUpdate": 1521473015555}',
         headers: {})
-
-    # Request instrument prices for all instruments.
-    stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,DIA,FBGX,GOOG,GOOGL,GSK,HD,INTC,IWM,JNJ,QQQ,SNY,SPY,URTH&types=quote").
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/AMZN/quote?token=").
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
         status: 200,
-        body:   '{
-                  "AAPL":{"quote":{"latestPrice":175.6,"change":-2.42,"latestUpdate":1521473015555}},
-                  "AMZN":{"quote":{"latestPrice":1547.75,"change":-23.93,"latestUpdate":1521472989944}},
-                  "BABA":{"quote":{"latestPrice":196.58,"change":-3.7,"latestUpdate":1521473025985}},
-                  "COF":{"quote":{"latestPrice":98.31,"change":-1.05,"latestUpdate":1521472812505}},
-                  "DIA":{"quote":{"latestPrice":246.66,"change":-2.44,"latestUpdate":1521472967711}},
-                  "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
-                  "GOOG":{"quote":{"latestPrice":1097.865,"change":-37.865,"latestUpdate":1521473007173}},
-                  "GOOGL":{"quote":{"latestPrice":1098.8,"change":-35.62,"latestUpdate":1521473025840}},
-                  "GSK":{"quote":{"latestPrice":37.165,"change":-0.115,"latestUpdate":1521472921890}},
-                  "HD":{"quote":{"latestPrice":178.44,"change":-0.52,"latestUpdate":1521473018188}},
-                  "INTC":{"quote":{"latestPrice":50.51,"change":-0.66,"latestUpdate":1521473018049}},
-                  "IWM":{"quote":{"latestPrice":155.85,"change":-1.95,"latestUpdate":1521473021918}},
-                  "JNJ":{"quote":{"latestPrice":131.73,"change":-1.95,"latestUpdate":1521472959823}},
-                  "QQQ":{"quote":{"latestPrice":167.37,"change":-3.65,"latestUpdate":1521473019483}},
-                  "SNY":{"quote":{"latestPrice":41.14,"change":0.18,"latestUpdate":1521472948422}},
-                  "SPY":{"quote":{"latestPrice":271.32,"change":-2.88,"latestUpdate":1521473026531}},
-                  "URTH":{"quote":{"URTH","latestPrice":88.822,"change":-0.698,"latestUpdate":1521472050165}}
-                }',
+        body: '{"symbol": "AMZN", "latestPrice": 1547.75, "change": -23.93, "latestUpdate": 1521472989944}',
         headers: {})
-    # Request instrument prices for user.
-    stub_request(:get, "https://api.iextrading.com/1.0/stock/market/batch?filter=latestPrice,change,latestUpdate&symbols=AAPL,AMZN,BABA,COF,FBGX,GOOG,GOOGL,GSK,HD,INTC,JNJ,SNY&types=quote").
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/BABA/quote?token=").
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
         status: 200,
-        body:   '{
-                  "AAPL":{"quote":{"latestPrice":175.42,"change":-2.6,"latestUpdate":1521472593247}},
-                  "AMZN":{"quote":{"latestPrice":1546.96,"change":-24.72,"latestUpdate":1521472585431}},
-                  "BABA":{"quote":{"latestPrice":196.46,"change":-3.82,"latestUpdate":1521472581024}},
-                  "COF":{"quote":{"latestPrice":98.43,"change":-0.93,"latestUpdate":1521472536098}},
-                  "FBGX":{"quote":{"latestPrice":247.99,"change":-5.4,"latestUpdate":1521471289078}},
-                  "GOOG":{"quote":{"latestPrice":1097.22,"change":-38.51,"latestUpdate":1521472582290}},
-                  "GOOGL":{"quote":{"latestPrice":1097.6,"change":-36.82,"latestUpdate":1521472593134}},
-                  "GSK":{"quote":{"latestPrice":37.135,"change":-0.145,"latestUpdate":1521472468254}},
-                  "HD":{"quote":{"latestPrice":178.235,"change":-0.725,"latestUpdate":1521472533502}},
-                  "INTC":{"quote":{"latestPrice":50.495,"change":-0.675,"latestUpdate":1521472520980}},
-                  "JNJ":{"quote":{"latestPrice":131.64,"change":-2.04,"latestUpdate":1521472573951}},
-                  "SNY":{"quote":{"latestPrice":41.135,"change":0.175,"latestUpdate":1521472372465}}
-                  }',
+        body: '{"symbol": "BABA", "latestPrice": 196.58, "change": -3.7, "latestUpdate": 1521473025985}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/COF/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "COF", "latestPrice": 98.31, "change": -1.05, "latestUpdate": 1521472812505}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/DIA/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "DIA", "latestPrice": 246.66, "change": -2.44, "latestUpdate": 1521472967711}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/FBGX/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "FBGX", "latestPrice": 247.99, "change": -5.4, "latestUpdate": 1521471289078}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/GOOG/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "GOOG", "latestPrice": 1097.865, "change": -37.865, "latestUpdate": 1521473007173}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/GOOGL/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "GOOGL", "latestPrice": 1098.8, "change": -35.62, "latestUpdate": 1521473025840}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/GSK/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "GSK", "latestPrice": 37.165, "change": -0.115, "latestUpdate": 1521472921890}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/HD/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "HD", "latestPrice": 178.44, "change": -0.52, "latestUpdate": 1521473018188}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/INTC/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "INTC", "latestPrice": 50.51, "change": -0.66, "latestUpdate": 1521473018049}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/IWM/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "IWM", "latestPrice": 155.85, "change": -1.95, "latestUpdate": 1521473021918}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/JNJ/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "JNJ", "latestPrice": 131.73, "change": -1.95, "latestUpdate": 1521472959823}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/QQQ/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "QQQ", "latestPrice": 167.37, "change": -3.65, "latestUpdate": 1521473019483}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/SNY/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "SNY", "latestPrice": 41.14, "change": 0.18, "latestUpdate": 1521472948422}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/SPY/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "SPY", "latestPrice": 271.32, "change": -2.88, "latestUpdate": 1521473026531}',
+        headers: {})
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/URTH/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "URTH", "latestPrice": 88.822, "change": -0.698, "latestUpdate": 1521472050165}',
         headers: {})
     # Request monthly price series.
     # stub_request(:get, /https:\/\/www\.alphavantage\.co\/query\?apikey\&function\=TIME_SERIES_MONTHLY_ADJUSTED\&symbol=\w+/).
