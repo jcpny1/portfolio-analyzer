@@ -172,7 +172,10 @@ RSpec.configure do |config|
     #   with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
     stub_request(:get, /https:\/\/www\.alphavantage\.co\/query\?apikey\&function=TIME_SERIES_MONTHLY_ADJUSTED\&symbol=\w+/).
       with(query: hash_excluding({'symbol'=>['AMZN','DIA']}), headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
-      to_return(status: 200, body: '', headers: {})
+      to_return(
+        status: 200,
+        body: '{}',
+        headers: {})
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AMZN').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
