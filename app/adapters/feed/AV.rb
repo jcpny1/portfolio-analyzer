@@ -30,6 +30,9 @@ module Feed
           rescue JSON::ParserError => e
             Rails.logger.error "AV PRICE FETCH ERROR for: #{symbol}: JSON parse error: #{e}."
             Feed.error_trade(symbol, 'The feed is down.')
+          rescue => e
+            Rails.logger.error "AV PRICE FETCH ERROR CatchAll for: #{symbol}: error: #{e}."
+            Feed.error_trade(symbol, 'The feed is down.')            
           else
             process_price_response(symbol, response)
           end
