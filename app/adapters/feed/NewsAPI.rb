@@ -12,10 +12,9 @@ module Feed
       begin
         Rails.logger.debug 'NEWSAPI FETCH BEGIN.'
         resp = conn.get do |req|
-          # req.params['source'] = 'bloomberg'
-          # req.params['sortBy'] = 'top'
-          req.params['country'] = 'us'
-          req.params['apikey'] = news_api_key
+          req.params['apikey']   = news_api_key
+          req.params['country']  = 'us'
+          req.params['pageSize'] = '10'
         end
         Rails.logger.debug 'NEWSAPI FETCH END.'
         response = JSON.parse(resp.body)
