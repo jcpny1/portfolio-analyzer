@@ -5,15 +5,16 @@ module Feed
     def self.headlines
       response = {}
       begin
-        conn = Faraday.new(url: 'https://newsapi.org/v1/articles')
+        conn = Faraday.new(url: 'https://newsapi.org/v2/top-headlines')
       rescue Faraday::ClientError => e  # Can't connect.
         Rails.logger.error "NEWSAPI FETCH ERROR: Faraday client error: #{e}."
       end
       begin
         Rails.logger.debug 'NEWSAPI FETCH BEGIN.'
         resp = conn.get do |req|
-          req.params['source'] = 'bloomberg'
-          req.params['sortBy'] = 'top'
+          # req.params['source'] = 'bloomberg'
+          # req.params['sortBy'] = 'top'
+          req.params['country'] = 'us'
           req.params['apikey'] = news_api_key
         end
         Rails.logger.debug 'NEWSAPI FETCH END.'
