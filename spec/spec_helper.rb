@@ -36,7 +36,7 @@ RSpec.configure do |config|
     ## WebMock Reponse Setups ##
 
     # Request for news.
-    stub_request(:get, 'https://newsapi.org/v1/articles?apikey&sortBy=top&source=bloomberg').
+    stub_request(:get, 'https://newsapi.org/v2/top-headlines?apikey&country=us&pageSize=10').
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
       to_return(
         status: 200,
