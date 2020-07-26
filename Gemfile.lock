@@ -135,7 +135,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     pg (1.1.4)
     public_suffix (3.1.1)
-    puma (3.12.1)
+    puma (3.12.6)
     rack (2.0.7)
     rack-protection (2.0.5)
       rack
@@ -273,7 +273,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   pg (>= 0.18, < 2.0)
-  puma (~> 3.11)
+  puma (~> 3.12)
   rails (~> 5.2.1)
   rspec-rails (~> 3.8.1)
   rspec-sidekiq (~> 3.0.3)
