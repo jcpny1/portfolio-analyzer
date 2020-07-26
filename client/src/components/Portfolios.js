@@ -29,7 +29,7 @@ export const Portfolios = (props) => {
         <Table.Row key={portfolio.id} textAlign='right'>
           <Table.Cell textAlign='center'>
             {<PortfolioEditPage portfolio={portfolio} iconName='edit' iconColor='blue' tooltip='Edit portfolio name'/>}
-            &emsp;{<ConfirmDialog triggerType='icon' name='trash' color='red' title='Delete portfolio' header='Delete Portfolio' onClickConfirm={onClickRemove(portfolio.id)}/>}
+            &emsp;{<ConfirmDialog triggerType='icon' name='trash' color='red' title='Delete portfolio' header=`Delete Portfolio {portfolio.name}` onClickConfirm={onClickRemove(portfolio.id)}/>}
             &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
           </Table.Cell>
           <Table.Cell textAlign='left'><Link to={`/portfolios/${portfolio.id}`} title='View details'>{portfolio.nameToHTML()}</Link></Table.Cell>
