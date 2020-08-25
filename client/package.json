@@ -8,7 +8,7 @@
     "@babel/runtime": "^7.6.0",
     "es6-promise": "^4.2.8",
     "fomantic-ui": "^2.7.8",
-    "highcharts": "^6.2.0",
+    "highcharts": "^7.2.2",
     "isomorphic-fetch": "^2.2.1",
     "lodash.clonedeep": "^4.5.0",
     "react": "^16.9.0",
