@@ -1,11 +1,11 @@
 {
   "name": "portfolio-analyzer",
-  "version": "1.17.3",
+  "version": "1.18.0",
   "description": "A portfolio monitoring tool.",
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
+    "@babel/runtime": "^7.11.2",
     "es6-promise": "^4.2.8",
     "fomantic-ui": "^2.7.8",
     "highcharts": "^7.2.2",
