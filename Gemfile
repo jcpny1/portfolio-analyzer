@@ -52,7 +52,7 @@ group :test do
   gem 'rspec-rails', '~> 3.8.1'           # Rails testing framework.
   gem 'rspec-sidekiq', '~> 3.0.3'         # Sidekiq rspec testing.
   gem 'selenium-webdriver', '~> 3.141.0'  # Used by Capybara.
-  gem 'simplecov', '~> 0.16.1'            # Ruby code coverage analysis.
+  gem 'simplecov', '~> 0.18.5'            # Ruby code coverage analysis.
   gem 'webmock', '~> 3.4.2'               # HTTP request stubbing.
 end
 
