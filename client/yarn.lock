@@ -6192,10 +6192,10 @@ follow-redirects@^1.0.0:
   dependencies:
     debug "=3.1.0"
 
-fomantic-ui@^2.7.8:
-  version "2.7.8"
-  resolved "https://registry.yarnpkg.com/fomantic-ui/-/fomantic-ui-2.7.8.tgz#c3b3442a349df2bbe13917e6163bdfeb8a2c1049"
-  integrity sha512-4hoclLlXlhEdvx1+6o8haw+95blBOMDZWFu4LEhLBxGkMI2qlGlH3WGvAlG5BGat8XZ3+v5PUQ1nIRtqn3R3TQ==
+fomantic-ui@^2.8.7:
+  version "2.8.7"
+  resolved "https://registry.yarnpkg.com/fomantic-ui/-/fomantic-ui-2.8.7.tgz#9f57f9d3a692a008090649a40da354321e35c198"
+  integrity sha512-u22d28Z+U8mduTIM50MYzBGRz7CXYjGs2fUY6KO8N3enE8OAatDOXV4Mb/Xvj/ck5aNE6er6XJNK1fFWXt/u/w==
   dependencies:
     "@octokit/rest" "^16.16.0"
     better-console "1.0.1"
