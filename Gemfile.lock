@@ -281,7 +281,6 @@ DEPENDENCIES
   pg (~> 1.2, >= 1.2.3)
   puma (~> 5.0.4)
   rails (~> 6.0.3.4)
-  rake (~> 13.0, >= 13.0.1)
   rspec-rails (~> 4.0.1)
   rspec-sidekiq (~> 3.1.0)
   sass-rails (~> 6.0.0)
