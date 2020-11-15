@@ -46,7 +46,7 @@ end
 
 group :test do
   gem 'capybara', '~> 3.33.0'             # Adds support for Capybara system testing and selenium driver. Needed for RSpec feature tests.
-  gem 'chromedriver-helper', '~> 2.1.1'   # Easy installation and use of chromedriver to run system tests with Chrome
+#  gem 'chromedriver-helper', '~> 2.1.1'   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'factory_bot_rails', '~> 6.1.0'     # Factory to Rails integration.
   gem 'foreman', '~> 0.87.2'              # Process manager for applications with multiple components.
   gem 'rspec-rails', '~> 4.0.1'           # Rails testing framework.
