@@ -13,7 +13,39 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'simplecov'
+SimpleCov.start
+
+require 'webmock/rspec'
+
 RSpec.configure do |config|
+
+
+  config.before(:each) do
+    ## WebMock Reponse Setups ##
+
+    # Request for news.
+    stub_request(:get, 'https://newsapi.org/v2/top-headlines?apikey&country=us&pageSize=10').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+      to_return(
+        status: 200,
+        body: '{
+          "status": "ok",
+          "articles": [{
+            "source": {"id": "bloomberg", "name": "Bloomberg"},
+            "author": "Shannon Pettypiece",
+            "title": "Trump to Pay His Own Legal Bills, Set Up Fund to Cover Staff",
+            "description": "President Donald Trump has started paying his own legal bills related to the Russia probe, rather than charging them to his campaign or the Republican National Committee, and is finalizing a plan to use personal funds to help current and former White House staff with their legal costs.",
+            "url": "http://www.bloomberg.com/news/articles/2017-11-17/trump-to-pay-his-own-legal-bills-set-up-fund-to-cover-staff",
+            "urlToImage": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i5_F2CKD0NVI/v1/1200x675.jpg",
+            "publishedAt": "2017-11-17T16:51:29Z"
+          }]
+        }',
+        headers: {}
+      )
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
