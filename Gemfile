@@ -52,7 +52,7 @@ group :test do
   gem 'rspec-rails', '~> 4.0.1'           # Rails testing framework.
   gem 'rspec-sidekiq', '~> 3.1'           # Sidekiq rspec testing.
   gem 'selenium-webdriver', '~> 3.142', '>= 3.142.7' # Used by Capybara.
-  gem 'simplecov', '~> 0.19.1'            # Ruby code coverage analysis.
+  gem 'simplecov', '~> 0.17.1'            # Ruby code coverage analysis. (Presently, Code Climate does not support a higher version.)
   gem 'webmock', '~> 3.10.0'              # HTTP request stubbing.
 end
 
