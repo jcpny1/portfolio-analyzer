@@ -15,7 +15,7 @@ class PortfoliosController < ApplicationController
   # Create a new portfolio and save it to the database.
   def create
     portfolio = Portfolio.new(user_id: current_user.id)
-    if portfolio.update_attributes(portfolio_params)
+    if portfolio.update(portfolio_params)
       render json: portfolio, status: :created
     else
       render json: portfolio.errors.full_messages, status: :unprocessable_entity
