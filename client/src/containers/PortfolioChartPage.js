@@ -23,7 +23,7 @@ class PortfolioChartPage extends Component {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.resetComponent();
   }
 

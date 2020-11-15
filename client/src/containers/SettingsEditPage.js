@@ -7,7 +7,7 @@ import {SettingsEdit} from '../components/SettingsEdit';
 import * as userActions from '../actions/userActions';
 
 class SettingsEditPage extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.resetComponent();
     this.props.actions.userLoad();
   }

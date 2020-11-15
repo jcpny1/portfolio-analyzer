@@ -16,7 +16,7 @@ import {PositionEdit} from '../components/PositionEdit';
 // TODO: add real instrument in validation?
 
 class PositionEditPage extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.resetComponent();
   }
 

@@ -9,7 +9,7 @@ import {PortfolioEdit} from '../components/PortfolioEdit';
 
 // This class handles the editing of Portfolio attributes.
 class PortfolioEditPage extends Component {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.resetComponent();
   }
 

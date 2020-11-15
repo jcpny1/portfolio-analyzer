@@ -7,7 +7,7 @@ export default class SymbolsPage extends Component {
 
   static DISPLAY_ROWS_MAX = 20;
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.resetComponent();
   }
 

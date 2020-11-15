@@ -21,6 +21,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
+10-Oct-20  0.9.0  Updated Ruby to 2.7.2. Updated gems. Updated Highcharts and Highstock.
 10-Oct-20  0.8.1  Updated client packages for Github-identified security vulnerabilities.
 14-Aug-19  0.8.0  Updated IEX Trading API to latest version and update Gems to eliminate GitHub security warnings.
 15-Feb-19  0.7.1  Updated Babel syntax for V7 to fix test suite errors.
@@ -78,6 +79,7 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 ### Initialize the project
 * Clone the [Portfolio Analyzer Repository](https://github.com/jcpny1/portfolio-analyzer).
 * `cd` into the project directory.
+* `rbenv install 2.7.2` (if necessary)
 * `bundle install`
 
 ### Install redis server (if not installed yet)
@@ -90,6 +92,9 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
   ```
 
 ### Setup the database
+* Install postgresql, if necessary. `sudo apt update` then `sudo apt install postgresql postgresql-contrib
+`
+* `sudo -u postgres createdb portfolio_analyzer_dev`
 * `rake db:migrate`
 * `rake db:seed`
 
@@ -101,7 +106,7 @@ After a fresh install of seed data, the application should be showing a Total Ga
 
 ### Setup the data provider keys
 To receive market data, the server requires an internet connection and a few API keys:
-* Market data from [IEX](https://iextrading.com/) is currently free and does not require authentication.
+* Market data from [IEX](https://iextrading.com/) requires a key. Registration is required. There is no charge.
 
 * Index data from [Alpha Vantage](https://www.alphavantage.co/) requires a key. Registration is required. There is no charge.
 
@@ -110,6 +115,7 @@ To receive market data, the server requires an internet connection and a few API
 The keys should be placed in the project's home directory in a file called `.env`, as in the following example:
 ```
   ALPHA_VANTAGE_API_KEY: ABCDEFGHIJKLMNOP
+  IEX_API_KEY: xyz123
   NEWSAPI_API_KEY: abcdefghijklmnopqrstuvwxyzabcdef
 ```
 
@@ -119,7 +125,7 @@ The keys should be placed in the project's home directory in a file called `.env
 * The server will start. When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
 * When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
 * The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per two minutes.
-* Database seed data includes just ten ticker symbols to work with. If you need more, there are Help menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
+* Database seed data includes just ten ticker symbols to work with. If you need more, there are Admin menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
 
 ## Warnings
 
@@ -129,11 +135,13 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Testing
 
+* `/bin/createdb travis_ci_test`, if necessary.
+
 To run the RSpec test suite:
 * In one window, run `npm start` from the client directory.
 * On another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
 
-You may have to migrate and seed the test database.
+You may have to migrate and seed the test database. (e.g., RAILS_ENV=test rake db:migrate)
 
 To run the Jest test suite:
 * Run `npm test` from the client directory.

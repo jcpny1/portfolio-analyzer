@@ -37,7 +37,7 @@ RSpec.configure do |config|
 
     # Request for news.
     stub_request(:get, 'https://newsapi.org/v2/top-headlines?apikey&country=us&pageSize=10').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{
@@ -55,7 +55,7 @@ RSpec.configure do |config|
         headers: {})
     # Request for data feed symbology.
     stub_request(:get, 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '[
@@ -66,118 +66,118 @@ RSpec.configure do |config|
         headers: {})
     # Request instrument prices.
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/AAPL/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "AAPL", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/AMZN/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "AMZN", "latestPrice": 1547.75, "change": -23.93, "latestUpdate": 1521472989944}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/BABA/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "BABA", "latestPrice": 196.58, "change": -3.7, "latestUpdate": 1521473025985}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/COF/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "COF", "latestPrice": 98.31, "change": -1.05, "latestUpdate": 1521472812505}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/DIA/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "DIA", "latestPrice": 246.66, "change": -2.44, "latestUpdate": 1521472967711}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/FBGX/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "FBGX", "latestPrice": 247.99, "change": -5.4, "latestUpdate": 1521471289078}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/GOOG/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "GOOG", "latestPrice": 1097.865, "change": -37.865, "latestUpdate": 1521473007173}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/GOOGL/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "GOOGL", "latestPrice": 1098.8, "change": -35.62, "latestUpdate": 1521473025840}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/GSK/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "GSK", "latestPrice": 37.165, "change": -0.115, "latestUpdate": 1521472921890}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/HD/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "HD", "latestPrice": 178.44, "change": -0.52, "latestUpdate": 1521473018188}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/INTC/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "INTC", "latestPrice": 50.51, "change": -0.66, "latestUpdate": 1521473018049}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/IWM/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "IWM", "latestPrice": 155.85, "change": -1.95, "latestUpdate": 1521473021918}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/JNJ/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "JNJ", "latestPrice": 131.73, "change": -1.95, "latestUpdate": 1521472959823}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/QQQ/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "QQQ", "latestPrice": 167.37, "change": -3.65, "latestUpdate": 1521473019483}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/SNY/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "SNY", "latestPrice": 41.14, "change": 0.18, "latestUpdate": 1521472948422}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/SPY/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "SPY", "latestPrice": 271.32, "change": -2.88, "latestUpdate": 1521473026531}',
         headers: {})
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/URTH/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{"symbol": "URTH", "latestPrice": 88.822, "change": -0.698, "latestUpdate": 1521472050165}',
         headers: {})
     # Request monthly price series.
     # stub_request(:get, /https:\/\/www\.alphavantage\.co\/query\?apikey\&function\=TIME_SERIES_MONTHLY_ADJUSTED\&symbol=\w+/).
-    #   with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+    #   with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
     stub_request(:get, /https:\/\/www\.alphavantage\.co\/query\?apikey\&function=TIME_SERIES_MONTHLY_ADJUSTED\&symbol=\w+/).
-      with(query: hash_excluding({'symbol'=>['AMZN','DIA']}), headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(query: hash_excluding({'symbol'=>['AMZN','DIA']}), headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body: '{}',
         headers: {})
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AMZN').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body:   '{
@@ -219,7 +219,7 @@ RSpec.configure do |config|
                 }',
         headers: {})
     stub_request(:get, "https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=DIA").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body:   '{
@@ -244,7 +244,7 @@ RSpec.configure do |config|
         headers: {})
     # Request for DJIA index value.
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.15.4'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
         body:   '{
