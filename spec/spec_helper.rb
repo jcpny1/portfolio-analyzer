@@ -18,11 +18,13 @@ require 'simplecov'
 SimpleCov.start
 
 require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
 
-
   config.before(:each) do
+    Sidekiq::Worker.clear_all  # Makes sure jobs don't linger between tests:
+
     ## WebMock Reponse Setups ##
 
     # Request for news.
