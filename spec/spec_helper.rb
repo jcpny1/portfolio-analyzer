@@ -46,6 +46,19 @@ RSpec.configure do |config|
         }',
         headers: {}
       )
+
+      # Request for data feed symbology.
+      stub_request(:get, 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token').
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+        to_return(
+          status: 200,
+          body: '[
+            {"symbol":"A",   "name":"Agilent Technologies Inc.","date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"2"},
+            {"symbol":"AA",  "name":"Alcoa Corporation",        "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"12042"},
+            {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
+          ]',
+          headers: {}
+        )
   end
 
   # rspec-expectations config goes here. You can use an alternate
