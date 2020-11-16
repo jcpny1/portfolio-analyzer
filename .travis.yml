@@ -29,7 +29,8 @@ before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
   - sleep 5
-  - bundle exec rake db:setup
+  - bundle exec rake db:create
+  - bundle exec rake db:schema:load
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../cc-test-reporter
   - chmod +x ../cc-test-reporter
 script:
