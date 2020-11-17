@@ -47,18 +47,60 @@ RSpec.configure do |config|
         headers: {}
       )
 
-      # Request for data feed symbology.
-      stub_request(:get, 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token').
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
-        to_return(
-          status: 200,
-          body: '[
-            {"symbol":"A",   "name":"Agilent Technologies Inc.","date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"2"},
-            {"symbol":"AA",  "name":"Alcoa Corporation",        "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"12042"},
-            {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
-          ]',
-          headers: {}
-        )
+    # Request for data feed symbology.
+    stub_request(:get, 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+      to_return(
+        status: 200,
+        body: '[
+          {"symbol":"A",   "name":"Agilent Technologies Inc.","date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"2"},
+          {"symbol":"AA",  "name":"Alcoa Corporation",        "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"12042"},
+          {"symbol":"AABA","name":"Altaba Inc.",              "date":"2018-03-19", "isEnabled":true, "type":"cs", "iexId":"7653"}
+        ]',
+        headers: {}
+      )
+
+    # Request for DJIA index value.
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+          "Meta Data": {
+            "1. Information": "Daily Prices (open, high, low, close) and Volumes",
+            "2. Symbol": "Dow Jones Industrial Average Index",
+            "3. Last Refreshed": "2018-03-19",
+            "4. Output Size": "Compact",
+            "5. Time Zone": "US/Eastern"
+          },
+          "Time Series (Daily)": {
+            "2018-03-19": {
+              "1. open":  "24893.6895",
+              "2. high":  "24893.6895",
+              "3. low":   "24658.6191",
+              "4. close": "24686.0898",
+              "5. volume": "103013890"
+            },
+            "2018-03-16": {
+              "1. open":  "24877.3398",
+              "2. high":  "25031.0000",
+              "3. low":   "24857.0898",
+              "4. close": "24946.5098",
+              "5. volume": "654240000"
+            }
+          }
+        }',
+        headers: {}
+      )
+
+    # Request instrument prices.
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/ABC/quote?token=").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+      to_return(
+        status: 200,
+        body: '{"symbol": "ABC", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
+        headers: {}
+      )
   end
 
   # rspec-expectations config goes here. You can use an alternate
