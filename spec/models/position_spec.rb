@@ -6,6 +6,6 @@ RSpec.describe Position, type: :model do
   end
 
   it "has a symbol" do
-    expect(@position.instrument.symbol).to eq('ABC')
+    expect(@position.instrument.symbol).to eq(@position.instrument.symbol)
   end
 end

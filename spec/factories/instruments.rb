@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :instrument do
-    symbol { "ABC" }
-    name   { "Acme Banana Company" }
+    symbol { "XOM" }
+    name   { "Exxon Mobil Corporation" }
   end
 end

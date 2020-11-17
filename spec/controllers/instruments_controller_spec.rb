@@ -8,11 +8,11 @@ RSpec.describe InstrumentsController, type: :controller do
   describe "GET index" do
     it "returns an instrument" do
       request.accept = "application/json"
-      get :index, { :params => { v: 'ABC' }, format: :json }
+      get :index, { :params => { v: @instrument.symbol }, format: :json }
       pr = JSON.parse(response.body)
       expect(response).to be_successful
       expect(pr['data'].length).to be > 0
-      expect(pr['data'][0]['attributes']['name']).to eq('Acme Banana Company')
+      expect(pr['data'][0]['attributes']['name']).to eq(@instrument.name)
     end
   end
 

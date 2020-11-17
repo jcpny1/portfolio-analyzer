@@ -94,11 +94,11 @@ RSpec.configure do |config|
       )
 
     # Request instrument prices.
-    stub_request(:get, "https://cloud.iexapis.com/stable/stock/ABC/quote?token=").
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/XOM/quote?token=").
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
       to_return(
         status: 200,
-        body: '{"symbol": "ABC", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
+        body: '{"symbol": "XOM", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
         headers: {}
       )
   end
