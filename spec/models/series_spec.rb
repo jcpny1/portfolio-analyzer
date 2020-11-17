@@ -9,4 +9,9 @@ RSpec.describe Series, type: :model do
   it "has a close_price change" do
     expect(Series.dataChanged?(@series_point_1, @series_point_2)).to eq(true)
   end
+
+  it "has can be updated" do
+    Series.dataUpdate(@series_point_1, @series_point_2)
+    expect(@series_point_1.adjusted_close_price).to eq(@series_point_2.adjusted_close_price)
+  end
 end
