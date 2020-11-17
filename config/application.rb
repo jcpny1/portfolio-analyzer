@@ -11,7 +11,7 @@ module PortfolioAnalyzer
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    # Suppress Zeitwerk errors about class names not defined.
+    # Suppress Zeitwerk errors in test about class names not defined.
     Rails.autoloaders.main.ignore("#{Rails.root}/app/cache/data_cache")
 
     # Settings in config/environments/* take precedence over those specified here.
