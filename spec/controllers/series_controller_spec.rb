@@ -18,6 +18,7 @@ RSpec.describe SeriesController, type: :controller do
     end
 
     it "bulk loads database series" do
+      @instrument = create(:instrument, symbol: 'NEWT')
       request.accept = "application/json"
       get :series_bulk_load, { :params => { instruments: 'all' } }
       expect(response).to be_successful
