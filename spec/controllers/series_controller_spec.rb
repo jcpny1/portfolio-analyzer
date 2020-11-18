@@ -18,7 +18,6 @@ RSpec.describe SeriesController, type: :controller do
     end
 
     it "bulk loads database series" do
-      @instrument = create(:instrument, symbol: 'NEWT')
       request.accept = "application/json"
       get :series_bulk_load, { :params => { instruments: 'all' } }
       expect(response).to be_successful
@@ -26,7 +25,7 @@ RSpec.describe SeriesController, type: :controller do
   end
 
   describe "Run async worker" do
-    it "populates database with all prices" do
+    it "populates database with all instruments' series data" do
       Sidekiq::Testing.inline! do
         FeedWorker.perform_async('series_bulk_load', 'all', nil)  # Update all instruments' series.
       end
