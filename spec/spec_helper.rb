@@ -93,6 +93,50 @@ RSpec.configure do |config|
         headers: {}
       )
 
+    # Request XOM monthly series data.
+    stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=XOM').
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+      to_return(
+        status: 200,
+        body:   '{
+                  "Meta Data": {
+                    "1. Information": "Monthly Adjusted Prices and Volumes",
+                    "2. Symbol": "XOM",
+                    "3. Last Refreshed": "2018-04-05",
+                    "4. Time Zone": "US/Eastern"
+                  },
+                  "Monthly Adjusted Time Series": {
+                    "2018-03-29": {
+                      "1. open": "1513.6000",
+                      "2. high": "1617.5400",
+                      "3. low": "1365.2000",
+                      "4. close": "1447.3400",
+                      "5. adjusted close": "1447.3400",
+                      "6. volume": "128401298",
+                      "7. dividend amount": "0.0000"
+                    },
+                    "2018-02-28": {
+                      "1. open": "1445.0000",
+                      "2. high": "1528.7000",
+                      "3. low": "1265.9300",
+                      "4. close": "1512.4500",
+                      "5. adjusted close": "1512.4500",
+                      "6. volume": "133362428",
+                      "7. dividend amount": "0.0000"
+                    },
+                    "2018-01-31": {
+                      "1. open": "1172.0000",
+                      "2. high": "1472.5800",
+                      "3. low": "1170.5100",
+                      "4. close": "1450.8900",
+                      "5. adjusted close": "1450.8900",
+                      "6. volume": "94145634",
+                      "7. dividend amount": "0.0000"
+                    }
+                  }
+                }',
+        headers: {})
+
     # Request instrument prices.
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/XOM/quote?token=").
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).

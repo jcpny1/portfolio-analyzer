@@ -24,4 +24,12 @@ RSpec.describe SeriesController, type: :controller do
       expect(response).to be_successful
     end
   end
+
+  describe "Run async worker" do
+    it "populates database with all prices" do
+      Sidekiq::Testing.inline! do
+        FeedWorker.perform_async('series_bulk_load', 'all', nil)  # Update all instruments' series.
+      end
+    end
+  end
 end
