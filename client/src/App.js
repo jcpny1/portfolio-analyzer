@@ -114,7 +114,7 @@ class App extends Component {
 
   pageMenuCenter() {
     return (
-      <Header className='shadow' color='purple' size='large'>
+      <Header className='shadow' color='purple' size='large' style={{margin: '1em'}}>
         Portfolio Analyzer
       </Header>
     );
