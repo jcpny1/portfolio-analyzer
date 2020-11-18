@@ -25,7 +25,7 @@ export function indexesRefresh(cb) {
 //   Specify option 'exact' as true (for an exact match) or false (for a partial match).
 export function instrumentSearch(params, cb) {
   const exact = params.exact ? '&exact' : '';
-  return fetch(`/api/instruments?v=${encodeURI(params.value)}${exact}`, {headers: {'Accept': 'application/json'}})
+  return fetch(`/api/instruments?v=${encodeURIComponent(params.value)}${exact}`, {headers: {'Accept': 'application/json'}})
   .then(statusCheck)
   .then(response => response.json())
   .then(cb)
