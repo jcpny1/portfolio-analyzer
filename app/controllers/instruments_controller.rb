@@ -8,9 +8,7 @@ class InstrumentsController < ApplicationController
     if params.key?('exact')
       render json: Instrument.where("symbol = '%s'", value)
     else
-puts("VALUE 1: " + value)
       value = "%#{value.upcase}%"
-puts("VALUE 2: " + value)
       render json: Instrument.where("upper(symbol) LIKE '%s' OR upper(name) LIKE '%s'", value, value).order(:name, :symbol).limit(20)
     end
   end
