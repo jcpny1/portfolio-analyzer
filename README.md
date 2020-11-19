@@ -136,20 +136,18 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Testing
 
-* `/bin/createdb travis_ci_test`, if necessary.
+* If the test DB does not exist -`/bin/createdb travis_ci_test` and `RAILS_ENV=test rake db:migrate`.
 
 To run the RSpec test suite:
 * In one window, run `npm start` from the client directory.
-* On another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
-
-You may have to migrate and seed the test database. (e.g., RAILS_ENV=test rake db:migrate)
+* In another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
 
 To run the Jest test suite:
 * Run `npm test` from the client directory.
 
 ## Deployment
 
-TBD
+* To deploy on Heroku, `git push heroku master`.
 
 ## Contributing
 
