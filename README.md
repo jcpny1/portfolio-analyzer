@@ -21,7 +21,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-14-Nov-20  1.0.0  Updated Ruby to 2.7.2. Updated more gems and packages. Updated tests.
+14-Nov-20  1.0.0  Updated remaining gems and packages where possible. Updated test code and configs.
 10-Nov-20  0.9.0  Updated Ruby to 2.7.2. Updated gems. Updated Highcharts and Highstock.
 10-Oct-20  0.8.1  Updated client packages for Github-identified security vulnerabilities.
 14-Aug-19  0.8.0  Updated IEX Trading API to latest version and update Gems to eliminate GitHub security warnings.
