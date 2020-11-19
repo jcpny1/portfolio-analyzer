@@ -112,17 +112,18 @@ class App extends Component {
     );
   }
 
-  pageMenuCenter() {
+  pageMenuLeft() {
     return (
-      <Header className='shadow' color='purple' size='large' style={{margin: '1em'}}>
+      <Header className='shadow' color='purple' size='large' style={{lineHeight:0.75, marginRight:0, marginLeft:'1em', marginTop:'.5em', marginBottom:'.5em'}}>
         Portfolio Analyzer
       </Header>
     );
   }
 
-  pageMenuLeft() {
+  pageMenuCenter() {
     return (
       <Menu.Menu position='left'>
+        <Menu.Item style={{padding:'.8em'}}></Menu.Item>
         <Menu.Item as={Link} to='/'>Portfolios</Menu.Item>
         {<SymbolsPage/>}
       </Menu.Menu>
