@@ -7,7 +7,6 @@
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "es6-promise": "^4.2.8",
-    "fomantic-ui": "^2.8.7",
     "highcharts": "^8.2.2",
     "isomorphic-fetch": "^3.0.0",
     "lodash.clonedeep": "^4.5.0",
@@ -19,6 +18,7 @@
     "react-scripts": "4.0.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.1"
   },
   "scripts": {
@@ -43,7 +43,6 @@
     "babel-plugin-transform-class-properties": "6.24.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
-    "gulp": "^4.0.2",
     "jest-fetch-mock": "^3.0.3",
     "jshint": "^2.12.0",
     "prop-types": "^15.7.2",
