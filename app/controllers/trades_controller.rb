@@ -13,7 +13,7 @@ class TradesController < ApplicationController
   def last_price
     logger.info 'LAST PRICE LOAD BEGIN.'
     instruments = Instrument.select(:id, :symbol).joins(positions: :portfolio).where(portfolios: { user_id: current_user.id }).distinct
-    trades = DataCache.price_values(instruments, params.key?('livePrices'))
+    trades = DataCache.price_values(instruments, params.key?('livePrices'), false)
     logger.info 'LAST PRICE LOAD END.'
     render json: trades, each_serializer: TradeSerializer
   end

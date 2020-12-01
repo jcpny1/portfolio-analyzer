@@ -14,7 +14,7 @@ class FeedWorker
     when 'price_bulk_load'
       # Get latest prices for all instruments.
       instruments = Instrument.select(:id, :symbol).order(:symbol)
-      DataCache.price_values(instruments, true)
+      DataCache.price_values(instruments, true, true)
     when 'series_bulk_load'
       # Get latest series data points
       instruments = []

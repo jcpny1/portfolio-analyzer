@@ -2,7 +2,7 @@
 class TradeCache
   # Retrieve the latest prices for the given instrument list.
   # Specify get_live_prices to retrieve feed data. Otherwise, just get prices from database.
-  def self.prices(instruments, get_live_prices)
+  def self.prices(instruments, get_live_prices, bulk_load = false)
     trades = []
     instruments.each_slice(DataCache::TRADE_BATCH_SIZE) do |instrument_batch|
       trade_batch = prices_from_database(instrument_batch)  # Get database prices as a baseline.
@@ -12,7 +12,7 @@ class TradeCache
           save_trades(trade_batch, live_trades)  # Update database prices with feed prices.
         end
       end
-      trades.concat(trade_batch)
+      trades.concat(trade_batch) if !bulk_load
     end
     trades
   end
