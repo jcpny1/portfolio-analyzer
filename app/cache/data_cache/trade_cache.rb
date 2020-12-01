@@ -7,12 +7,15 @@ class TradeCache
     instruments.each_slice(DataCache::TRADE_BATCH_SIZE) do |instrument_batch|
       trade_batch = prices_from_database(instrument_batch)  # Get database prices as a baseline.
       if get_live_prices
-        sleep DataCache::TRADE_BATCH_DELAY if trades.length.nonzero?  # Throttle request rate after first request.
         Feed.load_prices(instrument_batch) do |live_trades|  # Get feed prices.
           save_trades(trade_batch, live_trades)  # Update database prices with feed prices.
         end
       end
-      trades.concat(trade_batch) if !bulk_load
+      if !bulk_load
+        trades.concat(trade_batch)
+      else
+        sleep DataCache::TRADE_BATCH_DELAY  # Throttle requests for bulk loads.
+      end
     end
     trades
   end
