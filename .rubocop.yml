@@ -17,3 +17,6 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
   Max: 50
+
+Layout/AllowBeforeTrailingComments:
+  Enabled: true
