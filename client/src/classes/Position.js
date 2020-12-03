@@ -17,26 +17,26 @@ export default class Position {
     this.updateDerivedValues();         // derived
   }
 
-  get cost()          {return this._cost}
-  get dateAcquired()  {return this._dateAcquired}
-  get dayChange()     {return this._dayChange}
-  get gainLoss()      {return this._gainLoss}
-  get id()            {return this._id}
-  get instrument()    {return this._instrument}
-  get lastTrade()     {return this._trade.price}
-  get lastUpdate()    {return this._trade.lastUpdate}
-  get lastTradeDate() {return this._trade.tradeDate}
-  get marketValue()   {return this._marketValue}
-  get pctTotalMV()    {return this._pctTotalMV}
-  get portfolio_id()  {return this._portfolio_id}
-  get priceChange()   {return this._trade.priceChange}
-  get quantity()      {return this._quantity}
+  get cost()          {return this._cost};
+  get dateAcquired()  {return this._dateAcquired};
+  get dayChange()     {return this._dayChange};
+  get gainLoss()      {return this._gainLoss};
+  get id()            {return this._id};
+  get instrument()    {return this._instrument};
+  get lastTrade()     {return this._trade.price};
+  get lastUpdate()    {return this._trade.lastUpdate};
+  get lastTradeDate() {return this._trade.tradeDate};
+  get marketValue()   {return this._marketValue};
+  get pctTotalMV()    {return this._pctTotalMV};
+  get portfolio_id()  {return this._portfolio_id};
+  get priceChange()   {return this._trade.priceChange};
+  get quantity()      {return this._quantity};
 
-  set cost(cost)                 {this._cost          = new Decimal(cost, 'currency')}
-  set dateAcquired(dateAcquired) {this._dateAcquired  = new DateTime(dateAcquired)}
-  set instrument(instrument)     {this._instrument    = instrument}
-  set pctTotalMV(pctTotalMV)     {this._pctTotalMV    = new Decimal(pctTotalMV, 'percent')}
-  set quantity(quantity)         {this._quantity      = new Decimal(quantity, 'quantity')}
+  set cost(cost)                 {this._cost          = new Decimal(cost, 'currency')};
+  set dateAcquired(dateAcquired) {this._dateAcquired  = new DateTime(dateAcquired)};
+  set instrument(instrument)     {this._instrument    = instrument};
+  set pctTotalMV(pctTotalMV)     {this._pctTotalMV    = new Decimal(pctTotalMV, 'percent')};
+  set quantity(quantity)         {this._quantity      = new Decimal(quantity, 'quantity')};
 
   reprice(serverTrades) {
     const serverTrade = serverTrades.find(serverTrade => serverTrade.attributes['instrument-id'].toString() === this._instrument.id);
