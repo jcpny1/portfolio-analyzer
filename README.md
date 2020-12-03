@@ -21,7 +21,7 @@ This repository contains the front end code in the ```client``` folder.
 The remaining folders are primarily for the server code.
 
 ## History
-```
+``` bash
 21-Nov-20  1.0.1  Update remaining packages. Comment out failing test (new Enzyme package?).
 14-Nov-20  1.0.0  Updated remaining gems and packages where possible. Updated test code and configs.
 10-Nov-20  0.9.0  Updated Ruby to 2.7.2. Updated gems. Updated Highcharts and Highstock.
@@ -80,43 +80,43 @@ The remaining folders are primarily for the server code.
 Portfolio-Analyzer was developed using earlier versions of the following, but was released using Ruby 2.4.2, Rails 5.1.4, Node.js 8.9.1.
 
 ### Initialize the project
-* Clone the [Portfolio Analyzer Repository](https://github.com/jcpny1/portfolio-analyzer).
-* `cd` into the project directory.
-* `rbenv install 2.7.2` (if necessary)
-* `bundle install`
+*   Clone the [Portfolio Analyzer Repository](https://github.com/jcpny1/portfolio-analyzer).
+*   `cd` into the project directory.
+*   `rbenv install 2.7.2` (if necessary)
+*   `bundle install`
 
 ### Install redis server (if not installed yet)
-* `sudo apt-get install redis-server`
-* In /etc/rc.local, add:
-  ```
-  if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
-    echo never > /sys/kernel/mm/transparent_hugepage/enabled
-  fi
-  ```
+*   `sudo apt-get install redis-server`
+*   In /etc/rc.local, add:
+    ``` bash
+    if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
+      echo never > /sys/kernel/mm/transparent_hugepage/enabled
+    fi
+    ```
 
 ### Setup the database
-* Install postgresql, if necessary. `sudo apt update` then `sudo apt install postgresql postgresql-contrib
+*   Install postgresql, if necessary. `sudo apt update` then `sudo apt install postgresql postgresql-contrib
 `
-* `sudo -u postgres createdb portfolio_analyzer_dev`
-* `rake db:migrate`
-* `rake db:seed`
+*   `sudo -u postgres createdb portfolio_analyzer_dev`
+
+*   `rake db:migrate`
+
+*   `rake db:seed`
 
 After a fresh install of seed data, the application should be showing a Total Gain/Loss of $179,565.842.
 
 ### Install npm packages
-* `cd client`
-* `npm install`
+*   `cd client`
+*   `npm install`
 
 ### Setup the data provider keys
 To receive market data, the server requires an internet connection and a few API keys:
-* Market data from [IEX](https://iextrading.com/) requires a key. Registration is required. There is no charge.
-
-* Index data from [Alpha Vantage](https://www.alphavantage.co/) requires a key. Registration is required. There is no charge.
-
-* Headline news from [News API](https://newsapi.org/) requires a key. Registration is required. There is no charge.
+*   Market data from [IEX](https://iextrading.com/) requires a key. Registration is required. There is no charge.
+*   Index data from [Alpha Vantage](https://www.alphavantage.co/) requires a key. Registration is required. There is no charge.
+*   Headline news from [News API](https://newsapi.org/) requires a key. Registration is required. There is no charge.
 
 The keys should be placed in the project's home directory in a file called `.env`, as in the following example:
-```
+``` bash
   ALPHA_VANTAGE_API_KEY: ABCDEFGHIJKLMNOP
   IEX_API_KEY: xyz123
   NEWSAPI_API_KEY: abcdefghijklmnopqrstuvwxyzabcdef
@@ -124,32 +124,32 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Usage
 
-* From the project home directory, type `rake start`.
-* The server will start. When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
-* When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
-* The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per two minutes.
-* Database seed data includes just ten ticker symbols to work with. If you need more, there are Admin menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
+*   From the project home directory, type `rake start`.
+*   The server will start. When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
+*   When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
+*   The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per two minutes.
+*   Database seed data includes just ten ticker symbols to work with. If you need more, there are Admin menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
 
 ## Warnings
 
-* There is no login logic at this time. Any data you enter into the system is subject to being viewed, edited, or deleted by anyone else with access to the same server.
-* The market data shown may not be the latest information available or may be inaccurate.
-* Any data, tools, or methods offered are for software development practice only. They may not be accurate. No decisions should be based on what is presented in this application.
+*   There is no login logic at this time. Any data you enter into the system is subject to being viewed, edited, or deleted by anyone else with access to the same server.
+*   The market data shown may not be the latest information available or may be inaccurate.
+*   Any data, tools, or methods offered are for software development practice only. They may not be accurate. No decisions should be based on what is presented in this application.
 
 ## Testing
 
-* If the test DB does not exist -`/bin/createdb travis_ci_test` and `RAILS_ENV=test rake db:migrate`.
+*   If the test DB does not exist -`/bin/createdb travis_ci_test` and `RAILS_ENV=test rake db:migrate`.
 
 To run the RSpec test suite:
-* In one window, run `npm start` from the client directory.
-* In another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
+*   In one window, run `npm start` from the client directory.
+*   In another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
 
 To run the Jest test suite:
-* Run `npm test` from the client directory.
+*   Run `npm test` from the client directory.
 
 ## Deployment
 
-* To deploy on Heroku, `git push heroku master`.
+*   To deploy on Heroku, `git push heroku master`.
 
 ## Contributing
 
