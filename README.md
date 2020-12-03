@@ -98,7 +98,9 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 *   Install postgresql, if necessary. `sudo apt update` then `sudo apt install postgresql postgresql-contrib
 `
 *   `sudo -u postgres createdb portfolio_analyzer_dev`
+
 *   `rake db:migrate`
+
 *   `rake db:seed`
 
 After a fresh install of seed data, the application should be showing a Total Gain/Loss of $179,565.842.
@@ -110,9 +112,7 @@ After a fresh install of seed data, the application should be showing a Total Ga
 ### Setup the data provider keys
 To receive market data, the server requires an internet connection and a few API keys:
 *   Market data from [IEX](https://iextrading.com/) requires a key. Registration is required. There is no charge.
-
 *   Index data from [Alpha Vantage](https://www.alphavantage.co/) requires a key. Registration is required. There is no charge.
-
 *   Headline news from [News API](https://newsapi.org/) requires a key. Registration is required. There is no charge.
 
 The keys should be placed in the project's home directory in a file called `.env`, as in the following example:
