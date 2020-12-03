@@ -51,7 +51,7 @@ export default class ChartData {
     });
 
     // Insert portfolio 'instrument', so it appears first in chart legend.
-    chartData[0] = {'symbol': "Portfolio", 'name': portfolioName, 'data': []};
+    chartData[0] = {'symbol': 'Portfolio', 'name': portfolioName, 'data': []};
 
     // Sum each instrument's data points into the portfolio instrument.
     let symbolCount = portfolioSymbolIds.length;  // Keep track of how many instruments were found to have series data. Used to calc adjusted portfolio value.

@@ -80,7 +80,7 @@ export function portfoliosLoad(dispatch, loadLivePrices, sortFn) {
           positions.push(new Position(relation.attributes['portfolio-id'], relation.id, relation.attributes.quantity, relation.attributes.cost, relation.attributes['date-acquired']));
           break;
         default:
-          console.log("Error: unknown relation type: " + relation.type);
+          console.log('Error: unknown relation type: ' + relation.type);
           break;
       }
     });

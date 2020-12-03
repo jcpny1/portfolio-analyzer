@@ -1,8 +1,9 @@
 {
   "env": {
-    "node": 1
+    "node": true
   },
+  "parser": "babel-eslint",
   "rules": {
-    "quotes": [2, "single", { "avoidEscape": true }]
+    "quotes": ["error", "single", { "avoidEscape": true }]
   }
 }
