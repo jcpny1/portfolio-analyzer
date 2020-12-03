@@ -60,6 +60,12 @@ Layout/IndentationConsistency:
     - 'app/cache/data_cache/series_cache.rb'
     - 'app/controllers/users_controller.rb'
 
+# Offense count: 37
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Layout/LineLength:
+  Max: 316
+
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -171,12 +177,6 @@ Metrics/BlockLength:
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
   Max: 129
-
-# Offense count: 37
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 316
 
 # Offense count: 1
 Metrics/PerceivedComplexity:

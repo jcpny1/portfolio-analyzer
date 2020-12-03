@@ -12,11 +12,11 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:  # Avoid complex methods.
   Max: 12
 
-Metrics/LineLength:
-  Max: 160
-
 Metrics/MethodLength:
   Max: 50
 
 Layout/AllowBeforeTrailingComments:
   Enabled: true
+
+Layout/LineLength:
+  Max: 160
