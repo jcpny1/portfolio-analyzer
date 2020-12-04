@@ -24,6 +24,9 @@ module Feed
         rescue JSON::ParserError => e
           Rails.logger.error "IEX PRICE FETCH ERROR: JSON parse error: #{e}."
           Feed.error_trade(symbol, 'The feed is down.')
+        rescue URI::InvalidURIError => e
+          Rails.logger.error "IEX PRICE FETCH ERROR: Invalid URI: #{e}."
+          Feed.error_trade(symbol, 'The feed is down.')
         else
           process_price_response(response)
         end
