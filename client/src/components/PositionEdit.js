@@ -12,7 +12,7 @@ export const PositionEdit = (props) => {
         <Form.Input width={4} error={formError.name === 'cost'} label='Cost Basis' placeholder='Cost Basis' name='cost' value={position.cost} onChange={onChange} required/>
         <Form.Input width={4} error={formError.name === 'dateAcquired'} label='Date Acquired' type='date' placeholder='YYYY-MM-DD' name='dateAcquired' value={position.dateAcquired} onChange={onChange} required/>
       </Form.Group>
-      <Message hidden={Object.keys(formError).length !== 0} content='Update portfolio info. Press Cancel or Submit when done.'/>
+      <Message hidden={Object.keys(formError).length !== 0} content='Update position info. Press Cancel or Submit when done.'/>
       <Message error content={formError.message}/>
     </Form>
   );

@@ -77,7 +77,7 @@ export const Positions = (props) => {
           &emsp;{<PortfolioChartPage portfolio={portfolio} iconName='chart line' iconColor='blue' tooltip='Chart portfolio'/>}
         </span>
         <span style={{float:'right'}}>
-          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px'}} onClick={() => portfolioRefresh(portfolio)}/>
+          <Button content='Refresh' icon='refresh' title='Refresh positions' loading={updatingPortfolio} compact inverted size='tiny' style={{paddingRight:'3px', color:'purple'}} onClick={() => portfolioRefresh(portfolio)}/>
         </span>
       </Header>
       <Table compact sortable striped style={{marginTop:0}}>
