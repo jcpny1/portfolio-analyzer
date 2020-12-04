@@ -9,7 +9,7 @@ module DataCache
   INDEX_BATCH_SIZE   =  1    # Number of symbols in one index request.
   INDEX_BATCH_DELAY  = 20.0  # Delay time between index requests (in seconds).
   SERIES_BATCH_SIZE  =  1    # Number of symbols in one series request.
-  SERIES_BATCH_DELAY = 20.0  # Delay time between series requests (in seconds).
+  SERIES_BATCH_DELAY =  2.0  # Delay time between series requests (in seconds).
   TRADE_BATCH_SIZE   = 50    # Number of symbols in one feed request.
   TRADE_BATCH_DELAY  =  1.0  # Delay time between feed requests (in seconds).
 
