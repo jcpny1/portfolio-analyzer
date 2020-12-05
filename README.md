@@ -5,7 +5,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7ca3b07d0b24fbcd472b/test_coverage)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7ca3b07d0b24fbcd472b/maintainability)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/maintainability)
 [![Inline docs](http://inch-ci.org/github/jcpny1/portfolio-analyzer.svg)](http://inch-ci.org/github/jcpny1/portfolio-analyzer)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/00dbafbcb50c427693f4ec7126a011dc)](https://app.codacy.com/gh/jcpny1/portfolio-analyzer?utm_source=github.com&utm_medium=referral&utm_content=jcpny1/portfolio-analyzer&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d5225aab819e4d609fac1d0daf3ebfb9)](https://www.codacy.com/gh/jcpny1/portfolio-analyzer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jcpny1/portfolio-analyzer&amp;utm_campaign=Badge_Grade)
 
 ## Overview
 
