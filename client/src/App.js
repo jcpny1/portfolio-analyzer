@@ -44,11 +44,11 @@ class App extends Component {
       <Grid.Row columns={2}>
         <Grid.Column width={11} style={{paddingRight:'5px'}}>
           <Switch>
-            <Route exact path="/"           component={PortfoliosPage}/>
-            <Route path="/about"            component={PortfoliosPage}/>
-            <Route path="/home"             component={PortfoliosPage}/>
-            <Route exact path="/portfolios" component={PortfoliosPage}/>
-            <Route path="/portfolios/:id"   component={PositionsPage}/>
+            <Route exact path='/'           component={PortfoliosPage}/>
+            <Route path='/about'            component={PortfoliosPage}/>
+            <Route path='/home'             component={PortfoliosPage}/>
+            <Route exact path='/portfolios' component={PortfoliosPage}/>
+            <Route path='/portfolios/:id'   component={PositionsPage}/>
           </Switch>
         </Grid.Column>
         <Grid.Column width={5} style={{paddingLeft:'5px'}}>

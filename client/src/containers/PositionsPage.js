@@ -18,7 +18,7 @@ class PositionsPage extends Component {
     this.props.portfolios.length || this.props.actions.portfoliosLoad(false, this.props.sortFn)
   }
 
-  portfolioRefresh = (portfolio) => {
+  portfolioRefresh = () => {
     this.props.actions.portfoliosLoad(true, this.props.sortFn);
   }
 

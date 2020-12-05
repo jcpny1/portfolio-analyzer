@@ -16,7 +16,7 @@ export const Help = () => {
       </ul>
       <h3>Market Data</h3>
       <ul>
-        <li>Latest trade data provided for free by <a href='https://iextrading.com/developer' target='_blank' rel='noopener noreferrer'>IEX</a>. <a href='https://iextrading.com/api-exhibit-a' target="_blank" rel='noopener noreferrer'>(IEX Terms Of Service)</a></li>
+        <li>Latest trade data provided for free by <a href='https://iextrading.com/developer' target='_blank' rel='noopener noreferrer'>IEX</a>. <a href='https://iextrading.com/api-exhibit-a' target='_blank' rel='noopener noreferrer'>(IEX Terms Of Service)</a></li>
         <li>Index data (specifically, the DJIA) is provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>.</li>
         <li>Note that the prices shown may not be the correct prices or the latest prices.</li>
         <li>Any prices displayed should be verfied through other sources.</li>
