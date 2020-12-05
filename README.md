@@ -21,7 +21,7 @@ This repository contains the front end code in the ```client``` folder.
 The remaining folders are primarily for the server code.
 
 ## History
-``` bash
+```
 21-Nov-20  1.0.1  Update remaining packages. Comment out failing test (new Enzyme package?).
 14-Nov-20  1.0.0  Updated remaining gems and packages where possible. Updated test code and configs.
 10-Nov-20  0.9.0  Updated Ruby to 2.7.2. Updated gems. Updated Highcharts and Highstock.
