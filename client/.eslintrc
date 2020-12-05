@@ -5,18 +5,19 @@
     "es6": true
   },
   "parser": "babel-eslint",
-  "ecmaFeatures": {
-      "modules": true,
-      "spread" : true,
-      "restParams" : true
-  },
+  # "ecmaFeatures": {
+  #     "modules": true,
+  #     "spread" : true,
+  #     "restParams" : true
+  # },
   "rules": {
     "no-unused-vars": 2,
     "no-undef": 2,
     "quotes": ["error", "single", { "avoidEscape": true }],
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
-    "react/react-in-jsx-scope": 1
+    "react/react-in-jsx-scope": 1,
+    "jsx-quotes": ["error", "prefer-single"]
   },
   "parserOptions": {
     "ecmaVersion": 6,
