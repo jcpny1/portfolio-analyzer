@@ -2,6 +2,9 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   TargetRubyVersion: 2.5  # max version supported by Code Climate's Rubocop version.
+  Exclude:
+    - 'db/**/*'
+    - 'vendor/**/*'
 
 Metrics/AbcSize:  # The ABC size is a calculated magnitude, so this number can be an Integer or a Float.
   Max: 30
