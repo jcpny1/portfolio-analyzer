@@ -22,6 +22,8 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
+07-Dec-20  1.0.2  Bulk load series data takes more than one day with throttling. Heroku restarts dynos at midnight causing job to start over again, so it never finishes.
+                  This update implements restart logic, so the job can pick up where it left off.
 21-Nov-20  1.0.1  Update remaining packages. Comment out failing test (new Enzyme package?).
 14-Nov-20  1.0.0  Updated remaining gems and packages where possible. Updated test code and configs.
 10-Nov-20  0.9.0  Updated Ruby to 2.7.2. Updated gems. Updated Highcharts and Highstock.
