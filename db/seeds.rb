@@ -92,3 +92,5 @@ Trade.create(instrument: Instrument.where('symbol = ?', 'HD'   ).first, trade_da
 Trade.create(instrument: Instrument.where('symbol = ?', 'INTC' ).first, trade_date: '2000-01-01 20:10:24.088', trade_price:   45.75, price_change:  0.17)
 Trade.create(instrument: Instrument.where('symbol = ?', 'JNJ'  ).first, trade_date: '2000-12-31 20:05:39.738', trade_price:  139.08, price_change:  0.15)
 Trade.create(instrument: Instrument.where('symbol = ?', 'SNY'  ).first, trade_date: '2000-01-01 20:06:03.386', trade_price:   44.74, price_change: -0.48)
+
+PaValue.create(name: 'series_bulk_load_symbol', value: '')
