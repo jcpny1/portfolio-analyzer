@@ -1,7 +1,7 @@
 # This class is responsible for interfacing the outside world with the Series data store.
 class SeriesCache
   # Update series cache for given symbols.
-  def self.bulk_load(symbol_array)
+  def self.bulk_load(symbol_array, log_symbol = false)
     Rails.logger.debug 'SERIES BULK LOAD BEGIN.'
     processed = 0
     symbol_array.each_slice(DataCache::SERIES_BATCH_SIZE) do |symbol_batch|
@@ -12,10 +12,10 @@ class SeriesCache
       Feed.load_series(symbol_batch) do |live_series|  # Get feed series.
 # TODO: XXX when AV fixes fetch rate errors, we can take out this if statement. (See AV.rb TODO)
         if !live_series[0].nil?
-          save_series(live_series, series_batch)   # Update database series with feed series.
+          save_series(live_series, series_batch)  # Update database series with feed series.
           clean_series(live_series, series_batch)  # Remove obsolete series data points.
-# TODO: XXX when AV fixes fetch rate errors, we can take this sleep out.
-sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
+          record_symbol(symbol_batch[0]) if log_symbol  # Save last symbol updated, for restart purposes.
+          sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
         end
       end
     end
@@ -42,6 +42,13 @@ sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request ra
     end
     Series.destroy(series_delete_array)
     Rails.logger.debug "SERIES DESTROYED: #{series_delete_array.length}."
+  end
+
+  # Record last symbol updated.
+  private_class_method def self.record_symbol(symbol)
+    pa_value = PaValue.find_by(name: 'series_bulk_load_symbol')
+    pa_value.value = symbol
+    pa_value.save!
   end
 
   # Updates series with live_series data and saves to the database.

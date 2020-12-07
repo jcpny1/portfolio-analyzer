@@ -13,21 +13,25 @@ class FeedWorker
       DataCache.instrument_bulk_load(feed_records)
     when 'price_bulk_load'
       # Get latest prices for all instruments.
-      instruments = Instrument.select(:id, :symbol).order(:symbol)
-      DataCache.price_values(instruments, true, true)
+      instrument_symbols = Instrument.select(:id, :symbol).order(:symbol)
+      DataCache.price_values(instrument_symbols, true, true)
     when 'series_bulk_load'
       # Get latest series data points
-      instruments = []
+      instrument_symbols = []
+      pa_value = PaValue.find_by(name: 'series_bulk_load_symbol')
       if instrument_set == 'all'  # for all instruments
-        instruments = Instrument.select(:symbol).order(:symbol)
+        instrument_symbols = Instrument.select(:symbol).where('symbol > ?', pa_value.value).order(:symbol)
       elsif instrument_set == 'active'  # or only for instruments held in Positions
-        instruments = Instrument.select(:symbol).where(id: Position.select('instrument_id').distinct).order(:symbol)
+        instrument_symbols = Instrument.select(:symbol).where(id: Position.select('instrument_id').distinct).where('symbol > ?', pa_value.value).order(:symbol)
       end
-      symbol_array = instruments.map(&:symbol)
+      symbol_array = instrument_symbols.map(&:symbol)
       symbol_array.concat(symbols.split(',')) unless symbols.nil?  # and add symbols, if specified.
       symbol_array.sort!
       symbol_array.uniq!
-      DataCache.series_bulk_load(symbol_array)
+      DataCache.series_bulk_load(symbol_array, true)
+      pa_value = PaValue.find_by(name: 'series_bulk_load_symbol')
+      pa_value.value = ''  # clear restart value
+      pa_value.save!
     else
       "FeedWorker Error: invalid request (#{name})"
     end

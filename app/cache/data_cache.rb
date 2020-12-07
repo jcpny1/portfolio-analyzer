@@ -36,7 +36,7 @@ module DataCache
   end
 
   # Update series data for the given symbols.
-  def self.series_bulk_load(symbol_array)
-    SeriesCache.bulk_load(symbol_array)
+  def self.series_bulk_load(symbol_array, log_symbol = false)
+    SeriesCache.bulk_load(symbol_array, log_symbol)
   end
 end
