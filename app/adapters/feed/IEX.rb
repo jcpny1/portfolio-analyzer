@@ -10,6 +10,7 @@ module Feed
       ###
       ### Don't allow an empty symbol list. IEX will pass back all symbols and use a lot of message count.
       ###
+      ## TODO: IEX Cloud allows bulk symbol requests (up to 50). Implement that.
       symbols.map do |symbol|
         begin
           Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol}."
