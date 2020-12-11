@@ -22,7 +22,8 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
-07-Dec-20  1.0.2  Bulk load series data takes more than one day with throttling. Heroku restarts dynos at midnight causing job to start over again, so it never finishes.
+07-Dec-20  1.0.2  Bulk load series data takes more than one day with throttling.
+                  Heroku restarts dynos every 24 hours causing job to start over again, so it never finishes.
                   This update implements restart logic, so the job can pick up where it left off.
 21-Nov-20  1.0.1  Update remaining packages. Comment out failing test (new Enzyme package?).
 14-Nov-20  1.0.0  Updated remaining gems and packages where possible. Updated test code and configs.
@@ -35,11 +36,13 @@ The remaining folders are primarily for the server code.
                   Added option to bulk load series data only for symbols contained in Positions table.
                   Removed option to bulk load Series data only for symbols missing from Series table.
                   Updated gems.
-                  Increased index fetch and series fetch throttling delays. Keep tripping AV rate limits (might be a feed bug; it's not me).
+                  Increased index fetch and series fetch throttling delays.
+                  Keep tripping AV rate limits (might be a feed bug; it's not me).
                   Refresh Series data points for newly added Position Instrument.
 10-Apr-18  0.6.1  Updated gems.
 10-Apr-18  0.6.0  Enhanced series feed error handling.
-                  Cut Sidekiq threads from 10 to 1. Reduces Heroku worker dyno memory utilization and prevents concurrent bulk operations.
+                  Cut Sidekiq threads from 10 to 1.
+                  Reduces Heroku worker dyno memory utilization and prevents concurrent bulk operations.
                   Bulk refresh instrument prices will now update in sorted symbol order.
                   Localized refresh time string and hover tooltip.
                   Updated usage notes.
@@ -48,17 +51,20 @@ The remaining folders are primarily for the server code.
                   Moved chart code out of formatter and into new ChartData class.
                   Memoized data feed vendor keys.
                   Added first jest test.
-                  Only chart portfolio value to earliest end date of underlying instruments to avoid incorrect valuation due to missing data.
+                  Only chart a portfolio value to the earliest end date of underlying instruments to avoid incorrect
+                  valuation due to missing data.
                   Reduction in RuboCop findings.
                   Reduced series fetch rate to prevent exceeding vendor limits.
                   Now storing all available series data; Removed hardcoded year 2013 start date. Pass date range from client.
                   Series fetch API now accepts a date range.
                   Removed dividend reinvestment adjustments from chart now that we are using adjusted data.
                   Moved Settings menu item from Help menu to main level.
-                  When editing an existing position, the date-acquired field will now show the existing value instead of today's date.
+                  When editing an existing position, the date-acquired field will now show the existing value instead of
+                  today's date.
                   Display portfolio name in red/green/black color depending on gain/loss value.
 27-Mar-18  0.5.0  Added portfolio composite to chart in addition to individual instruments.
-                  Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer apps running.
+                  Reduced headlines refresh rate to not exceed the free license limit with just two Portfolio Analyzer
+                  client apps running.
                   Bulk refresh series data will now update in symbol order.
                   Incorporated a few Code Climate suggestions. Also updated config file to V2.
                   Added new Decimal class data type 'percent'.
@@ -89,6 +95,7 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 
 ### Install redis server (if not installed yet)
 *   `sudo apt-get install redis-server`
+
 *   In /etc/rc.local, add:
     ``` bash
     if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
@@ -115,7 +122,9 @@ After a fresh install of seed data, the application should be showing a Total Ga
 ### Setup the data provider keys
 To receive market data, the server requires an internet connection and a few API keys:
 *   Market data from [IEX](https://iextrading.com/) requires a key. Registration is required. There is no charge.
+
 *   Index data from [Alpha Vantage](https://www.alphavantage.co/) requires a key. Registration is required. There is no charge.
+
 *   Headline news from [News API](https://newsapi.org/) requires a key. Registration is required. There is no charge.
 
 The keys should be placed in the project's home directory in a file called `.env`, as in the following example:
@@ -128,16 +137,27 @@ The keys should be placed in the project's home directory in a file called `.env
 ## Usage
 
 *   From the project home directory, type `rake start`.
-*   The server will start. When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
-*   When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database. Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
-*   The latest news headlines and DJIA value are presently set to update as follows: on the initial page load, when the entire page is refreshed, and once per two minutes.
-*   Database seed data includes just ten ticker symbols to work with. If you need more, there are Admin menu options to download a complete list of symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
+
+*   The server will start.
+    When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
+    
+*   When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database.
+    Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
+
+*   The latest news headlines and DJIA value are presently set to update as follows: on the initial page load,
+    when the entire page is refreshed, and once per two minutes.
+
+*   Database seed data includes just ten ticker symbols to work with. If you need more, there are Admin menu options to download a complete list of
+    symbols from the market data vendor into the database and to download the latest prices into the database for each of those symbols.
 
 ## Warnings
 
 *   There is no login logic at this time. Any data you enter into the system is subject to being viewed, edited, or deleted by anyone else with access to the same server.
+
 *   The market data shown may not be the latest information available or may be inaccurate.
-*   Any data, tools, or methods offered are for software development practice only. They may not be accurate. No decisions should be based on what is presented in this application.
+
+*   Any data, tools, or methods offered are for software development practice only.
+    They may not be accurate. No decisions should be based on what is presented in this application.
 
 ## Testing
 
@@ -145,6 +165,7 @@ The keys should be placed in the project's home directory in a file called `.env
 
 To run the RSpec test suite:
 *   In one window, run `npm start` from the client directory.
+
 *   In another window, run `RAILS_ENV=test bundle exec rspec` from the project home directory.
 
 To run the Jest test suite:
