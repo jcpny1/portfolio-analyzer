@@ -13,8 +13,8 @@ class TradeCache
       end
       if !bulk_load
         trades.concat(trade_batch)
-      else
-        sleep DataCache::TRADE_BATCH_DELAY  # Throttle requests for bulk loads.
+      # else
+        # sleep DataCache::TRADE_BATCH_DELAY  # Throttle requests for bulk loads.
       end
     end
     trades
