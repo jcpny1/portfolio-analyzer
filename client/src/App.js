@@ -77,7 +77,7 @@ class App extends Component {
             <Table.HeaderCell>
               <span style={{color:'grey', textAlign:'center'}}>
                             &bull; Index data provided by <a href='https://www.alphavantage.co' target='_blank' rel='noopener noreferrer'>Alpha Vantage</a>
-                &emsp;&ensp;&bull; Market data provided by <a href='https://iextrading.com' target='_blank' rel='noopener noreferrer'>IEX</a>
+                &emsp;&ensp;&bull; Market data provided by <a href='https://iexcloud.io' target='_blank' rel='noopener noreferrer'>IEX</a>
                 &emsp;&ensp;&bull; Headline news powered by <a href='https://newsapi.org' target='_blank' rel='noopener noreferrer'>NewsAPI.org</a>
                 &emsp;&ensp;&bull; The prices shown may not be the correct prices or the latest prices.
                 &emsp;&ensp;&bull; See <HelpPage trigger={<Button content='Help->Usage Notes' className='link' inverted size='medium' style={{paddingLeft:'2px', paddingRight:'1px', color:'#1e70bf'}}/>}/>for more information.
