@@ -61,7 +61,7 @@ SELECT symbol, t.* FROM trades t INNER JOIN instruments i ON t.instrument_id = i
 
 \echo Check for series records where low_price > high_price.
 \prompt 'continue' xxx
-select * from series where low_price > high_price;
+select i.symbol, i.id, s.series_date, s.high_price, s.low_price, s.updated_at from instruments i, series s where s.low_price > s.high_price AND s.instrument_id = i.id order by 1, 3;
 
 \echo Check for multiple series data points in the current month.
 \prompt 'continue' xxx
