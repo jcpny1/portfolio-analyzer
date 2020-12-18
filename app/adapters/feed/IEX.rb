@@ -10,27 +10,24 @@ module Feed
       ###
       ### Don't allow an empty symbol list. IEX will pass back all symbols and use a lot of message count.
       ###
-      ## TODO: IEX Cloud allows bulk symbol requests (up to 50). Implement that.
-      symbols.map do |symbol|
-        begin
-          Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol}."
-          esc_symbol = ERB::Util.url_encode(symbol)
-          resp = Faraday.get("https://cloud.iexapis.com/stable/stock/#{esc_symbol}/quote?token=#{iex_key}")
-          Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol}."
-          response = JSON.parse(resp.body)
-          # Rails.logger.debug "IEX PRICE FETCH RESPONSE: #{response}."
-        rescue Faraday::ClientError => e
-          Rails.logger.error "IEX PRICE FETCH ERROR: Faraday client error: #{e}."
-          Feed.error_trade(symbol, 'The feed is down.')
-        rescue JSON::ParserError => e
-          Rails.logger.error "IEX PRICE FETCH ERROR: JSON parse error: #{e}."
-          Feed.error_trade(symbol, 'The feed is down.')
-        rescue URI::InvalidURIError => e
-          Rails.logger.error "IEX PRICE FETCH ERROR: Invalid URI: #{e}."
-          Feed.error_trade(symbol, 'The feed is down.')
-        else
-          process_price_response(response)
-        end
+      begin
+        symbol_list = symbols.join(',')
+        Rails.logger.debug "IEX PRICE FETCH BEGIN for: #{symbol_list}."
+        esc_symbol_list = ERB::Util.url_encode(symbol_list)
+        resp = Faraday.get("https://cloud.iexapis.com/stable/stock/market/batch?symbols=#{esc_symbol_list}&types=quote&token=#{iex_key}")
+        Rails.logger.debug "IEX PRICE FETCH END   for: #{symbol_list}."
+        response = JSON.parse(resp.body)
+      rescue Faraday::ClientError => e
+        Rails.logger.error "IEX PRICE FETCH ERROR: Faraday client error: #{e}."
+        Feed.error_trade(symbol, 'The feed is down.')
+      rescue JSON::ParserError => e
+        Rails.logger.error "IEX PRICE FETCH ERROR: JSON parse error: #{e}."
+        Feed.error_trade(symbol, 'The feed is down.')
+      rescue URI::InvalidURIError => e
+        Rails.logger.error "IEX PRICE FETCH ERROR: Invalid URI: #{e}."
+        Feed.error_trade(symbol, 'The feed is down.')
+      else
+        process_price_response(response)
       end
     end
 
@@ -68,21 +65,25 @@ module Feed
 
     # Extract trade data or an error from the response.
     private_class_method def self.process_price_response(response)
-      symbol = response['symbol']
-      if symbol.nil?
-        Feed.error_trade('unknown', 'Price is not available.')
-      else
-        # TODO: Need proper timezone info.
-        # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.
-        #       On the other hand, then the caller would need to work with raw live data when updating the corresponding trade.
-        Trade.new do |t|
-          t.instrument   = Instrument.find_by(symbol: symbol)
-          t.trade_date   = Time.at(response['latestUpdate'].to_f / 1000.0).round(4).to_datetime
-          t.trade_price  = response['latestPrice'].to_f.round(4)
-          t.price_change = response['change'].to_f.round(4)
-          t.created_at   = DateTime.now
+      response.map { |resp|
+        quote = resp[1]['quote']
+        symbol = quote['symbol']
+        # if symbol.nil?
+        if symbol === 'GOOG'
+          Feed.error_trade('unknown', 'Price is not available.')
+        else
+          # TODO: Need proper timezone info.
+          # TODO: Consider not using a Trade here. It looks like it's causing an unecessary Instrument lookup. We only need the symbol.
+          #       On the other hand, then the caller would need to work with raw live data when updating the corresponding trade.
+          Trade.new do |t|
+            t.instrument   = Instrument.find_by(symbol: symbol)
+            t.trade_date   = Time.at(quote['latestUpdate'].to_f / 1000.0).round(4).to_datetime
+            t.trade_price  = quote['latestPrice'].to_f.round(4)
+            t.price_change = quote['change'].to_f.round(4)
+            t.created_at   = DateTime.now
+          end
         end
-      end
+      }
     end
 
     ###################

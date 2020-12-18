@@ -22,6 +22,7 @@ The remaining folders are primarily for the server code.
 
 ## History
 ```
+17-Dec-20  1.0.3  Implment trade price bulk load from feed.
 07-Dec-20  1.0.2  Bulk load series data takes more than one day with throttling.
                   Heroku restarts dynos every 24 hours causing job to start over again, so it never finishes.
                   This update implements restart logic, so the job can pick up where it left off.
