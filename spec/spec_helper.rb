@@ -145,6 +145,18 @@ RSpec.configure do |config|
         body: '{"symbol": "XOM", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
         headers: {}
       )
+
+    stub_request(:get, "https://cloud.iexapis.com/stable/stock/market/batch?symbols=XOM&token=&types=quote").
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.1.0'}).
+      to_return(
+        status: 200,
+        body: '{"XOM":
+                 {
+                   "quote": {"symbol": "XOM", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}
+                 }
+               }',
+        headers: {}
+      )
   end
 
   # rspec-expectations config goes here. You can use an alternate

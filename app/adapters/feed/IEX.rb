@@ -68,8 +68,8 @@ module Feed
       response.map { |resp|
         quote = resp[1]['quote']
         symbol = quote['symbol']
-        # if symbol.nil?
-        if symbol === 'GOOG'
+        # if symbol === 'GOOG'   # test error
+        if symbol.nil?
           Feed.error_trade('unknown', 'Price is not available.')
         else
           # TODO: Need proper timezone info.
