@@ -17,14 +17,19 @@ You can enter your investment holdings and monitor their total value and intra-d
 It was created to meet the requirements of the [Flatiron School](https://flatironschool.com/)'s React Redux portfolio project.
 It incorporates Rails, Node.js, React, Redux, Thunk, and Semantic-UI-React.
 
-This repository contains the front end code in the ```client``` folder.
-The remaining folders are primarily for the server code.
+The Javascript front end code is in the ```client``` folder.
+The remaining folders are primarily for the Ruby server code.
+
+Free quote services do not work on a subscriber or push model, so the architecture of this app is a bit different than it would normally be.
+When the client is started, the latest quotes shown are those that had been previously stored in the server's database, no matter how old.
+When the user presses the refresh button in the client, the server obtains new quotes from the service provider, stores them in the server's database, then forwards them to the client.
+If the server (or client) polled the service provider periodically (to keep the quotes fresh), the free quote service's request quotas would quickly be reached.
 
 ## History
 ```
-17-Dec-20  1.0.3  Implment trade price bulk load from feed.
-07-Dec-20  1.0.2  Bulk load series data takes more than one day with throttling.
-                  Heroku restarts dynos every 24 hours causing job to start over again, so it never finishes.
+17-Dec-20  1.0.3  Implement trade price bulk load from feed.
+07-Dec-20  1.0.2  Bulk load series data in the background takes more than one day (with throttling to avoid free plan quota limits).
+                  Heroku restarts dynos every 24 hours causing the job to start over again, so it never finishes.
                   This update implements restart logic, so the job can pick up where it left off.
 21-Nov-20  1.0.1  Update remaining packages. Comment out failing test (new Enzyme package?).
 14-Nov-20  1.0.0  Updated remaining gems and packages where possible. Updated test code and configs.
