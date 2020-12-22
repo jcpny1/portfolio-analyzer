@@ -26,8 +26,8 @@ class HeadlinesPage extends Component {
   componentDidMount() {
     this.refreshHeadlines();
     this.setState({headlinesIntervalId: window.setInterval(this.refreshHeadlines, HeadlinesPage.HEADLINES_REFRESH_INTERVAL)});
-    this.refreshIndexes();
-    this.setState({indexesIntervalId: window.setInterval(this.refreshIndexes, HeadlinesPage.INDEXES_REFRESH_INTERVAL)});
+    this.refreshDJIA();
+    this.setState({indexesIntervalId: window.setInterval(this.refreshDJIA, HeadlinesPage.INDEXES_REFRESH_INTERVAL)});
   }
 
   componentWillUnmount(){
@@ -48,6 +48,20 @@ class HeadlinesPage extends Component {
           }
         });
         this.setState({articles: headlines.articles});
+      }
+    });
+  }
+
+  refreshDJIA = () => {
+    Request.djiaRefresh(index => {
+      if ('error' in index) {
+        alert(Fmt.serverError('Refresh DJIA', index.error));
+      } else {
+        const price = index.price.replace(/\,/g,'');
+        const change = index.change.split(' ');
+        const change_value = change[0].replace(/\,/g,'');
+        // const change_percent = change[1].replace(/\,/g,'');
+        this.setState({djiaValue: new Decimal(price, 'index'), djiaChange: new Decimal(change_value, 'index', 'delta'), refreshTime: new Date()});
       }
     });
   }

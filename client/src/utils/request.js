@@ -12,6 +12,15 @@ export function headlinesRefresh(cb) {
 }
 
 // Request the server to refresh market indexes.
+export function djiaRefresh(cb) {
+  fetch('/api/last-djia', {headers: {'Accept': 'application/json'}})
+  .then(statusCheck)
+  .then(response => response.json())
+  .then(cb)
+  .catch(error => {alert(Fmt.serverError('Refresh Indexes', error));});
+}
+
+// Request the server to refresh market indexes.
 export function indexesRefresh(cb) {
   fetch('/api/last-index?symbols=DJIA', {headers: {'Accept': 'application/json'}})
   .then(statusCheck)

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   scope '/api' do
     get '/headlines',             to: 'headlines#index'
+    get '/last-djia',             to: 'trades#last_djia'
     get '/last-index',            to: 'trades#last_index'
     get '/monthly-series',        to: 'series#monthly_series'
     get '/portfolios/last-price', to: 'trades#last_price'

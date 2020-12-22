@@ -42,65 +42,19 @@ module Feed
     ###################
     #
     # Quote:
-    # https://cloud.iexapis.com/stable/stock/AAPL/quote?token=#{iex_key}
-    # {
-    #   "symbol": "AAPL",
-    #   "companyName": "Apple Inc.",
-    #   "calculationPrice": "tops",
-    #   "open": 154,
-    #   "openTime": 1506605400394,
-    #   "close": 153.28,
-    #   "closeTime": 1506605400394,
-    #   "high": 154.80,
-    #   "low": 153.25,
-    #   "latestPrice": 158.73,
-    #   "latestSource": "Previous close",
-    #   "latestTime": "September 19, 2017",
-    #   "latestUpdate": 1505779200000,
-    #   "latestVolume": 20567140,
-    #   "iexRealtimePrice": 158.71,
-    #   "iexRealtimeSize": 100,
-    #   "iexLastUpdated": 1505851198059,
-    #   "delayedPrice": 158.71,
-    #   "delayedPriceTime": 1505854782437,
-    #   "extendedPrice": 159.21,
-    #   "extendedChange": -1.68,
-    #   "extendedChangePercent": -0.0125,
-    #   "extendedPriceTime": 1527082200361,
-    #   "previousClose": 158.73,
-    #   "change": -1.67,
-    #   "changePercent": -0.01158,
-    #   "iexMarketPercent": 0.00948,
-    #   "iexVolume": 82451,
-    #   "avgTotalVolume": 29623234,
-    #   "iexBidPrice": 153.01,
-    #   "iexBidSize": 100,
-    #   "iexAskPrice": 158.66,
-    #   "iexAskSize": 100,
-    #   "marketCap": 751627174400,
-    #   "week52High": 159.65,
-    #   "week52Low": 93.63,
-    #   "ytdChange": 0.3665,
-    #   "peRatio": 17.18,
-    # }
+    # https://finance.yahoo.com/quote/%5EDJI?p=%5EDJI
     #
-    # Symbols:
-    # https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token=#{iex_key}
-    # [
-    #   {
-    #     "symbol":"A",
-    #     "exchange":"NYS",
-    #     "name":"Agilent Technologies Inc.",
-    #     "date":"2019-08-14",
-    #     "type":"cs",
-    #     "iexId":"IEX_46574843354B2D52",
-    #     "region":"US",
-    #     "currency":"USD",
-    #     "isEnabled":true
-    #   },
-    #   .
-    #   .
-    #   .
-    # ]
+    # <div class="My(6px) Pos(r) smartphone_Mt(6px)" data-reactid="30">
+    #   <div class="D(ib) Va(m) Maw(65%) Ov(h)" data-reactid="31">
+    #     <div class="D(ib) Mend(20px)" data-reactid="32">
+    #       <span class="Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)" data-reactid="33">30,103.34</span>
+    #       <span class="Trsdu(0.3s) Fw(500) Pstart(10px) Fz(24px) C($negativeColor)" data-reactid="34">-113.11 (-0.37%)</span>
+    #       <div id="quote-market-notice" class="C($tertiaryColor) D(b) Fz(12px) Fw(n) Mstart(0)--mobpsm Mt(6px)--mobpsm" data-reactid="35">
+    #         <span data-reactid="36">As of  12:45PM EST. Market open.</span>
+    #       </div>
+    #     </div>
+    #   </div>
+    # </div>
+    #
   end
 end

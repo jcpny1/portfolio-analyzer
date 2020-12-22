@@ -8,6 +8,14 @@ class TradesController < ApplicationController
     render json: indexes, each_serializer: IndexSerializer
   end
 
+  # AV no longer supplies DJIA. Use Yahoo.
+  def last_djia
+    logger.info 'DJIA INDEX LOAD BEGIN.'
+    yahoo = Feed::Yahoo.DJIA()
+    logger.info 'DJIA INDEX LOAD END.'
+    render json: yahoo
+  end
+
   # Retrieve the latest prices for the symbols used by current user.
   # Specify param 'livePrices' to supplement database prices with feed prices. Otherwise, only return database prices.
   def last_price
