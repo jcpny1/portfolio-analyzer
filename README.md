@@ -25,6 +25,8 @@ When the client is started, the latest quotes shown are those that had been prev
 When the user presses the refresh button in the client, the server obtains new quotes from the service provider, stores them in the server's database, then forwards them to the client.
 If the server (or client) polled the service provider periodically (to keep the quotes fresh), the free quote service's request quotas would quickly be reached.
 
+The test code coverage is currently around 82%. This is because there is quite a bit of error handling code in the various service provider interfaces that I haven't taken the time to build test cases for, yet.
+
 ## History
 ```
 17-Dec-20  1.0.3  Implement trade price bulk load from feed.
