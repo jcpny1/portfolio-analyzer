@@ -5,8 +5,6 @@ class SeriesCache
     Rails.logger.debug 'SERIES BULK LOAD BEGIN.'
     processed = 0
     symbol_array.each_slice(DataCache::SERIES_BATCH_SIZE) do |symbol_batch|
-# TODO: XXX when AV fixes fetch rate errors, we can put this sleep back in.
-#      sleep DataCache::SERIES_BATCH_DELAY if processed.nonzero?  # Throttle request rate.
       processed += symbol_batch.length
       series_batch = series_from_database(symbol_batch, nil, nil)  # Get database series as a baseline.
       Feed.load_series(symbol_batch) do |live_series|  # Get feed series.
