@@ -15,7 +15,7 @@ export default class ConfirmDialog extends Component {
   }
 
   handleConfirm = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
     this.props.onClickConfirm();
   }
 
