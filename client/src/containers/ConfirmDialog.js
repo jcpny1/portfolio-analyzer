@@ -20,18 +20,19 @@ export default class ConfirmDialog extends Component {
   }
 
   show = () => {
-    this.setState({ open: true });
+    const {disabled} = this.props;
+    !disabled && this.setState({ open: true });
   }
 
   render() {
-    const {color, header, name, title, triggerType} = this.props;
+    const {color, disabled, header, name, title, triggerType} = this.props;
     const {open} = this.state;
     return (
       <span>
         {
           (triggerType === 'icon') ?
             <Icon name={name} title={title} id='portfolioDelete' link color={color} onClick={this.show}/> :
-            <Dropdown.Item text={title} onClick={this.show}/>
+            <Dropdown.Item disabled={disabled} text={title} onClick={this.show}/>
         }
         <Confirm
           cancelButton='NO'
@@ -49,6 +50,7 @@ export default class ConfirmDialog extends Component {
 
 ConfirmDialog.propTypes = {
   color: PropTypes.string,
+  disabled: PropTypes.bool,
   header: PropTypes.string.isRequired,
   name: PropTypes.string,
   onClickConfirm: PropTypes.func.isRequired,
