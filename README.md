@@ -1,6 +1,5 @@
 # PORTFOLIO ANALYZER
 
-
 [![GitHub version](https://badge.fury.io/gh/jcpny1%2Fportfolio-analyzer.svg)](https://badge.fury.io/gh/jcpny1%2Fportfolio-analyzer)
 [![Build Status](https://travis-ci.org/jcpny1/portfolio-analyzer.svg?branch=master)](https://travis-ci.org/jcpny1/portfolio-analyzer)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7ca3b07d0b24fbcd472b/test_coverage)](https://codeclimate.com/github/jcpny1/portfolio-analyzer/test_coverage)
