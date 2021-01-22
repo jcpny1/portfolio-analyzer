@@ -50,7 +50,7 @@ export default class ConfirmDialog extends Component {
 
 ConfirmDialog.propTypes = {
   color: PropTypes.string,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.string,
   header: PropTypes.string.isRequired,
   name: PropTypes.string,
   onClickConfirm: PropTypes.func.isRequired,
