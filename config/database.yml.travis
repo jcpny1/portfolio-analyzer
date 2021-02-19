@@ -83,4 +83,4 @@ production:
   <<: *default
   database: portfolio_analyzer_prod
   username: portfolio-analyzer
-  password: <%= ENV['PORTFOLIO-ANALYZER_DATABASE_PASSWORD'] %>
+  password: <%= ENV['PORTFOLIO_ANALYZER_DATABASE_PASSWORD'] %>

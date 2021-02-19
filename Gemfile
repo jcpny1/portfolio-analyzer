@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'  # Ruby language version.
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rake', '~> 13.0.3' # Ruby make
 gem 'rails', '~> 6.0', '>= 6.0.3.4'  # Full-stack web framework.
 gem 'pg', '~> 1.2', '>= 1.2.3' # Use postgresql as the database for Active Record.
 gem 'puma', '~> 5.0', '>= 5.0.4'  # Use Puma as the (HTTP 1.1) app server.
