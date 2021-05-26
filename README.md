@@ -150,7 +150,7 @@ The keys should be placed in the project's home directory in a file called `.env
 
 *   The server will start.
     When the server is ready, a new default browser tab will open at the Portfolio Analyzer home page.
-    
+
 *   When your positions are first loaded, they will be priced with the latest available information from the Portfolio Analyzer database.
     Each time you hit Refresh, the prices will be updated with latest data from the market data provider.
 
@@ -184,6 +184,13 @@ To run the Jest test suite:
 ## Deployment
 
 *   To deploy on Heroku, `git push heroku master`.
+
+## Problems
+
+* If sidekiq jobs are queued but are not executing, make sure the sidekiq process is active. For some reason, it is not auto-starting on system reboot.
+``` bash
+  sudo systemctl status sidekiq
+```
 
 ## Contributing
 
