@@ -12,6 +12,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+*.swp
 
 # Ignore .env file containing api keys.
 .env
