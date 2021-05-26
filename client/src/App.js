@@ -7,6 +7,7 @@ import {Button, Dropdown, Grid, Header, Image, Menu, Table} from 'semantic-ui-re
 import ConfirmDialog from './containers/ConfirmDialog';
 import HeadlinesPage from './containers/HeadlinesPage';
 import HelpPage from './containers/HelpPage';
+//import LoginPage from './containers/LoginPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
 import * as Request from './utils/request';
@@ -132,6 +133,7 @@ class App extends Component {
     );
   }
 
+//        {<LoginPage/>}
   pageMenuRight() {
     return (
       <Menu.Menu position='right'>
