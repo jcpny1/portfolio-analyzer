@@ -7,7 +7,7 @@ import {Button, Dropdown, Grid, Header, Image, Menu, Table} from 'semantic-ui-re
 import ConfirmDialog from './containers/ConfirmDialog';
 import HeadlinesPage from './containers/HeadlinesPage';
 import HelpPage from './containers/HelpPage';
-//import LoginPage from './containers/LoginPage';
+import LoginPage from './containers/LoginPage';
 import PortfoliosPage from './containers/PortfoliosPage';
 import PositionsPage from './containers/PositionsPage';
 import * as Request from './utils/request';
@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <Dropdown item text='Admin'>
         <Dropdown.Menu>
-          <ConfirmDialog disabled triggerType='dropdown' title='Refresh Instruments...'   header='Background refresh instrument inventory from data feed'         onClickConfirm={Request.instrumentsRefresh}/>
+          <ConfirmDialog triggerType='dropdown' title='Refresh Instruments...'   header='Background refresh instrument inventory from data feed'         onClickConfirm={Request.instrumentsRefresh}/>
           <ConfirmDialog disabled triggerType='dropdown' title='Refresh Active Series...' header='Background refresh active series prices'                        onClickConfirm={Request.seriesRefreshActive}/>
           <ConfirmDialog disabled triggerType='dropdown' title='Refresh All Prices...'    header='Background reprice entire instrument inventory (runs 12 hours)' onClickConfirm={Request.pricesRefresh}/>
           <ConfirmDialog disabled triggerType='dropdown' title='Refresh All Series...'    header='Background refresh all series prices (runs 2 days)'             onClickConfirm={Request.seriesRefreshAll}/>
@@ -133,10 +133,10 @@ class App extends Component {
     );
   }
 
-//        {<LoginPage/>}
   pageMenuRight() {
     return (
       <Menu.Menu position='right'>
+        {<LoginPage/>}
         {this.menuItemAdmin()}
         {<SettingsEditPage/>}
         {this.menuItemHelp()}
