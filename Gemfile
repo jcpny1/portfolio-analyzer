@@ -7,7 +7,7 @@ ruby '2.7.2'  # Ruby language version.
 gem 'rake', '~> 13.0.3' # Ruby make
 gem 'rails', '~> 6.0', '>= 6.0.3.4'  # Full-stack web framework.
 gem 'pg', '~> 1.2', '>= 1.2.3' # Use postgresql as the database for Active Record.
-gem 'puma', '~> 5.0', '>= 5.0.4'  # Use Puma as the (HTTP 1.1) app server.
+gem 'puma', '~> 5.3'            # Use Puma as the (HTTP 1.1) app server.
 gem 'sass-rails', '~> 6.0'     # Use SCSS for stylesheets.
 gem 'uglifier', '>= 4.2'       # Use Uglifier as compressor for JavaScript assets.
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -34,7 +34,7 @@ gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'     # Loads environment variables from 
 gem 'faraday', '~> 1.1'                      # HTTP/REST API client library.
 gem 'sidekiq', '~> 6.1', '>= 6.1.2'          # Background processing for Ruby.
 
-gem 'nokogiri', '~> 1.6', '>= 1.6.8'         # HTML parser.
+gem 'nokogiri', '~> 1.11'                  # HTML parser.
 
 group :development, :test do
   gem 'byebug', '~> 11.1', '>= 11.1.3', platforms: [:mri, :mingw, :x64_mingw]   # Call 'byebug' anywhere in the code to stop execution and get a debugger console.
