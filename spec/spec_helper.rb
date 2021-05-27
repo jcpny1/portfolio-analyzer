@@ -29,7 +29,7 @@ RSpec.configure do |config|
 
     # Request for news.
     stub_request(:get, 'https://newsapi.org/v2/top-headlines?apikey&country=us&pageSize=10').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.3.0'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.4.2'}).
       to_return(
         status: 200,
         body: '{
@@ -49,7 +49,7 @@ RSpec.configure do |config|
 
     # Request for data feed symbology.
     stub_request(:get, 'https://cloud.iexapis.com/stable/ref-data/region/US/symbols?token').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.3.0'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.4.2'}).
       to_return(
         status: 200,
         body: '[
@@ -62,7 +62,7 @@ RSpec.configure do |config|
 
     # Request for DJIA index value.
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_DAILY&symbol=DJIA').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.3.0'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.4.2'}).
       to_return(
         status: 200,
         body:   '{
@@ -95,7 +95,7 @@ RSpec.configure do |config|
 
     # Request XOM monthly series data.
     stub_request(:get, 'https://www.alphavantage.co/query?apikey&function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=XOM').
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.3.0'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.4.2'}).
       to_return(
         status: 200,
         body:   '{
@@ -139,7 +139,7 @@ RSpec.configure do |config|
 
     # Request instrument prices.
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/XOM/quote?token=").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.3.0'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.4.2'}).
       to_return(
         status: 200,
         body: '{"symbol": "XOM", "latestPrice": 175.42, "change": -2.42, "latestUpdate": 1521473015555}',
@@ -147,7 +147,7 @@ RSpec.configure do |config|
       )
 
     stub_request(:get, "https://cloud.iexapis.com/stable/stock/market/batch?symbols=XOM&token=&types=quote").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.3.0'}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v1.4.2'}).
       to_return(
         status: 200,
         body: '{"XOM":
