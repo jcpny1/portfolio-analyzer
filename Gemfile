@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.10.1'    # Create JSON structures via a Builder-style DSL.
 
 gem 'bootsnap', '~> 1.5', '>= 1.5.1', require: false  # Reduces boot times through caching; required in config/boot.rb.
 gem 'active_model_serializers', '~> 0.10.10' # JSON generators.
-gem 'addressable', '~> 2.7'                  # URI encoder.
+gem 'addressable', '~> 2.8'                  # URI encoder.
 gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'     # Loads environment variables from `.env`.
 gem 'faraday', '~> 1.1'                      # HTTP/REST API client library.
 gem 'sidekiq', '~> 6.1', '>= 6.1.2'          # Background processing for Ruby.
