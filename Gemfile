@@ -32,7 +32,7 @@ gem 'active_model_serializers', '~> 0.10.10' # JSON generators.
 gem 'addressable', '~> 2.8'                  # URI encoder.
 gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'     # Loads environment variables from `.env`.
 gem 'faraday', '~> 1.1'                      # HTTP/REST API client library.
-gem 'sidekiq', '~> 6.1', '>= 6.1.2'          # Background processing for Ruby.
+gem 'sidekiq', '~> 6.4'                    # Background processing for Ruby.
 
 gem 'nokogiri', '~> 1.13'                  # HTML parser.
 
