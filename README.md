@@ -118,6 +118,8 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 
 *   `sudo -u postgres createdb portfolio_analyzer_dev`
 
+*   `sudo -u postgres createuser jcpny1` if necessary
+
 *   `rake db:migrate`
 
 *   `rake db:seed`
