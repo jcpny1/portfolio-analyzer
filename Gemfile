@@ -6,13 +6,8 @@ ruby '2.7.2'  # Ruby language version.
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rake', '~> 13.0.3' # Ruby make
 gem 'rails', '~> 6.0', '>= 6.0.3.4'  # Full-stack web framework.
-<<<<<<< HEAD
 gem 'pg', '~> 1.3', '>= 1.3.4' # Use postgresql as the database for Active Record.
-gem 'puma', '~> 5.3'            # Use Puma as the (HTTP 1.1) app server.
-=======
-gem 'pg', '~> 1.2', '>= 1.2.3' # Use postgresql as the database for Active Record.
 gem 'puma', '~> 5.6'            # Use Puma as the (HTTP 1.1) app server.
->>>>>>> 9f083fd6a07bae2746239924facaec0823b8a21f
 gem 'sass-rails', '~> 6.0'     # Use SCSS for stylesheets.
 gem 'uglifier', '>= 4.2'       # Use Uglifier as compressor for JavaScript assets.
 # See https://github.com/rails/execjs#readme for more supported runtimes
