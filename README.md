@@ -29,7 +29,8 @@ The test code coverage is currently around 82%. This is because there is quite a
 
 ## History
 ```
-20-Mar-22  1.0.6  Address Dependabot alerts.
+20-Mar-22  1.0.7  Address Dependabot alerts for Javascript.
+20-Mar-22  1.0.6  Address Dependabot alerts for Ruby.
 31-Dec-20  1.0.5  Disable long running background jobs. Update AV call rate back to free plan.
 22-Dec-20  1.0.4  Use Yahoo for DJIA instead of Alpha Vantage.
 17-Dec-20  1.0.3  Implement trade price bulk load from feed.
