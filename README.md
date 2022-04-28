@@ -29,6 +29,7 @@ The test code coverage is currently around 82%. This is because there is quite a
 
 ## History
 ```
+28-Apr-22  1.0.8  Update gems, especially Rails, to implement security fixes.
 20-Mar-22  1.0.7  Address Dependabot alerts for Javascript.
 20-Mar-22  1.0.6  Address Dependabot alerts for Ruby.
 31-Dec-20  1.0.5  Disable long running background jobs. Update AV call rate back to free plan.
@@ -175,7 +176,7 @@ The keys should be placed in the project's home directory in a file called `.env
 
 ## Testing
 
-*   If the test DB does not exist -`/bin/createdb travis_ci_test` and `RAILS_ENV=test rake db:migrate`.
+*   If the test DB does not exist -`sudo -u postgres /bin/createdb travis_ci_test` and `RAILS_ENV=test rake db:migrate`.
 
 To run the RSpec test suite:
 *   In one window, run `npm start` from the client directory.
