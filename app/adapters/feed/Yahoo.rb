@@ -29,11 +29,11 @@ module Feed
 
     # Extract trade data or an error from the response.
     private_class_method def self.process_price_response(response)
-      djia = Nokogiri::HTML.parse(response).css('div[data-reactid=30]')
+      djia = Nokogiri::HTML.parse(response).css('fin-streamer[data-symbol=\^DJI]')
       djia_response = {
-        'price'  => djia.css('span[data-reactid=33]').text,
-        'change' => djia.css('span[data-reactid=34]').text,
-        'status' => djia.css('#quote-market-notice > span').text
+        'price'  => djia.css('fin-streamer[data-field=regularMarketPrice]').text,
+        'change' => djia.css('fin-streamer[data-field=regularMarketChange]').text,
+        'status' => djia.css('fin-streamer[data-field=marketState]').text
       }
     end
 

@@ -119,6 +119,8 @@ Portfolio-Analyzer was developed using earlier versions of the following, but wa
 ### Setup the database
 *   Install postgresql, if necessary. `sudo apt update` then `sudo apt install postgresql postgresql-contrib`
 
+*   `sudo apt-get install nodejs`
+
 *   `sudo -u postgres createdb portfolio_analyzer_dev`
 
 *   `sudo -u postgres createuser jcpny1` if necessary
@@ -131,6 +133,8 @@ After a fresh install of seed data, the application should be showing a Total Ga
 
 ### Install npm packages
 *   `cd client`
+
+*   `sudo apt install nodejs`
 
 *   `npm install`
 
