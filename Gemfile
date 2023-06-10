@@ -34,7 +34,7 @@ gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'     # Loads environment variables from 
 gem 'faraday', '~> 1.1'                      # HTTP/REST API client library.
 gem 'sidekiq', '~> 6.4'                    # Background processing for Ruby.
 
-gem 'nokogiri', '~> 1.13'                  # HTML parser.
+gem 'nokogiri', '~> 1.14'                  # HTML parser.
 
 group :development, :test do
   gem 'byebug', '~> 11.1', '>= 11.1.3', platforms: [:mri, :mingw, :x64_mingw]   # Call 'byebug' anywhere in the code to stop execution and get a debugger console.
